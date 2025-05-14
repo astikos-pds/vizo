@@ -10,8 +10,10 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/leaflet": "^1.2.6",
     "@tailwindcss/vite": "^4.1.6",
     "nuxt": "^3.17.2",
+    "nuxt-app": "file:",
     "tailwindcss": "^4.1.6",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1"
