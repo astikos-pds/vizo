@@ -4,16 +4,10 @@ import { locations } from "~/data";
 
 <template>
   <Map>
-    <LMarker
+    <Marker
       v-for="location in locations"
-      :lat-lng="[location.latitude, location.longitude]"
-    >
-    </LMarker>
-    <!-- 
-      <LIcon
-        icon-url="https://static.thenounproject.com/png/888711-200.png"
-        :icon-size="[50, 50]"
-      /> 
-    -->
+      :latitude="location.latitude"
+      :longitude="location.longitude"
+    ></Marker>
   </Map>
 </template>

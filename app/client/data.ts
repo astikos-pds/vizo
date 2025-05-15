@@ -49,4 +49,9 @@ export const locations = [
     latitude: -23.6237,
     longitude: -46.6998,
   },
+  {
+    nome: "Pari",
+    latitude: -23.5271,
+    longitude: -46.6156,
+  },
 ];
