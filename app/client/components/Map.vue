@@ -1,9 +1,22 @@
 <script lang="ts" setup>
+import type { Map as LeafletMap } from "leaflet";
+
 interface Props {
   zoom: number;
   center: number[];
 }
 const props = defineProps<Props>();
+
+const map = ref<LeafletMap>(null);
+
+const onReady = (mapInstance: LeafletMap) => {
+  map.value = mapInstance;
+};
+
+defineExpose({
+  flyTo: (targetCenter, targetZoom, options) =>
+    map.value?.flyTo(targetCenter, targetZoom, options),
+});
 </script>
 
 <template>
@@ -12,6 +25,7 @@ const props = defineProps<Props>();
     :zoom="props.zoom"
     :center="props.center"
     :use-global-leaflet="false"
+    @ready="onReady"
   >
     <LTileLayer
       url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
