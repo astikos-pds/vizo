@@ -8,22 +8,36 @@ interface Icon {
 interface Props {
   latitude: number;
   longitude: number;
-  icon: Icon | undefined;
+  icon?: Icon;
 }
 
 const props = defineProps<Props>();
+
+const emit = defineEmits<{
+  (e: "click"): void;
+}>();
+
+const hasIcon = computed(() => {
+  return props.icon && props.icon.url;
+});
 </script>
 
 <template>
-  <div v-if="props.icon">
-    <LMarker :lat-lng="[props.latitude, props.longitude]">
+  <div v-if="hasIcon">
+    <LMarker
+      @click="() => emit('click')"
+      :lat-lng="[props.latitude, props.longitude]"
+    >
       <LIcon
-        :icon-url="props.icon?.url"
-        :icon-size="[props.icon?.width, props.icon?.height]"
+        :icon-url="props.icon.url"
+        :icon-size="[props.icon.width, props.icon.height]"
       />
     </LMarker>
   </div>
   <div v-else>
-    <LMarker :lat-lng="[props.latitude, props.longitude]"></LMarker>
+    <LMarker
+      @click="() => emit('click')"
+      :lat-lng="[props.latitude, props.longitude]"
+    />
   </div>
 </template>
