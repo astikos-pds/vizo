@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import type { PointExpression } from "leaflet";
+
 interface Icon {
   url: string;
-  width: number;
-  height: number;
+  size: PointExpression;
 }
 
 interface Props {
@@ -28,10 +29,7 @@ const hasIcon = computed(() => {
       @click="() => emit('click')"
       :lat-lng="[props.latitude, props.longitude]"
     >
-      <LIcon
-        :icon-url="props.icon.url"
-        :icon-size="[props.icon.width, props.icon.height]"
-      />
+      <LIcon :icon-url="props.icon?.url" :icon-size="props.icon?.size" />
     </LMarker>
   </div>
   <div v-else>

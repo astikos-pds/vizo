@@ -1,9 +1,10 @@
 <script lang="ts" setup>
 import { locations } from "~/data";
+import type { Map as LeafletMap, PointExpression } from "leaflet";
 
-const map = ref(null);
-const zoom = ref(12);
-const center = ref([-23.5489, -46.6388]);
+const map = ref<LeafletMap | null>(null);
+const zoom = ref<number>(12);
+const center = ref<PointExpression>([-23.5489, -46.6388]);
 
 const zoomToMarker = (location: { latitude: number; longitude: number }) => {
   map.value?.flyTo([location.latitude, location.longitude], 18, {
@@ -21,11 +22,6 @@ const zoomToMarker = (location: { latitude: number; longitude: number }) => {
       :key="location.name"
       :latitude="location.latitude"
       :longitude="location.longitude"
-      :icon="{
-        width: 20,
-        height: 20,
-      }"
     />
-    <LMarker :lat-lng="center"></LMarker>
   </Map>
 </template>

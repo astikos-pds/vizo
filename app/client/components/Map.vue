@@ -1,20 +1,24 @@
 <script lang="ts" setup>
-import type { Map as LeafletMap } from "leaflet";
+import type {
+  Map as LeafletMap,
+  LatLngExpression,
+  PointExpression,
+} from "leaflet";
 
 interface Props {
   zoom: number;
-  center: number[];
+  center: PointExpression;
 }
 const props = defineProps<Props>();
 
-const map = ref<LeafletMap>(null);
+const map = ref<LeafletMap | null>(null);
 
 const onReady = (mapInstance: LeafletMap) => {
   map.value = mapInstance;
 };
 
 defineExpose({
-  flyTo: (targetCenter, targetZoom, options) =>
+  flyTo: (targetCenter: LatLngExpression, targetZoom: number, options: any) =>
     map.value?.flyTo(targetCenter, targetZoom, options),
 });
 </script>
