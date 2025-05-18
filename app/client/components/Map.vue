@@ -25,7 +25,6 @@ defineExpose({
 
 <template>
   <LMap
-    class="min-w-screen min-h-screen"
     :zoom="props.zoom"
     :center="props.center"
     :use-global-leaflet="false"
