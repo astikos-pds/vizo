@@ -15,8 +15,8 @@ import java.time.ZonedDateTime;
 @Service
 public class JwtService {
 
-    @Value("${spring.jwt.secret}")
-    private static String SECRET_KEY;
+    @Value("${api.security.jwt.secret}")
+    private String SECRET_KEY;
 
     private static final String ISSUER = "vizo";
 

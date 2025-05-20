@@ -1,4 +1,4 @@
-package br.app.vizo.domain.user.dto;
+package br.app.vizo.controller.request;
 
 public record RegisterCitizenRequestDTO(
         String document,
