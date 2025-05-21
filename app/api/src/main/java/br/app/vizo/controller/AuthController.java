@@ -1,7 +1,8 @@
 package br.app.vizo.controller;
 
 import br.app.vizo.controller.request.LoginRequestDTO;
-import br.app.vizo.controller.response.TokenResponseDTO;
+import br.app.vizo.controller.request.RefreshRequestDTO;
+import br.app.vizo.controller.response.TokenPairDTO;
 import br.app.vizo.domain.user.dto.CitizenDTO;
 import br.app.vizo.controller.request.RegisterCitizenRequestDTO;
 import br.app.vizo.service.AuthService;
@@ -34,8 +35,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDTO> login(@RequestBody LoginRequestDTO body) {
-        TokenResponseDTO response = this.authService.login(body.document(), body.password());
+    public ResponseEntity<TokenPairDTO> login(@RequestBody LoginRequestDTO body) {
+        TokenPairDTO response = this.authService.login(body.document(), body.password());
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<TokenPairDTO> refresh(@RequestBody RefreshRequestDTO body) {
+        TokenPairDTO response = this.authService.refresh(body.token());
 
         return ResponseEntity.ok(response);
     }

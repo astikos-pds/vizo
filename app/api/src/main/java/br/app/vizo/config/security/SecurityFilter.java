@@ -15,7 +15,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -23,7 +22,8 @@ public class SecurityFilter extends OncePerRequestFilter {
     public final String[] PUBLIC_ROUTES = {
             "/auth/register/citizen",
             "/auth/register/municipality",
-            "/auth/login"
+            "/auth/login",
+            "/auth/refresh"
     };
 
     private final UserRepository userRepository;
@@ -45,7 +45,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (this.shouldFilter(request)) {
             String token = this.retrieveToken(request);
 
-            if (token != null) {
+            if (token != null && this.jwtService.isAccessTokenValid(token)) {
                 String subject = this.jwtService.getSubjectFromToken(token);
                 User user = this.userRepository.findByDocument(subject).orElseThrow(
                         () -> new RuntimeException("User not found.")
