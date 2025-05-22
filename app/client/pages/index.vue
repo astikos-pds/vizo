@@ -25,24 +25,23 @@ const onMarkerClick = (problem: { latitude: number; longitude: number }) => {
 
 <template>
   <div class="flex min-w-screen min-h-screen overflow-hidden">
-    <Map
-      class="min-h-screen"
-      :class="isAsideOpen ? 'w-2/3' : 'w-screen'"
-      ref="map"
-      :zoom="zoom"
-      :center="center"
-    >
-      <Marker
-        v-for="location in problems"
-        @click="() => onMarkerClick(location)"
-        :key="location.id"
-        :latitude="location.latitude"
-        :longitude="location.longitude"
-      />
-    </Map>
+    <div class="min-h-screen" :class="isAsideOpen ? 'w-[70%]' : 'w-screen'">
+      <Map ref="map" :zoom="zoom" :center="center">
+        <Marker
+          v-for="location in problems"
+          @click="() => onMarkerClick(location)"
+          :key="location.id"
+          :latitude="location.latitude"
+          :longitude="location.longitude"
+        />
+        <LControl position="bottomleft">
+          <ReportButton></ReportButton>
+        </LControl>
+      </Map>
+    </div>
 
     <ProblemDetails
-      class="w-1/3 min-h-screen"
+      class="w-[30%] min-h-screen"
       v-if="isAsideOpen"
       @close="isAsideOpen = false"
       :problem-id="selectedProblem.id"

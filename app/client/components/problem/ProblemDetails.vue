@@ -18,14 +18,17 @@ const emit = defineEmits<{
 <template>
   <aside class="flex flex-col p-3">
     <header class="h-[6%]">
-      <button class="pointer" @click="emit('close')">
-        <IconClose class="w-[50px] h-[50px]" />
+      <button
+        class="cursor-pointer transition hover:scale-110"
+        @click="emit('close')"
+      >
+        <IconClose class="size-[50px]" />
       </button>
     </header>
     <main class="h-full">
       <div v-for="report in reportsOfProblem">
-        <img :src="report.imageUrl" alt="Image" />
         <p>{{ report.description }}</p>
+        <img :src="report.imageUrl" class="w-full" alt="Image" />
       </div>
     </main>
   </aside>

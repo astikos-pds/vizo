@@ -67,7 +67,7 @@ export const reports = [
   {
     id: 2,
     problemId: 2,
-    description: "Vazamento de esgoto na calçada",
+    description: "I just wanted to be one of The Strokes",
     imageUrl:
       "https://live.staticflickr.com/65535/51134226646_7c6e9b5b4b_b.jpg",
   },
@@ -95,9 +95,9 @@ export const reports = [
   {
     id: 6,
     problemId: 6,
-    description: "Pichação em muro de edificação pública",
+    description: "Aniversariante na calçada!Cuidado!!!",
     imageUrl:
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Graffiti_in_Alameda%2C_California.jpg/640px-Graffiti_in_Alameda%2C_California.jpg",
+      "https://s2-g1.glbimg.com/QChDbR-4yCXHqDAWAD4LgjJfX44=/0x0:550x392/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2020/q/A/ZzoQcMT2qP0nNtwnWBCw/vitima.png",
   },
   {
     id: 7,
