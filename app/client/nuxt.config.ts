@@ -8,5 +8,5 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  modules: ["@nuxtjs/leaflet", "@nuxt/icon"],
+  modules: ["@nuxtjs/leaflet", "@nuxt/icon", "@vueuse/nuxt"],
 });

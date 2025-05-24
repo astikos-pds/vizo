@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { problems } from "~/data";
 import type { Map as LeafletMap, PointExpression } from "leaflet";
+import { useGeolocation } from "@vueuse/core";
 
 const map = ref<LeafletMap | null>(null);
 const zoom = ref<number>(12);
@@ -8,6 +9,8 @@ const center = ref<PointExpression>([-23.5489, -46.6388]);
 
 const isAsideOpen = ref<boolean>(false);
 const selectedProblem = ref<any>(null);
+
+const { coords, locatedAt, error } = useGeolocation();
 
 const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
   map.value?.flyTo([problem.latitude, problem.longitude], 18, {
@@ -28,14 +31,14 @@ const onMarkerClick = (problem: { latitude: number; longitude: number }) => {
     <div class="min-h-screen" :class="isAsideOpen ? 'w-[70%]' : 'w-screen'">
       <Map ref="map" :zoom="zoom" :center="center">
         <Marker
-          v-for="location in problems"
-          @click="() => onMarkerClick(location)"
-          :key="location.id"
-          :latitude="location.latitude"
-          :longitude="location.longitude"
+          v-for="problem in problems"
+          @click="() => onMarkerClick(problem)"
+          :key="problem.id"
+          :latitude="problem.latitude"
+          :longitude="problem.longitude"
         />
         <LControl position="bottomleft">
-          <ReportButton></ReportButton>
+          <ReportButton />
         </LControl>
       </Map>
     </div>
