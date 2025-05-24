@@ -22,7 +22,7 @@ const emit = defineEmits<{
         class="cursor-pointer transition hover:scale-110"
         @click="emit('close')"
       >
-        <IconClose class="size-[50px]" />
+        <Icon name="tabler:x" mode="svg" size="3rem" />
       </button>
     </header>
     <main class="h-full">
