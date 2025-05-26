@@ -6,6 +6,7 @@ import br.app.vizo.mapper.ProblemMapper;
 import br.app.vizo.mapper.ReportMapper;
 import br.app.vizo.repository.ProblemRepository;
 import br.app.vizo.repository.ReportRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class ProblemService {
             throw new RuntimeException("Problem not found");
         }
 
-        return this.reportRepository.findByProblemId(problemId)
+        return this.reportRepository.findByProblemId(problemId, Sort.by(Sort.Direction.DESC, "createdAt"))
                 .stream()
                 .map(this.reportMapper::toDto)
                 .collect(Collectors.toList());
