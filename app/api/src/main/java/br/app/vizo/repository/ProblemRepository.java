@@ -16,7 +16,7 @@ public interface ProblemRepository extends JpaRepository<Problem, UUID> {
             SELECT * FROM problems p
             WHERE ST_DWithin(
                 p.coordinates::geography,
-                ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
+                ST_SetSRID(ST_MakePoint(:lat, :lon), 4326)::geography,
                 :distance
             )
             LIMIT 1
