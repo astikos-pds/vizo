@@ -12,4 +12,6 @@ import java.util.UUID;
 public interface ReportRepository extends JpaRepository<Report, UUID> {
 
     List<Report> findByProblemId(UUID problemId, Sort sort);
+
+    Boolean existsByProblemIdAndCitizenId(UUID problemId, UUID citizenId);
 }

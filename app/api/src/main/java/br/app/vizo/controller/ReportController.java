@@ -19,7 +19,10 @@ public class ReportController {
     }
 
     @PostMapping
-    public ResponseEntity<ReportDTO> createReport(@RequestBody CreateReportRequestDTO body, Authentication authentication) {
+    public ResponseEntity<ReportDTO> createReport(
+            @RequestBody CreateReportRequestDTO body,
+            Authentication authentication
+    ) {
         ReportDTO response = this.reportService.createReport(body, authentication);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

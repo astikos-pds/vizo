@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ReportService {
@@ -51,9 +52,15 @@ public class ReportService {
 
         Point coordinates = this.geometryFactory.createPoint(new Coordinate(body.latitude(), body.longitude()));
 
-        Problem problem = this.findRelatedProblem(body.latitude(), body.longitude()).orElseGet(
-                () -> new Problem(ProblemStatus.ANALYSIS, coordinates, 0.0)
-        );
+        Optional<Problem> existingProblem = this.findRelatedProblem(body.latitude(), body.longitude());
+
+        if (existingProblem.isPresent()) {
+            if (this.isProblemAlreadyReportedByCitizen(existingProblem.get().getId(), citizen.getId())) {
+                throw new RuntimeException("Problem already reported by citizen.");
+            }
+        }
+
+        Problem problem = existingProblem.orElseGet(() -> new Problem(ProblemStatus.ANALYSIS, coordinates, 0.0));
 
         Double accumulatedCredibility = problem.getAccumulatedCredibility() + (citizen.getCredibilityPoints() * 2);
 
@@ -79,6 +86,10 @@ public class ReportService {
     }
 
     private Optional<Problem> findRelatedProblem(Double latitude, Double longitude) {
-        return this.problemRepository.findNearestWithinDistance(latitude, longitude, 100.0);
+        return this.problemRepository.findNearestWithinDistance(latitude, longitude, 20.0);
+    }
+
+    private Boolean isProblemAlreadyReportedByCitizen(UUID problemId, UUID citizenId) {
+        return this.reportRepository.existsByProblemIdAndCitizenId(problemId, citizenId);
     }
 }
