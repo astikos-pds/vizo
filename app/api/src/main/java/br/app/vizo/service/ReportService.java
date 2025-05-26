@@ -1,0 +1,80 @@
+package br.app.vizo.service;
+
+import br.app.vizo.controller.request.CreateReportRequestDTO;
+import br.app.vizo.domain.problem.Problem;
+import br.app.vizo.domain.problem.ProblemStatus;
+import br.app.vizo.domain.report.Report;
+import br.app.vizo.controller.response.ReportDTO;
+import br.app.vizo.domain.user.Citizen;
+import br.app.vizo.repository.CitizenRepository;
+import br.app.vizo.repository.ProblemRepository;
+import br.app.vizo.repository.ReportRepository;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
+import java.util.Optional;
+
+@Service
+public class ReportService {
+
+    private final ReportRepository reportRepository;
+    private final ProblemRepository problemRepository;
+    private final CitizenRepository citizenRepository;
+    private final GeometryFactory geometryFactory;
+
+    public ReportService(ReportRepository reportRepository, ProblemRepository problemRepository, CitizenRepository citizenRepository, GeometryFactory geometryFactory) {
+        this.reportRepository = reportRepository;
+        this.problemRepository = problemRepository;
+        this.citizenRepository = citizenRepository;
+        this.geometryFactory = geometryFactory;
+    }
+
+    @Transactional
+    public ReportDTO createReport(CreateReportRequestDTO body, Authentication authentication) {
+        Citizen citizen = this.citizenRepository.findByDocument(authentication.getName()).orElseThrow(
+                () -> new RuntimeException("User not found")
+        );
+
+        Point coordinates = this.geometryFactory.createPoint(new Coordinate(body.latitude(), body.longitude()));
+
+        Problem problem = this.findRelatedProblem(body.latitude(), body.longitude()).orElseGet(
+                () -> new Problem(ProblemStatus.ANALYSIS, coordinates, 0.0)
+        );
+
+        Double accumulatedCredibility = problem.getAccumulatedCredibility() + (citizen.getCredibilityPoints() * 2);
+
+        problem.setAccumulatedCredibility(accumulatedCredibility);
+        problem.setLastReportedAt(Instant.now());
+
+        problem = this.problemRepository.save(problem);
+
+        Report report = new Report();
+        report.setDescription(body.description());
+        report.setImageUrl(body.imageUrl());
+        report.setCoordinates(coordinates);
+        report.setCitizen(citizen);
+        report.setProblem(problem);
+
+        report = this.reportRepository.save(report);
+
+        return new ReportDTO(
+                report.getId(),
+                report.getDescription(),
+                report.getImageUrl(),
+                report.getCoordinates().getX(),
+                report.getCoordinates().getY(),
+                report.getCitizen().getId(),
+                report.getProblem().getId(),
+                report.getCreatedAt()
+        );
+    }
+
+    private Optional<Problem> findRelatedProblem(Double latitude, Double longitude) {
+        return this.problemRepository.findNearestWithinDistance(latitude, longitude, 100.0);
+    }
+}
