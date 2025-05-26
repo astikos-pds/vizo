@@ -41,7 +41,7 @@ public class SecurityConfig {
                         configurer.authenticationEntryPoint((request, response, authException) -> {
                             response.setStatus(401);
                             response.setContentType("application/json");
-                            response.getWriter().write("{ \"error\": \"%s\" }".formatted(authException.getMessage()));
+                            response.getWriter().write("{ \"message\": \"%s\" }".formatted(authException.getMessage()));
                         })
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

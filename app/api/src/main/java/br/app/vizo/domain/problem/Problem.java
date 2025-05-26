@@ -26,6 +26,8 @@ public class Problem {
     @Column(name = "accumulated_credibility")
     private Double accumulatedCredibility;
 
+    private Boolean validated;
+
     @Column(name = "first_reported_at")
     private Instant firstReportedAt;
 
@@ -33,7 +35,7 @@ public class Problem {
     private Instant lastReportedAt;
 
     public Problem() {
-        this(null, null, 0.0, Instant.now(), Instant.now());
+        this(null, null, 0.0, false, Instant.now(), Instant.now());
     }
 
     public Problem(
@@ -41,16 +43,17 @@ public class Problem {
             Point coordinates,
             Double accumulatedCredibility
     ) {
-        this(UUID.randomUUID(), status, coordinates, accumulatedCredibility, Instant.now(), Instant.now());
+        this(status, coordinates, accumulatedCredibility, false, Instant.now(), Instant.now());
     }
 
     public Problem(
             ProblemStatus status,
             Point coordinates,
             Double accumulatedCredibility,
+            Boolean validated,
             Instant firstReportedAt,
             Instant lastReportedAt
     ) {
-        this(UUID.randomUUID(), status, coordinates, accumulatedCredibility, firstReportedAt, lastReportedAt);
+        this(UUID.randomUUID(), status, coordinates, accumulatedCredibility, validated, firstReportedAt, lastReportedAt);
     }
 }
