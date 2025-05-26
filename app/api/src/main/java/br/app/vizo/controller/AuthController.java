@@ -3,7 +3,7 @@ package br.app.vizo.controller;
 import br.app.vizo.controller.request.LoginRequestDTO;
 import br.app.vizo.controller.request.RefreshRequestDTO;
 import br.app.vizo.controller.response.TokenPairDTO;
-import br.app.vizo.domain.user.dto.CitizenDTO;
+import br.app.vizo.controller.response.CitizenDTO;
 import br.app.vizo.controller.request.RegisterCitizenRequestDTO;
 import br.app.vizo.service.AuthService;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package br.app.vizo.domain.user.dto;
+package br.app.vizo.controller.response;
 
 import java.time.Instant;
 import java.util.UUID;

@@ -6,7 +6,7 @@ import br.app.vizo.controller.response.TokenPairDTO;
 import br.app.vizo.domain.token.RefreshToken;
 import br.app.vizo.domain.user.Citizen;
 import br.app.vizo.domain.user.User;
-import br.app.vizo.domain.user.dto.CitizenDTO;
+import br.app.vizo.controller.response.CitizenDTO;
 import br.app.vizo.mapper.CitizenMapper;
 import br.app.vizo.repository.CitizenRepository;
 import br.app.vizo.repository.RefreshTokenRepository;
