@@ -60,6 +60,10 @@ public class ReportService {
         problem.setAccumulatedCredibility(accumulatedCredibility);
         problem.setLastReportedAt(Instant.now());
 
+        if (problem.getAccumulatedCredibility() >= 10) {
+            problem.setValidated(true);
+        }
+
         problem = this.problemRepository.save(problem);
 
         Report report = new Report();

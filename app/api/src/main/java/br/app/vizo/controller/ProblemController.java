@@ -4,10 +4,7 @@ import br.app.vizo.controller.response.ProblemDTO;
 import br.app.vizo.controller.response.ReportDTO;
 import br.app.vizo.service.ProblemService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,7 +19,10 @@ public class ProblemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProblemDTO>> getProblems() {
+    public ResponseEntity<List<ProblemDTO>> getProblems(@RequestParam(required = false) Boolean validated) {
+        if (validated != null) {
+            return ResponseEntity.ok(this.problemService.getValidatedProblems());
+        }
         return ResponseEntity.ok(this.problemService.getProblems());
     }
 
