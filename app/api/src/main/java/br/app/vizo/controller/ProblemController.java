@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/problems")
@@ -19,8 +20,10 @@ public class ProblemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProblemDTO>> getProblems(@RequestParam(required = false) Boolean validated) {
-        if (validated != null) {
+    public ResponseEntity<List<ProblemDTO>> getProblems(
+            @RequestParam(required = false, defaultValue = "false") Boolean validated
+    ) {
+        if (validated) {
             return ResponseEntity.ok(this.problemService.getValidatedProblems());
         }
         return ResponseEntity.ok(this.problemService.getProblems());
