@@ -6,6 +6,7 @@ import br.app.vizo.domain.problem.ProblemStatus;
 import br.app.vizo.domain.report.Report;
 import br.app.vizo.controller.response.ReportDTO;
 import br.app.vizo.domain.user.Citizen;
+import br.app.vizo.mapper.ReportMapper;
 import br.app.vizo.repository.CitizenRepository;
 import br.app.vizo.repository.ProblemRepository;
 import br.app.vizo.repository.ReportRepository;
@@ -25,12 +26,20 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final ProblemRepository problemRepository;
     private final CitizenRepository citizenRepository;
+    private final ReportMapper reportMapper;
     private final GeometryFactory geometryFactory;
 
-    public ReportService(ReportRepository reportRepository, ProblemRepository problemRepository, CitizenRepository citizenRepository, GeometryFactory geometryFactory) {
+    public ReportService(
+            ReportRepository reportRepository,
+            ProblemRepository problemRepository,
+            CitizenRepository citizenRepository,
+            ReportMapper reportMapper,
+            GeometryFactory geometryFactory
+    ) {
         this.reportRepository = reportRepository;
         this.problemRepository = problemRepository;
         this.citizenRepository = citizenRepository;
+        this.reportMapper = reportMapper;
         this.geometryFactory = geometryFactory;
     }
 
@@ -62,16 +71,7 @@ public class ReportService {
 
         report = this.reportRepository.save(report);
 
-        return new ReportDTO(
-                report.getId(),
-                report.getDescription(),
-                report.getImageUrl(),
-                report.getCoordinates().getX(),
-                report.getCoordinates().getY(),
-                report.getCitizen().getId(),
-                report.getProblem().getId(),
-                report.getCreatedAt()
-        );
+        return this.reportMapper.toDto(report);
     }
 
     private Optional<Problem> findRelatedProblem(Double latitude, Double longitude) {
