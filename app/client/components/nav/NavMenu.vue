@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+interface Props {
+  collapsed?: boolean;
+}
+const props = defineProps<Props>();
+
 interface NavOption {
   id: string;
   icon: string;
@@ -15,20 +20,22 @@ const selectedItem = ref<NavOption["id"]>("home");
 
 <template>
   <aside
-    class="flex flex-col w-[20%] justify-between pr-3 text-[1.2rem] text-zinc-950"
+    class="size-full flex flex-col justify-between text-[1.2rem] text-zinc-950 transition-all"
+    :class="props.collapsed ? 'p-3' : 'pr-4'"
   >
     <header class="h-[15%] flex justify-center items-center">Vizo</header>
     <main class="h-full flex flex-col gap-2 py-3">
       <NavItem
         v-for="option in navOptions"
         :selected="selectedItem === option.id"
+        :collapsed="props.collapsed"
         @click="() => (selectedItem = option.id)"
         :icon="option.icon"
         :label="option.label"
       />
     </main>
-    <footer class="h-[15%]">
-      <NavItem icon="transfer-out" label="Sair" />
+    <footer class="w-full h-[15%] flex items-center">
+      <NavItem :collapsed="props.collapsed" icon="transfer-out" label="Sair" />
     </footer>
   </aside>
 </template>

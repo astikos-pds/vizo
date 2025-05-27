@@ -16,7 +16,7 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <aside class="flex flex-col p-3">
+  <aside class="size-full flex flex-col p-3">
     <header class="h-[10%] flex items-center">
       <button
         class="cursor-pointer transition hover:scale-110"

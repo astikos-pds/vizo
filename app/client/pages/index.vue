@@ -7,6 +7,8 @@ const map = ref<LeafletMap | null>(null);
 const zoom = ref<number>(12);
 const center = ref<PointExpression>([-23.5489, -46.6388]);
 
+const isNavMenuOpen = ref<boolean>(false);
+
 const isAsideOpen = ref<boolean>(false);
 const selectedProblem = ref<any>(null);
 
@@ -27,11 +29,13 @@ const onMarkerClick = (problem: { latitude: number; longitude: number }) => {
 </script>
 
 <template>
-  <div class="flex min-w-screen min-h-screen overflow-hidden">
-    <NavMenu />
+  <div class="flex size-full overflow-hidden bg-[#FFFFFF]">
+    <div class="max-w-[20%] min-h-screen">
+      <NavMenu :collapsed="!isNavMenuOpen" />
+    </div>
 
-    <div class="min-h-screen w-[60%]">
-      <Map ref="map" :zoom="zoom" :center="center">
+    <div class="min-h-screen w-[100%] bg-[#FAFAFA] flex justify-center p-6">
+      <Map ref="map" class="rounded-2xl" :zoom="zoom" :center="center">
         <Marker
           v-for="problem in problems"
           @click="() => onMarkerClick(problem)"
@@ -39,17 +43,25 @@ const onMarkerClick = (problem: { latitude: number; longitude: number }) => {
           :latitude="problem.latitude"
           :longitude="problem.longitude"
         />
-        <LControl position="bottomleft">
-          <ReportButton />
+        <LControl position="topleft">
+          <UButton
+            icon="i-tabler-menu-2"
+            color="neutral"
+            variant="outline"
+            size="xl"
+            class="hover:cursor-pointer size-[2.5rem] flex justify-center items-center text-[1.5rem]"
+            @click="isNavMenuOpen = !isNavMenuOpen"
+          />
         </LControl>
       </Map>
     </div>
 
-    <ProblemDetails
-      class="w-[20%] min-h-screen"
-      v-if="isAsideOpen"
-      @close="isAsideOpen = false"
-      :problem-id="selectedProblem.id"
-    />
+    <div class="min-w-[20%] min-h-screen">
+      <ProblemDetails
+        v-if="isAsideOpen"
+        @close="isAsideOpen = false"
+        :problem-id="selectedProblem.id"
+      />
+    </div>
   </div>
 </template>
