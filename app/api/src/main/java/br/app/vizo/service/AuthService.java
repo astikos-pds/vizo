@@ -7,6 +7,9 @@ import br.app.vizo.domain.token.RefreshToken;
 import br.app.vizo.domain.user.Citizen;
 import br.app.vizo.domain.user.User;
 import br.app.vizo.controller.response.CitizenDTO;
+import br.app.vizo.exception.http.BadRequestException;
+import br.app.vizo.exception.http.ConflictException;
+import br.app.vizo.exception.http.UnauthorizedException;
 import br.app.vizo.mapper.CitizenMapper;
 import br.app.vizo.repository.CitizenRepository;
 import br.app.vizo.repository.RefreshTokenRepository;
@@ -57,7 +60,7 @@ public class AuthService {
     public CitizenDTO registerCitizen(String document, String email, String password, String name) {
         this.citizenRepository.findByDocument(document).ifPresent(
                 c -> {
-                    throw new RuntimeException("Invalid credentials.");
+                    throw new ConflictException("Invalid credentials.");
                 }
         );
 
@@ -74,11 +77,11 @@ public class AuthService {
 
     public TokenPairDTO login(String document, String password) {
         User user = this.userRepository.findByDocument(document).orElseThrow(
-                () -> new RuntimeException("Invalid credentials")
+                () -> new UnauthorizedException("Invalid credentials")
         );
 
         boolean passwordMatches = this.passwordEncoder.matches(password, user.getPassword());
-        if (!passwordMatches) throw new RuntimeException("Invalid credentials");
+        if (!passwordMatches) throw new UnauthorizedException("Invalid credentials");
 
         var authConfig = new UsernamePasswordAuthenticationToken(document, password);
         Authentication authentication = this.authenticationManager.authenticate(authConfig);
@@ -95,18 +98,18 @@ public class AuthService {
     @Transactional
     public TokenPairDTO refresh(String refreshToken) {
         if (!this.jwtService.isRefreshTokenValid(refreshToken)) {
-            throw new RuntimeException("Invalid refresh token.");
+            throw new UnauthorizedException("Invalid refresh token.");
         }
 
         String document = this.jwtService.getSubjectFromToken(refreshToken);
         User user = this.userRepository.findByDocument(document).orElseThrow(
-                () -> new RuntimeException("Invalid refresh token.")
+                () -> new UnauthorizedException("Invalid refresh token.")
         );
 
         String hashedToken = this.hashToken(refreshToken);
 
         this.refreshTokenRepository.findByTokenAndUserId(hashedToken, user.getId()).orElseThrow(
-                () -> new RuntimeException("Refresh token not recognized, maybe used or expired.")
+                () -> new UnauthorizedException("Refresh token not recognized, maybe used or expired.")
         );
 
         this.refreshTokenRepository.deleteByTokenAndUserId(hashedToken, user.getId());

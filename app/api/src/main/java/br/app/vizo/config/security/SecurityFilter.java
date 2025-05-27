@@ -15,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Optional;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -47,10 +48,14 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             if (token != null && this.jwtService.isAccessTokenValid(token)) {
                 String subject = this.jwtService.getSubjectFromToken(token);
-                User user = this.userRepository.findByDocument(subject).orElseThrow(
-                        () -> new RuntimeException("User not found.")
-                );
-                UserDetails userDetails = new UserDetailsImpl(user);
+                Optional<User> user = this.userRepository.findByDocument(subject);
+
+                if (user.isEmpty()) {
+                    this.sendError(response, 404, "User not found.");
+                    return;
+                }
+
+                UserDetails userDetails = new UserDetailsImpl(user.get());
 
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
                         userDetails.getUsername(),
@@ -60,16 +65,27 @@ public class SecurityFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                throw new RuntimeException("Missing token.");
+                this.sendError(response, 401, "Missing token.");
+                return;
             }
         }
 
         filterChain.doFilter(request, response);
     }
 
+    private void sendError(HttpServletResponse response, int status, String message) throws IOException {
+        response.setStatus(status);
+        response.setContentType("application/json");
+        response.getWriter().write("{ \"message\": \"%s\" }".formatted(message));
+    }
+
     private String retrieveToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
-        if (header != null) return header.replace("Bearer ", "");
+
+        if (header != null) {
+            String token = header.replace("Bearer", "").strip();
+            return token.isBlank() ? null : token;
+        }
 
         return null;
     }

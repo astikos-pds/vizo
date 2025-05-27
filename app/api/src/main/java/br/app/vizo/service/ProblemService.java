@@ -2,6 +2,7 @@ package br.app.vizo.service;
 
 import br.app.vizo.controller.response.ProblemDTO;
 import br.app.vizo.controller.response.ReportDTO;
+import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.ProblemMapper;
 import br.app.vizo.mapper.ReportMapper;
 import br.app.vizo.repository.ProblemRepository;
@@ -51,7 +52,7 @@ public class ProblemService {
         UUID problemId = UUID.fromString(id);
 
         if (!this.problemRepository.existsById(problemId)) {
-            throw new RuntimeException("Problem not found");
+            throw new NotFoundException("Problem not found.");
         }
 
         return this.reportRepository.findByProblemId(problemId, Sort.by(Sort.Direction.DESC, "createdAt"))

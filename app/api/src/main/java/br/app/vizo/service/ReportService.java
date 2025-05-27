@@ -6,6 +6,8 @@ import br.app.vizo.domain.problem.ProblemStatus;
 import br.app.vizo.domain.report.Report;
 import br.app.vizo.controller.response.ReportDTO;
 import br.app.vizo.domain.user.Citizen;
+import br.app.vizo.exception.http.ConflictException;
+import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.ReportMapper;
 import br.app.vizo.repository.CitizenRepository;
 import br.app.vizo.repository.ProblemRepository;
@@ -47,7 +49,7 @@ public class ReportService {
     @Transactional
     public ReportDTO createReport(CreateReportRequestDTO body, Authentication authentication) {
         Citizen citizen = this.citizenRepository.findByDocument(authentication.getName()).orElseThrow(
-                () -> new RuntimeException("User not found")
+                () -> new NotFoundException("User not found.")
         );
 
         Point coordinates = this.geometryFactory.createPoint(new Coordinate(body.latitude(), body.longitude()));
@@ -56,7 +58,7 @@ public class ReportService {
 
         if (existingProblem.isPresent()) {
             if (this.isProblemAlreadyReportedByCitizen(existingProblem.get().getId(), citizen.getId())) {
-                throw new RuntimeException("Problem already reported by citizen.");
+                throw new ConflictException("Problem already reported by citizen.");
             }
         }
 
