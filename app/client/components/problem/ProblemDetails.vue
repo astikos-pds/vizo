@@ -17,7 +17,7 @@ const emit = defineEmits<{
 
 <template>
   <aside class="flex flex-col p-3">
-    <header class="h-[6%]">
+    <header class="h-[10%] flex items-center">
       <button
         class="cursor-pointer transition hover:scale-110"
         @click="emit('close')"

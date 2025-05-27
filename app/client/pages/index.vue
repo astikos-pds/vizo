@@ -28,7 +28,9 @@ const onMarkerClick = (problem: { latitude: number; longitude: number }) => {
 
 <template>
   <div class="flex min-w-screen min-h-screen overflow-hidden">
-    <div class="min-h-screen" :class="isAsideOpen ? 'w-[70%]' : 'w-screen'">
+    <NavMenu />
+
+    <div class="min-h-screen w-[60%]">
       <Map ref="map" :zoom="zoom" :center="center">
         <Marker
           v-for="problem in problems"
@@ -44,7 +46,7 @@ const onMarkerClick = (problem: { latitude: number; longitude: number }) => {
     </div>
 
     <ProblemDetails
-      class="w-[30%] min-h-screen"
+      class="w-[20%] min-h-screen"
       v-if="isAsideOpen"
       @close="isAsideOpen = false"
       :problem-id="selectedProblem.id"
