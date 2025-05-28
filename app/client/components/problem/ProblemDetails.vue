@@ -16,13 +16,13 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <aside class="size-full flex flex-col p-3">
-    <header class="h-[10%] flex items-center">
+  <aside class="size-full flex flex-col p-4">
+    <header class="flex items-center mb-5">
       <button
         class="cursor-pointer transition hover:scale-110"
         @click="emit('close')"
       >
-        <Icon name="tabler:x" mode="svg" size="3rem" />
+        <Icon name="lucide:x" mode="svg" size="3rem" />
       </button>
     </header>
     <main class="h-full">
