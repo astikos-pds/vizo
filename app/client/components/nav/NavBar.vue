@@ -43,7 +43,7 @@ const items = ref<NavigationMenuItem[]>([
           :items="items"
           orientation="vertical"
           :ui="{
-            link: 'px-3 min-h-[3rem] text-[1.3rem] gap-3',
+            link: 'px-3 min-h-[3rem] text-[1.3rem] gap-4',
           }"
         />
       </main>
