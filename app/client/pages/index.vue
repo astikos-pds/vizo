@@ -7,8 +7,6 @@ const map = ref<LeafletMap | null>(null);
 const zoom = ref<number>(12);
 const center = ref<PointExpression>([-23.5489, -46.6388]);
 
-const isNavMenuOpen = ref<boolean>(false);
-
 const isAsideOpen = ref<boolean>(false);
 const selectedProblem = ref<any>(null);
 
@@ -29,39 +27,23 @@ const onMarkerClick = (problem: { latitude: number; longitude: number }) => {
 </script>
 
 <template>
-  <div class="flex size-full overflow-hidden bg-[#FFFFFF]">
-    <div class="max-w-[20%] min-h-screen">
-      <NavMenu :collapsed="!isNavMenuOpen" />
-    </div>
-
-    <div class="min-h-screen w-[100%] bg-[#FAFAFA] flex justify-center p-6">
-      <Map ref="map" class="rounded-2xl" :zoom="zoom" :center="center">
-        <Marker
-          v-for="problem in problems"
-          @click="() => onMarkerClick(problem)"
-          :key="problem.id"
-          :latitude="problem.latitude"
-          :longitude="problem.longitude"
-        />
-        <LControl position="topleft">
-          <UButton
-            icon="i-tabler-menu-2"
-            color="neutral"
-            variant="outline"
-            size="xl"
-            class="hover:cursor-pointer size-[2.5rem] flex justify-center items-center text-[1.5rem]"
-            @click="isNavMenuOpen = !isNavMenuOpen"
-          />
-        </LControl>
-      </Map>
-    </div>
-
-    <div class="min-w-[20%] min-h-screen">
-      <ProblemDetails
-        v-if="isAsideOpen"
-        @close="isAsideOpen = false"
-        :problem-id="selectedProblem.id"
+  <div class="min-h-screen w-[100%] bg-[#FAFAFA] flex justify-center p-6">
+    <Map ref="map" class="rounded-2xl" :zoom="zoom" :center="center">
+      <Marker
+        v-for="problem in problems"
+        @click="() => onMarkerClick(problem)"
+        :key="problem.id"
+        :latitude="problem.latitude"
+        :longitude="problem.longitude"
       />
-    </div>
+    </Map>
+  </div>
+
+  <div class="min-w-[20%] min-h-screen border-x border-zinc-200">
+    <ProblemDetails
+      v-if="isAsideOpen"
+      @close="isAsideOpen = false"
+      :problem-id="selectedProblem.id"
+    />
   </div>
 </template>

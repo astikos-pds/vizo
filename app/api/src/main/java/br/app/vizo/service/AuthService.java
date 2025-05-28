@@ -7,7 +7,6 @@ import br.app.vizo.domain.token.RefreshToken;
 import br.app.vizo.domain.user.Citizen;
 import br.app.vizo.domain.user.User;
 import br.app.vizo.controller.response.CitizenDTO;
-import br.app.vizo.exception.http.BadRequestException;
 import br.app.vizo.exception.http.ConflictException;
 import br.app.vizo.exception.http.UnauthorizedException;
 import br.app.vizo.mapper.CitizenMapper;
