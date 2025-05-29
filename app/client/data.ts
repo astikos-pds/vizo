@@ -95,9 +95,9 @@ export const reports = [
   {
     id: 6,
     problemId: 6,
-    description: "Aniversariante na calçada!Cuidado!!!",
+    description: "ALERTA! Cobrança de caixinha de bombom a frente!",
     imageUrl:
-      "https://s2-g1.glbimg.com/QChDbR-4yCXHqDAWAD4LgjJfX44=/0x0:550x392/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2020/q/A/ZzoQcMT2qP0nNtwnWBCw/vitima.png",
+      "https://img.nsctotal.com.br/wp-content/uploads/2023/05/AdobeStock_282004392-800x531.jpeg",
   },
   {
     id: 7,

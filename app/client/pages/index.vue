@@ -10,8 +10,6 @@ const center = ref<PointExpression>([-23.5489, -46.6388]);
 const isAsideOpen = ref<boolean>(false);
 const selectedProblem = ref<any>(null);
 
-const { coords, locatedAt, error } = useGeolocation();
-
 const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
   map.value?.flyTo([problem.latitude, problem.longitude], 18, {
     animate: true,

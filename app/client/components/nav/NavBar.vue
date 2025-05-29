@@ -12,6 +12,7 @@ const items = ref<NavigationMenuItem[]>([
   {
     label: "Report",
     icon: "i-lucide-message-square-warning",
+    to: "/report"
   },
   {
     label: "Settings",
@@ -28,7 +29,7 @@ const items = ref<NavigationMenuItem[]>([
     <header class="h-[10%] flex justify-between items-center">
       <div v-if="!collapsed">Vizo</div>
       <UButton
-        icon="i-tabler-menu-2"
+        icon="i-lucide-menu"
         color="neutral"
         variant="outline"
         size="xl"
