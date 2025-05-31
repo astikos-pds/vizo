@@ -186,10 +186,19 @@ onBeforeUnmount(() => {
         </div>
       </UFormField>
 
-      <UFormField label="Location" size="xl" required class="w-full">
+      <UFormField
+        label="Location"
+        size="xl"
+        required
+        class="w-full"
+        :help="
+          coords.accuracy > 100 && locationValue === 'location'
+            ? 'We can\'t tell tour position for some technical reason, please try again later.'
+            : ''
+        "
+      >
         <URadioGroup
           variant="table"
-          :disabled="coords.accuracy > 100"
           v-model="locationValue"
           :items="locationItems"
         />
