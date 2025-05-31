@@ -10,6 +10,7 @@ interface Props {
   latitude: number;
   longitude: number;
   icon?: Icon;
+  draggable?: boolean;
 }
 
 const props = defineProps<Props>();
@@ -36,6 +37,7 @@ const hasIcon = computed(() => {
     <LMarker
       @click="() => emit('click')"
       :lat-lng="[props.latitude, props.longitude]"
+      :draggable="props.draggable"
     />
   </div>
 </template>

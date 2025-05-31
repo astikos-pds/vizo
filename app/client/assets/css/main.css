@@ -3,4 +3,27 @@
 
 @theme {
   --color-primary: #0003ff;
+  --color-blue-50: #e8f1ff;
+  --color-blue-100: #d5e5ff;
+  --color-blue-200: #b3cdff;
+  --color-blue-300: #85aaff;
+  --color-blue-400: #5678ff;
+  --color-blue-500: #2f47ff;
+  --color-blue-600: #0c11ff;
+  --color-blue-700: #0003ff;
+  --color-blue-800: #060bcd;
+  --color-blue-900: #10179f;
+  --color-blue-950: #0a0c5c;
+
+  --color-slate-50: #f5f6ff;
+  --color-slate-100: #e0e2ff;
+  --color-slate-200: #c2c5ff;
+  --color-slate-300: #a3a7ff;
+  --color-slate-400: #858aff;
+  --color-slate-500: #666cff;
+  --color-slate-600: #494ed9;
+  --color-slate-700: #353ab3;
+  --color-slate-800: #23278c;
+  --color-slate-900: #151663;
+  --color-slate-950: #0b0c3a;
 }

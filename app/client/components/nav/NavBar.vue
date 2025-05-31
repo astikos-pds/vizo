@@ -12,7 +12,7 @@ const items = ref<NavigationMenuItem[]>([
   {
     label: "Report",
     icon: "i-lucide-message-square-warning",
-    to: "/report"
+    to: "/report",
   },
   {
     label: "Settings",
@@ -23,7 +23,7 @@ const items = ref<NavigationMenuItem[]>([
 
 <template>
   <div
-    class="min-h-screen p-4 border-x border-zinc-200"
+    class="min-h-full p-4 border-x border-zinc-200"
     :class="collapsed ? '' : 'min-w-[20%]'"
   >
     <header class="h-[10%] flex justify-between items-center">

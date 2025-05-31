@@ -1,6 +1,6 @@
 <template>
   <div class="max-w-[2000px] mx-auto min-h-screen">
-    <div class="flex size-full overflow-hidden bg-[#FFFFFF]">
+    <div class="flex h-screen">
       <NavBar />
       <slot />
     </div>
