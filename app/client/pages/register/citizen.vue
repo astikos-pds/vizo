@@ -48,12 +48,12 @@ const text = computed(() => {
   <section
     class="w-[45%] h-full flex flex-col items-center justify-center py-20 overflow-y-scroll"
   >
-    <h1 class="text-4xl font-semibold text-neutral-900">Sign Up</h1>
+    <h1 class="text-4xl font-semibold text-neutral-900">Create an account</h1>
 
     <UForm
       :state="form"
       :schema="registerSchema"
-      class="min-w-[50%] flex flex-col items-center gap-4 mt-5"
+      class="min-w-[50%] flex flex-col items-center gap-4 mt-6"
     >
       <UFormField label="CPF" name="cpf" size="xl" class="w-full" required>
         <UInput
@@ -157,7 +157,7 @@ const text = computed(() => {
 
       <span
         >Already have an account?
-        <NuxtLink to="/login" class="text-primary">Login here</NuxtLink></span
+        <NuxtLink to="/login" class="text-primary">Log in here</NuxtLink></span
       >
 
       <UButton type="submit" size="xl">Sign Up</UButton>

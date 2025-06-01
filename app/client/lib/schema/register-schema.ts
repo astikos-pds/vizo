@@ -25,7 +25,13 @@ export const passwordSchema = z
 
 export const registerSchema = z
   .object({
-    cpf: z.string().length(11, "CPF must have 11 characters"),
+    cpf: z
+      .string()
+      .min(1, "CPF is required")
+      .refine((cpf) => {
+        const result = validateDocument(cpf);
+        return result.isValid && result.type === "cpf";
+      }, "Invalid CPF"),
     email: z.string().email("Invalid email"),
     birthDate: z
       .string()
