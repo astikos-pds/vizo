@@ -10,19 +10,19 @@ import {
 const schema = z.object({
   description: z.string().min(1, "Description is required"),
   images: z
-    .array(
-      z
-        .instanceof(File)
-        .refine(
-          (file) => file.type.startsWith("image/"),
-          "All files must be images"
-        )
-        .refine(
-          (file) => file.size <= MAX_FILE_SIZE_IN_BYTES,
-          `Each image must have at most ${MAX_FILE_SIZE_IN_MB} mb`
-        )
+    .custom<File[]>()
+    .refine(
+      (files) => files.length <= 5,
+      "You can upload a maximum of 5 images"
     )
-    .max(5, "You can upload a maximum of 5 images"),
+    .refine(
+      (files) => files.every((file) => file.type.startsWith("image/")),
+      "All files must be images"
+    )
+    .refine(
+      (files) => files.every((file) => file.size <= MAX_FILE_SIZE_IN_BYTES),
+      `Each image must have at most ${MAX_FILE_SIZE_IN_MB} mb`
+    ),
 });
 
 type Schema = z.output<typeof schema>;
@@ -37,12 +37,13 @@ const previewUrls = ref<string[]>([]);
 const updateImages = (files: File[]) => {
   const combinedFiles = [...form.images, ...files];
 
-  if (combinedFiles.length > 5) return;
   form.images = combinedFiles;
 
-  if (form.images.some((file) => !file.type.startsWith("image/"))) return;
-
   previewUrls.value = form.images.map((file) => URL.createObjectURL(file));
+
+  nextTick(() => {
+    formRef.value?.validate({ name: "images" });
+  });
 };
 
 const handleFileChange = (event: Event) => {
@@ -53,9 +54,12 @@ const handleFileChange = (event: Event) => {
 };
 
 const handleFileRemove = (index: number) => {
-  URL.revokeObjectURL(previewUrls.value[index]);
+  if (previewUrls.value[index]) {
+    URL.revokeObjectURL(previewUrls.value[index]);
+  }
   previewUrls.value.splice(index, 1);
   form.images.splice(index, 1);
+  formRef.value?.validate({ name: "images" });
 };
 
 const locationItems = ref<RadioGroupItem[]>([
@@ -95,6 +99,8 @@ watch(coords, (newCoords) => {
 onBeforeUnmount(() => {
   previewUrls.value.forEach((url) => URL.revokeObjectURL(url));
 });
+
+const formRef = useTemplateRef("formRef");
 </script>
 
 <template>
@@ -103,6 +109,7 @@ onBeforeUnmount(() => {
   >
     <h1 class="text-3xl font-semibold text-neutral-900">Report a problem</h1>
     <UForm
+      ref="formRef"
       :schema="schema"
       :state="form"
       @submit.prevent="onSubmit"
@@ -130,7 +137,15 @@ onBeforeUnmount(() => {
         hint="Optional"
         description="Upload images for more credibility"
       >
-        <UButton size="xl" color="neutral" variant="outline" class="w-full p-0">
+        <UButton
+          size="xl"
+          color="neutral"
+          variant="outline"
+          class="w-full p-0"
+          :class="
+            formRef?.getErrors('images').length ? 'border border-error' : ''
+          "
+        >
           <label
             for="images"
             class="w-full text-start text-neutral-500 cursor-pointer mx-3 my-2"
@@ -145,13 +160,14 @@ onBeforeUnmount(() => {
           >
         </UButton>
         <UInput
+          :key="form.images.length"
           id="images"
           type="file"
           multiple
           accept="image/*"
           @change="handleFileChange"
+          class="sr-only"
           size="xl"
-          class="hidden"
         />
 
         <div v-if="previewUrls.length" class="mt-3 gap-3 flex flex-row">
@@ -164,7 +180,7 @@ onBeforeUnmount(() => {
               icon="i-lucide-trash-2"
               variant="subtle"
               size="md"
-              class="absolute top-1 left-1 cursor-pointer"
+              class="absolute top-1 right-1 cursor-pointer"
               @click="handleFileRemove(index)"
             />
             <img
@@ -173,24 +189,6 @@ onBeforeUnmount(() => {
               class="w-full h-full object-cover rounded-md"
             />
           </div>
-        </div>
-
-        <div v-if="form.images.length > 5" class="text-error mt-2">
-          You can upload a maximum of 5 images
-        </div>
-        <div
-          v-if="form.images.some((image) => !image.type.startsWith('image/'))"
-          class="text-error mt-2"
-        >
-          All files must be images
-        </div>
-        <div
-          v-if="
-            form.images.some((image) => image.size > MAX_FILE_SIZE_IN_BYTES)
-          "
-          class="text-error mt-2"
-        >
-          Each image must have at most {{ MAX_FILE_SIZE_IN_MB }} mb
         </div>
       </UFormField>
 
@@ -201,7 +199,9 @@ onBeforeUnmount(() => {
         class="w-full"
         :help="
           coords.accuracy > MAX_ACCEPTABLE_ACCURACY_IN_METERS
-            ? 'Calculating position more precisely...'
+            ? `${coords.accuracy.toFixed(
+                0
+              )} meters away. Calculating position more precisely...`
             : ''
         "
       >
