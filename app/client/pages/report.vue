@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import type { RadioGroupItem, RadioGroupValue } from "@nuxt/ui";
 import * as z from "zod";
-
-const MAX_FILE_SIZE_IN_MB = 5;
-const MAX_FILE_SIZE_IN_BYTES = MAX_FILE_SIZE_IN_MB * 1024 * 1024;
+import {
+  MAX_FILE_SIZE_IN_MB,
+  MAX_FILE_SIZE_IN_BYTES,
+  MAX_ACCEPTABLE_ACCURACY_IN_METERS,
+} from "~/utils/constants";
 
 const schema = z.object({
   description: z.string().min(1, "Description is required"),
@@ -33,12 +35,14 @@ const form = reactive<Schema>({
 const previewUrls = ref<string[]>([]);
 
 const updateImages = (files: File[]) => {
-  form.images = files;
+  const combinedFiles = [...form.images, ...files];
 
-  if (files.some((file) => !file.type.startsWith("image/"))) return;
+  if (combinedFiles.length > 5) return;
+  form.images = combinedFiles;
 
-  previewUrls.value.forEach((url) => URL.revokeObjectURL(url));
-  previewUrls.value = files.map((file) => URL.createObjectURL(file));
+  if (form.images.some((file) => !file.type.startsWith("image/"))) return;
+
+  previewUrls.value = form.images.map((file) => URL.createObjectURL(file));
 };
 
 const handleFileChange = (event: Event) => {
@@ -49,9 +53,9 @@ const handleFileChange = (event: Event) => {
 };
 
 const handleFileRemove = (index: number) => {
-  const newFiles = [...form.images];
-  newFiles.splice(index, 1);
-  updateImages(newFiles);
+  URL.revokeObjectURL(previewUrls.value[index]);
+  previewUrls.value.splice(index, 1);
+  form.images.splice(index, 1);
 };
 
 const locationItems = ref<RadioGroupItem[]>([
@@ -68,21 +72,25 @@ const locationItems = ref<RadioGroupItem[]>([
 ]);
 const locationValue = ref<RadioGroupValue>("location");
 
-const { coords } = useGeolocation({
-  enableHighAccuracy: true,
-  timeout: 10000,
-  maximumAge: 0,
-});
-const center = ref<[number, number]>([-23.5489, -46.6388]);
-const mapCenter = ref<[number, number]>([
-  coords.value.accuracy > 100 ? center.value[0] : coords.value.latitude,
-  coords.value.accuracy > 100 ? center.value[1] : coords.value.longitude,
-]);
-const markerPosition = ref<[number, number]>([...mapCenter.value]);
+const { coords } = useGeolocation();
+const CITY_CENTER: [number, number] = [-23.5489, -46.6388];
+
+const mapCenter = computed<[number, number]>(() =>
+  !coords.value.accuracy
+    ? CITY_CENTER
+    : [coords.value.latitude, coords.value.longitude]
+);
+const markerPosition = ref<[number, number]>(mapCenter.value);
 
 const onSubmit = (e: any) => {
   console.log(form, coords);
 };
+
+watch(coords, (newCoords) => {
+  if (newCoords.latitude && newCoords.longitude) {
+    markerPosition.value = [newCoords.latitude, newCoords.longitude];
+  }
+});
 
 onBeforeUnmount(() => {
   previewUrls.value.forEach((url) => URL.revokeObjectURL(url));
@@ -192,8 +200,8 @@ onBeforeUnmount(() => {
         required
         class="w-full"
         :help="
-          coords.accuracy > 100 && locationValue === 'location'
-            ? 'We can\'t tell tour position for some technical reason, please try again later.'
+          coords.accuracy > MAX_ACCEPTABLE_ACCURACY_IN_METERS
+            ? 'Calculating position more precisely...'
             : ''
         "
       >
@@ -205,11 +213,8 @@ onBeforeUnmount(() => {
         <Map
           v-if="locationValue === 'point'"
           class="rounded-xl border border-neutral-200 min-w-[30rem] min-h-[25rem] mt-4"
-          :zoom="18"
-          :center="[
-            coords.accuracy > 100 ? center[0] : coords.latitude,
-            coords.accuracy > 100 ? center[1] : coords.longitude,
-          ]"
+          :zoom="14"
+          :center="mapCenter"
         >
           <Marker
             key="1"
