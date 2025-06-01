@@ -3,7 +3,7 @@ import {
   registerSchema,
   passwordRequirements,
   type RegisterSchema,
-} from "~/lib/validation/register-schema";
+} from "~/lib/schema/register-schema";
 
 definePageMeta({
   layout: "guest",
