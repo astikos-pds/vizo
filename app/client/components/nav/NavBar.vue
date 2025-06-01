@@ -49,13 +49,15 @@ const items = ref<NavigationMenuItem[]>([
         />
       </main>
       <div class="h-[10%] flex items-center">
-        <UButton
-          icon="i-lucide-log-out"
-          color="neutral"
-          variant="ghost"
-          class="w-full text-xl cursor-pointer"
-          ><span v-if="!collapsed">Exit</span></UButton
-        >
+        <NuxtLink to="/login" class="w-full">
+          <UButton
+            icon="i-lucide-log-out"
+            color="neutral"
+            variant="ghost"
+            class="w-full text-xl cursor-pointer"
+            ><span v-if="!collapsed">Exit</span></UButton
+          >
+        </NuxtLink>
       </div>
     </div>
   </div>
