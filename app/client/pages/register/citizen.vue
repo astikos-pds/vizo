@@ -63,6 +63,7 @@ const text = computed(() => {
           size="xl"
           placeholder="Enter your document"
           class="w-full text-xl"
+          v-mask="CPF_MASK"
         />
       </UFormField>
 
