@@ -8,6 +8,8 @@ import lombok.Data;
 import org.locationtech.jts.geom.Point;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,8 +23,8 @@ public class Report {
 
     private String description;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "report")
+    private List<ReportImage> images;
 
     @Column(columnDefinition = "geometry(Point,4326)")
     private Point coordinates;
@@ -39,17 +41,17 @@ public class Report {
     private Instant createdAt;
 
     public Report() {
-        this("", "", null, null, null, Instant.now());
+        this("", new ArrayList<>(), null, null, null, Instant.now());
     }
 
     public Report(
             String description,
-            String imageUrl,
+            List<ReportImage> images,
             Point coordinates,
             Citizen citizen,
             Problem problem,
             Instant createdAt
     ) {
-        this(UUID.randomUUID(), description, imageUrl, coordinates, citizen, problem, createdAt);
+        this(UUID.randomUUID(), description, images, coordinates, citizen, problem, createdAt);
     }
 }
