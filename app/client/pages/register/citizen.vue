@@ -42,10 +42,11 @@ const color = computed(() => {
 });
 
 const text = computed(() => {
-  if (score.value === 0) return t('registerCitizen.passwordStrength.enterPassword');
-  if (score.value <= 2) return t('registerCitizen.passwordStrength.weak');
-  if (score.value === 3) return t('registerCitizen.passwordStrength.medium');
-  return t('registerCitizen.passwordStrength.strong');
+  if (score.value === 0)
+    return t("registerCitizen.passwordStrength.enterPassword");
+  if (score.value <= 2) return t("registerCitizen.passwordStrength.weak");
+  if (score.value === 3) return t("registerCitizen.passwordStrength.medium");
+  return t("registerCitizen.passwordStrength.strong");
 });
 
 const { loading, error, registerAsCitizen } = useAuth();
@@ -81,7 +82,9 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
   <section
     class="w-[45%] h-full flex flex-col items-center justify-center py-20 overflow-y-scroll"
   >
-    <h1 class="text-4xl font-semibold text-neutral-900">{{ $t('registerCitizen.title') }}</h1>
+    <h1 class="text-4xl font-semibold text-neutral-900">
+      {{ t("registerCitizen.title") }}
+    </h1>
 
     <UForm
       :state="form"
@@ -92,7 +95,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
     >
       <div class="flex flex-row gap-3 w-full">
         <UFormField
-          :label="$t('registerCitizen.firstName')"
+          :label="t('registerCitizen.firstName')"
           name="firstName"
           size="xl"
           class="w-full"
@@ -103,23 +106,23 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
             v-model="form.firstName"
             type="text"
             size="xl"
-            :placeholder="$t('registerCitizen.firstNamePlaceholder')"
+            :placeholder="t('registerCitizen.firstNamePlaceholder')"
             class="w-full text-xl"
           />
         </UFormField>
 
         <UFormField
-          :label="$t('registerCitizen.lastName')"
+          :label="t('registerCitizen.lastName')"
           name="lastName"
           size="xl"
           class="w-full"
-          :hint="$t('registerCitizen.optional')"
+          :hint="t('registerCitizen.optional')"
         >
           <UInput
             v-model="form.lastName"
             type="text"
             size="xl"
-            :placeholder="$t('registerCitizen.lastNamePlaceholder')"
+            :placeholder="t('registerCitizen.lastNamePlaceholder')"
             class="w-full text-xl"
           />
         </UFormField>
@@ -131,7 +134,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
           v-model="form.email"
           type="email"
           size="xl"
-          :placeholder="$t('registerCitizen.emailPlaceholder')"
+          :placeholder="t('registerCitizen.emailPlaceholder')"
           class="w-full text-xl"
         />
       </UFormField>
@@ -143,13 +146,13 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
             v-model="form.cpf"
             type="text"
             size="xl"
-            :placeholder="$t('registerCitizen.cpfPlaceholder')"
+            :placeholder="t('registerCitizen.cpfPlaceholder')"
             class="w-full text-xl"
             v-mask="CPF_MASK"
           />
         </UFormField>
         <UFormField
-          :label="$t('registerCitizen.birthDate')"
+          :label="t('registerCitizen.birthDate')"
           name="birthDate"
           size="xl"
           class="w-full"
@@ -170,9 +173,9 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
         v-model="form.password"
         :color="color"
         :show="showPassword"
-        :label="$t('registerCitizen.password')"
+        :label="t('registerCitizen.password')"
         name="password"
-        :placeholder="$t('registerCitizen.passwordPlaceholder')"
+        :placeholder="t('registerCitizen.passwordPlaceholder')"
         required
         @click="showPassword = !showPassword"
       >
@@ -187,7 +190,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
           />
 
           <p id="password-strength" class="text-sm font-medium">
-            {{ text }}. {{ $t('registerCitizen.passwordStrengthIndicator') }}
+            {{ text }}. {{ t("registerCitizen.passwordStrengthIndicator") }}
           </p>
 
           <ul class="space-y-1 text-xl" aria-label="Password requirements">
@@ -203,7 +206,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
               />
 
               <span class="text-sm font-light">
-                {{ $t(req.text) }}
+                {{ t(req.text) }}
                 <span class="sr-only">
                   {{
                     req.met ? " - Requirement met" : " - Requirement not met"
@@ -219,20 +222,26 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
         v-model="form.confirmedPassword"
         color="neutral"
         :show="showConfimedPassword"
-        :label="$t('registerCitizen.confirmPassword')"
+        :label="t('registerCitizen.confirmPassword')"
         name="confirmedPassword"
-        :placeholder="$t('registerCitizen.confirmPasswordPlaceholder')"
+        :placeholder="t('registerCitizen.confirmPasswordPlaceholder')"
         required
         @click="showConfimedPassword = !showConfimedPassword"
       />
 
       <span
-        >{{ t('registerCitizen.alreadyHaveAccount')}}
-        <NuxtLink to="/login" class="text-primary">{{ t('registerCitizen.logInHere')}}</NuxtLink></span
+        >{{ t("registerCitizen.alreadyHaveAccount") }}
+        <NuxtLink to="/login" class="text-primary">{{
+          t("registerCitizen.logInHere")
+        }}</NuxtLink></span
       >
 
-      <UButton type="submit" size="xl" :loading="loading" class="cursor-pointer"
-        >{{ t('registerCitizen.signUpButton')}}</UButton
+      <UButton
+        type="submit"
+        size="xl"
+        :loading="loading"
+        class="cursor-pointer"
+        >{{ t("registerCitizen.signUpButton") }}</UButton
       >
     </UForm>
   </section>

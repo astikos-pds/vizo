@@ -60,8 +60,8 @@
     }
   },
 
-    "reportProblem": {
-    "title": "Report a Problem",
+  "reportProblem": {
+    "title": "Report a problem",
     "description": "Description",
     "descriptionPlaceholder": "Street hole...",
     "images": "Images",
@@ -69,18 +69,26 @@
     "optional": "Optional",
     "chooseFile": "Choose files",
     "selectedFile": "No file chosen.",
-    "files": "Files.",
+    "files": "files.",
     "descriptionRequired": "Description is required.",
     "maximumImages": "You can upload a maximum of 5 images.",
     "mustBeImages": "All files must be images.",
     "imageSize": "Each image must have at most ",
+    "locationLabel": "Location",
     "localization": {
-        "current": "Current location",
-        "currentDescription": "Use my current location for reporting.",
-        "point": "Point on map",
-        "pointDescription": "Point on map the coordinates of the problem."
+      "current": "Current location",
+      "currentDescription": "Use my current location for reporting.",
+      "point": "Point on map",
+      "pointDescription": "Point on map the coordinates of the problem."
     },
-    "geolocationAccuracyWarning": "{accuracy} metros de distância. Calculando posição com mais precisão...",
-    "sendButton": "Enviar"
+    "geolocationAccuracyWarning": "meters away. Calculating position more precisely...",
+    "sendButton": "Send"
+  },
+
+  "settings": {
+    "title": "Settings",
+    "saveButton": "Save",
+    "languageLabel": "Language",
+    "searchPlaceholder": "Search..."
   }
 }

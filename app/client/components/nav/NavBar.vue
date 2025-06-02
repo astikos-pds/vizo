@@ -5,20 +5,21 @@ const { t } = useI18n();
 
 const collapsed = ref<boolean>(false);
 
-const items = ref<NavigationMenuItem[]>([
+const items = computed<NavigationMenuItem[]>(() => [
   {
-    label: t('navBar.home'),
+    label: t("navBar.home"),
     icon: "i-lucide-house",
     to: "/",
   },
   {
-    label: t('navBar.report'),
+    label: t("navBar.report"),
     icon: "i-lucide-message-square-warning",
     to: "/report",
   },
   {
-    label: t('navBar.settings'),
+    label: t("navBar.settings"),
     icon: "i-lucide-settings",
+    to: "/settings",
   },
 ]);
 </script>
@@ -48,7 +49,9 @@ const items = ref<NavigationMenuItem[]>([
           :ui="{
             link: 'px-3 min-h-[3rem] text-[1.3rem] gap-4',
           }"
-        />
+        >
+          <template #item-label="{ item }">{{ item.label }}</template>
+        </UNavigationMenu>
       </main>
       <div class="h-[10%] flex items-center">
         <NuxtLink to="/login" class="w-full">
@@ -57,7 +60,7 @@ const items = ref<NavigationMenuItem[]>([
             color="neutral"
             variant="ghost"
             class="w-full text-xl cursor-pointer"
-            ><span v-if="!collapsed">{{ $t('navBar.exit') }}</span></UButton
+            ><span v-if="!collapsed">{{ t("navBar.exit") }}</span></UButton
           >
         </NuxtLink>
       </div>

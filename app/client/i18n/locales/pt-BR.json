@@ -1,6 +1,6 @@
 {
   "navBar": {
-    "home": "Home",
+    "home": "Início",
     "report": "Reportar",
     "settings": "Configurações",
     "exit": "Sair"
@@ -70,18 +70,26 @@
     "optional": "Opcional",
     "chooseFile": "Escolher arquivos",
     "selectedFile": "Nenhum arquivo escolhido.",
-    "files": "Arquivos.",
+    "files": "arquivos.",
     "descriptionRequired": "Preencha a descrição.",
     "maximumImages": "Você pode enviar até 5 imagens.",
     "mustBeImages": "Todos os arquivos precisam ser imagens.",
     "imageSize": "Cada imagem deve ter no máximo ",
+    "locationLabel": "Localização",
     "localization": {
-        "current": "Localização atual",
-        "currentDescription": "Usar minha localização atual para reportar",
-        "point": "Localizar no mapa",
-        "pointDescription": "Aponte no mapa as coordenadas do problema."
+      "current": "Localização atual",
+      "currentDescription": "Usar minha localização atual para reportar.",
+      "point": "Localizar no mapa",
+      "pointDescription": "Aponte no mapa a posição do problema."
     },
-    "geolocationAccuracyWarning": "{accuracy} metros de distância. Calculando posição com mais precisão...",
+    "geolocationAccuracyWarning": "metros de distância. Calculando posição com mais precisão...",
     "sendButton": "Enviar"
+  },
+
+  "settings": {
+    "title": "Configurações",
+    "saveButton": "Salvar",
+    "languageLabel": "Idioma",
+    "searchPlaceholder": "Pesquisar..."
   }
 }

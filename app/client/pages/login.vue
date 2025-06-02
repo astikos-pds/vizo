@@ -45,7 +45,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
     class="w-[45%] h-full flex flex-col items-center justify-center py-20 overflow-y-scroll"
   >
     <h1 class="text-4xl font-semibold text-neutral-900">
-      {{ t('loginCitizen.title') }}
+      {{ t("loginCitizen.title") }}
     </h1>
 
     <UForm
@@ -56,7 +56,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
       class="min-w-[50%] flex flex-col items-center gap-5 mt-8"
     >
       <UFormField
-        :label="$t('loginCitizen.cpf')"
+        :label="t('loginCitizen.cpf')"
         name="document"
         size="xl"
         class="w-full"
@@ -67,7 +67,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           v-model="form.document"
           type="text"
           size="xl"
-          :placeholder="$t('loginCitizen.cpfPlaceholder')"
+          :placeholder="t('loginCitizen.cpfPlaceholder')"
           class="w-full text-xl"
           v-mask="[CPF_MASK, CNPJ_MASK]"
         />
@@ -77,22 +77,26 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         v-model="form.password"
         color="neutral"
         :show="showPassword"
-        :label="$t('loginCitizen.password')"
+        :label="t('loginCitizen.password')"
         name="password"
-        :placeholder="$t('loginCitizen.passwordPlaceholder')"
+        :placeholder="t('loginCitizen.passwordPlaceholder')"
         required
         @click="showPassword = !showPassword"
       />
 
       <span
-        >{{ t('loginCitizen.dontHaveAccount') }}
-        <NuxtLink to="/register/citizen" class="text-primary"
-          >{{ t('loginCitizen.signUpHere') }}</NuxtLink
-        ></span
+        >{{ t("loginCitizen.dontHaveAccount") }}
+        <NuxtLink to="/register/citizen" class="text-primary">{{
+          t("loginCitizen.signUpHere")
+        }}</NuxtLink></span
       >
 
-      <UButton type="submit" size="xl" class="cursor-pointer" :loading="loading"
-        >{{ t('loginCitizen.signInButton') }}</UButton
+      <UButton
+        type="submit"
+        size="xl"
+        class="cursor-pointer"
+        :loading="loading"
+        >{{ t("loginCitizen.signInButton") }}</UButton
       >
     </UForm>
   </section>
