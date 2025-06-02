@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { FormSubmitEvent } from "@nuxt/ui";
 import {
   registerSchema,
   passwordRequirements,
@@ -10,6 +11,8 @@ definePageMeta({
 });
 
 const form = reactive<RegisterSchema>({
+  firstName: "",
+  lastName: "",
   cpf: "",
   email: "",
   birthDate: "",
@@ -42,6 +45,28 @@ const text = computed(() => {
   if (score.value === 3) return "Medium password";
   return "Strong password";
 });
+
+const { loading, error, registerAsCitizen } = useAuth();
+
+const toast = useToast();
+const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
+  await registerAsCitizen({
+    name: `${event.data.firstName} ${event.data.lastName}`.trim(),
+    document: event.data.cpf,
+    email: event.data.email,
+    password: event.data.password,
+  });
+
+  if (error.value) {
+    toast.add({
+      title: "Error",
+      description: error.value,
+      color: "error",
+    });
+  } else {
+    navigateTo("/login");
+  }
+};
 </script>
 
 <template>
@@ -53,19 +78,44 @@ const text = computed(() => {
     <UForm
       :state="form"
       :schema="registerSchema"
-      class="min-w-[50%] flex flex-col items-center gap-4 mt-6"
+      @submit="onSubmit"
+      :disabled="loading"
+      class="min-w-[55%] flex flex-col items-center gap-4 mt-6"
     >
-      <UFormField label="CPF" name="cpf" size="xl" class="w-full" required>
-        <UInput
-          icon="i-lucide-id-card"
-          v-model="form.cpf"
-          type="text"
+      <div class="flex flex-row gap-3 w-full">
+        <UFormField
+          label="First name"
+          name="firstName"
           size="xl"
-          placeholder="Enter your document"
-          class="w-full text-xl"
-          v-mask="CPF_MASK"
-        />
-      </UFormField>
+          class="w-full"
+          required
+        >
+          <UInput
+            icon="i-lucide-user"
+            v-model="form.firstName"
+            type="text"
+            size="xl"
+            placeholder="Enter your first name"
+            class="w-full text-xl"
+          />
+        </UFormField>
+
+        <UFormField
+          label="Last name"
+          name="lastName"
+          size="xl"
+          class="w-full"
+          hint="Optional"
+        >
+          <UInput
+            v-model="form.lastName"
+            type="text"
+            size="xl"
+            placeholder="Enter your last name"
+            class="w-full text-xl"
+          />
+        </UFormField>
+      </div>
 
       <UFormField label="E-mail" name="email" size="xl" class="w-full" required>
         <UInput
@@ -78,22 +128,35 @@ const text = computed(() => {
         />
       </UFormField>
 
-      <UFormField
-        label="Birth date"
-        name="birthDate"
-        size="xl"
-        class="w-full"
-        required
-      >
-        <UInput
-          icon="i-lucide-cake-slice"
-          v-model="form.birthDate"
-          type="date"
+      <div class="flex flex-row gap-3 w-full">
+        <UFormField label="CPF" name="cpf" size="xl" class="w-full" required>
+          <UInput
+            icon="i-lucide-id-card"
+            v-model="form.cpf"
+            type="text"
+            size="xl"
+            placeholder="Enter your document"
+            class="w-full text-xl"
+            v-mask="CPF_MASK"
+          />
+        </UFormField>
+        <UFormField
+          label="Birth date"
+          name="birthDate"
           size="xl"
-          placeholder="Enter your e-mail"
-          class="w-full text-xl"
-        />
-      </UFormField>
+          class="w-full"
+          required
+        >
+          <UInput
+            icon="i-lucide-cake-slice"
+            v-model="form.birthDate"
+            type="date"
+            size="xl"
+            placeholder="Enter your e-mail"
+            class="w-full text-xl"
+          />
+        </UFormField>
+      </div>
 
       <PasswordInput
         v-model="form.password"
@@ -160,7 +223,9 @@ const text = computed(() => {
         <NuxtLink to="/login" class="text-primary">Log in here</NuxtLink></span
       >
 
-      <UButton type="submit" size="xl">Sign Up</UButton>
+      <UButton type="submit" size="xl" :loading="loading" class="cursor-pointer"
+        >Sign Up</UButton
+      >
     </UForm>
   </section>
   <section

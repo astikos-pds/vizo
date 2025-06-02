@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { FormSubmitEvent } from "@nuxt/ui";
 import { loginSchema, type LoginSchema } from "~/lib/schema/login-schema";
 
 definePageMeta({
@@ -10,6 +11,22 @@ const form = reactive<LoginSchema>({
   password: "",
 });
 const showPassword = ref<boolean>(false);
+
+const { loading, error, login } = useAuth();
+const toast = useToast();
+const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
+  await login({ document: event.data.document, password: event.data.password });
+
+  if (error.value) {
+    toast.add({
+      title: "Error",
+      description: error.value,
+      color: "error",
+    });
+  } else {
+    navigateTo("/");
+  }
+};
 </script>
 
 <template>
@@ -26,6 +43,8 @@ const showPassword = ref<boolean>(false);
     <UForm
       :state="form"
       :schema="loginSchema"
+      @submit="onSubmit"
+      :disabled="loading"
       class="min-w-[50%] flex flex-col items-center gap-5 mt-8"
     >
       <UFormField
@@ -64,7 +83,9 @@ const showPassword = ref<boolean>(false);
         ></span
       >
 
-      <UButton type="submit" size="xl">Sign In</UButton>
+      <UButton type="submit" size="xl" class="cursor-pointer" :loading="loading"
+        >Sign In</UButton
+      >
     </UForm>
   </section>
 </template>

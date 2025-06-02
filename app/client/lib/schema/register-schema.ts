@@ -25,6 +25,8 @@ export const passwordSchema = z
 
 export const registerSchema = z
   .object({
+    firstName: z.string().min(1, "Name is required"),
+    lastName: z.string().optional(),
     cpf: z
       .string()
       .min(1, "CPF is required")
