@@ -7,6 +7,8 @@ import {
   MAX_ACCEPTABLE_ACCURACY_IN_METERS,
 } from "~/utils/constants";
 
+const { t } = useI18n();
+
 const schema = z.object({
   description: z.string().min(1, "Description is required"),
   images: z
@@ -64,13 +66,13 @@ const handleFileRemove = (index: number) => {
 
 const locationItems = ref<RadioGroupItem[]>([
   {
-    label: "Current location",
-    description: "Use my current location for reporting.",
+    label: t('reportProblem.localization.current'),
+    description: t('reportProblem.localization.currentDescription'),
     value: "location",
   },
   {
-    label: "Point on map",
-    description: "Point on map the coordinates of the problem.",
+    label: t('reportProblem.localization.point'),
+    description: t('reportProblem.localization.pointDescription'),
     value: "point",
   },
 ]);
@@ -107,7 +109,7 @@ const formRef = useTemplateRef("formRef");
   <section
     class="w-full flex items-center flex-col gap-5 py-20 overflow-y-scroll"
   >
-    <h1 class="text-3xl font-semibold text-neutral-900">Report a problem</h1>
+    <h1 class="text-3xl font-semibold text-neutral-900">{{ $t('reportProblem.title')}}</h1>
     <UForm
       ref="formRef"
       :schema="schema"
@@ -116,26 +118,26 @@ const formRef = useTemplateRef("formRef");
       class="min-w-[35rem] flex flex-col items-center gap-5"
     >
       <UFormField
-        label="Description"
+        :label="$t('reportProblem.description')"
         name="description"
         size="xl"
         class="w-full"
         required
         ><UTextarea
           v-model="form.description"
-          placeholder="Buraco na via..."
+          :placeholder="$t('reportProblem.descriptionPlaceholder')"
           size="xl"
           class="w-full"
           autoresize
       /></UFormField>
 
       <UFormField
-        label="Images"
+        :label="$t('reportProblem.images')"
         name="images"
         size="xl"
         class="w-full"
-        hint="Optional"
-        description="Upload images for more credibility"
+        :hint="$t('reportProblem.optional')"
+        :description="$t('reportProblem.uploadImages')"
       >
         <UButton
           size="xl"
@@ -149,11 +151,11 @@ const formRef = useTemplateRef("formRef");
           <label
             for="images"
             class="w-full text-start text-neutral-500 cursor-pointer mx-3 my-2"
-            >Escolher arquivos
+            >{{ $t('reportProblem.chooseFile')}}
             <span class="text-neutral-900 font-normal">
               {{
                 form.images.length === 0
-                  ? "Nenhum arquivo escolhido"
+                  ? $t('reportProblem.selectedFile')
                   : `${form.images.length} arquivos`
               }}</span
             ></label
@@ -225,7 +227,7 @@ const formRef = useTemplateRef("formRef");
         </Map>
       </UFormField>
       <UButton type="submit" size="xl" class="justify-center cursor-pointer"
-        >Send</UButton
+        >{{ $t('reportProblem.sendButton')}}</UButton
       >
     </UForm>
   </section>

@@ -2,6 +2,8 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import { loginSchema, type LoginSchema } from "~/lib/schema/login-schema";
 
+const { t } = useI18n();
+
 definePageMeta({
   layout: "guest",
 });
@@ -43,7 +45,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
     class="w-[45%] h-full flex flex-col items-center justify-center py-20 overflow-y-scroll"
   >
     <h1 class="text-4xl font-semibold text-neutral-900">
-      Log in to your account
+      {{ t('loginCitizen.title') }}
     </h1>
 
     <UForm
@@ -54,7 +56,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
       class="min-w-[50%] flex flex-col items-center gap-5 mt-8"
     >
       <UFormField
-        label="Document"
+        :label="$t('loginCitizen.cpf')"
         name="document"
         size="xl"
         class="w-full"
@@ -65,7 +67,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           v-model="form.document"
           type="text"
           size="xl"
-          placeholder="Enter your document"
+          :placeholder="$t('loginCitizen.cpfPlaceholder')"
           class="w-full text-xl"
           v-mask="[CPF_MASK, CNPJ_MASK]"
         />
@@ -75,22 +77,22 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         v-model="form.password"
         color="neutral"
         :show="showPassword"
-        label="Password"
+        :label="$t('loginCitizen.password')"
         name="password"
-        placeholder="Enter your password"
+        :placeholder="$t('loginCitizen.passwordPlaceholder')"
         required
         @click="showPassword = !showPassword"
       />
 
       <span
-        >Don't have an account?
+        >{{ t('loginCitizen.dontHaveAccount') }}
         <NuxtLink to="/register/citizen" class="text-primary"
-          >Sign up here</NuxtLink
+          >{{ t('loginCitizen.signUpHere') }}</NuxtLink
         ></span
       >
 
       <UButton type="submit" size="xl" class="cursor-pointer" :loading="loading"
-        >Sign In</UButton
+        >{{ t('loginCitizen.signInButton') }}</UButton
       >
     </UForm>
   </section>

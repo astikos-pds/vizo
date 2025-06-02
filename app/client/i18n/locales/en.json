@@ -1,0 +1,86 @@
+{
+  "navBar": {
+    "home": "Home",
+    "report": "Report",
+    "settings": "Settings",
+    "exit": "Exit"
+  },
+
+  "registerCitizen": {
+    "title": "Create an account",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Enter your last name",
+    "cpf": "CPF",
+    "cpfPlaceholder": "Enter your document",
+    "email": "E-mail",
+    "emailPlaceholder": "Enter your e-mail",
+    "birthDate": "Birth date",
+    "birthDatePlaceholder": "Enter your birth date",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm your password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "passwordStrengthIndicator": " Must contain:",
+    "passwordAriaLabel": "Password requirements",
+    "passwordRequirements": {
+      "length": "At least 8 characters",
+      "uppercase": "One uppercase letter",
+      "lowercase": "One lowercase letter",
+      "number": "At least 1 number",
+      "special": "One special character (e.g. $!%*?&)"
+    },
+    "requirementMet": "- Requirement met",
+    "requirementNotMet": "- Requirement not met",
+    "passwordStrength": {
+      "enterPassword": "Enter a password",
+      "weak": "Weak password",
+      "medium": "Medium password",
+      "strong": "Strong password"
+    },
+    "alreadyHaveAccount": "Already have an account?",
+    "logInHere": "Log in here.",
+    "signUpButton": "Sign Up",
+    "optional": "Optional"
+  },
+  "loginCitizen": {
+    "title": "Log in to your account",
+    "cpf": "CPF",
+    "cpfPlaceholder": "Enter your document",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "dontHaveAccount": "Don't have an account? ",
+    "signUpHere": "Sign up here.",
+    "signInButton": "Sign In",
+    "errors": {
+      "documentRequired": "Document required",
+      "invalidDocument": "Invalid document",
+      "passwordRequired": "Password required"
+    }
+  },
+
+    "reportProblem": {
+    "title": "Report a Problem",
+    "description": "Description",
+    "descriptionPlaceholder": "Street hole...",
+    "images": "Images",
+    "uploadImages": "Upload images for more credibility",
+    "optional": "Optional",
+    "chooseFile": "Choose files",
+    "selectedFile": "No file chosen.",
+    "files": "Files.",
+    "descriptionRequired": "Description is required.",
+    "maximumImages": "You can upload a maximum of 5 images.",
+    "mustBeImages": "All files must be images.",
+    "imageSize": "Each image must have at most ",
+    "localization": {
+        "current": "Current location",
+        "currentDescription": "Use my current location for reporting.",
+        "point": "Point on map",
+        "pointDescription": "Point on map the coordinates of the problem."
+    },
+    "geolocationAccuracyWarning": "{accuracy} metros de distância. Calculando posição com mais precisão...",
+    "sendButton": "Enviar"
+  }
+}

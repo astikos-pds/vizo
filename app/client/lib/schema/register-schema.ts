@@ -1,10 +1,10 @@
 import * as z from "zod";
 
 export const passwordRequirements = {
-  minLength: { regex: /.{8,}/, text: "At least 8 characters" },
-  hasNumber: { regex: /\d/, text: "At least 1 number" },
-  hasLowercase: { regex: /[a-z]/, text: "At least 1 lowercase letter" },
-  hasUppercase: { regex: /[A-Z]/, text: "At least 1 uppercase letter" },
+  minLength: { regex: /.{8,}/, text: 'registerCitizen.passwordRequirements.length'},
+  hasNumber: { regex: /\d/, text: 'registerCitizen.passwordRequirements.number'},
+  hasLowercase: { regex: /[a-z]/, text: 'registerCitizen.passwordRequirements.lowercase'},
+  hasUppercase: { regex: /[A-Z]/, text: 'registerCitizen.passwordRequirements.uppercase'},
 };
 
 export const passwordSchema = z

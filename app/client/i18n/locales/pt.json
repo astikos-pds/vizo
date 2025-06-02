@@ -1,0 +1,87 @@
+{
+  "navBar": {
+    "home": "Home",
+    "report": "Reportar",
+    "settings": "Configurações",
+    "exit": "Sair"
+  },
+
+  "registerCitizen": {
+    "title": "Criar uma conta",
+    "firstName": "Nome",
+    "firstNamePlaceholder": "Insira seu nome",
+    "lastName": "Sobrenome",
+    "lastNamePlaceholder": "Insira seu sobrenome",
+    "cpf": "CPF",
+    "cpfPlaceholder": "Digite seu documento",
+    "email": "E-mail",
+    "emailPlaceholder": "Digite seu e-mail",
+    "birthDate": "Data de Nascimento",
+    "birthDatePlaceholder": "Digite sua data de nascimento",
+    "password": "Senha",
+    "passwordPlaceholder": "Digite sua senha",
+    "confirmPassword": "Confirme sua senha",
+    "confirmPasswordPlaceholder": "Confirme sua senha",
+    "passwordStrengthIndicator": " Deve conter:",
+    "passwordAriaLabel": "Requisitos da senha",
+    "passwordRequirements": {
+      "length": "Pelo menos 8 caracteres",
+      "uppercase": "Uma letra maiúscula",
+      "lowercase": "Uma letra minúscula",
+      "number": "Pelo menos um número",
+      "special": "Um caractere especial (ex: $!%*?&)"
+    },
+    "requirementMet": "- Requisito atendido",
+    "requirementNotMet": "- Requisito não atendido",
+    "passwordStrength": {
+      "enterPassword": "Digite uma senha",
+      "weak": "Senha fraca",
+      "medium": "Senha média",
+      "strong": "Senha forte"
+    },
+    "alreadyHaveAccount": "Já possui uma conta?",
+    "logInHere": "Faça login aqui.",
+    "signUpButton": "Cadastrar",
+    "optional": "Opcional"
+  },
+
+  "loginCitizen": {
+    "title": "Entrar na conta",
+    "cpf": "CPF",
+    "cpfPlaceholder": "Digite seu documento",
+    "password": "Senha",
+    "passwordPlaceholder": "Digite sua senha",
+    "dontHaveAccount": "Ainda não possui uma conta? ",
+    "signUpHere": "Cadastre-se aqui.",
+    "signInButton": "Entrar",
+    "errors": {
+      "documentRequired": "Document required",
+      "invalidDocument": "Invalid document",
+      "passwordRequired": "Password required"
+    }
+  },
+
+  "reportProblem": {
+    "title": "Reportar problema",
+    "description": "Descrição",
+    "descriptionPlaceholder": "Buraco na via...",
+    "images": "Imagens",
+    "uploadImages": "Carregue imagens para ter mais credibiliade",
+    "optional": "Opcional",
+    "chooseFile": "Escolher arquivos",
+    "selectedFile": "Nenhum arquivo escolhido.",
+    "files": "Arquivos.",
+    "descriptionRequired": "Preencha a descrição.",
+    "maximumImages": "Você pode enviar até 5 imagens.",
+    "mustBeImages": "Todos os arquivos precisam ser imagens.",
+    "imageSize": "Cada imagem deve ter no máximo ",
+    "localization": {
+        "current": "Localização atual",
+        "currentDescription": "Usar minha localização atual para reportar",
+        "point": "Localizar no mapa",
+        "pointDescription": "Aponte no mapa as coordenadas do problema."
+    },
+    "geolocationAccuracyWarning": "{accuracy} metros de distância. Calculando posição com mais precisão...",
+    "sendButton": "Enviar"
+  }
+}

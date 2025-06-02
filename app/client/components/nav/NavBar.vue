@@ -1,21 +1,23 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+const { t } = useI18n();
+
 const collapsed = ref<boolean>(false);
 
 const items = ref<NavigationMenuItem[]>([
   {
-    label: "Home",
+    label: t('navBar.home'),
     icon: "i-lucide-house",
     to: "/",
   },
   {
-    label: "Report",
+    label: t('navBar.report'),
     icon: "i-lucide-message-square-warning",
     to: "/report",
   },
   {
-    label: "Settings",
+    label: t('navBar.settings'),
     icon: "i-lucide-settings",
   },
 ]);
@@ -55,7 +57,7 @@ const items = ref<NavigationMenuItem[]>([
             color="neutral"
             variant="ghost"
             class="w-full text-xl cursor-pointer"
-            ><span v-if="!collapsed">Exit</span></UButton
+            ><span v-if="!collapsed">{{ $t('navBar.exit') }}</span></UButton
           >
         </NuxtLink>
       </div>
