@@ -24,6 +24,12 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
       color: "error",
     });
   } else {
+    toast.add({
+      title: "Sucess",
+      description: "Logged in sucessfully",
+      color: "success",
+    });
+
     navigateTo("/");
   }
 };

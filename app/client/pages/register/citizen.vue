@@ -64,6 +64,12 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
       color: "error",
     });
   } else {
+    toast.add({
+      title: "Sucess",
+      description: "Signed up sucessfully",
+      color: "success",
+    });
+
     navigateTo("/login");
   }
 };
