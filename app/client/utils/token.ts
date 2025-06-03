@@ -3,7 +3,7 @@ export function isTokenExpired(token: string | undefined): boolean {
 
   try {
     const payload = JSON.parse(atob(token.split(".")[1]));
-    const exp = payload;
+    const exp = payload.exp;
 
     if (!exp) return true;
 
