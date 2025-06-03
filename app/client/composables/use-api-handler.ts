@@ -7,6 +7,7 @@ export const useApiHandler = () => {
     if (status == 401) return "Invalid credentials";
     if (status == 403) return "Forbidden";
     if (status == 404) return "Not found";
+    if (status == 409) return "Conflict";
     if (status == 500) return "Internal server error";
     return "An unexpected error occurred.";
   }
@@ -22,6 +23,8 @@ export const useApiHandler = () => {
       if (e instanceof Error) {
         console.error(e.message);
         error.value = getError(e.message.split(" ").at(2) ?? "");
+      } else {
+        console.error(error);
       }
       return null;
     } finally {
