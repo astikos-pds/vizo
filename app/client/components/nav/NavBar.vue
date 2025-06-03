@@ -2,6 +2,7 @@
 import type { NavigationMenuItem } from "@nuxt/ui";
 
 const { t } = useI18n();
+const { logout } = useAuth();
 
 const collapsed = ref<boolean>(false);
 
@@ -59,6 +60,7 @@ const items = computed<NavigationMenuItem[]>(() => [
             icon="i-lucide-log-out"
             color="neutral"
             variant="ghost"
+            @click="logout"
             class="w-full text-xl cursor-pointer"
             ><span v-if="!collapsed">{{ t("navBar.exit") }}</span></UButton
           >

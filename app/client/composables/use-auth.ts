@@ -31,6 +31,10 @@ export const useAuth = () => {
     );
   }
 
+  function logout() {
+    updateTokenPair({ accessToken: "", refreshToken: "" });
+  }
+
   async function refresh(request: RefreshRequest): Promise<boolean> {
     const response = await handle<TokenPairResponse>(() =>
       refreshUseCase(request)
@@ -70,6 +74,7 @@ export const useAuth = () => {
     refreshToken,
     login,
     registerAsCitizen,
+    logout,
     refresh,
     ensureAuthenticated,
   };
