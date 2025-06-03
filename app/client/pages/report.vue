@@ -89,6 +89,18 @@ onBeforeUnmount(() => {
   previewUrls.value.forEach((url) => URL.revokeObjectURL(url));
 });
 
+const breakpoints = useBreakpoints({
+  lg: 1024,
+  md: 768,
+});
+
+const isMobile = breakpoints.smallerOrEqual("md");
+const size = ref<"lg" | "md" | "xl" | "xs" | "sm" | undefined>("xl");
+
+watchEffect(() => {
+  size.value = isMobile.value ? "md" : "xl";
+});
+
 const formRef = useTemplateRef("formRef");
 
 const { loading, error, report } = useReports();
@@ -129,9 +141,9 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
 
 <template>
   <section
-    class="w-full flex items-center flex-col gap-5 py-20 overflow-y-scroll"
+    class="w-full h-full flex items-center flex-col gap-5 py-15 sm:py-20 overflow-y-scroll"
   >
-    <h1 class="text-3xl font-semibold text-neutral-900">
+    <h1 class="text-3xl text-center font-semibold text-neutral-900 px-2">
       {{ t("reportProblem.title") }}
     </h1>
     <UForm
@@ -139,12 +151,12 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
       :schema="reportSchema"
       :state="form"
       @submit="onSubmit"
-      class="min-w-[35rem] flex flex-col items-center gap-5"
+      class="w-[85%] md:max-w-[30rem] lg:min-w-[35rem] mt-3 flex flex-col items-center gap-5"
     >
       <UFormField
         :label="t('reportProblem.description')"
         name="description"
-        size="xl"
+        :size="size"
         class="w-full"
         required
         ><UTextarea
@@ -158,13 +170,13 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
       <UFormField
         :label="t('reportProblem.images')"
         name="images"
-        size="xl"
+        :size="size"
         class="w-full"
         :hint="t('reportProblem.optional')"
         :description="t('reportProblem.uploadImages')"
       >
         <UButton
-          size="xl"
+          :size="size"
           color="neutral"
           variant="outline"
           class="w-full p-0"
@@ -193,10 +205,13 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
           accept="image/*"
           @change="handleFileChange"
           class="sr-only"
-          size="xl"
+          :size="size"
         />
 
-        <div v-if="previewUrls.length" class="mt-3 gap-3 flex flex-row">
+        <div
+          v-if="previewUrls.length"
+          class="mt-3 gap-3 flex flex-row flex-wrap"
+        >
           <div
             v-for="(url, index) in previewUrls"
             :key="index"
@@ -220,7 +235,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
 
       <UFormField
         :label="t('reportProblem.locationLabel')"
-        size="xl"
+        :size="size"
         required
         class="w-full"
         :help="
@@ -235,10 +250,11 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
           variant="table"
           v-model="form.location"
           :items="locationItems"
+          :size="size"
         />
         <Map
           v-if="form.location === 'point'"
-          class="rounded-xl border border-neutral-200 min-w-[30rem] min-h-[25rem] mt-4"
+          class="rounded-xl border border-neutral-200 min-w-[15rem] min-h-[25rem] sm:min-w-[30rem] sm:min-h-[25rem] mt-4"
           :zoom="14"
           :center="[mapCenter.latitude, mapCenter.longitude]"
         >
@@ -253,6 +269,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
           />
         </Map>
       </UFormField>
+
       <UButton
         type="submit"
         size="xl"

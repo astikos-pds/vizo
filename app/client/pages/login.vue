@@ -39,10 +39,10 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
 <template>
   <section
-    class="w-[55%] bg-linear-to-tr from-primary to-neutral-400"
+    class="lg:min-w-[45%] xl:min-w-[55%] bg-linear-to-tr from-primary to-neutral-400"
   ></section>
   <section
-    class="w-[45%] h-full flex flex-col items-center justify-center py-20 overflow-y-scroll"
+    class="md:w-[70%] md:h-[80%] md:rounded-md lg:rounded-none bg-[#FFFFFF] lg:size-full flex flex-col items-center justify-center py-20 overflow-y-scroll"
   >
     <h1 class="text-4xl font-semibold text-neutral-900">
       {{ t("loginCitizen.title") }}

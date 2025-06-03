@@ -41,7 +41,7 @@ const onSubmit = (event: FormSubmitEvent<SettingsSchema>) => {
       :state="form"
       :schema="settingsSchema"
       @submit="onSubmit"
-      class="min-w-[35rem] flex flex-col items-center gap-5"
+      class="min-w-[65%] md:min-w-[55%] xl:min-w-[45%] flex flex-col items-center gap-5"
     >
       <UFormField
         :label="t('settings.languageLabel')"

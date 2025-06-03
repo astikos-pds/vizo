@@ -80,7 +80,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
 
 <template>
   <section
-    class="w-[45%] h-full flex flex-col items-center justify-center py-20 overflow-y-scroll"
+    class="bg-[#FFFFFF] w-full h-full flex flex-col items-center py-20 overflow-y-scroll"
   >
     <h1 class="text-4xl font-semibold text-neutral-900">
       {{ t("registerCitizen.title") }}
@@ -91,9 +91,9 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
       :schema="registerSchema"
       @submit="onSubmit"
       :disabled="loading"
-      class="min-w-[55%] flex flex-col items-center gap-4 mt-6"
+      class="min-w-[70%] md:min-w-[55%] flex flex-col items-center gap-4 mt-8 md:mt-6"
     >
-      <div class="flex flex-row gap-3 w-full">
+      <div class="flex flex-col md:flex-row gap-3 w-full">
         <UFormField
           :label="t('registerCitizen.firstName')"
           name="firstName"
@@ -139,7 +139,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
         />
       </UFormField>
 
-      <div class="flex flex-row gap-3 w-full">
+      <div class="flex flex-col md:flex-row gap-3 w-full">
         <UFormField label="CPF" name="cpf" size="xl" class="w-full" required>
           <UInput
             icon="i-lucide-id-card"
@@ -246,6 +246,6 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
     </UForm>
   </section>
   <section
-    class="w-[55%] bg-linear-to-tr to-primary from-neutral-400"
+    class="lg:min-w-[45%] xl:min-w-[55%] bg-linear-to-tr to-primary from-neutral-400"
   ></section>
 </template>

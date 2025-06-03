@@ -1,10 +1,22 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
+import { useBreakpoints } from "@vueuse/core";
 
 const { t } = useI18n();
 const { logout } = useAuth();
 
 const collapsed = ref<boolean>(false);
+
+const breakpoints = useBreakpoints({
+  lg: 1024,
+  md: 768,
+});
+
+const isMobile = breakpoints.smallerOrEqual("md");
+
+watchEffect(() => {
+  collapsed.value = isMobile.value;
+});
 
 const items = computed<NavigationMenuItem[]>(() => [
   {
@@ -23,12 +35,14 @@ const items = computed<NavigationMenuItem[]>(() => [
     to: "/settings",
   },
 ]);
+
+const textClasses = ref<string>("text-lg xl:text-xl");
 </script>
 
 <template>
-  <div
-    class="min-h-full p-4 border-x border-zinc-200"
-    :class="collapsed ? '' : 'min-w-[20%]'"
+  <section
+    class="min-h-full p-2 lg:p-3 xl:p-4 border-x border-zinc-200"
+    :class="collapsed ? '' : 'lg:min-w-[20%]'"
   >
     <header class="h-[10%] flex justify-between items-center">
       <div v-if="!collapsed">Vizo</div>
@@ -48,7 +62,7 @@ const items = computed<NavigationMenuItem[]>(() => [
           :items="items"
           orientation="vertical"
           :ui="{
-            link: 'px-3 min-h-[3rem] text-[1.3rem] gap-4',
+            link: `px-3 min-h-[3rem] ${textClasses} gap-4`,
           }"
         >
           <template #item-label="{ item }">{{ item.label }}</template>
@@ -61,11 +75,11 @@ const items = computed<NavigationMenuItem[]>(() => [
             color="neutral"
             variant="ghost"
             @click="logout"
-            class="w-full text-xl cursor-pointer"
+            :class="`w-full cursor-pointer ${textClasses}`"
             ><span v-if="!collapsed">{{ t("navBar.exit") }}</span></UButton
           >
         </NuxtLink>
       </div>
     </div>
-  </div>
+  </section>
 </template>

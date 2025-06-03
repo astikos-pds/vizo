@@ -23,19 +23,35 @@ if (error.value) {
 </script>
 
 <template>
-  <aside class="size-full flex flex-col p-4">
-    <header class="flex items-center mb-3">
+  <aside class="h-full w-full flex flex-col p-2 xl:p-3">
+    <header class="flex items-center xl:mb-2">
       <button
         class="cursor-pointer transition hover:scale-110"
         @click="emit('close')"
       >
-        <Icon name="lucide:x" mode="svg" size="3rem" />
+        <Icon
+          name="lucide:x"
+          mode="svg"
+          class="text-3xl lg:text-[2.8rem] xl:text-[3rem]"
+        />
       </button>
     </header>
-    <main class="h-full">
+    <main
+      class="flex items-center flex-row flex-wrap p-1 gap-4 h-full w-full overflow-y-scroll"
+    >
       <div v-if="loading">Loading...</div>
       <ProblemReport
         v-else
+        v-for="report in reports"
+        :report="report"
+        :key="report.id"
+      />
+      <ProblemReport
+        v-for="report in reports"
+        :report="report"
+        :key="report.id"
+      />
+      <ProblemReport
         v-for="report in reports"
         :report="report"
         :key="report.id"

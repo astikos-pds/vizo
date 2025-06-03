@@ -41,30 +41,41 @@ if (error.value) {
 </script>
 
 <template>
-  <div
-    class="min-h-screen flex justify-center p-6 bg-neutral-50"
-    :class="isAsideOpen ? 'min-w-[60%]' : 'w-full  border-r border-neutral-200'"
-  >
-    <div v-if="loading">Loading...</div>
-    <Map v-else ref="map" class="rounded-2xl" :zoom="zoom" :center="center">
-      <Marker
-        v-for="problem in problems"
-        @click="onMarkerClick(problem)"
-        :key="problem.id"
-        :lat-lng="{ latitude: problem.latitude, longitude: problem.longitude }"
-      />
-    </Map>
-  </div>
+  <section class="relative min-h-screen w-full flex flex-col xl:flex-row">
+    <div
+      class="min-h-screen flex justify-center lg:p-5 bg-neutral-50"
+      :class="
+        isAsideOpen ? 'xl:min-w-[75%]' : 'xl:w-full border-r border-neutral-200'
+      "
+    >
+      <div v-if="loading">Loading...</div>
+      <Map v-else ref="map" class="rounded-2xl" :zoom="zoom" :center="center">
+        <Marker
+          v-for="problem in problems"
+          @click="onMarkerClick(problem)"
+          :key="problem.id"
+          :lat-lng="{
+            latitude: problem.latitude,
+            longitude: problem.longitude,
+          }"
+        />
+      </Map>
+    </div>
 
-  <div
-    class="min-h-screen"
-    :class="isAsideOpen ? 'w-[20%] border-x border-zinc-200' : ''"
-  >
-    <ProblemDetails
-      v-if="isAsideOpen && selectedProblem"
-      @close="isAsideOpen = false"
-      :problem-id="selectedProblem.id"
-      :key="selectedProblem.id"
-    />
-  </div>
+    <div
+      class="absolute bottom-0 bg-[#FFFFFF] z-10000000000 xl:min-h-screen xl:relative"
+      :class="
+        isAsideOpen
+          ? 'w-full h-[20rem] border-y xl:w-[25%] xl:border-x border-zinc-200'
+          : ''
+      "
+    >
+      <ProblemDetails
+        v-if="isAsideOpen && selectedProblem"
+        @close="isAsideOpen = false"
+        :problem-id="selectedProblem.id"
+        :key="selectedProblem.id"
+      />
+    </div>
+  </section>
 </template>
