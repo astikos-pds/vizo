@@ -23,13 +23,9 @@ export const useAuth = () => {
   }
 
   async function registerAsCitizen(request: RegisterAsCitizenRequest) {
-    const response = await handle<RegisterAsCitizenResponse>(() =>
+    await handle<RegisterAsCitizenResponse>(() =>
       registerAsCitizenUseCase(request)
     );
-
-    if (response) {
-      console.log(response);
-    }
   }
 
   return {

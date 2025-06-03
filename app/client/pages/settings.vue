@@ -3,6 +3,10 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import * as locales from "@nuxt/ui/locale";
 import { z } from "zod";
 
+definePageMeta({
+  middleware: ["auth"],
+});
+
 const { t, locale, setLocale } = useI18n();
 
 const languageItems = ref([

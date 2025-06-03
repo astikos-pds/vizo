@@ -3,6 +3,10 @@ import { problems } from "~/data";
 import type { Map as LeafletMap, PointExpression } from "leaflet";
 import { useGeolocation } from "@vueuse/core";
 
+definePageMeta({
+  middleware: ["auth"],
+});
+
 const map = ref<LeafletMap | null>(null);
 const zoom = ref<number>(12);
 const center = ref<PointExpression>([-23.5489, -46.6388]);
@@ -31,8 +35,7 @@ const onMarkerClick = (problem: { latitude: number; longitude: number }) => {
         v-for="problem in problems"
         @click="() => onMarkerClick(problem)"
         :key="problem.id"
-        :latitude="problem.latitude"
-        :longitude="problem.longitude"
+        :lat-lng="{ latitude: problem.latitude, longitude: problem.longitude }"
       />
     </Map>
   </div>
