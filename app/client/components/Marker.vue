@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { PointExpression } from "leaflet";
+import type { LatLng } from "~/types/geolocation";
 
 interface Icon {
   url: string;
@@ -7,8 +8,7 @@ interface Icon {
 }
 
 interface Props {
-  latitude: number;
-  longitude: number;
+  latLng: LatLng;
   icon?: Icon;
   draggable?: boolean;
 }
@@ -17,18 +17,26 @@ const props = defineProps<Props>();
 
 const emit = defineEmits<{
   (e: "click"): void;
+  (e: "update:latLng", newLatLng: LatLng): void;
 }>();
 
 const hasIcon = computed(() => {
   return props.icon && props.icon.url;
 });
+
+function onMove(event: any) {
+  const newLatLng: { lat: number; lng: number } = event.target.getLatLng();
+  emit("update:latLng", { latitude: newLatLng.lat, longitude: newLatLng.lng });
+}
 </script>
 
 <template>
   <div v-if="hasIcon">
     <LMarker
       @click="() => emit('click')"
-      :lat-lng="[props.latitude, props.longitude]"
+      @moveend="onMove"
+      :lat-lng="[props.latLng.latitude, props.latLng.longitude]"
+      :draggable="props.draggable"
     >
       <LIcon :icon-url="props.icon?.url" :icon-size="props.icon?.size" />
     </LMarker>
@@ -36,7 +44,8 @@ const hasIcon = computed(() => {
   <div v-else>
     <LMarker
       @click="() => emit('click')"
-      :lat-lng="[props.latitude, props.longitude]"
+      @moveend="onMove"
+      :lat-lng="[props.latLng.latitude, props.latLng.longitude]"
       :draggable="props.draggable"
     />
   </div>
