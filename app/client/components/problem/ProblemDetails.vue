@@ -1,23 +1,30 @@
 <script lang="ts" setup>
-import { reports } from "~/data";
+import { useProblemReports } from "~/composables/use-problem-reports";
 
 interface Props {
-  problemId: number;
+  problemId: string;
 }
 const props = defineProps<Props>();
-
-const reportsOfProblem = computed(() =>
-  reports.filter((report) => props.problemId === report.problemId)
-);
 
 const emit = defineEmits<{
   (e: "close"): void;
 }>();
+
+const { reports, loading, error } = useProblemReports(props.problemId);
+
+const toast = useToast();
+if (error.value) {
+  toast.add({
+    title: "Error",
+    description: error.value.message,
+    color: "error",
+  });
+}
 </script>
 
 <template>
   <aside class="size-full flex flex-col p-4">
-    <header class="flex items-center mb-5">
+    <header class="flex items-center mb-3">
       <button
         class="cursor-pointer transition hover:scale-110"
         @click="emit('close')"
@@ -26,10 +33,13 @@ const emit = defineEmits<{
       </button>
     </header>
     <main class="h-full">
-      <div v-for="report in reportsOfProblem">
-        <p>{{ report.description }}</p>
-        <img :src="report.imageUrl" class="w-full" alt="Image" />
-      </div>
+      <div v-if="loading">Loading...</div>
+      <ProblemReport
+        v-else
+        v-for="report in reports"
+        :report="report"
+        :key="report.id"
+      />
     </main>
   </aside>
 </template>

@@ -2,6 +2,7 @@
 import type { Map as LeafletMap, PointExpression } from "leaflet";
 import { useGeolocation } from "@vueuse/core";
 import { useProblem } from "~/composables/use-problem";
+import type { Problem } from "~/types/domain";
 
 definePageMeta({
   middleware: ["auth"],
@@ -12,7 +13,7 @@ const zoom = ref<number>(12);
 const center = ref<PointExpression>([-23.5489, -46.6388]);
 
 const isAsideOpen = ref<boolean>(false);
-const selectedProblem = ref<any>(null);
+const selectedProblem = ref<Problem | null>(null);
 
 const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
   map.value?.flyTo([problem.latitude, problem.longitude], 18, {
@@ -21,7 +22,7 @@ const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
   });
 };
 
-const onMarkerClick = (problem: { latitude: number; longitude: number }) => {
+const onMarkerClick = (problem: Problem) => {
   isAsideOpen.value = true;
   selectedProblem.value = problem;
   zoomToMarker(problem);
@@ -40,7 +41,10 @@ if (error.value) {
 </script>
 
 <template>
-  <div class="min-h-screen w-[100%] flex justify-center p-6">
+  <div
+    class="min-h-screen flex justify-center p-6 bg-neutral-50"
+    :class="isAsideOpen ? 'min-w-[60%]' : 'w-full  border-r border-neutral-200'"
+  >
     <div v-if="loading">Loading...</div>
     <Map v-else ref="map" class="rounded-2xl" :zoom="zoom" :center="center">
       <Marker
@@ -52,11 +56,15 @@ if (error.value) {
     </Map>
   </div>
 
-  <div class="min-w-[20%] min-h-screen border-x border-zinc-200">
+  <div
+    class="min-h-screen"
+    :class="isAsideOpen ? 'w-[20%] border-x border-zinc-200' : ''"
+  >
     <ProblemDetails
-      v-if="isAsideOpen"
+      v-if="isAsideOpen && selectedProblem"
       @close="isAsideOpen = false"
       :problem-id="selectedProblem.id"
+      :key="selectedProblem.id"
     />
   </div>
 </template>

@@ -91,5 +91,9 @@
     "saveButton": "Salvar",
     "languageLabel": "Idioma",
     "searchPlaceholder": "Pesquisar..."
+  },
+
+  "problemReport": {
+    "reportedAt": "Reportado em"
   }
 }
