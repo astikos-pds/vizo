@@ -9,7 +9,7 @@ import {
   type UploadImageResponse,
 } from "~/services/upload";
 
-export const useReport = () => {
+export const useReports = () => {
   const { loading, error, handle } = useApiHandler();
 
   async function uploadImage(request: UploadImageRequest): Promise<string> {
@@ -41,6 +41,12 @@ export const useReport = () => {
         longitude: request.longitude,
       })
     );
+  }
+
+  async function getReportsFromProblem(problemId: string) {
+    useFetch("", {
+      method: "GET",
+    });
   }
 
   return { loading, error, report };

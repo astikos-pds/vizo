@@ -2,7 +2,7 @@
 import type { FormSubmitEvent, RadioGroupItem } from "@nuxt/ui";
 import { MAX_ACCEPTABLE_ACCURACY_IN_METERS } from "~/utils/constants";
 import { reportSchema, type ReportSchema } from "~/lib/schema/report-schema";
-import { useReport } from "~/composables/use-report";
+import { useReports } from "~/composables/use-reports";
 import type { LatLng } from "~/types/geolocation";
 
 definePageMeta({
@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
 
 const formRef = useTemplateRef("formRef");
 
-const { loading, error, report } = useReport();
+const { loading, error, report } = useReports();
 const toast = useToast();
 
 const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
