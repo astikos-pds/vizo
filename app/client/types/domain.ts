@@ -8,3 +8,14 @@ export interface Problem {
   firstReportedAt: string;
   lastReportedAt: string;
 }
+
+export interface Report {
+  id: string;
+  description: string;
+  imagesUrls: string[];
+  latitude: number;
+  longitude: number;
+  citizenId: string;
+  problemId: string;
+  createdAt: string;
+}

@@ -1,13 +1,10 @@
-import {
-  reportUseCase,
-  type ReportRequest,
-  type ReportResponse,
-} from "~/services/report";
+import { reportUseCase } from "~/services/report";
 import {
   uploadImageUseCase,
   type UploadImageRequest,
   type UploadImageResponse,
 } from "~/services/upload";
+import type { Report } from "~/types/domain";
 
 export const useReports = () => {
   const { loading, error, handle } = useApiHandler();
@@ -26,14 +23,12 @@ export const useReports = () => {
     latitude: number;
     longitude: number;
   }
-  async function report(
-    request: RawReportRequest
-  ): Promise<ReportResponse | null> {
+  async function report(request: RawReportRequest): Promise<Report | null> {
     const imagesUrls = await Promise.all(
       request.images.map((image) => uploadImage({ file: image }))
     );
 
-    return await handle<ReportResponse>(() =>
+    return await handle<Report>(() =>
       reportUseCase({
         description: request.description,
         imagesUrls: imagesUrls.filter((imageUrl) => imageUrl !== ""),
@@ -41,12 +36,6 @@ export const useReports = () => {
         longitude: request.longitude,
       })
     );
-  }
-
-  async function getReportsFromProblem(problemId: string) {
-    useFetch("", {
-      method: "GET",
-    });
   }
 
   return { loading, error, report };
