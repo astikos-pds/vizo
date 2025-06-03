@@ -1,37 +1,20 @@
 <script lang="ts" setup>
-import type { RadioGroupItem, RadioGroupValue } from "@nuxt/ui";
-import * as z from "zod";
-import {
-  MAX_FILE_SIZE_IN_MB,
-  MAX_FILE_SIZE_IN_BYTES,
-  MAX_ACCEPTABLE_ACCURACY_IN_METERS,
-} from "~/utils/constants";
+import type { FormSubmitEvent, RadioGroupItem } from "@nuxt/ui";
+import { MAX_ACCEPTABLE_ACCURACY_IN_METERS } from "~/utils/constants";
+import { reportSchema, type ReportSchema } from "~/lib/schema/report-schema";
+import { useReport } from "~/composables/use-report";
+import type { LatLng } from "~/types/geolocation";
+
+definePageMeta({
+  middleware: ["auth"],
+});
 
 const { t } = useI18n();
 
-const schema = z.object({
-  description: z.string().min(1, "Description is required"),
-  images: z
-    .custom<File[]>()
-    .refine(
-      (files) => files.length <= 5,
-      "You can upload a maximum of 5 images"
-    )
-    .refine(
-      (files) => files.every((file) => file.type.startsWith("image/")),
-      "All files must be images"
-    )
-    .refine(
-      (files) => files.every((file) => file.size <= MAX_FILE_SIZE_IN_BYTES),
-      `Each image must have at most ${MAX_FILE_SIZE_IN_MB} mb`
-    ),
-});
-
-type Schema = z.output<typeof schema>;
-
-const form = reactive<Schema>({
+const form = reactive<ReportSchema>({
   description: "",
   images: [],
+  location: "location",
 });
 
 const previewUrls = ref<string[]>([]);
@@ -76,25 +59,29 @@ const locationItems = ref<RadioGroupItem[]>([
     value: "point",
   },
 ]);
-const locationValue = ref<RadioGroupValue>("location");
 
 const { coords } = useGeolocation();
-const CITY_CENTER: [number, number] = [-23.5489, -46.6388];
+const CITY_CENTER: LatLng = { latitude: -23.5489, longitude: -46.6388 };
 
-const mapCenter = computed<[number, number]>(() =>
+const mapCenter = computed<LatLng>(() =>
   !coords.value.accuracy
     ? CITY_CENTER
-    : [coords.value.latitude, coords.value.longitude]
+    : { latitude: coords.value.latitude, longitude: coords.value.longitude }
 );
-const markerPosition = ref<[number, number]>(mapCenter.value);
+const markerPosition = reactive<LatLng>({
+  latitude: mapCenter.value.latitude,
+  longitude: mapCenter.value.longitude,
+});
 
-const onSubmit = (e: any) => {
-  console.log(form, coords);
-};
+function updateLatLng(newLatLng: LatLng) {
+  markerPosition.latitude = newLatLng.latitude;
+  markerPosition.longitude = newLatLng.longitude;
+}
 
 watch(coords, (newCoords) => {
   if (newCoords.latitude && newCoords.longitude) {
-    markerPosition.value = [newCoords.latitude, newCoords.longitude];
+    markerPosition.latitude = newCoords.latitude;
+    markerPosition.longitude = newCoords.longitude;
   }
 });
 
@@ -103,6 +90,41 @@ onBeforeUnmount(() => {
 });
 
 const formRef = useTemplateRef("formRef");
+
+const { loading, error, report } = useReport();
+const toast = useToast();
+
+const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
+  const response = await report({
+    description: event.data.description,
+    images: event.data.images,
+    latitude:
+      event.data.location === "point"
+        ? markerPosition.latitude
+        : coords.value.latitude,
+    longitude:
+      event.data.location === "point"
+        ? markerPosition.longitude
+        : coords.value.longitude,
+  });
+
+  if (!response || error.value) {
+    toast.add({
+      title: "Error",
+      description: error.value,
+      color: "error",
+    });
+  } else {
+    toast.add({
+      title: "Sucess",
+      description: "Reported sucessfully with id :" + response.id,
+      color: "success",
+    });
+    form.description = "";
+    form.images = [];
+    form.location = "location";
+  }
+};
 </script>
 
 <template>
@@ -114,9 +136,9 @@ const formRef = useTemplateRef("formRef");
     </h1>
     <UForm
       ref="formRef"
-      :schema="schema"
+      :schema="reportSchema"
       :state="form"
-      @submit.prevent="onSubmit"
+      @submit="onSubmit"
       class="min-w-[35rem] flex flex-col items-center gap-5"
     >
       <UFormField
@@ -211,26 +233,33 @@ const formRef = useTemplateRef("formRef");
       >
         <URadioGroup
           variant="table"
-          v-model="locationValue"
+          v-model="form.location"
           :items="locationItems"
         />
         <Map
-          v-if="locationValue === 'point'"
+          v-if="form.location === 'point'"
           class="rounded-xl border border-neutral-200 min-w-[30rem] min-h-[25rem] mt-4"
           :zoom="14"
-          :center="mapCenter"
+          :center="[mapCenter.latitude, mapCenter.longitude]"
         >
           <Marker
             key="1"
-            :latitude="markerPosition[0]"
-            :longitude="markerPosition[1]"
+            :lat-lng="{
+              latitude: markerPosition.latitude,
+              longitude: markerPosition.longitude,
+            }"
             :draggable="true"
+            @update:lat-lng="updateLatLng"
           />
         </Map>
       </UFormField>
-      <UButton type="submit" size="xl" class="justify-center cursor-pointer">{{
-        t("reportProblem.sendButton")
-      }}</UButton>
+      <UButton
+        type="submit"
+        size="xl"
+        class="justify-center cursor-pointer"
+        :loading="loading"
+        >{{ t("reportProblem.sendButton") }}</UButton
+      >
     </UForm>
   </section>
 </template>

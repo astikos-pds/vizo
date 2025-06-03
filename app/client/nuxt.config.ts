@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBaseUrl: process.env.NUXT_API_BASE_URL || "http://localhost:8080",
+      cloudinaryName: process.env.NUXT_CLOUDINARY_NAME || "",
     },
   },
   css: ["~/assets/css/main.css"],
