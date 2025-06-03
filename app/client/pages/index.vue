@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { problems } from "~/data";
 import type { Map as LeafletMap, PointExpression } from "leaflet";
 import { useGeolocation } from "@vueuse/core";
+import { useProblem } from "~/composables/use-problem";
 
 definePageMeta({
   middleware: ["auth"],
@@ -26,14 +26,26 @@ const onMarkerClick = (problem: { latitude: number; longitude: number }) => {
   selectedProblem.value = problem;
   zoomToMarker(problem);
 };
+
+const { problems, loading, error } = useProblem();
+
+const toast = useToast();
+if (error.value) {
+  toast.add({
+    title: "Error",
+    description: error.value.message,
+    color: "error",
+  });
+}
 </script>
 
 <template>
-  <div class="min-h-screen w-[100%] bg-[#FAFAFA] flex justify-center p-6">
-    <Map ref="map" class="rounded-2xl" :zoom="zoom" :center="center">
+  <div class="min-h-screen w-[100%] flex justify-center p-6">
+    <div v-if="loading">Loading...</div>
+    <Map v-else ref="map" class="rounded-2xl" :zoom="zoom" :center="center">
       <Marker
         v-for="problem in problems"
-        @click="() => onMarkerClick(problem)"
+        @click="onMarkerClick(problem)"
         :key="problem.id"
         :lat-lng="{ latitude: problem.latitude, longitude: problem.longitude }"
       />
