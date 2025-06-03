@@ -2,7 +2,7 @@ export interface LoginRequest {
   document: string;
   password: string;
 }
-export interface LoginResponse {
+export interface TokenPairResponse {
   accessToken: string;
   refreshToken: string;
 }
@@ -10,7 +10,7 @@ export interface LoginResponse {
 export const loginUseCase = async (request: LoginRequest) => {
   const app = useNuxtApp();
 
-  return await app.$api<LoginResponse>("/auth/login", {
+  return await app.$api<TokenPairResponse>("/auth/login", {
     method: "POST",
     body: { ...request },
   });
@@ -37,6 +37,19 @@ export const registerAsCitizenUseCase = async (
   const app = useNuxtApp();
 
   return await app.$api<RegisterAsCitizenResponse>("/auth/register/citizen", {
+    method: "POST",
+    body: { ...request },
+  });
+};
+
+export interface RefreshRequest {
+  refreshToken: string;
+}
+
+export const refreshUseCase = async (request: RefreshRequest) => {
+  const app = useNuxtApp();
+
+  return await app.$api<TokenPairResponse>("/auth/refresh", {
     method: "POST",
     body: { ...request },
   });

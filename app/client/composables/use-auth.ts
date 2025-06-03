@@ -2,9 +2,11 @@ import {
   loginUseCase,
   registerAsCitizenUseCase,
   type LoginRequest,
-  type LoginResponse,
+  type TokenPairResponse,
   type RegisterAsCitizenRequest,
   type RegisterAsCitizenResponse,
+  type RefreshRequest,
+  refreshUseCase,
 } from "~/services/auth";
 
 export const useAuth = () => {
@@ -14,11 +16,12 @@ export const useAuth = () => {
   const { loading, error, handle } = useApiHandler();
 
   async function login(request: LoginRequest) {
-    const response = await handle<LoginResponse>(() => loginUseCase(request));
+    const response = await handle<TokenPairResponse>(() =>
+      loginUseCase(request)
+    );
 
     if (response) {
-      accessToken.value = response.accessToken;
-      refreshToken.value = response.refreshToken;
+      updateTokenPair(response);
     }
   }
 
@@ -28,6 +31,38 @@ export const useAuth = () => {
     );
   }
 
+  async function refresh(request: RefreshRequest): Promise<boolean> {
+    const response = await handle<TokenPairResponse>(() =>
+      refreshUseCase(request)
+    );
+
+    if (response) {
+      updateTokenPair(response);
+      return true;
+    }
+
+    return false;
+  }
+
+  async function ensureAuthenticated(): Promise<boolean> {
+    if (!accessToken.value) return false;
+
+    if (isTokenExpired(accessToken.value)) {
+      if (!refreshToken.value) return false;
+
+      if (isTokenExpired(refreshToken.value)) return false;
+
+      return await refresh({ refreshToken: refreshToken.value });
+    }
+
+    return true;
+  }
+
+  function updateTokenPair(tokens: TokenPairResponse) {
+    accessToken.value = tokens.accessToken;
+    refreshToken.value = tokens.refreshToken;
+  }
+
   return {
     loading,
     error,
@@ -35,5 +70,7 @@ export const useAuth = () => {
     refreshToken,
     login,
     registerAsCitizen,
+    refresh,
+    ensureAuthenticated,
   };
 };

@@ -11,6 +11,7 @@ const localesMapping = {
 </script>
 
 <template>
+  <NuxtLoadingIndicator color="primary" />
   <UApp :locale="localesMapping[locale]">
     <div class="max-w-[2000px] mx-auto min-h-screen">
       <NuxtLayout>
