@@ -28,8 +28,7 @@
       "length": "Pelo menos 8 caracteres",
       "uppercase": "Uma letra maiúscula",
       "lowercase": "Uma letra minúscula",
-      "number": "Pelo menos um número",
-      "special": "Um caractere especial (ex: $!%*?&)"
+      "number": "Pelo menos um número"
     },
     "requirementMet": "- Requisito atendido",
     "requirementNotMet": "- Requisito não atendido",
