@@ -4,11 +4,21 @@ import { useGeolocation } from "@vueuse/core";
 import { useProblems } from "~/composables/use-problem";
 import type { Problem } from "~/types/domain";
 
+const { t } = useI18n();
+
+useHead({
+  title: "Vizo",
+  meta: [
+    {
+      name: "description",
+      content: t("head.index.description"),
+    },
+  ],
+});
+
 definePageMeta({
   middleware: ["auth"],
 });
-
-const { t } = useI18n();
 
 const map = ref<LeafletMap | null>(null);
 const zoom = ref<number>(12);

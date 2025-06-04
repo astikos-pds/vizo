@@ -6,6 +6,11 @@ import { CPF_MASK, CNPJ_MASK } from "~/utils/masks";
 
 const { t } = useI18n();
 
+useHead({
+  title: t("head.login.title"),
+  meta: [{ name: "description", content: t("head.login.description") }],
+});
+
 definePageMeta({
   layout: "guest",
 });

@@ -1,4 +1,26 @@
 {
+  "head": {
+    "index": {
+      "description": "Engage-se no mapeamento colaborativo de problemas urbanos"
+    },
+    "login": {
+      "title": "Vizo | Entrar",
+      "description": "Entre na sua conta do Vizo"
+    },
+    "registerCitizen": {
+      "title": "Vizo | Cadastre-se como cidadão",
+      "description": "Cadastre-se como cidadão no Vizo"
+    },
+    "report": {
+      "title": "Vizo | Reporte um problem",
+      "description": "Reporte um problema para as autoridades municipais"
+    },
+    "settings": {
+      "title": "Vizo | Configurações",
+      "description": "Atualize suas configurações no Vizo"
+    }
+  },
+
   "navBar": {
     "home": "Início",
     "report": "Reportar",
@@ -7,7 +29,7 @@
   },
 
   "registerCitizen": {
-    "title": "Criar uma conta",
+    "title": "Crie uma conta",
     "firstName": "Nome",
     "firstNamePlaceholder": "Insira seu nome",
     "lastName": "Sobrenome",
@@ -54,8 +76,8 @@
   },
 
   "loginCitizen": {
-    "title": "Entrar na conta",
-    "cpf": "CPF",
+    "title": "Entre em sua conta",
+    "cpf": "Documento",
     "cpfPlaceholder": "Digite seu documento",
     "password": "Senha",
     "passwordPlaceholder": "Digite sua senha",

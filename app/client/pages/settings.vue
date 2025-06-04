@@ -3,11 +3,16 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import * as locales from "@nuxt/ui/locale";
 import { z } from "zod";
 
+const { t, locale, setLocale } = useI18n();
+
+useHead({
+  title: t("head.settings.title"),
+  meta: [{ name: "description", content: t("head.settings.description") }],
+});
+
 definePageMeta({
   middleware: ["auth"],
 });
-
-const { t, locale, setLocale } = useI18n();
 
 const languageItems = ref([
   { id: locales.en.code, label: locales.en.name, icon: "i-flagpack-us" },

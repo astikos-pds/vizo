@@ -8,13 +8,17 @@ import * as z from "zod";
 import { useReports } from "~/composables/use-reports";
 import type { LatLng } from "~/types/geolocation";
 import L from "leaflet";
-import type { registerRuntimeCompiler } from "vue";
+
+const { t } = useI18n();
+
+useHead({
+  title: t("head.report.title"),
+  meta: [{ name: "description", content: t("head.report.description") }],
+});
 
 definePageMeta({
   middleware: ["auth"],
 });
-
-const { t } = useI18n();
 
 const reportSchema = z.object({
   description: z

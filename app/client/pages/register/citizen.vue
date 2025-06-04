@@ -7,6 +7,13 @@ import { CPF_MASK } from "~/utils/masks";
 
 const { t } = useI18n();
 
+useHead({
+  title: t("head.registerCitizen.title"),
+  meta: [
+    { name: "description", content: t("head.registerCitizen.description") },
+  ],
+});
+
 definePageMeta({
   layout: "guest",
 });
