@@ -100,7 +100,9 @@ const geolocationErrorMessage = computed(() => {
     return t("reportProblem.localization.error.timeout");
 });
 const isLocationPrecise = computed(
-  () => coords.value.accuracy <= MAX_ACCEPTABLE_ACCURACY_IN_METERS
+  () =>
+    coords.value.accuracy <= MAX_ACCEPTABLE_ACCURACY_IN_METERS &&
+    coords.value.accuracy > 0
 );
 const CITY_CENTER: LatLng = { latitude: -23.5489, longitude: -46.6388 };
 
@@ -354,6 +356,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
           />
 
           <CurrentPositionMarker
+            v-if="isLocationPrecise && !geolocationError"
             :lat-lng="{
               latitude: coords.latitude,
               longitude: coords.longitude,

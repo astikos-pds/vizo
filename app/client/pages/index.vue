@@ -3,6 +3,7 @@ import type { Map as LeafletMap, PointExpression } from "leaflet";
 import { useGeolocation } from "@vueuse/core";
 import { useProblems } from "~/composables/use-problem";
 import type { Problem } from "~/types/domain";
+import { MAX_ACCEPTABLE_ACCURACY_IN_METERS } from "~/utils/constants";
 
 const { t } = useI18n();
 
@@ -40,7 +41,12 @@ const onMarkerClick = (problem: Problem) => {
   zoomToMarker(problem);
 };
 
-const { coords } = useGeolocation();
+const { coords, error: geolocationError } = useGeolocation();
+const isLocationPrecise = computed(
+  () =>
+    coords.value.accuracy <= MAX_ACCEPTABLE_ACCURACY_IN_METERS &&
+    coords.value.accuracy > 0
+);
 
 const { problems, loading, error } = useProblems();
 
@@ -78,6 +84,7 @@ if (error.value) {
         />
 
         <CurrentPositionMarker
+          v-if="isLocationPrecise && !geolocationError"
           :lat-lng="{
             latitude: coords.latitude,
             longitude: coords.longitude,
