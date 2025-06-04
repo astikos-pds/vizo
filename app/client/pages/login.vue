@@ -23,7 +23,6 @@ const loginSchema = z.object({
 
 type LoginSchema = z.infer<typeof loginSchema>;
 
-
 const form = reactive<LoginSchema>({
   document: "",
   password: "",

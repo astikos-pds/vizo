@@ -12,7 +12,9 @@ definePageMeta({
 const { t } = useI18n();
 
 const reportSchema = z.object({
-  description: z.string().min(1, t("reportProblem.validation.descriptionRequired")),
+  description: z
+    .string()
+    .min(1, t("reportProblem.validation.descriptionRequired")),
   images: z
     .custom<File[]>()
     .refine(
@@ -26,8 +28,7 @@ const reportSchema = z.object({
     .refine(
       (files) => files.every((file) => file.size <= MAX_FILE_SIZE_IN_BYTES),
       t("reportProblem.validation.imageSize", { size: MAX_FILE_SIZE_IN_MB })
-    )
-    .optional(),
+    ),
   location: z.string(),
 });
 

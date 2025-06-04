@@ -12,14 +12,26 @@ definePageMeta({
 });
 
 const passwordRequirements = {
-  minLength: { regex: /.{8,}/, text: t('registerCitizen.passwordRequirements.length') },
-  hasNumber: { regex: /\d/, text: t('registerCitizen.passwordRequirements.number') },
-  hasLowercase: { regex: /[a-z]/, text: t('registerCitizen.passwordRequirements.lowercase') },
-  hasUppercase: { regex: /[A-Z]/, text: t('registerCitizen.passwordRequirements.uppercase') },
+  minLength: {
+    regex: /.{8,}/,
+    text: t("registerCitizen.passwordRequirements.length"),
+  },
+  hasNumber: {
+    regex: /\d/,
+    text: t("registerCitizen.passwordRequirements.number"),
+  },
+  hasLowercase: {
+    regex: /[a-z]/,
+    text: t("registerCitizen.passwordRequirements.lowercase"),
+  },
+  hasUppercase: {
+    regex: /[A-Z]/,
+    text: t("registerCitizen.passwordRequirements.uppercase"),
+  },
 };
 
 const passwordSchema = z
-  .string() 
+  .string()
   .min(8, passwordRequirements.minLength.text)
   .regex(
     passwordRequirements.hasNumber.regex,
@@ -44,7 +56,7 @@ const registerSchema = z
       .refine((cpf) => {
         const result = validateDocument(cpf);
         return result.isValid && result.type === "cpf";
-      }, "Invalid CPF"),
+      }, t("registerCitizen.verification.invalidCpf")),
     email: z.string().email(t("registerCitizen.verification.email")),
     birthDate: z
       .string()
@@ -68,7 +80,6 @@ const registerSchema = z
   });
 
 type RegisterSchema = z.output<typeof registerSchema>;
-
 
 const form = reactive<RegisterSchema>({
   firstName: "",

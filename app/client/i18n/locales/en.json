@@ -46,8 +46,9 @@
       "name": "Name is required",
       "email": "Invalid email",
       "cpf": "CPF is required",
+      "invalidCpf": "Invalid CPF",
       "date": "Invalid date",
-      "password": "Passwords don't match",
+      "confirmedPassword": "Passwords don't match",
       "minAge": "You must be at least {age} years old"
     }
   },
@@ -94,7 +95,7 @@
       "descriptionRequired": "Description is required",
       "maxImages": "You can upload a maximum of 5 images",
       "mustBeImages": "All files must be images",
-      "imageSize": "Each image must have at most {MAX_FILE_SIZE_IN_MB} mb"
+      "imageSize": "Each image must have at most { size } mb"
     }
   },
 

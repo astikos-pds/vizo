@@ -45,10 +45,11 @@
     "verification": {
       "name": "Preencha seu nome",
       "email": "Email inválido",
-      "cpf": "CPF inválido",
+      "cpf": "Preencha seu CPF",
+      "invalidCpf": "CPF inválido",
       "date": "Data inválida",
-      "password": "As senhas não correspondem",
-      "minAge": "Você deve ter pelo menos {age} anos"
+      "confirmedPassword": "As senhas não correspondem",
+      "minAge": "Você deve ter pelo menos { age } anos"
     }
   },
 
@@ -58,7 +59,7 @@
     "cpfPlaceholder": "Digite seu documento",
     "password": "Senha",
     "passwordPlaceholder": "Digite sua senha",
-    "dontHaveAccount": "Ainda não possui uma conta? ",
+    "dontHaveAccount": "Ainda não possui uma conta?",
     "signUpHere": "Cadastre-se aqui.",
     "signInButton": "Entrar",
     "verification": {
@@ -78,9 +79,6 @@
     "chooseFile": "Escolher arquivos",
     "selectedFile": "Nenhum arquivo escolhido.",
     "files": "arquivos.",
-    "maximumImages": "",
-    "mustBeImages": "",
-    "imageSize": "Cada imagem deve ter no máximo ",
     "locationLabel": "Localização",
     "localization": {
       "current": "Localização atual",
@@ -94,7 +92,7 @@
       "descriptionRequired": "Preencha a descrição.",
       "maxImages": "Você pode enviar até 5 imagens.",
       "mustBeImages": "Todos os arquivos precisam ser imagens.",
-      "imageSize": "Cada imagem deve ter no máximo {MAX_FILE_SIZE_IN_MB} mb"
+      "imageSize": "Cada imagem deve ter no máximo { size } mb"
     }
   },
 
