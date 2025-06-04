@@ -11,6 +11,7 @@ interface Props {
   latLng: LatLng;
   icon?: Icon;
   draggable?: boolean;
+  zIndexOffset?: number;
 }
 
 const props = defineProps<Props>();
@@ -37,6 +38,7 @@ function onMove(event: any) {
       @moveend="onMove"
       :lat-lng="[props.latLng.latitude, props.latLng.longitude]"
       :draggable="props.draggable"
+      :z-index-offset="props.zIndexOffset"
     >
       <LIcon :icon-url="props.icon?.url" :icon-size="props.icon?.size" />
     </LMarker>
@@ -47,6 +49,7 @@ function onMove(event: any) {
       @moveend="onMove"
       :lat-lng="[props.latLng.latitude, props.latLng.longitude]"
       :draggable="props.draggable"
+      :z-index-offset="props.zIndexOffset"
     />
   </div>
 </template>

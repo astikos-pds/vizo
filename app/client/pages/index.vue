@@ -97,7 +97,7 @@ if (error.value) {
       <ProblemDetails
         v-if="isAsideOpen && selectedProblem"
         @close="isAsideOpen = false"
-        :problem-id="selectedProblem.id"
+        :problem="selectedProblem"
         :key="selectedProblem.id"
       />
     </div>

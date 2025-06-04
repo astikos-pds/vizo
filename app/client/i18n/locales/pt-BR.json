@@ -28,6 +28,20 @@
     "exit": "Sair"
   },
 
+  "problemDetails": {
+    "status": {
+      "analysis": "Esse problema está sob análise pelas autoridades municipais",
+      "inProgress": "Esse problema está sendo resolvido pelas autoridades municipais",
+      "solved": "Esse problema foi resolvido pelas autoridades municipais",
+      "default": "Status desconhecido"
+    },
+    "credibility": {
+      "low": "Poucos cidadãos reportaram esse problema",
+      "medium": "Alguns cidadãos reportaram esse problema",
+      "high": "Muitos cidadãos reportaram esse problema"
+    }
+  },
+
   "registerCitizen": {
     "title": "Crie uma conta",
     "firstName": "Nome",

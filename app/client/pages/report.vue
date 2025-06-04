@@ -99,6 +99,9 @@ const geolocationErrorMessage = computed(() => {
   if (geolocationError.value?.TIMEOUT)
     return t("reportProblem.localization.error.timeout");
 });
+const isLocationPrecise = computed(
+  () => coords.value.accuracy <= MAX_ACCEPTABLE_ACCURACY_IN_METERS
+);
 const CITY_CENTER: LatLng = { latitude: -23.5489, longitude: -46.6388 };
 
 const mapCenter = computed<LatLng>(() =>
@@ -163,7 +166,8 @@ const { loading, error, report } = useReports();
 const toast = useToast();
 
 const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
-  if (markerOutOfBounds && event.data.location === "point") return;
+  if (markerOutOfBounds && event.data.location === "point" && isLocationPrecise)
+    return;
 
   const response = await report({
     description: event.data.description,
@@ -323,7 +327,10 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
           :items="locationItems"
           :size="size"
         />
-        <p v-if="markerOutOfBounds" class="text-error mt-3">
+        <p
+          v-if="isLocationPrecise && markerOutOfBounds"
+          class="text-error mt-3"
+        >
           {{
             t("reportProblem.markerOutOfBounds", {
               radius: MAX_RADIUS_IN_METERS,
@@ -354,7 +361,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
           />
 
           <LCircle
-            v-if="coords.accuracy <= MAX_ACCEPTABLE_ACCURACY_IN_METERS"
+            v-if="isLocationPrecise"
             :lat-lng="[coords.latitude, coords.longitude]"
             :radius="MAX_RADIUS_IN_METERS"
             fill-color="#0003ff"

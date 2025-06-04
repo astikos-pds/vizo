@@ -28,6 +28,20 @@
     "exit": "Exit"
   },
 
+  "problemDetails": {
+    "status": {
+      "analysis": "This problem is under analysis by the municipalities",
+      "inProgress": "This problem is being resolved by the municipalities",
+      "solved": "This problem was resolved by the municipalities",
+      "default": "Unrecognized status"
+    },
+    "credibility": {
+      "low": "Few citizens reported this problem",
+      "medium": "Some citizens reported this problem",
+      "high": "Many citizens reported this problem"
+    }
+  },
+
   "registerCitizen": {
     "title": "Create an account",
     "firstName": "First name",
@@ -74,6 +88,7 @@
       "minAge": "You must be at least {age} years old"
     }
   },
+
   "loginCitizen": {
     "title": "Log in to your account",
     "cpf": "Document",

@@ -45,7 +45,13 @@ const textClasses = ref<string>("text-lg xl:text-xl");
     :class="collapsed ? '' : 'lg:min-w-[20%]'"
   >
     <header class="h-[10%] flex justify-between items-center">
-      <div v-if="!collapsed">Vizo</div>
+      <div
+        v-if="!collapsed"
+        class="flex flex-row gap-2 justify-center items-center"
+      >
+        <img src="/public/favicon.svg" alt="Logo" class="size-18" />
+        <h1 class="hidden xl:block text-4xl font-semibold uppercase">Vizo</h1>
+      </div>
       <UButton
         icon="i-lucide-menu"
         color="neutral"
