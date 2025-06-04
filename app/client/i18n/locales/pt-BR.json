@@ -41,7 +41,15 @@
     "alreadyHaveAccount": "Já possui uma conta?",
     "logInHere": "Faça login aqui.",
     "signUpButton": "Cadastrar",
-    "optional": "Opcional"
+    "optional": "Opcional",
+    "verification": {
+      "name": "Preencha seu nome",
+      "email": "Email inválido",
+      "cpf": "CPF inválido",
+      "date": "Data inválida",
+      "password": "As senhas não correspondem",
+      "minAge": "Você deve ter pelo menos {age} anos"
+    }
   },
 
   "loginCitizen": {
@@ -53,10 +61,10 @@
     "dontHaveAccount": "Ainda não possui uma conta? ",
     "signUpHere": "Cadastre-se aqui.",
     "signInButton": "Entrar",
-    "errors": {
-      "documentRequired": "Document required",
-      "invalidDocument": "Invalid document",
-      "passwordRequired": "Password required"
+    "verification": {
+      "documentRequired": "Insira o documento",
+      "invalidDocument": "Documento inválido",
+      "passwordRequired": "Insira a senha"
     }
   },
 
@@ -70,9 +78,8 @@
     "chooseFile": "Escolher arquivos",
     "selectedFile": "Nenhum arquivo escolhido.",
     "files": "arquivos.",
-    "descriptionRequired": "Preencha a descrição.",
-    "maximumImages": "Você pode enviar até 5 imagens.",
-    "mustBeImages": "Todos os arquivos precisam ser imagens.",
+    "maximumImages": "",
+    "mustBeImages": "",
     "imageSize": "Cada imagem deve ter no máximo ",
     "locationLabel": "Localização",
     "localization": {
@@ -82,7 +89,13 @@
       "pointDescription": "Aponte no mapa a posição do problema."
     },
     "geolocationAccuracyWarning": "A cerca de { accuracy } metros de distância da sua posição real. Calculando posição com mais precisão...",
-    "sendButton": "Enviar"
+    "sendButton": "Enviar",
+    "validation": {
+      "descriptionRequired": "Preencha a descrição.",
+      "maxImages": "Você pode enviar até 5 imagens.",
+      "mustBeImages": "Todos os arquivos precisam ser imagens.",
+      "imageSize": "Cada imagem deve ter no máximo {MAX_FILE_SIZE_IN_MB} mb"
+    }
   },
 
   "settings": {

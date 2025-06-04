@@ -41,7 +41,15 @@
     "alreadyHaveAccount": "Already have an account?",
     "logInHere": "Log in here.",
     "signUpButton": "Sign Up",
-    "optional": "Optional"
+    "optional": "Optional",
+    "verification": {
+      "name": "Name is required",
+      "email": "Invalid email",
+      "cpf": "CPF is required",
+      "date": "Invalid date",
+      "password": "Passwords don't match",
+      "minAge": "You must be at least {age} years old"
+    }
   },
   "loginCitizen": {
     "title": "Log in to your account",
@@ -52,7 +60,7 @@
     "dontHaveAccount": "Don't have an account? ",
     "signUpHere": "Sign up here.",
     "signInButton": "Sign In",
-    "errors": {
+    "verification": {
       "documentRequired": "Document required",
       "invalidDocument": "Invalid document",
       "passwordRequired": "Password required"
@@ -81,7 +89,13 @@
       "pointDescription": "Point on map the coordinates of the problem."
     },
     "geolocationAccuracyWarning": "About { accuracy } meters away of your actual position. Calculating position more accurately....",
-    "sendButton": "Send"
+    "sendButton": "Send",
+    "validation": {
+      "descriptionRequired": "Description is required",
+      "maxImages": "You can upload a maximum of 5 images",
+      "mustBeImages": "All files must be images",
+      "imageSize": "Each image must have at most {MAX_FILE_SIZE_IN_MB} mb"
+    }
   },
 
   "settings": {
