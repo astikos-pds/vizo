@@ -17,8 +17,6 @@ const icon = computed(
 watch(language, (newLanguage) => {
   setLocale(newLanguage);
 });
-
-console.log(icon);
 </script>
 
 <template>
