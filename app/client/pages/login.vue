@@ -1,12 +1,28 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
-import { loginSchema, type LoginSchema } from "~/lib/schema/login-schema";
+import * as z from "zod";
+import { validateDocument } from "~/utils/document-validation";
+import { CPF_MASK, CNPJ_MASK } from "~/utils/masks";
 
 const { t } = useI18n();
 
 definePageMeta({
   layout: "guest",
 });
+
+const loginSchema = z.object({
+  document: z
+    .string()
+    .min(1, t("loginCitizen.verification.documentRequired"))
+    .refine(
+      (document) => validateDocument(document).isValid,
+      t("loginCitizen.verification.invalidDocument")
+    ),
+  password: z.string().min(1, t("loginCitizen.verification.passwordRequired")),
+});
+
+type LoginSchema = z.infer<typeof loginSchema>;
+
 
 const form = reactive<LoginSchema>({
   document: "",

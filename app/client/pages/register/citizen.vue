@@ -1,16 +1,74 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
-import {
-  registerSchema,
-  passwordRequirements,
-  type RegisterSchema,
-} from "~/lib/schema/register-schema";
+import * as z from "zod";
+import { validateDocument } from "~/utils/document-validation";
+import { MIN_AGE } from "~/utils/constants";
+import { CPF_MASK } from "~/utils/masks";
 
 const { t } = useI18n();
 
 definePageMeta({
   layout: "guest",
 });
+
+const passwordRequirements = {
+  minLength: { regex: /.{8,}/, text: t('registerCitizen.passwordRequirements.length') },
+  hasNumber: { regex: /\d/, text: t('registerCitizen.passwordRequirements.number') },
+  hasLowercase: { regex: /[a-z]/, text: t('registerCitizen.passwordRequirements.lowercase') },
+  hasUppercase: { regex: /[A-Z]/, text: t('registerCitizen.passwordRequirements.uppercase') },
+};
+
+const passwordSchema = z
+  .string() 
+  .min(8, passwordRequirements.minLength.text)
+  .regex(
+    passwordRequirements.hasNumber.regex,
+    passwordRequirements.hasNumber.text
+  )
+  .regex(
+    passwordRequirements.hasLowercase.regex,
+    passwordRequirements.hasLowercase.text
+  )
+  .regex(
+    passwordRequirements.hasUppercase.regex,
+    passwordRequirements.hasUppercase.text
+  );
+
+const registerSchema = z
+  .object({
+    firstName: z.string().min(1, t("registerCitizen.verification.name")),
+    lastName: z.string().optional(),
+    cpf: z
+      .string()
+      .min(1, t("registerCitizen.verification.cpf"))
+      .refine((cpf) => {
+        const result = validateDocument(cpf);
+        return result.isValid && result.type === "cpf";
+      }, "Invalid CPF"),
+    email: z.string().email(t("registerCitizen.verification.email")),
+    birthDate: z
+      .string()
+      .regex(/^\d{4}-\d{2}-\d{2}$/, t("registerCitizen.verification.date"))
+      .refine((date) => {
+        const birthDate = new Date(date);
+        const today = new Date();
+        const minAgeDate = new Date(
+          today.getFullYear() - MIN_AGE,
+          today.getMonth(),
+          today.getDate()
+        );
+        return birthDate <= minAgeDate;
+      }, t("registerCitizen.verification.minAge", { age: MIN_AGE })),
+    password: passwordSchema,
+    confirmedPassword: z.string(),
+  })
+  .refine((fields) => fields.confirmedPassword === fields.password, {
+    message: t("registerCitizen.verification.password"),
+    path: ["confirmedPassword"],
+  });
+
+type RegisterSchema = z.output<typeof registerSchema>;
+
 
 const form = reactive<RegisterSchema>({
   firstName: "",

@@ -41,7 +41,15 @@
     "alreadyHaveAccount": "Já possui uma conta?",
     "logInHere": "Faça login aqui.",
     "signUpButton": "Cadastrar",
-    "optional": "Opcional"
+    "optional": "Opcional",
+    "verification": {
+      "name": "Preencha seu nome",
+      "email": "Email inválido",
+      "cpf": "CPF inválido",
+      "date": "Data inválida",
+      "password": "As senhas não correspondem",
+      "minAge": "Você deve ter pelo menos {age} anos"
+    }
   },
 
   "loginCitizen": {
@@ -53,10 +61,10 @@
     "dontHaveAccount": "Ainda não possui uma conta? ",
     "signUpHere": "Cadastre-se aqui.",
     "signInButton": "Entrar",
-    "errors": {
-      "documentRequired": "Document required",
-      "invalidDocument": "Invalid document",
-      "passwordRequired": "Password required"
+    "verification": {
+      "documentRequired": "Insira o documento",
+      "invalidDocument": "Documento inválido",
+      "passwordRequired": "Insira a senha"
     }
   },
 
