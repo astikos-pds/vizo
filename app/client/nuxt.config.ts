@@ -18,7 +18,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  plugins: ["~/plugins/vue-the-mask.ts", "~/plugins/api.ts"],
+  plugins: ["~/plugins/api.ts"],
   modules: [
     "@nuxtjs/leaflet",
     "@nuxt/icon",

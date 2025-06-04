@@ -227,7 +227,6 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
             size="xl"
             :placeholder="t('registerCitizen.cpfPlaceholder')"
             class="w-full text-xl"
-            v-mask="CPF_MASK"
           />
         </UFormField>
         <UFormField

@@ -92,7 +92,6 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           size="xl"
           :placeholder="t('loginCitizen.cpfPlaceholder')"
           class="w-full text-xl"
-          v-mask="[CPF_MASK, CNPJ_MASK]"
         />
       </UFormField>
 
