@@ -43,7 +43,7 @@ export const registerAsCitizenUseCase = async (
 };
 
 export interface RefreshRequest {
-  refreshToken: string;
+  token: string;
 }
 
 export const refreshUseCase = async (request: RefreshRequest) => {

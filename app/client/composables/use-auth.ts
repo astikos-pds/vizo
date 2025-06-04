@@ -56,7 +56,7 @@ export const useAuth = () => {
 
       if (isTokenExpired(refreshToken.value)) return false;
 
-      return await refresh({ refreshToken: refreshToken.value });
+      return await refresh({ token: refreshToken.value });
     }
 
     return true;
