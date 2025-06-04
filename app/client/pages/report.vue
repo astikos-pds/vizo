@@ -245,9 +245,9 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
         class="w-full"
         :help="
           coords.accuracy > MAX_ACCEPTABLE_ACCURACY_IN_METERS
-            ? `${coords.accuracy.toFixed(0)} ${t(
-                'reportProblem.geolocationAccuracyWarning'
-              )}`
+            ? t('reportProblem.geolocationAccuracyWarning', {
+                accuracy: coords.accuracy.toFixed(0),
+              })
             : ''
         "
       >

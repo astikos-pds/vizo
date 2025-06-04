@@ -80,7 +80,7 @@
       "point": "Point on map",
       "pointDescription": "Point on map the coordinates of the problem."
     },
-    "geolocationAccuracyWarning": "meters away. Calculating position more precisely...",
+    "geolocationAccuracyWarning": "About { accuracy } meters away of your actual position. Calculating position more accurately....",
     "sendButton": "Send"
   },
 

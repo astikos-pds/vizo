@@ -81,7 +81,7 @@
       "point": "Localizar no mapa",
       "pointDescription": "Aponte no mapa a posição do problema."
     },
-    "geolocationAccuracyWarning": "metros de distância. Calculando posição com mais precisão...",
+    "geolocationAccuracyWarning": "A cerca de { accuracy } metros de distância da sua posição real. Calculando posição com mais precisão...",
     "sendButton": "Enviar"
   },
 
