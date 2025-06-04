@@ -10,6 +10,12 @@ export interface ReportRequest {
 export const reportUseCase = async (
   request: ReportRequest
 ): Promise<Report> => {
+  const { ensureAuthenticated } = useAuth();
+  const ok = await ensureAuthenticated();
+  if (!ok) {
+    await navigateTo("/login");
+  }
+
   const app = useNuxtApp();
   const accessToken = useCookie("access_token");
 

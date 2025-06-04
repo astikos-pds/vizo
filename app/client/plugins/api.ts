@@ -6,14 +6,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     headers: {
       "Content-Type": "application/json",
     },
-    onRequest: async () => {
-      const { ensureAuthenticated } = useAuth();
-      const ok = await ensureAuthenticated();
-      if (!ok) {
-        await navigateTo("/login");
-        throw new Error("User not authenticated");
-      }
-    },
   });
 
   return {
