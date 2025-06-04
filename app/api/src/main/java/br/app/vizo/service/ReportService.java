@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -71,12 +72,16 @@ public class ReportService {
 
         Problem problem = existingProblem.orElseGet(() -> new Problem(ProblemStatus.ANALYSIS, coordinates, 0.0));
 
-        Double accumulatedCredibility = problem.getAccumulatedCredibility() + (citizen.getCredibilityPoints() * 2);
+        Double accumulatedCredibility = problem.getAccumulatedCredibility() + this.calculateReportCredibility(
+                citizen.getCredibilityPoints(),
+                body.description(),
+                body.imagesUrls().size()
+        );
 
         problem.setAccumulatedCredibility(accumulatedCredibility);
         problem.setLastReportedAt(Instant.now());
 
-        if (problem.getAccumulatedCredibility() >= 10) {
+        if (problem.getAccumulatedCredibility() >= 100) {
             problem.setValidated(true);
         }
 
@@ -109,5 +114,25 @@ public class ReportService {
 
     private Boolean isProblemAlreadyReportedByCitizen(UUID problemId, UUID citizenId) {
         return this.reportRepository.existsByProblemIdAndCitizenId(problemId, citizenId);
+    }
+
+    private static final double REPUTATION_WEIGHT = 3;
+    private static final double DETAILING_SCORE = 2;
+    private static final double EVIDENCE_WEIGHT = 5;
+
+    private static final int MAX_WORDS = 255;
+    private static final int MAX_IMAGES = 5;
+    private Double calculateReportCredibility(Double citizenCredibility, String description, int numberOfImages) {
+        double reputationScore = citizenCredibility * REPUTATION_WEIGHT;
+
+        long uniqueWords = Arrays.stream(description.split(" ")).distinct().count();
+        double detailingScore = (Math.min(uniqueWords, MAX_WORDS) / (double) MAX_WORDS) * DETAILING_SCORE;
+
+        double evidenceScore = (Math.min(numberOfImages, MAX_IMAGES) / (double) MAX_IMAGES) * EVIDENCE_WEIGHT;
+
+        double maxPossibleScore = REPUTATION_WEIGHT + DETAILING_SCORE + EVIDENCE_WEIGHT;
+        double rawScore = reputationScore + detailingScore + evidenceScore;
+
+        return (rawScore / maxPossibleScore) * 100;
     }
 }
