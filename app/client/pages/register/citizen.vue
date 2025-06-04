@@ -247,6 +247,8 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
         >{{ t("registerCitizen.signUpButton") }}</UButton
       >
     </UForm>
+
+    <LocalePicker class="absolute bottom-5" />
   </section>
   <section
     class="lg:min-w-[45%] xl:min-w-[55%] bg-linear-to-tr to-primary from-neutral-400"

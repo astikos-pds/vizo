@@ -102,5 +102,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         >{{ t("loginCitizen.signInButton") }}</UButton
       >
     </UForm>
+
+    <LocalePicker class="absolute bottom-5" />
   </section>
 </template>
