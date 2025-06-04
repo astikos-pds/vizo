@@ -84,6 +84,11 @@
     "imageSize": "Each image must have at most ",
     "locationLabel": "Location",
     "localization": {
+      "error": {
+        "permissionDenied": "Permission to track geolocation denied.",
+        "positionUnavailable": "Geolocation unavailable.",
+        "timeout": "Could not obtain your geolocation, try again later."
+      },
       "current": "Current location",
       "currentDescription": "Use my current location for reporting.",
       "point": "Point on map",

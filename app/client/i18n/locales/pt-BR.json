@@ -81,6 +81,11 @@
     "files": "arquivos.",
     "locationLabel": "Localização",
     "localization": {
+      "error": {
+        "permissionDenied": "Permissão de rastrear geolocalização negada.",
+        "positionUnavailable": "Geolocalização indisponível.",
+        "timeout": "Não foi possível obter sua geolocalização, tente novamente mais tarde."
+      },
       "current": "Localização atual",
       "currentDescription": "Usar minha localização atual para reportar.",
       "point": "Localizar no mapa",

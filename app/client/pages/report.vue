@@ -37,7 +37,7 @@ type ReportSchema = z.output<typeof reportSchema>;
 const form = reactive<ReportSchema>({
   description: "",
   images: [],
-  location: "location",
+  location: "current",
 });
 
 const previewUrls = ref<string[]>([]);
@@ -74,7 +74,7 @@ const locationItems = ref<RadioGroupItem[]>([
   {
     label: t("reportProblem.localization.current"),
     description: t("reportProblem.localization.currentDescription"),
-    value: "location",
+    value: "current",
   },
   {
     label: t("reportProblem.localization.point"),
@@ -83,7 +83,15 @@ const locationItems = ref<RadioGroupItem[]>([
   },
 ]);
 
-const { coords } = useGeolocation();
+const { coords, error: geolocationError } = useGeolocation();
+const geolocationErrorMessage = computed(() => {
+  if (geolocationError.value?.PERMISSION_DENIED)
+    return t("reportProblem.localization.error.permissionDenied");
+  if (geolocationError.value?.POSITION_UNAVAILABLE)
+    return t("reportProblem.localization.error.positionUnavailable");
+  if (geolocationError.value?.TIMEOUT)
+    return t("reportProblem.localization.error.timeout");
+});
 const CITY_CENTER: LatLng = { latitude: -23.5489, longitude: -46.6388 };
 
 const mapCenter = computed<LatLng>(() =>
@@ -162,7 +170,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
 
     form.description = "";
     form.images = [];
-    form.location = "location";
+    form.location = "current";
   }
 };
 </script>
@@ -174,11 +182,13 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
     <h1 class="text-3xl text-center font-semibold text-neutral-900 px-2">
       {{ t("reportProblem.title") }}
     </h1>
+
     <UForm
       ref="formRef"
       :schema="reportSchema"
       :state="form"
       @submit="onSubmit"
+      :disabled="geolocationError !== null"
       class="w-[85%] md:max-w-[30rem] lg:min-w-[35rem] mt-3 flex flex-col items-center gap-5"
     >
       <UFormField
@@ -208,6 +218,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
           color="neutral"
           variant="outline"
           class="w-full p-0"
+          :disabled="geolocationError !== null"
           :class="
             formRef?.getErrors('images').length ? 'border border-error' : ''
           "
@@ -215,6 +226,9 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
           <label
             for="images"
             class="w-full text-start text-neutral-500 cursor-pointer mx-3 my-2"
+            :class="
+              geolocationError !== null && 'disabled hover:cursor-not-allowed'
+            "
             >{{ t("reportProblem.chooseFile") }}
             <span class="text-neutral-900 font-normal">
               {{
@@ -274,6 +288,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
             : ''
         "
       >
+        <p class="text-error mb-2">{{ geolocationErrorMessage }}</p>
         <URadioGroup
           variant="table"
           v-model="form.location"
@@ -303,6 +318,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
         size="xl"
         class="justify-center cursor-pointer"
         :loading="loading"
+        :disabled="geolocationError !== null"
         >{{ t("reportProblem.sendButton") }}</UButton
       >
     </UForm>
