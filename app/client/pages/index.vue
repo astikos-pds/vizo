@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import type { Map as LeafletMap, PointExpression } from "leaflet";
 import { useGeolocation } from "@vueuse/core";
-import { useProblem } from "~/composables/use-problem";
+import { useProblems } from "~/composables/use-problem";
 import type { Problem } from "~/types/domain";
 
 definePageMeta({
   middleware: ["auth"],
 });
+
+const { t } = useI18n();
 
 const map = ref<LeafletMap | null>(null);
 const zoom = ref<number>(12);
@@ -28,13 +30,16 @@ const onMarkerClick = (problem: Problem) => {
   zoomToMarker(problem);
 };
 
-const { problems, loading, error } = useProblem();
+const { problems, loading, error } = useProblems();
 
 const toast = useToast();
 if (error.value) {
   toast.add({
     title: "Error",
-    description: error.value.message,
+    description: t(
+      `toast.error.description.${error.value.statusCode}`,
+      t("toast.error.description.500")
+    ),
     color: "error",
   });
 }

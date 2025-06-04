@@ -21,14 +21,17 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
   if (error.value) {
     toast.add({
-      title: "Error",
-      description: error.value,
+      title: t("toast.error.title"),
+      description: t(
+        `toast.error.description.${error.value}`,
+        t("toast.error.description.500")
+      ),
       color: "error",
     });
   } else {
     toast.add({
-      title: "Sucess",
-      description: "Logged in sucessfully",
+      title: t("toast.success.title"),
+      description: t("toast.success.description.loggedIn"),
       color: "success",
     });
 

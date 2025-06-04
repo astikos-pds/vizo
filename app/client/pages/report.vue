@@ -90,7 +90,6 @@ onBeforeUnmount(() => {
 });
 
 const breakpoints = useBreakpoints({
-  lg: 1024,
   md: 768,
 });
 
@@ -122,16 +121,22 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
 
   if (!response || error.value) {
     toast.add({
-      title: "Error",
-      description: error.value,
+      title: t("toast.error.title"),
+      description: t(
+        `toast.error.description.${error.value}`,
+        t("toast.error.description.500")
+      ),
       color: "error",
     });
   } else {
     toast.add({
-      title: "Sucess",
-      description: "Reported sucessfully with id :" + response.id,
+      title: t("toast.success.title"),
+      description: t("toast.success.description.reportCreated", {
+        id: response.id,
+      }),
       color: "success",
     });
+
     form.description = "";
     form.images = [];
     form.location = "location";
