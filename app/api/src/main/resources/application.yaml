@@ -3,7 +3,7 @@ spring:
     name: vizo
 
   datasource:
-    url: jdbc:postgresql://${DATABASE_URL:localhost:5432}/${DATABASE_NAME:vizo}
+    url: jdbc:postgresql://${DATABASE_URL:localhost:5431}/${DATABASE_NAME:vizo}
     username: ${DATABASE_USERNAME:postgres}
     password: ${DATABASE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver

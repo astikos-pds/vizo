@@ -1,4 +1,15 @@
 services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./api/.env
+    restart: unless-stopped
+    depends_on:
+      - db
   db:
     image: postgis/postgis:15-3.3
     container_name: vizo-db
