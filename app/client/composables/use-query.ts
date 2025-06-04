@@ -3,6 +3,12 @@ interface QueryOptions {
 }
 
 export const useQuery = <T>(url: string, options?: QueryOptions) => {
+  const { ensureAuthenticated } = useAuth();
+  const ok = ensureAuthenticated();
+  if (!ok) {
+    return navigateTo("/login");
+  }
+
   const config = useRuntimeConfig();
   const accessToken = useCookie("access_token");
 
