@@ -89,7 +89,13 @@
       "pointDescription": "Point on map the coordinates of the problem."
     },
     "geolocationAccuracyWarning": "meters away. Calculating position more precisely...",
-    "sendButton": "Send"
+    "sendButton": "Send",
+    "validation": {
+      "descriptionRequired": "Description is required",
+      "maxImages": "You can upload a maximum of 5 images",
+      "mustBeImages": "All files must be images",
+      "imageSize": "Each image must have at most {MAX_FILE_SIZE_IN_MB} mb"
+    }
   },
 
   "settings": {

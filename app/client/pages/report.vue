@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent, RadioGroupItem } from "@nuxt/ui";
 import { MAX_ACCEPTABLE_ACCURACY_IN_METERS } from "~/utils/constants";
-import { reportSchema, type ReportSchema } from "~/lib/schema/report-schema";
+import * as z from "zod";
 import { useReports } from "~/composables/use-reports";
 import type { LatLng } from "~/types/geolocation";
 
@@ -10,6 +10,28 @@ definePageMeta({
 });
 
 const { t } = useI18n();
+
+const reportSchema = z.object({
+  description: z.string().min(1, t("reportProblem.validation.descriptionRequired")),
+  images: z
+    .custom<File[]>()
+    .refine(
+      (files) => files.length <= 5,
+      t("reportProblem.validation.maxImages", { count: 5 })
+    )
+    .refine(
+      (files) => files.every((file) => file.type.startsWith("image/")),
+      t("reportProblem.validation.mustBeImages")
+    )
+    .refine(
+      (files) => files.every((file) => file.size <= MAX_FILE_SIZE_IN_BYTES),
+      t("reportProblem.validation.imageSize", { size: MAX_FILE_SIZE_IN_MB })
+    )
+    .optional(),
+  location: z.string(),
+});
+
+type ReportSchema = z.output<typeof reportSchema>;
 
 const form = reactive<ReportSchema>({
   description: "",

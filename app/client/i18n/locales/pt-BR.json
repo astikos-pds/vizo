@@ -78,9 +78,8 @@
     "chooseFile": "Escolher arquivos",
     "selectedFile": "Nenhum arquivo escolhido.",
     "files": "arquivos.",
-    "descriptionRequired": "Preencha a descrição.",
-    "maximumImages": "Você pode enviar até 5 imagens.",
-    "mustBeImages": "Todos os arquivos precisam ser imagens.",
+    "maximumImages": "",
+    "mustBeImages": "",
     "imageSize": "Cada imagem deve ter no máximo ",
     "locationLabel": "Localização",
     "localization": {
@@ -90,7 +89,13 @@
       "pointDescription": "Aponte no mapa a posição do problema."
     },
     "geolocationAccuracyWarning": "metros de distância. Calculando posição com mais precisão...",
-    "sendButton": "Enviar"
+    "sendButton": "Enviar",
+    "validation": {
+      "descriptionRequired": "Preencha a descrição.",
+      "maxImages": "Você pode enviar até 5 imagens.",
+      "mustBeImages": "Todos os arquivos precisam ser imagens.",
+      "imageSize": "Cada imagem deve ter no máximo {MAX_FILE_SIZE_IN_MB} mb"
+    }
   },
 
   "settings": {
