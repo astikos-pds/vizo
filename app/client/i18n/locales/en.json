@@ -95,6 +95,7 @@
       "pointDescription": "Point on map the coordinates of the problem."
     },
     "geolocationAccuracyWarning": "About { accuracy } meters away of your actual position. Calculating position more accurately....",
+    "markerOutOfBounds": "Marker outside the permitted limits of { radius } meters.",
     "sendButton": "Send",
     "validation": {
       "descriptionRequired": "Description is required",

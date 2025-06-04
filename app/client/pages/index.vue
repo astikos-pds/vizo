@@ -30,6 +30,8 @@ const onMarkerClick = (problem: Problem) => {
   zoomToMarker(problem);
 };
 
+const { coords } = useGeolocation();
+
 const { problems, loading, error } = useProblems();
 
 const toast = useToast();
@@ -62,6 +64,13 @@ if (error.value) {
           :lat-lng="{
             latitude: problem.latitude,
             longitude: problem.longitude,
+          }"
+        />
+
+        <CurrentPositionMarker
+          :lat-lng="{
+            latitude: coords.latitude,
+            longitude: coords.longitude,
           }"
         />
       </Map>
