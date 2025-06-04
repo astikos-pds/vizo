@@ -18,7 +18,7 @@ export const useApiHandler = () => {
         console.error(e.message);
         error.value = getStatusError(e);
       } else {
-        console.error(error);
+        console.error(e);
       }
       return null;
     } finally {
