@@ -8,6 +8,14 @@ const localesMapping = {
   en: locales.en,
   "pt-BR": locales.pt_br,
 };
+
+watchEffect(() => {
+  useHead({
+    htmlAttrs: {
+      lang: locale.value,
+    },
+  });
+});
 </script>
 
 <template>
