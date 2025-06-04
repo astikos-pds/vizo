@@ -113,7 +113,8 @@
       "description": {
         "loggedIn": "Acesso liberado com sucesso",
         "signedUp": "Conta criada com sucesso",
-        "reportCreated": "Reporte criado com o id { id }"
+        "reportCreated": "Reporte criado com o id { id }",
+        "settingsSaved": "Configurações salvas com sucesso"
       }
     }
   }

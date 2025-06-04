@@ -23,9 +23,19 @@ type SettingsSchema = z.output<typeof settingsSchema>;
 const form = reactive<SettingsSchema>({
   language: locale.value,
 });
+const icon = computed(
+  () => languageItems.value.find((item) => item.id === form.language)?.icon
+);
 
+const toast = useToast();
 const onSubmit = (event: FormSubmitEvent<SettingsSchema>) => {
   setLocale(event.data.language);
+
+  toast.add({
+    title: t("toast.success.title"),
+    description: t("toast.success.description.settingsSaved"),
+    color: "success",
+  });
 };
 </script>
 
@@ -41,7 +51,7 @@ const onSubmit = (event: FormSubmitEvent<SettingsSchema>) => {
       :state="form"
       :schema="settingsSchema"
       @submit="onSubmit"
-      class="min-w-[65%] md:min-w-[55%] xl:min-w-[45%] flex flex-col items-center gap-5"
+      class="min-w-[65%] md:min-w-[55%] lg:min-w-[35%] flex flex-col items-center gap-5"
     >
       <UFormField
         :label="t('settings.languageLabel')"
@@ -52,6 +62,7 @@ const onSubmit = (event: FormSubmitEvent<SettingsSchema>) => {
           v-model="form.language"
           value-key="id"
           :items="languageItems"
+          :icon="icon"
           :search-input="{
             placeholder: t('settings.searchPlaceholder'),
             icon: 'i-lucide-search',

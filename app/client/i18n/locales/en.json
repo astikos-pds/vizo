@@ -112,7 +112,8 @@
       "description": {
         "loggedIn": "Logged in successfully",
         "signedUp": "Signed up successfully",
-        "reportCreated": "Reported sucessfully with id { id }"
+        "reportCreated": "Reported sucessfully with id { id }",
+        "settingsSaved": "Settings saved successfully"
       }
     }
   }

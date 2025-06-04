@@ -76,7 +76,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
       color: "success",
     });
 
-    navigateTo("/login");
+    await navigateTo("/login");
   }
 };
 </script>
