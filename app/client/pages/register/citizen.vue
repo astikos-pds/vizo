@@ -82,7 +82,7 @@ const registerSchema = z
     confirmedPassword: z.string(),
   })
   .refine((fields) => fields.confirmedPassword === fields.password, {
-    message: t("registerCitizen.verification.password"),
+    message: t("registerCitizen.verification.confirmedPassword"),
     path: ["confirmedPassword"],
   });
 
