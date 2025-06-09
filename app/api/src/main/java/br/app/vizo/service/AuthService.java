@@ -13,13 +13,13 @@ import br.app.vizo.mapper.CitizenMapper;
 import br.app.vizo.repository.CitizenRepository;
 import br.app.vizo.repository.RefreshTokenRepository;
 import br.app.vizo.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
