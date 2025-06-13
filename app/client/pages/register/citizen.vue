@@ -159,9 +159,9 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
 
 <template>
   <section
-    class="bg-[#FFFFFF] w-full h-full flex flex-col items-center py-20 overflow-y-scroll"
+    class="bg-[#FFFFFF] dark:bg-[#10142c] w-full h-full flex flex-col items-center py-20 overflow-y-scroll"
   >
-    <h1 class="text-4xl font-semibold text-neutral-900">
+    <h1 class="text-4xl font-semibold text-neutral-900 dark:text-white">
       {{ t("registerCitizen.title") }}
     </h1>
 
@@ -275,7 +275,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
             <li
               v-for="(req, index) in strength"
               :key="index"
-              class="flex items-center gap-0.5 text-neutral-600"
+              class="flex items-center gap-0.5 text-neutral-600 m-1"
               :class="req.met ? 'text-success' : 'text-muted'"
             >
               <UIcon
@@ -309,7 +309,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
 
       <span
         >{{ t("registerCitizen.alreadyHaveAccount") }}
-        <NuxtLink to="/login" class="text-primary">{{
+        <NuxtLink to="/login" class="text-primary dark:text-blue-500">{{
           t("registerCitizen.logInHere")
         }}</NuxtLink></span
       >
@@ -318,7 +318,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
         type="submit"
         size="xl"
         :loading="loading"
-        class="cursor-pointer"
+        class="cursor-pointer text-white font-semibold"
         >{{ t("registerCitizen.signUpButton") }}</UButton
       >
     </UForm>

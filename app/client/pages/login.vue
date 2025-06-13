@@ -65,9 +65,9 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
     class="lg:min-w-[45%] xl:min-w-[55%] bg-linear-to-tr from-primary to-neutral-400"
   ></section>
   <section
-    class="md:w-[70%] md:h-[80%] md:rounded-md lg:rounded-none bg-[#FFFFFF] lg:size-full flex flex-col items-center justify-center py-20 overflow-y-scroll"
+    class="md:w-[70%] md:h-[80%] md:rounded-md lg:rounded-none bg-[#FFFFFF] dark:bg-[#10142c] lg:size-full flex flex-col items-center justify-center py-20 overflow-y-scroll"
   >
-    <h1 class="text-4xl font-semibold text-neutral-900">
+    <h1 class="text-4xl font-semibold text-neutral-900 dark:text-white">
       {{ t("loginCitizen.title") }}
     </h1>
 
@@ -108,7 +108,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
       <span
         >{{ t("loginCitizen.dontHaveAccount") }}
-        <NuxtLink to="/register/citizen" class="text-primary">{{
+        <NuxtLink to="/register/citizen" class="text-primary dark:text-blue-500">{{
           t("loginCitizen.signUpHere")
         }}</NuxtLink></span
       >
@@ -116,7 +116,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
       <UButton
         type="submit"
         size="xl"
-        class="cursor-pointer"
+        class="cursor-pointer text-white font-semibold"
         :loading="loading"
         >{{ t("loginCitizen.signInButton") }}</UButton
       >
