@@ -2,12 +2,14 @@
 import type { FormSubmitEvent, RadioGroupItem } from "@nuxt/ui";
 import {
   MAX_ACCEPTABLE_ACCURACY_IN_METERS,
+  MAX_FILE_SIZE_IN_BYTES,
+  MAX_FILE_SIZE_IN_MB,
   MAX_RADIUS_IN_METERS,
 } from "~/utils/constants";
 import * as z from "zod";
 import { useReports } from "~/composables/use-reports";
 import type { LatLng } from "~/types/geolocation";
-import L from "leaflet";
+import { useMapGeolocation } from "~/composables/use-map-geolocation";
 
 const { t } = useI18n();
 
@@ -49,6 +51,7 @@ const form = reactive<ReportSchema>({
   location: "current",
 });
 
+const formRef = useTemplateRef("formRef");
 const previewUrls = ref<string[]>([]);
 
 const updateImages = (files: File[]) => {
@@ -77,6 +80,10 @@ const handleFileRemove = (index: number) => {
   formRef.value?.validate({ name: "images" });
 };
 
+onBeforeUnmount(() => {
+  previewUrls.value.forEach((url) => URL.revokeObjectURL(url));
+});
+
 const locationItems = ref<RadioGroupItem[]>([
   {
     label: t("reportProblem.localization.current"),
@@ -90,7 +97,18 @@ const locationItems = ref<RadioGroupItem[]>([
   },
 ]);
 
-const { coords, error: geolocationError } = useGeolocation();
+const { $leafet } = useNuxtApp();
+
+const {
+  coords,
+  error: geolocationError,
+  isLocationPrecise,
+  mapCenter,
+  markerPosition,
+  isWithinRadius,
+  updateMarker,
+} = useMapGeolocation();
+
 const geolocationErrorMessage = computed(() => {
   if (geolocationError.value?.PERMISSION_DENIED)
     return t("reportProblem.localization.error.permissionDenied");
@@ -99,56 +117,13 @@ const geolocationErrorMessage = computed(() => {
   if (geolocationError.value?.TIMEOUT)
     return t("reportProblem.localization.error.timeout");
 });
-const isLocationPrecise = computed(
-  () =>
-    coords.value.accuracy <= MAX_ACCEPTABLE_ACCURACY_IN_METERS &&
-    coords.value.accuracy > 0
-);
-const CITY_CENTER: LatLng = { latitude: -23.5489, longitude: -46.6388 };
 
-const mapCenter = computed<LatLng>(() =>
-  !coords.value.accuracy
-    ? CITY_CENTER
-    : { latitude: coords.value.latitude, longitude: coords.value.longitude }
-);
-const markerPosition = reactive<LatLng>({
-  latitude: mapCenter.value.latitude,
-  longitude: mapCenter.value.longitude,
-});
-
-function isWithinRadius(
-  point1: LatLng,
-  point2: LatLng,
-  radius: number
-): boolean {
-  return (
-    L.latLng(point1.latitude, point1.longitude).distanceTo(
-      L.latLng(point2.latitude, point2.longitude)
-    ) <= radius
-  );
-}
-
-const markerOutOfBounds = computed<boolean>(
+const isMarkerOutOfBounds = computed<boolean>(
   () => !isWithinRadius(coords.value, markerPosition, MAX_RADIUS_IN_METERS)
 );
-function updateLatLng(newLatLng: LatLng) {
-  markerPosition.latitude = newLatLng.latitude;
-  markerPosition.longitude = newLatLng.longitude;
-}
 
 watch(coords, (newCoords) => {
-  if (
-    form.location === "current" &&
-    newCoords.latitude &&
-    newCoords.longitude
-  ) {
-    markerPosition.latitude = newCoords.latitude;
-    markerPosition.longitude = newCoords.longitude;
-  }
-});
-
-onBeforeUnmount(() => {
-  previewUrls.value.forEach((url) => URL.revokeObjectURL(url));
+  updateMarker(newCoords);
 });
 
 const breakpoints = useBreakpoints({
@@ -162,13 +137,15 @@ watchEffect(() => {
   size.value = isMobile.value ? "md" : "xl";
 });
 
-const formRef = useTemplateRef("formRef");
-
 const { loading, error, report } = useReports();
 const toast = useToast();
 
 const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
-  if (markerOutOfBounds && event.data.location === "point" && isLocationPrecise)
+  if (
+    isMarkerOutOfBounds &&
+    event.data.location === "point" &&
+    isLocationPrecise
+  )
     return;
 
   const response = await report({
@@ -329,20 +306,11 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
           :items="locationItems"
           :size="size"
         />
-        <p
-          v-if="isLocationPrecise && markerOutOfBounds"
-          class="text-error mt-3"
-        >
-          {{
-            t("reportProblem.markerOutOfBounds", {
-              radius: MAX_RADIUS_IN_METERS,
-            })
-          }}
-        </p>
+
         <Map
           v-if="form.location === 'point'"
           class="rounded-xl border border-neutral-200 min-w-[15rem] min-h-[25rem] sm:min-w-[30rem] sm:min-h-[25rem] mt-4"
-          :zoom="17"
+          :zoom="16"
           :center="[mapCenter.latitude, mapCenter.longitude]"
         >
           <Marker
@@ -352,7 +320,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
               longitude: markerPosition.longitude,
             }"
             :draggable="true"
-            @update:lat-lng="updateLatLng"
+            @update:lat-lng="updateMarker"
           />
 
           <CurrentPositionMarker
@@ -372,6 +340,17 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
             :opacity="0.5"
           />
         </Map>
+
+        <p
+          v-if="isLocationPrecise && isMarkerOutOfBounds"
+          class="text-error mt-3"
+        >
+          {{
+            t("reportProblem.markerOutOfBounds", {
+              radius: MAX_RADIUS_IN_METERS,
+            })
+          }}
+        </p>
       </UFormField>
 
       <UButton

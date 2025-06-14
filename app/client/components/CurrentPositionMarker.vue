@@ -8,7 +8,7 @@
     :z-index-offset="-1000"
     :icon="{
       url: 'https://static-00.iconduck.com/assets.00/cursor-icon-2048x2048-7mjsp9p1.png',
-      size: [25, 25],
+      size: [20, 20],
     }"
   />
 </template>
