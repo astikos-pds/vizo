@@ -97,8 +97,6 @@ const locationItems = ref<RadioGroupItem[]>([
   },
 ]);
 
-const { $leafet } = useNuxtApp();
-
 const {
   coords,
   error: geolocationError,
@@ -292,20 +290,20 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
         required
         class="w-full"
         :help="
-          coords.accuracy > MAX_ACCEPTABLE_ACCURACY_IN_METERS
+          !isLocationPrecise && !geolocationError
             ? t('reportProblem.geolocationAccuracyWarning', {
                 accuracy: coords.accuracy.toFixed(0),
               })
             : ''
         "
       >
-        <p class="text-error mb-2">{{ geolocationErrorMessage }}</p>
         <URadioGroup
           variant="table"
           v-model="form.location"
           :items="locationItems"
           :size="size"
         />
+        <p class="text-error mt-3">{{ geolocationErrorMessage }}</p>
 
         <Map
           v-if="form.location === 'point'"

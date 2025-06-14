@@ -41,15 +41,15 @@ const textClasses = ref<string>("text-lg xl:text-xl");
 
 <template>
   <section
-    class="min-h-full p-2 lg:p-3 xl:p-4 border-x border-zinc-200"
+    class="min-h-full p-2 lg:p-3 xl:p-4 border-x border-neutral-200 dark:border-neutral-800"
     :class="collapsed ? '' : 'lg:min-w-[20%]'"
   >
     <header class="h-[10%] flex justify-between items-center">
       <div
         v-if="!collapsed"
-        class="flex flex-row gap-2 justify-center items-center"
+        class="flex flex-row gap-3 justify-center items-center"
       >
-        <img src="/public/favicon.svg" alt="Logo" class="size-18" />
+        <img src="/public/favicon.svg" alt="Logo" class="size-16" />
         <h1 class="hidden xl:block text-4xl font-semibold uppercase">Vizo</h1>
       </div>
       <UButton

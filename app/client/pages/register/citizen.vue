@@ -159,9 +159,9 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
 
 <template>
   <section
-    class="bg-[#FFFFFF] dark:bg-[#10142c] w-full h-full flex flex-col items-center py-20 overflow-y-scroll"
+    class="bg-white dark:bg-neutral-900 w-full h-full flex flex-col items-center py-20 overflow-y-scroll"
   >
-    <h1 class="text-4xl font-semibold text-neutral-900 dark:text-white">
+    <h1 class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50">
       {{ t("registerCitizen.title") }}
     </h1>
 

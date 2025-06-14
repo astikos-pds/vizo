@@ -11,7 +11,7 @@ const { locale, t } = useI18n();
 
 <template>
   <UCard
-    class="w-full md:w-[48%] lg:w-[31%] xl:min-w-full"
+    class="w-full md:w-[48%] lg:w-[31%] xl:min-w-full max-h-30%"
     variant="subtle"
     :ui="{
       header: 'p-2 sm:px-3 2xl:p-3',

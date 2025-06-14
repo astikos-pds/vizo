@@ -92,11 +92,9 @@ const credibilityBadge = computed<Badge>(() => {
         />
       </button>
     </header>
-    <main
-      class="flex flex-row flex-wrap p-1 gap-4 h-full w-full overflow-y-scroll"
-    >
+    <main class="flex flex-row flex-wrap gap-4 h-full w-full">
       <div v-if="loading">Loading...</div>
-      <section class="flex flex-col gap-3" v-else>
+      <section v-else class="flex flex-col gap-3 w-full p-1 overflow-y-scroll">
         <section class="flex flex-row flex-wrap gap-2 w-full">
           <UBadge :color="statusBadge.color" variant="subtle" size="lg">{{
             statusBadge.text

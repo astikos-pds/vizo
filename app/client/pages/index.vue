@@ -21,7 +21,7 @@ definePageMeta({
 });
 
 const map = ref<LeafletMap | null>(null);
-const zoom = ref<number>(12);
+const zoom = ref<number>(11);
 const center = ref<PointExpression>([-23.5489, -46.6388]);
 
 const isAsideOpen = ref<boolean>(false);
@@ -45,6 +45,15 @@ const {
   error: geolocationError,
   isLocationPrecise,
 } = useMapGeolocation();
+
+const geolocationErrorMessage = computed(() => {
+  if (geolocationError.value?.PERMISSION_DENIED)
+    return t("reportProblem.localization.error.permissionDenied");
+  if (geolocationError.value?.POSITION_UNAVAILABLE)
+    return t("reportProblem.localization.error.positionUnavailable");
+  if (geolocationError.value?.TIMEOUT)
+    return t("reportProblem.localization.error.timeout");
+});
 
 const { problems, loading, error } = useProblems();
 
@@ -70,7 +79,14 @@ if (error.value) {
       "
     >
       <div v-if="loading">Loading...</div>
-      <Map v-else ref="map" class="rounded-2xl" :zoom="zoom" :center="center">
+      <Map
+        v-else
+        v-if="!geolocationError"
+        ref="map"
+        class="rounded-2xl"
+        :zoom="zoom"
+        :center="center"
+      >
         <Marker
           v-for="problem in problems"
           @click="onMarkerClick(problem)"
@@ -89,6 +105,9 @@ if (error.value) {
           }"
         />
       </Map>
+      <p v-if="geolocationError" class="text-error mb-2">
+        {{ geolocationErrorMessage }}
+      </p>
     </div>
 
     <div

@@ -67,9 +67,9 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
     class="lg:min-w-[45%] xl:min-w-[55%] bg-linear-to-tr from-primary to-neutral-400"
   ></section>
   <section
-    class="md:w-[70%] md:h-[80%] md:rounded-md lg:rounded-none bg-[#FFFFFF] dark:bg-[#10142c] lg:size-full flex flex-col items-center justify-center py-20 overflow-y-scroll"
+    class="bg-white dark:bg-neutral-900 size-full flex flex-col items-center justify-center py-20"
   >
-    <h1 class="text-4xl font-semibold text-neutral-900 dark:text-white">
+    <h1 class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50">
       {{ t("loginCitizen.title") }}
     </h1>
 
@@ -112,7 +112,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         >{{ t("loginCitizen.dontHaveAccount") }}
         <NuxtLink
           to="/register/citizen"
-          class="text-primary dark:text-blue-500"
+          class="text-primary dark:text-primary-500"
           >{{ t("loginCitizen.signUpHere") }}</NuxtLink
         ></span
       >
