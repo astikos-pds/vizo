@@ -2,7 +2,6 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 import { validateDocument } from "~/utils/document-validation";
-import { CPF_MASK, CNPJ_MASK } from "~/utils/masks";
 
 const { t } = useI18n();
 
@@ -35,6 +34,7 @@ const form = reactive<LoginSchema>({
 const showPassword = ref<boolean>(false);
 
 const { loading, error, login } = useAuth();
+
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
   await login({ document: event.data.document, password: event.data.password });
@@ -54,6 +54,8 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
       description: t("toast.success.description.loggedIn"),
       color: "success",
     });
+
+    console.log("sdafsdaf");
 
     await navigateTo("/");
   }
@@ -108,9 +110,11 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
       <span
         >{{ t("loginCitizen.dontHaveAccount") }}
-        <NuxtLink to="/register/citizen" class="text-primary dark:text-blue-500">{{
-          t("loginCitizen.signUpHere")
-        }}</NuxtLink></span
+        <NuxtLink
+          to="/register/citizen"
+          class="text-primary dark:text-blue-500"
+          >{{ t("loginCitizen.signUpHere") }}</NuxtLink
+        ></span
       >
 
       <UButton
