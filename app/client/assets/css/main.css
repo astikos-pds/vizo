@@ -15,7 +15,7 @@
   --color-blue-900: #10179f;
   --color-blue-950: #0a0c5c;
 
-  --color-slate-50: #f5f6ff;
+  /* --color-slate-50: #f5f6ff;
   --color-slate-100: #e0e2ff;
   --color-slate-200: #c2c5ff;
   --color-slate-300: #a3a7ff;
@@ -25,5 +25,9 @@
   --color-slate-700: #353ab3;
   --color-slate-800: #23278c;
   --color-slate-900: #151663;
-  --color-slate-950: #0b0c3a;
+  --color-slate-950: #0b0c3a; */
+}
+
+.dark {
+  --color-primary: #2f47ff;
 }

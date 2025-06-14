@@ -64,10 +64,10 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
 <template>
   <section
-    class="lg:min-w-[45%] xl:min-w-[55%] bg-linear-to-tr from-primary to-neutral-400"
+    class="lg:min-w-[45%] xl:min-w-[55%] h-full bg-linear-to-tr from-primary to-neutral-400"
   ></section>
   <section
-    class="bg-white dark:bg-neutral-900 size-full flex flex-col items-center justify-center py-20"
+    class="relative size-full flex flex-col items-center justify-center py-20"
   >
     <h1 class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50">
       {{ t("loginCitizen.title") }}
@@ -99,7 +99,6 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
       <PasswordInput
         v-model="form.password"
-        color="neutral"
         :show="showPassword"
         :label="t('loginCitizen.password')"
         name="password"
@@ -110,22 +109,20 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
       <span
         >{{ t("loginCitizen.dontHaveAccount") }}
-        <NuxtLink
-          to="/register/citizen"
-          class="text-primary dark:text-primary-500"
-          >{{ t("loginCitizen.signUpHere") }}</NuxtLink
-        ></span
+        <NuxtLink to="/register/citizen" class="text-primary">{{
+          t("loginCitizen.signUpHere")
+        }}</NuxtLink></span
       >
 
       <UButton
         type="submit"
         size="xl"
-        class="cursor-pointer text-white font-semibold"
+        class="cursor-pointer text-neutral-50 font-semibold"
         :loading="loading"
         >{{ t("loginCitizen.signInButton") }}</UButton
       >
     </UForm>
 
-    <LocalePicker class="absolute bottom-5" />
+    <LocalePicker class="absolute top-4 right-4" />
   </section>
 </template>

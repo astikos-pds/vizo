@@ -21,6 +21,14 @@ defineExpose({
   flyTo: (targetCenter: LatLngExpression, targetZoom: number, options: any) =>
     map.value?.flyTo(targetCenter, targetZoom, options),
 });
+
+const isDark = useDark();
+
+const tileLayerUrl = computed(() =>
+  isDark.value
+    ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+    : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+);
 </script>
 
 <template>
@@ -31,7 +39,7 @@ defineExpose({
     @ready="onReady"
   >
     <LTileLayer
-      url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+      :url="tileLayerUrl"
       attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
       layer-type="base"
       name="OpenStreetMap"

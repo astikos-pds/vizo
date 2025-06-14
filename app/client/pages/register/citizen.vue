@@ -3,7 +3,6 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 import { validateDocument } from "~/utils/document-validation";
 import { MIN_AGE } from "~/utils/constants";
-import { CPF_MASK } from "~/utils/masks";
 
 const { t } = useI18n();
 
@@ -18,39 +17,41 @@ definePageMeta({
   layout: "guest",
 });
 
-const passwordRequirements = {
-  minLength: {
-    regex: /.{8,}/,
-    text: t("registerCitizen.passwordRequirements.length"),
-  },
-  hasNumber: {
-    regex: /\d/,
-    text: t("registerCitizen.passwordRequirements.number"),
-  },
-  hasLowercase: {
-    regex: /[a-z]/,
-    text: t("registerCitizen.passwordRequirements.lowercase"),
-  },
-  hasUppercase: {
-    regex: /[A-Z]/,
-    text: t("registerCitizen.passwordRequirements.uppercase"),
-  },
-};
+const passwordRequirements = computed(() => {
+  return {
+    minLength: {
+      regex: /.{8,}/,
+      text: t("registerCitizen.passwordRequirements.length"),
+    },
+    hasNumber: {
+      regex: /\d/,
+      text: t("registerCitizen.passwordRequirements.number"),
+    },
+    hasLowercase: {
+      regex: /[a-z]/,
+      text: t("registerCitizen.passwordRequirements.lowercase"),
+    },
+    hasUppercase: {
+      regex: /[A-Z]/,
+      text: t("registerCitizen.passwordRequirements.uppercase"),
+    },
+  };
+});
 
 const passwordSchema = z
   .string()
-  .min(8, passwordRequirements.minLength.text)
+  .min(8, passwordRequirements.value.minLength.text)
   .regex(
-    passwordRequirements.hasNumber.regex,
-    passwordRequirements.hasNumber.text
+    passwordRequirements.value.hasNumber.regex,
+    passwordRequirements.value.hasNumber.text
   )
   .regex(
-    passwordRequirements.hasLowercase.regex,
-    passwordRequirements.hasLowercase.text
+    passwordRequirements.value.hasLowercase.regex,
+    passwordRequirements.value.hasLowercase.text
   )
   .regex(
-    passwordRequirements.hasUppercase.regex,
-    passwordRequirements.hasUppercase.text
+    passwordRequirements.value.hasUppercase.regex,
+    passwordRequirements.value.hasUppercase.text
   );
 
 const registerSchema = z
@@ -101,7 +102,7 @@ const showPassword = ref<boolean>(false);
 const showConfimedPassword = ref<boolean>(false);
 
 function checkStrength(password: string) {
-  return Object.values(passwordRequirements).map((req) => ({
+  return Object.values(passwordRequirements.value).map((req) => ({
     met: req.regex.test(password),
     text: req.text,
   }));
@@ -159,7 +160,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
 
 <template>
   <section
-    class="bg-white dark:bg-neutral-900 w-full h-full flex flex-col items-center py-20 overflow-y-scroll"
+    class="relative w-full h-full flex flex-col items-center py-20 overflow-y-scroll"
   >
     <h1 class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50">
       {{ t("registerCitizen.title") }}
@@ -275,7 +276,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
             <li
               v-for="(req, index) in strength"
               :key="index"
-              class="flex items-center gap-0.5 text-neutral-600 m-1"
+              class="flex items-center gap-1 text-neutral-600 m-1"
               :class="req.met ? 'text-success' : 'text-muted'"
             >
               <UIcon
@@ -284,7 +285,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
               />
 
               <span class="text-sm font-light">
-                {{ t(req.text) }}
+                {{ req.text }}
                 <span class="sr-only">
                   {{
                     req.met ? " - Requirement met" : " - Requirement not met"
@@ -323,9 +324,9 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
       >
     </UForm>
 
-    <LocalePicker class="absolute bottom-5" />
+    <LocalePicker class="absolute right-4 top-4" />
   </section>
   <section
-    class="lg:min-w-[45%] xl:min-w-[55%] bg-linear-to-tr to-primary from-neutral-400"
+    class="lg:min-w-[45%] xl:min-w-[55%] h-full bg-linear-to-tr to-primary from-neutral-400"
   ></section>
 </template>

@@ -188,7 +188,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
   <section
     class="w-full h-full flex items-center flex-col gap-5 py-15 sm:py-20 overflow-y-scroll"
   >
-    <h1 class="text-3xl text-center font-semibold text-neutral-900 px-2">
+    <h1 class="text-3xl text-center font-semibold px-2">
       {{ t("reportProblem.title") }}
     </h1>
 
@@ -307,7 +307,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
 
         <Map
           v-if="form.location === 'point'"
-          class="rounded-xl border border-neutral-200 min-w-[15rem] min-h-[25rem] sm:min-w-[30rem] sm:min-h-[25rem] mt-4"
+          class="rounded-xl border border-neutral-200 dark:border-neutral-800 min-w-[15rem] min-h-[25rem] sm:min-w-[30rem] sm:min-h-[25rem] mt-4"
           :zoom="16"
           :center="[mapCenter.latitude, mapCenter.longitude]"
         >
@@ -354,7 +354,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
       <UButton
         type="submit"
         size="xl"
-        class="justify-center cursor-pointer"
+        class="justify-center cursor-pointer text-neutral-50"
         :loading="loading"
         :disabled="geolocationError !== null"
         >{{ t("reportProblem.sendButton") }}</UButton

@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen relative bg-white dark:bg-neutral-900">
+  <div class="flex h-screen relative">
     <NavBar />
     <slot />
   </div>

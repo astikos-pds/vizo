@@ -46,9 +46,9 @@ const onSubmit = (event: FormSubmitEvent<SettingsSchema>) => {
 
 <template>
   <section
-    class="w-full flex items-center flex-col gap-5 py-20 overflow-y-scroll border-r border-neutral-200"
+    class="w-full flex items-center flex-col gap-5 py-20 overflow-y-scroll border-r border-neutral-200 dark:border-neutral-800"
   >
-    <h1 class="text-3xl font-semibold text-neutral-900">
+    <h1 class="text-3xl font-semibold">
       {{ t("settings.title") }}
     </h1>
 

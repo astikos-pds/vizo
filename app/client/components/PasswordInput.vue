@@ -5,7 +5,7 @@ interface Props {
   name: string;
   placeholder: string;
   required: boolean;
-  color:
+  color?:
     | "error"
     | "primary"
     | "neutral"
