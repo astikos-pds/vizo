@@ -13,9 +13,11 @@ export const useAuth = () => {
   const accessToken = useCookie("access_token");
   const refreshToken = useCookie("refresh_token");
 
-  const { loading, error, handle } = useApiHandler();
+  const { loading, handle } = useApiHandler();
 
-  async function login(request: LoginRequest) {
+  async function login(
+    request: LoginRequest
+  ): Promise<TokenPairResponse | null> {
     const response = await handle<TokenPairResponse>(() =>
       loginUseCase(request)
     );
@@ -23,10 +25,14 @@ export const useAuth = () => {
     if (response) {
       updateTokenPair(response);
     }
+
+    return response;
   }
 
-  async function registerAsCitizen(request: RegisterAsCitizenRequest) {
-    await handle<RegisterAsCitizenResponse>(() =>
+  async function registerAsCitizen(
+    request: RegisterAsCitizenRequest
+  ): Promise<RegisterAsCitizenResponse | null> {
+    return await handle<RegisterAsCitizenResponse>(() =>
       registerAsCitizenUseCase(request)
     );
   }
@@ -35,17 +41,18 @@ export const useAuth = () => {
     updateTokenPair({ accessToken: "", refreshToken: "" });
   }
 
-  async function refresh(request: RefreshRequest): Promise<boolean> {
+  async function refresh(
+    request: RefreshRequest
+  ): Promise<TokenPairResponse | null> {
     const response = await handle<TokenPairResponse>(() =>
       refreshUseCase(request)
     );
 
     if (response) {
       updateTokenPair(response);
-      return true;
     }
 
-    return false;
+    return response;
   }
 
   async function ensureAuthenticated(): Promise<boolean> {
@@ -56,7 +63,7 @@ export const useAuth = () => {
 
       if (isTokenExpired(refreshToken.value)) return false;
 
-      return await refresh({ token: refreshToken.value });
+      return (await refresh({ token: refreshToken.value })) ? true : false;
     }
 
     return true;
@@ -69,7 +76,6 @@ export const useAuth = () => {
 
   return {
     loading,
-    error,
     accessToken,
     refreshToken,
     login,

@@ -126,27 +126,18 @@ const text = computed(() => {
   return t("registerCitizen.passwordStrength.strong");
 });
 
-const { loading, error, registerAsCitizen } = useAuth();
+const { loading, registerAsCitizen } = useAuth();
 
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
-  await registerAsCitizen({
+  const ok = await registerAsCitizen({
     name: `${event.data.firstName} ${event.data.lastName}`.trim(),
     document: event.data.cpf,
     email: event.data.email,
     password: event.data.password,
   });
 
-  if (error.value) {
-    toast.add({
-      title: t("toast.error.title"),
-      description: t(
-        `toast.error.description.${error.value}`,
-        t("toast.error.description.500")
-      ),
-      color: "error",
-    });
-  } else {
+  if (ok) {
     toast.add({
       title: t("toast.success.title"),
       description: t("toast.success.description.signedUp"),

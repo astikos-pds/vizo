@@ -153,21 +153,22 @@
     "error": {
       "title": "Erro",
       "description": {
-        "400": "Requisição inválida",
-        "401": "Credenciais inválidas",
-        "403": "Não tem as permissões necessárias para acesso",
-        "404": "Recurso não encontrado",
-        "409": "Conflito: esse registro provavelmente já existe na base de dados",
-        "500": "Houve um erro inesperado"
+        "400": "Requisição inválida.",
+        "401": "Credenciais inválidas.",
+        "403": "Você não tem permissão para esta ação.",
+        "404": "Recurso não encontrado.",
+        "409": "Esse registro provavelmente já existe.",
+        "500": "Erro no servidor. Por favor, tente novamente mais tarde.",
+        "default": "Ocorreu um erro inesperado. Por favor, tente novamente."
       }
     },
     "success": {
       "title": "Sucesso",
       "description": {
-        "loggedIn": "Acesso liberado com sucesso",
-        "signedUp": "Conta criada com sucesso",
-        "reportCreated": "Reporte criado com o id { id }",
-        "settingsSaved": "Configurações salvas com sucesso"
+        "loggedIn": "Acesso liberado com sucesso.",
+        "signedUp": "Conta criada com sucesso.",
+        "reportCreated": "Reporte criado com o id { id }.",
+        "settingsSaved": "Configurações salvas com sucesso."
       }
     }
   }

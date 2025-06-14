@@ -7,7 +7,7 @@ import {
 import type { Report } from "~/types/domain";
 
 export const useReports = () => {
-  const { loading, error, handle } = useApiHandler();
+  const { loading, handle } = useApiHandler();
 
   async function uploadImage(request: UploadImageRequest): Promise<string> {
     const response = await handle<UploadImageResponse>(() =>
@@ -38,5 +38,5 @@ export const useReports = () => {
     );
   }
 
-  return { loading, error, report };
+  return { loading, report };
 };

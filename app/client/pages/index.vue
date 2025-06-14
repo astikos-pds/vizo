@@ -55,19 +55,7 @@ const geolocationErrorMessage = computed(() => {
     return t("reportProblem.localization.error.timeout");
 });
 
-const { problems, loading, error } = useProblems();
-
-const toast = useToast();
-if (error.value) {
-  toast.add({
-    title: "Error",
-    description: t(
-      `toast.error.description.${error.value.statusCode}`,
-      t("toast.error.description.500")
-    ),
-    color: "error",
-  });
-}
+const { problems, loading } = useProblems();
 </script>
 
 <template>

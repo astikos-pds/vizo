@@ -33,29 +33,21 @@ const form = reactive<LoginSchema>({
 });
 const showPassword = ref<boolean>(false);
 
-const { loading, error, login } = useAuth();
+const { loading, login } = useAuth();
 
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
-  await login({ document: event.data.document, password: event.data.password });
+  const ok = await login({
+    document: event.data.document,
+    password: event.data.password,
+  });
 
-  if (error.value) {
-    toast.add({
-      title: t("toast.error.title"),
-      description: t(
-        `toast.error.description.${error.value}`,
-        t("toast.error.description.500")
-      ),
-      color: "error",
-    });
-  } else {
+  if (ok) {
     toast.add({
       title: t("toast.success.title"),
       description: t("toast.success.description.loggedIn"),
       color: "success",
     });
-
-    console.log("sdafsdaf");
 
     await navigateTo("/");
   }

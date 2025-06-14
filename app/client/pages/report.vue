@@ -135,7 +135,7 @@ watchEffect(() => {
   size.value = isMobile.value ? "md" : "xl";
 });
 
-const { loading, error, report } = useReports();
+const { loading, report } = useReports();
 const toast = useToast();
 
 const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
@@ -159,16 +159,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
         : coords.value.longitude,
   });
 
-  if (!response || error.value) {
-    toast.add({
-      title: t("toast.error.title"),
-      description: t(
-        `toast.error.description.${error.value}`,
-        t("toast.error.description.500")
-      ),
-      color: "error",
-    });
-  } else {
+  if (response) {
     toast.add({
       title: t("toast.success.title"),
       description: t("toast.success.description.reportCreated", {

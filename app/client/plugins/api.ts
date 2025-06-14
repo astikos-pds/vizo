@@ -1,8 +1,24 @@
 export default defineNuxtPlugin((nuxtApp) => {
-  const config = useRuntimeConfig();
+  const toast = useToast();
+  const t = nuxtApp.vueApp.config.globalProperties.$t;
+
+  const refreshAccessToken = async () => {
+    try {
+      const refreshToken = useCookie("refresh_token").value;
+      if (!refreshToken) throw new Error("No refresh token");
+
+      const { refresh } = useAuth();
+      await refresh({ token: refreshToken });
+      return useCookie("access_token").value;
+    } catch (error) {
+      useCookie("access_token").value = null;
+      useCookie("refresh_token").value = null;
+      throw error;
+    }
+  };
 
   const api = $fetch.create({
-    baseURL: config.public.apiBaseUrl,
+    baseURL: nuxtApp.$config.public.apiBaseUrl,
     headers: {
       "Content-Type": "application/json",
     },
@@ -26,30 +42,29 @@ export default defineNuxtPlugin((nuxtApp) => {
       console.error(`[API] Error:`, response.status, response._data);
 
       if (response.status === 401 && !request.toString().includes("auth")) {
-        const refreshToken = useCookie("refresh_token").value;
-
-        if (!refreshToken) {
-          await nuxtApp.runWithContext(() => navigateTo("/login"));
-        }
-
         try {
-          const { refresh } = useAuth();
-
-          await refresh({ token: refreshToken ?? "" });
-
-          const accessToken = useCookie("access_token").value;
+          const newAccessToken = await refreshAccessToken();
 
           return await $fetch(request, {
             method: options.method as any,
             headers: {
               ...options.headers,
-              Authorization: `Bearer ${accessToken}`,
+              Authorization: `Bearer ${newAccessToken}`,
             },
           });
         } catch (error) {
           await nuxtApp.runWithContext(() => navigateTo("/login"));
         }
       }
+
+      toast.add({
+        title: t("toast.error.title"),
+        description: t(
+          `toast.error.description.${response.status}`,
+          t("toast.error.description.default")
+        ),
+        color: "error",
+      });
     },
   });
 
