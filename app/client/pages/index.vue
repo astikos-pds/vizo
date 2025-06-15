@@ -101,7 +101,7 @@ const { problems, loading } = useProblems();
     </div>
 
     <div
-      class="absolute bottom-0 z-10000000000 xl:min-h-screen xl:relative"
+      class="absolute bottom-0 bg-neutral-50 z-10000000000 xl:min-h-screen xl:relative"
       :class="
         isAsideOpen
           ? 'w-full h-[20rem] border-y xl:w-[25%] xl:border-x border-neutral-200 dark:border-neutral-800'

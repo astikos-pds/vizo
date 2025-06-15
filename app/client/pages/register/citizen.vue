@@ -318,6 +318,6 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
     <LocalePicker class="absolute right-4 top-4" />
   </section>
   <section
-    class="lg:min-w-[45%] xl:min-w-[55%] h-full bg-linear-to-tr to-primary from-neutral-400"
+    class="lg:min-w-[45%] xl:min-w-[55%] h-full bg-linear-to-tr to-primary from-neutral-200"
   ></section>
 </template>

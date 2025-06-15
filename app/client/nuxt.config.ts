@@ -5,9 +5,6 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
   ssr: true,
-  nitro: {
-    preset: "vercel",
-  },
   runtimeConfig: {
     public: {
       apiBaseUrl:
@@ -36,6 +33,11 @@ export default defineNuxtConfig({
       { code: "pt-BR", name: "Português (Brasil)", file: "pt-BR.json" },
       { code: "en", name: "English", file: "en.json" },
     ],
+    detectBrowserLanguage: {
+      useCookie: true,
+      fallbackLocale: "en",
+      cookieSecure: true,
+    },
   },
   app: {
     head: {
@@ -49,13 +51,14 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
+    strategies: "generateSW",
     registerType: "autoUpdate",
     manifest: {
       name: "Vizo",
       short_name: "Vizo",
       description: "Collaborative mapping of urban problems",
-      background_color: "#ffffff",
-      theme_color: "#0003ff",
+      background_color: "#fafafa",
+      theme_color: "#fafafa",
       display: "standalone",
       start_url: "/",
       icons: [
@@ -113,7 +116,15 @@ export default defineNuxtConfig({
     },
     workbox: {
       cleanupOutdatedCaches: true,
+      globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],
       runtimeCaching: [
+        {
+          urlPattern: "/",
+          handler: "NetworkFirst",
+          options: {
+            cacheName: "start-url",
+          },
+        },
         {
           urlPattern: process.env.NUXT_API_BASE_URL || "http://localhost:8080",
           handler: "NetworkFirst",

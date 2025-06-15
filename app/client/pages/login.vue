@@ -56,7 +56,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
 <template>
   <section
-    class="lg:min-w-[45%] xl:min-w-[55%] h-full bg-linear-to-tr from-primary to-neutral-400"
+    class="lg:min-w-[45%] xl:min-w-[55%] h-full bg-linear-to-tr from-primary to-neutral-200"
   ></section>
   <section
     class="relative size-full flex flex-col items-center justify-center py-20"
