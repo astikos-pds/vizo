@@ -160,7 +160,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
   }
 
   if (
-    isMarkerOutOfBounds &&
+    isMarkerOutOfBounds.value &&
     event.data.location === "point" &&
     isLocationPrecise.value
   ) {
@@ -303,7 +303,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
         required
         class="w-full"
         :help="
-          !isLocationPrecise && !geolocationError
+          !isLocationPrecise && !geolocationError && coords.accuracy > 0
             ? t('reportProblem.geolocationAccuracyWarning', {
                 accuracy: coords.accuracy.toFixed(0),
               })
