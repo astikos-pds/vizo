@@ -119,13 +119,6 @@ export default defineNuxtConfig({
       globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],
       runtimeCaching: [
         {
-          urlPattern: "/",
-          handler: "NetworkFirst",
-          options: {
-            cacheName: "start-url",
-          },
-        },
-        {
           urlPattern: process.env.NUXT_API_BASE_URL || "http://localhost:8080",
           handler: "NetworkFirst",
           options: {
