@@ -73,7 +73,7 @@ const { problems, loading } = useProblems();
         v-else
         v-if="!geolocationError"
         ref="map"
-        class="rounded-2xl"
+        class="rounded-2xl border border-neutral-200"
         :zoom="zoom"
         :center="center"
       >

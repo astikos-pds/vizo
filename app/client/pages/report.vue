@@ -10,6 +10,8 @@ import * as z from "zod";
 import { useReports } from "~/composables/use-reports";
 import type { LatLng } from "~/types/geolocation";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
+import ConfirmReportModal from "~/components/ConfirmReportModal.vue";
+import type { registerRuntimeCompiler } from "vue";
 
 const { t } = useI18n();
 
@@ -138,13 +140,32 @@ watchEffect(() => {
 const { loading, report } = useReports();
 const toast = useToast();
 
+const overlay = useOverlay();
+
 const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
+  if (event.data.location === "current" && !isLocationPrecise.value) {
+    const confirmReportModal = overlay.create(ConfirmReportModal, {
+      props: {
+        description: event.data.description,
+        imagesUrls: previewUrls.value,
+        latLng: coords.value,
+      },
+    });
+    const instace = confirmReportModal.open();
+    const shouldSubmit = await instace.result;
+
+    if (!shouldSubmit) {
+      return;
+    }
+  }
+
   if (
     isMarkerOutOfBounds &&
     event.data.location === "point" &&
-    isLocationPrecise
-  )
+    isLocationPrecise.value
+  ) {
     return;
+  }
 
   const response = await report({
     description: event.data.description,
@@ -261,8 +282,9 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
           >
             <UButton
               icon="i-lucide-trash-2"
-              variant="subtle"
+              variant="solid"
               size="md"
+              color="info"
               class="absolute top-1 right-1 cursor-pointer"
               @click="handleFileRemove(index)"
             />
