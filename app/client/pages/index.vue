@@ -62,11 +62,7 @@ const { problems, loading } = useProblems();
   <section class="relative min-h-screen w-full flex flex-col xl:flex-row">
     <div
       class="min-h-screen flex justify-center lg:p-5 bg-neutral-100 dark:bg-neutral-800"
-      :class="
-        isAsideOpen
-          ? 'xl:min-w-[75%]'
-          : 'xl:w-full border-r border-neutral-200 dark:border-neutral-800'
-      "
+      :class="isAsideOpen ? 'xl:min-w-[75%]' : 'xl:w-full'"
     >
       <div v-if="loading">Loading...</div>
       <Map
@@ -104,7 +100,7 @@ const { problems, loading } = useProblems();
       class="absolute bottom-0 bg-neutral-50 z-10000000000 xl:min-h-screen xl:relative"
       :class="
         isAsideOpen
-          ? 'w-full h-[20rem] border-y xl:w-[25%] xl:border-x border-neutral-200 dark:border-neutral-800'
+          ? 'w-full h-[20rem] border-y xl:w-[25%] xl:border-l border-neutral-200 dark:border-neutral-800'
           : ''
       "
     >

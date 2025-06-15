@@ -33,8 +33,8 @@ const icon = computed(
 );
 
 const toast = useToast();
-const onSubmit = (event: FormSubmitEvent<SettingsSchema>) => {
-  setLocale(event.data.language);
+const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
+  await setLocale(event.data.language);
 
   toast.add({
     title: t("toast.success.title"),
@@ -46,7 +46,7 @@ const onSubmit = (event: FormSubmitEvent<SettingsSchema>) => {
 
 <template>
   <section
-    class="w-full flex items-center flex-col gap-5 py-20 overflow-y-scroll border-r border-neutral-200 dark:border-neutral-800"
+    class="size-full flex items-center flex-col gap-5 py-20 overflow-y-scroll"
   >
     <h1 class="text-3xl font-semibold">
       {{ t("settings.title") }}
