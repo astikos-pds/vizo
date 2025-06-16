@@ -11,18 +11,17 @@ const { locale, t } = useI18n();
 
 <template>
   <UCard
-    class="w-full md:w-[48%] lg:w-[31%] xl:min-w-full max-h-30%"
     variant="subtle"
     :ui="{
-      header: 'p-2 sm:px-3 2xl:p-3',
+      header: 'p-2 sm:px-2 2xl:p-2',
       body: 'p-0 sm:p-0',
-      footer: 'p-2 sm:px-3 2xl:p-3 flex items-end justify-end',
+      footer: 'p-2 sm:px-2 2xl:p-2 flex items-end justify-end',
     }"
   >
     <template #header
       ><p>{{ report.description }}</p></template
     >
-    <section class="flex flex-col gap-3 xl:max-h-[30rem]">
+    <section class="flex flex-col gap-3">
       <img
         v-for="(imageUrl, index) in report.imagesUrls"
         :key="`${report.id}-${index}`"

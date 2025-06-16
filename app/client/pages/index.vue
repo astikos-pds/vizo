@@ -59,9 +59,9 @@ const { problems, loading } = useProblems();
 </script>
 
 <template>
-  <section class="relative min-h-screen w-full flex flex-col xl:flex-row">
+  <section class="relative size-full flex flex-row">
     <div
-      class="min-h-screen flex justify-center lg:p-5 bg-neutral-100 dark:bg-neutral-800"
+      class="size-full flex justify-center items-center lg:p-5 bg-neutral-100 dark:bg-neutral-800"
       :class="isAsideOpen ? 'xl:min-w-[75%]' : 'xl:w-full'"
     >
       <div v-if="loading">Loading...</div>
@@ -69,7 +69,7 @@ const { problems, loading } = useProblems();
         v-else
         v-if="!geolocationError"
         ref="map"
-        class="rounded-2xl border border-neutral-200"
+        class="lg:rounded-2xl lg:border lg:border-neutral-200"
         :zoom="zoom"
         :center="center"
       >
@@ -91,18 +91,14 @@ const { problems, loading } = useProblems();
           }"
         />
       </Map>
-      <p v-if="geolocationError" class="text-error mb-2">
+      <p v-if="geolocationError" class="text-error m-2">
         {{ geolocationErrorMessage }}
       </p>
     </div>
 
     <div
-      class="absolute bottom-0 bg-neutral-50 z-10000000000 xl:min-h-screen xl:relative"
-      :class="
-        isAsideOpen
-          ? 'w-full h-[20rem] border-y xl:w-[25%] xl:border-l border-neutral-200 dark:border-neutral-800'
-          : ''
-      "
+      class="absolute bottom-0 bg-neutral-50 z-10000000000 xl:relative h-[25rem] xl:h-full border-y xl:w-[30%] xl:border-l xl:border-y-0 border-neutral-200 dark:border-neutral-800"
+      :class="isAsideOpen ? '' : 'hidden'"
     >
       <ProblemDetails
         v-if="isAsideOpen && selectedProblem"

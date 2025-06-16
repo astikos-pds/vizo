@@ -79,8 +79,8 @@ const credibilityBadge = computed<Badge>(() => {
 </script>
 
 <template>
-  <aside class="h-full w-full flex flex-col p-2 xl:p-3">
-    <header class="flex items-center xl:mb-2">
+  <aside class="size-full flex flex-col p-2 xl:p-3">
+    <header class="flex items-center mb-1 xl:mb-2">
       <button
         class="cursor-pointer transition hover:scale-110"
         @click="emit('close')"
@@ -92,23 +92,28 @@ const credibilityBadge = computed<Badge>(() => {
         />
       </button>
     </header>
-    <main class="flex flex-row flex-wrap gap-4 h-full w-full">
+    <main class="flex flex-row flex-wrap gap-4 h-full overflow-hidden">
       <div v-if="loading">Loading...</div>
-      <section v-else class="flex flex-col gap-3 w-full p-1 overflow-y-scroll">
-        <section class="flex flex-row flex-wrap gap-2 w-full">
-          <UBadge :color="statusBadge.color" variant="subtle" size="lg">{{
+      <section v-else class="flex flex-col gap-3 size-full">
+        <section class="flex flex-row flex-wrap gap-2">
+          <UBadge :color="statusBadge.color" variant="subtle">{{
             statusBadge.text
           }}</UBadge>
-          <UBadge :color="credibilityBadge.color" variant="subtle" size="lg">{{
+          <UBadge :color="credibilityBadge.color" variant="subtle">{{
             credibilityBadge.text
           }}</UBadge>
         </section>
         <USeparator />
-        <ProblemReport
-          v-for="report in reports"
-          :report="report"
-          :key="report.id"
-        />
+        <section
+          class="p-1 flex flex-row flex-wrap xl:flex-col xl:flex-nowrap gap-3 overflow-y-auto"
+        >
+          <ProblemReport
+            v-for="report in reports"
+            :report="report"
+            :key="report.id"
+            class="w-full md:w-[48%] lg:w-[32%] xl:w-full"
+          />
+        </section>
       </section>
     </main>
   </aside>
