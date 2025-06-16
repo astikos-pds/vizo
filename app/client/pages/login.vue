@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
+import { useAuth } from "~/composables/use-auth";
 import { validateDocument } from "~/utils/document-validation";
 
 const { t } = useI18n();
@@ -119,6 +120,8 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
       </UForm>
     </section>
 
-    <LocalePicker class="absolute top-4 right-4" />
+    <LocalePicker class="shadow-lg fixed bottom-4" />
   </section>
 </template>
+
+<!-- absolute top-4 right-4 -->
