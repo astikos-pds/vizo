@@ -56,64 +56,68 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
 <template>
   <section
-    class="lg:min-w-[45%] xl:min-w-[55%] h-full bg-linear-to-tr from-primary to-neutral-200"
+    class="lg:min-w-[45%] xl:min-w-[50%] h-full bg-linear-to-tr from-primary to-neutral-200"
   ></section>
   <section
     class="relative size-full flex flex-col items-center justify-center py-20"
   >
-    <h1 class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50">
-      {{ t("loginCitizen.title") }}
-    </h1>
-
-    <UForm
-      :state="form"
-      :schema="loginSchema"
-      @submit="onSubmit"
-      :disabled="loading"
-      class="min-w-[50%] flex flex-col items-center gap-5 mt-8"
-    >
-      <UFormField
-        :label="t('loginCitizen.cpf')"
-        name="document"
-        size="xl"
-        class="w-full"
-        required
+    <section class="w-[70%] md:w-[50%] lg:w-[60%] xl:w-[50%] text-center">
+      <h1
+        class="text-4xl font-semibold text-wrap text-neutral-900 dark:text-neutral-50"
       >
-        <UInput
-          icon="i-lucide-id-card"
-          v-model="form.document"
-          type="text"
+        {{ t("loginCitizen.title") }}
+      </h1>
+
+      <UForm
+        :state="form"
+        :schema="loginSchema"
+        @submit="onSubmit"
+        :disabled="loading"
+        class="flex flex-col items-center gap-5 mt-8"
+      >
+        <UFormField
+          :label="t('loginCitizen.cpf')"
+          name="document"
           size="xl"
-          :placeholder="t('loginCitizen.cpfPlaceholder')"
-          class="w-full text-xl"
+          class="w-full"
+          required
+        >
+          <UInput
+            icon="i-lucide-id-card"
+            v-model="form.document"
+            type="text"
+            size="xl"
+            :placeholder="t('loginCitizen.cpfPlaceholder')"
+            class="w-full text-xl"
+          />
+        </UFormField>
+
+        <PasswordInput
+          v-model="form.password"
+          :show="showPassword"
+          :label="t('loginCitizen.password')"
+          name="password"
+          :placeholder="t('loginCitizen.passwordPlaceholder')"
+          required
+          @click="showPassword = !showPassword"
         />
-      </UFormField>
 
-      <PasswordInput
-        v-model="form.password"
-        :show="showPassword"
-        :label="t('loginCitizen.password')"
-        name="password"
-        :placeholder="t('loginCitizen.passwordPlaceholder')"
-        required
-        @click="showPassword = !showPassword"
-      />
+        <span
+          >{{ t("loginCitizen.dontHaveAccount") }}
+          <NuxtLink to="/register/citizen" class="text-primary">{{
+            t("loginCitizen.signUpHere")
+          }}</NuxtLink></span
+        >
 
-      <span
-        >{{ t("loginCitizen.dontHaveAccount") }}
-        <NuxtLink to="/register/citizen" class="text-primary">{{
-          t("loginCitizen.signUpHere")
-        }}</NuxtLink></span
-      >
-
-      <UButton
-        type="submit"
-        size="xl"
-        class="cursor-pointer text-neutral-50 font-semibold"
-        :loading="loading"
-        >{{ t("loginCitizen.signInButton") }}</UButton
-      >
-    </UForm>
+        <UButton
+          type="submit"
+          size="xl"
+          class="cursor-pointer text-neutral-50 font-semibold"
+          :loading="loading"
+          >{{ t("loginCitizen.signInButton") }}</UButton
+        >
+      </UForm>
+    </section>
 
     <LocalePicker class="absolute top-4 right-4" />
   </section>

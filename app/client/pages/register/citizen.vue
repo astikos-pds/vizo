@@ -151,173 +151,182 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
 
 <template>
   <section
-    class="relative w-full h-full flex flex-col items-center py-20 overflow-y-scroll"
+    class="relative w-full h-full flex flex-col items-center py-25 overflow-y-auto"
   >
-    <h1 class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50">
-      {{ t("registerCitizen.title") }}
-    </h1>
+    <section class="w-[70%] md:w-[60%] lg:w-[65%] 2xl:w-[60%] text-center">
+      <h1 class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50">
+        {{ t("registerCitizen.title") }}
+      </h1>
 
-    <UForm
-      :state="form"
-      :schema="registerSchema"
-      @submit="onSubmit"
-      :disabled="loading"
-      class="min-w-[70%] md:min-w-[55%] flex flex-col items-center gap-4 mt-8 md:mt-6"
-    >
-      <div class="flex flex-col md:flex-row gap-3 w-full">
-        <UFormField
-          :label="t('registerCitizen.firstName')"
-          name="firstName"
-          size="xl"
-          class="w-full"
-          required
-        >
-          <UInput
-            icon="i-lucide-user"
-            v-model="form.firstName"
-            type="text"
-            size="xl"
-            :placeholder="t('registerCitizen.firstNamePlaceholder')"
-            class="w-full text-xl"
-          />
-        </UFormField>
-
-        <UFormField
-          :label="t('registerCitizen.lastName')"
-          name="lastName"
-          size="xl"
-          class="w-full"
-          :hint="t('registerCitizen.optional')"
-        >
-          <UInput
-            v-model="form.lastName"
-            type="text"
-            size="xl"
-            :placeholder="t('registerCitizen.lastNamePlaceholder')"
-            class="w-full text-xl"
-          />
-        </UFormField>
-      </div>
-
-      <UFormField label="E-mail" name="email" size="xl" class="w-full" required>
-        <UInput
-          icon="i-lucide-at-sign"
-          v-model="form.email"
-          type="email"
-          size="xl"
-          :placeholder="t('registerCitizen.emailPlaceholder')"
-          class="w-full text-xl"
-        />
-      </UFormField>
-
-      <div class="flex flex-col md:flex-row gap-3 w-full">
-        <UFormField label="CPF" name="cpf" size="xl" class="w-full" required>
-          <UInput
-            icon="i-lucide-id-card"
-            v-model="form.cpf"
-            type="text"
-            size="xl"
-            :placeholder="t('registerCitizen.cpfPlaceholder')"
-            class="w-full text-xl"
-          />
-        </UFormField>
-        <UFormField
-          :label="t('registerCitizen.birthDate')"
-          name="birthDate"
-          size="xl"
-          class="w-full"
-          required
-        >
-          <UInput
-            icon="i-lucide-cake-slice"
-            v-model="form.birthDate"
-            type="date"
-            size="xl"
-            placeholder="Enter your e-mail"
-            class="w-full text-xl"
-          />
-        </UFormField>
-      </div>
-
-      <PasswordInput
-        v-model="form.password"
-        :color="color"
-        :show="showPassword"
-        :label="t('registerCitizen.password')"
-        name="password"
-        :placeholder="t('registerCitizen.passwordPlaceholder')"
-        required
-        @click="showPassword = !showPassword"
+      <UForm
+        :state="form"
+        :schema="registerSchema"
+        @submit="onSubmit"
+        :disabled="loading"
+        class="flex flex-col items-center gap-4 md:gap-3 mt-8"
       >
-        <div>
-          <UProgress
-            :color="color"
-            :indicator="text"
-            :model-value="score"
-            :max="4"
-            size="sm"
-            class="w-full h-1 my-2"
-          />
+        <div class="flex flex-col md:flex-row gap-3 w-full">
+          <UFormField
+            :label="t('registerCitizen.firstName')"
+            name="firstName"
+            size="xl"
+            class="w-full"
+            required
+          >
+            <UInput
+              icon="i-lucide-user"
+              v-model="form.firstName"
+              type="text"
+              size="xl"
+              :placeholder="t('registerCitizen.firstNamePlaceholder')"
+              class="w-full text-xl"
+            />
+          </UFormField>
 
-          <p id="password-strength" class="text-sm font-medium">
-            {{ text }}. {{ t("registerCitizen.passwordStrengthIndicator") }}
-          </p>
-
-          <ul class="space-y-1 text-xl" aria-label="Password requirements">
-            <li
-              v-for="(req, index) in strength"
-              :key="index"
-              class="flex items-center gap-1 text-neutral-600 m-1"
-              :class="req.met ? 'text-success' : 'text-muted'"
-            >
-              <UIcon
-                :name="req.met ? 'i-lucide-circle-check' : 'i-lucide-circle-x'"
-                class="size-4 shrink-0"
-              />
-
-              <span class="text-sm font-light">
-                {{ req.text }}
-                <span class="sr-only">
-                  {{
-                    req.met ? " - Requirement met" : " - Requirement not met"
-                  }}
-                </span>
-              </span>
-            </li>
-          </ul>
+          <UFormField
+            :label="t('registerCitizen.lastName')"
+            name="lastName"
+            size="xl"
+            class="w-full"
+            :hint="t('registerCitizen.optional')"
+          >
+            <UInput
+              v-model="form.lastName"
+              type="text"
+              size="xl"
+              :placeholder="t('registerCitizen.lastNamePlaceholder')"
+              class="w-full text-xl"
+            />
+          </UFormField>
         </div>
-      </PasswordInput>
 
-      <PasswordInput
-        v-model="form.confirmedPassword"
-        color="neutral"
-        :show="showConfimedPassword"
-        :label="t('registerCitizen.confirmPassword')"
-        name="confirmedPassword"
-        :placeholder="t('registerCitizen.confirmPasswordPlaceholder')"
-        required
-        @click="showConfimedPassword = !showConfimedPassword"
-      />
+        <UFormField
+          label="E-mail"
+          name="email"
+          size="xl"
+          class="w-full"
+          required
+        >
+          <UInput
+            icon="i-lucide-at-sign"
+            v-model="form.email"
+            type="email"
+            size="xl"
+            :placeholder="t('registerCitizen.emailPlaceholder')"
+            class="w-full text-xl"
+          />
+        </UFormField>
 
-      <span
-        >{{ t("registerCitizen.alreadyHaveAccount") }}
-        <NuxtLink to="/login" class="text-primary dark:text-blue-500">{{
-          t("registerCitizen.logInHere")
-        }}</NuxtLink></span
-      >
+        <div class="flex flex-col md:flex-row gap-3 w-full">
+          <UFormField label="CPF" name="cpf" size="xl" class="w-full" required>
+            <UInput
+              icon="i-lucide-id-card"
+              v-model="form.cpf"
+              type="text"
+              size="xl"
+              :placeholder="t('registerCitizen.cpfPlaceholder')"
+              class="w-full text-xl"
+            />
+          </UFormField>
+          <UFormField
+            :label="t('registerCitizen.birthDate')"
+            name="birthDate"
+            size="xl"
+            class="w-full"
+            required
+          >
+            <UInput
+              v-model="form.birthDate"
+              type="date"
+              size="xl"
+              placeholder="Enter your e-mail"
+              class="w-full text-xl"
+            />
+          </UFormField>
+        </div>
 
-      <UButton
-        type="submit"
-        size="xl"
-        :loading="loading"
-        class="cursor-pointer text-white font-semibold"
-        >{{ t("registerCitizen.signUpButton") }}</UButton
-      >
-    </UForm>
+        <PasswordInput
+          v-model="form.password"
+          :color="color"
+          :show="showPassword"
+          :label="t('registerCitizen.password')"
+          name="password"
+          :placeholder="t('registerCitizen.passwordPlaceholder')"
+          required
+          @click="showPassword = !showPassword"
+        >
+          <div>
+            <UProgress
+              :color="color"
+              :indicator="text"
+              :model-value="score"
+              :max="4"
+              size="sm"
+              class="w-full h-1 my-2"
+            />
+
+            <p id="password-strength" class="text-sm font-medium text-left">
+              {{ text }}. {{ t("registerCitizen.passwordStrengthIndicator") }}
+            </p>
+
+            <ul class="space-y-1 text-xl" aria-label="Password requirements">
+              <li
+                v-for="(req, index) in strength"
+                :key="index"
+                class="flex items-center gap-1 text-neutral-600 m-1"
+                :class="req.met ? 'text-success' : 'text-muted'"
+              >
+                <UIcon
+                  :name="
+                    req.met ? 'i-lucide-circle-check' : 'i-lucide-circle-x'
+                  "
+                  class="size-4 shrink-0"
+                />
+
+                <span class="text-sm font-light">
+                  {{ req.text }}
+                  <span class="sr-only">
+                    {{
+                      req.met ? " - Requirement met" : " - Requirement not met"
+                    }}
+                  </span>
+                </span>
+              </li>
+            </ul>
+          </div>
+        </PasswordInput>
+
+        <PasswordInput
+          v-model="form.confirmedPassword"
+          color="neutral"
+          :show="showConfimedPassword"
+          :label="t('registerCitizen.confirmPassword')"
+          name="confirmedPassword"
+          :placeholder="t('registerCitizen.confirmPasswordPlaceholder')"
+          required
+          @click="showConfimedPassword = !showConfimedPassword"
+        />
+
+        <span
+          >{{ t("registerCitizen.alreadyHaveAccount") }}
+          <NuxtLink to="/login" class="text-primary dark:text-blue-500">{{
+            t("registerCitizen.logInHere")
+          }}</NuxtLink></span
+        >
+
+        <UButton
+          type="submit"
+          size="xl"
+          :loading="loading"
+          class="cursor-pointer text-white font-semibold"
+          >{{ t("registerCitizen.signUpButton") }}</UButton
+        >
+      </UForm>
+    </section>
 
     <LocalePicker class="absolute right-4 top-4" />
   </section>
   <section
-    class="lg:min-w-[45%] xl:min-w-[55%] h-full bg-linear-to-tr to-primary from-neutral-200"
+    class="lg:min-w-[45%] xl:min-w-[50%] h-full bg-linear-to-tr to-primary from-neutral-200"
   ></section>
 </template>
