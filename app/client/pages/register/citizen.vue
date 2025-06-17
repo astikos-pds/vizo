@@ -154,6 +154,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
   <section
     class="relative size-full flex flex-col items-center py-25 overflow-y-auto"
   >
+    <ConfigHeader />
     <section class="w-[70%] md:w-[60%] lg:w-[65%] 2xl:w-[60%] text-center">
       <h1 class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50">
         {{ t("registerCitizen.title") }}
@@ -324,8 +325,6 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
         >
       </UForm>
     </section>
-
-    <LocalePicker class="shadow-lg fixed bottom-4" />
   </section>
   <section
     class="lg:min-w-[45%] xl:min-w-[50%] h-full bg-linear-to-tr to-primary from-neutral-200"

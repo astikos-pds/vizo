@@ -21,15 +21,11 @@ watch(language, (newLanguage) => {
 
 <template>
   <div class="w-48">
-    <USelectMenu
+    <USelect
       v-model="language"
       value-key="id"
       :items="languageItems"
       :icon="icon"
-      :search-input="{
-        placeholder: t('settings.searchPlaceholder'),
-        icon: 'i-lucide-search',
-      }"
       class="w-full"
     />
   </div>
