@@ -42,6 +42,17 @@
     }
   },
 
+  "configHeader": {
+    "language": {
+      "label": "Idioma"
+    },
+    "theme": {
+      "label": "Tema",
+      "light": "Claro",
+      "dark": "Escuro"
+    }
+  },
+
   "registerCitizen": {
     "title": "Crie uma conta",
     "firstName": "Nome",

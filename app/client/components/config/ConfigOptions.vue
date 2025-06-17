@@ -5,12 +5,12 @@ import * as locales from "@nuxt/ui/locale";
 const { t, locale, setLocale } = useI18n();
 const isDark = useDark();
 
-function selectLocale(e: Event, newLocale: typeof locale.value) {
+function selectLocale(newLocale: typeof locale.value) {
   setLocale(newLocale);
 }
 
 function createLocaleItem(
-  localeItem: typeof locale.value,
+  localeItem: typeof locales.en,
   flag: string
 ): DropdownMenuItem {
   return {
@@ -18,7 +18,8 @@ function createLocaleItem(
     label: localeItem.name,
     icon: `i-flagpack-${flag}`,
     type: "checkbox",
-    onSelect: (e: Event) => selectLocale(e, localeItem.code),
+    onSelect: (e: Event) =>
+      selectLocale(localeItem.code as typeof locale.value),
     checked: locale.value === localeItem.code,
   };
 }
@@ -41,7 +42,7 @@ function createThemeItem(theme: {
 const items = computed<DropdownMenuItem[][]>(() => [
   [
     {
-      label: "Language",
+      label: t("configHeader.language.label"),
       icon: "i-lucide-languages",
       children: [
         createLocaleItem(locales.en, "us"),
@@ -49,17 +50,17 @@ const items = computed<DropdownMenuItem[][]>(() => [
       ],
     },
     {
-      label: "Theme",
+      label: t("configHeader.theme.label"),
       icon: "i-lucide-palette",
       children: [
         createThemeItem({
           id: "light",
-          label: "Light",
+          label: t("configHeader.theme.light"),
           icon: "sun",
         }),
         createThemeItem({
           id: "dark",
-          label: "Dark",
+          label: t("configHeader.theme.dark"),
           icon: "moon",
         }),
       ],
