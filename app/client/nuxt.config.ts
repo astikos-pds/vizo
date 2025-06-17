@@ -28,6 +28,9 @@ export default defineNuxtConfig({
   i18n: {
     defaultLocale: "pt-BR",
     strategy: "no_prefix",
+    bundle: {
+      optimizeTranslationDirective: false,
+    },
     lazy: true,
     locales: [
       { code: "pt-BR", name: "Português (Brasil)", file: "pt-BR.json" },
@@ -51,6 +54,13 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
+    client: {
+      installPrompt: true,
+    },
+    devOptions: {
+      enabled: true,
+      type: "module",
+    },
     strategies: "generateSW",
     registerType: "autoUpdate",
     manifest: {
@@ -58,7 +68,7 @@ export default defineNuxtConfig({
       short_name: "Vizo",
       description: "Collaborative mapping of urban problems",
       background_color: "#fafafa",
-      theme_color: "#fafafa",
+      theme_color: "#0003ff",
       display: "standalone",
       start_url: "/",
       icons: [
