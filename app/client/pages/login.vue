@@ -106,7 +106,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
         <span
           >{{ t("loginCitizen.dontHaveAccount") }}
-          <NuxtLink to="/register/citizen" class="text-primary">{{
+          <NuxtLink to="/citizen/register" class="text-primary">{{
             t("loginCitizen.signUpHere")
           }}</NuxtLink></span
         >
