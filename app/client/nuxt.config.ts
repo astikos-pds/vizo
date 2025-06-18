@@ -38,7 +38,7 @@ export default defineNuxtConfig({
     ],
     detectBrowserLanguage: {
       useCookie: true,
-      fallbackLocale: "en",
+      fallbackLocale: "pt-BR",
       cookieSecure: true,
     },
   },
@@ -47,8 +47,17 @@ export default defineNuxtConfig({
       link: [
         {
           rel: "apple-touch-icon",
-          href: "/apple-touch-icon.png",
+          href: "apple-touch-icon.png",
           sizes: "180x180",
+        },
+      ],
+      meta: [
+        { name: "theme-color", content: "#0003ff" },
+        { name: "mobile-web-app-capable", content: "yes" },
+        { name: "apple-mobile-web-app-capable", content: "yes" },
+        {
+          name: "apple-mobile-web-app-status-bar-style",
+          content: "black-translucent",
         },
       ],
     },
@@ -59,6 +68,7 @@ export default defineNuxtConfig({
     },
     devOptions: {
       enabled: true,
+      navigateFallback: "/",
       type: "module",
     },
     strategies: "generateSW",
@@ -126,10 +136,12 @@ export default defineNuxtConfig({
     },
     workbox: {
       cleanupOutdatedCaches: true,
-      globPatterns: ["**/*.{js,css,html,ico,png,svg,json}"],
+      globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
       runtimeCaching: [
         {
-          urlPattern: process.env.NUXT_API_BASE_URL || "http://localhost:8080",
+          urlPattern: new RegExp(
+            process.env.NUXT_API_BASE_URL || "http://localhost:8080"
+          ),
           handler: "NetworkFirst",
           options: {
             cacheName: "api-cache",

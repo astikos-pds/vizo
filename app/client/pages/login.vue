@@ -63,9 +63,9 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
     class="relative size-full flex flex-col items-center justify-center py-20"
   >
     <ConfigHeader />
-    <section class="w-[70%] md:w-[50%] lg:w-[60%] xl:w-[50%] text-center">
+    <section class="w-[70%] md:w-[50%] lg:w-[60%] xl:w-[50%]">
       <h1
-        class="text-4xl font-semibold text-wrap text-neutral-900 dark:text-neutral-50"
+        class="text-4xl font-semibold text-wrap text-neutral-900 dark:text-neutral-50 text-center"
       >
         {{ t("loginCitizen.title") }}
       </h1>

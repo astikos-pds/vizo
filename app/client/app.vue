@@ -19,7 +19,9 @@ watchEffect(() => {
 </script>
 
 <template>
-  <NuxtPwaManifest />
+  <ClientOnly>
+    <NuxtPwaManifest />
+  </ClientOnly>
   <UApp :locale="localesMapping[locale]">
     <NuxtLoadingIndicator color="primary" />
     <div class="max-w-[2000px] mx-auto min-h-screen">
