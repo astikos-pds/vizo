@@ -1,5 +1,6 @@
 package br.app.vizo.domain.problem;
 
+import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,7 +36,7 @@ public class Problem {
     private Instant lastReportedAt;
 
     public Problem() {
-        this(null, null, 0.0, false, Instant.now(), Instant.now());
+        this(null, null, 0.0);
     }
 
     public Problem(
@@ -43,7 +44,7 @@ public class Problem {
             Point coordinates,
             Double accumulatedCredibility
     ) {
-        this(status, coordinates, accumulatedCredibility, false, Instant.now(), Instant.now());
+        this(status, coordinates, accumulatedCredibility, false, DateUtil.now(), DateUtil.now());
     }
 
     public Problem(

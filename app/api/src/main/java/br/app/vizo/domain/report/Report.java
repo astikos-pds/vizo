@@ -2,6 +2,7 @@ package br.app.vizo.domain.report;
 
 import br.app.vizo.domain.problem.Problem;
 import br.app.vizo.domain.user.Citizen;
+import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,7 +42,7 @@ public class Report {
     private Instant createdAt;
 
     public Report() {
-        this("", new ArrayList<>(), null, null, null, Instant.now());
+        this("", new ArrayList<>(), null, null, null, DateUtil.now());
     }
 
     public Report(

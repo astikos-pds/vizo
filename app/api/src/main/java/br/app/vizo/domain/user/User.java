@@ -1,5 +1,6 @@
 package br.app.vizo.domain.user;
 
+import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,10 +35,10 @@ public abstract class User {
     protected Instant updatedAt;
 
     public User() {
-        this(UUID.randomUUID(), "", "", "", Instant.now(), Instant.now());
+        this("", "", "");
     }
 
     public User(String document, String email, String password) {
-        this(UUID.randomUUID(), document, email, password, Instant.now(), Instant.now());
+        this(UUID.randomUUID(), document, email, password, DateUtil.now(), DateUtil.now());
     }
 }

@@ -7,13 +7,13 @@ import br.app.vizo.domain.report.Report;
 import br.app.vizo.controller.response.ReportDTO;
 import br.app.vizo.domain.report.ReportImage;
 import br.app.vizo.domain.user.Citizen;
-import br.app.vizo.exception.http.BadRequestException;
 import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.ReportMapper;
 import br.app.vizo.repository.CitizenRepository;
 import br.app.vizo.repository.ProblemRepository;
 import br.app.vizo.repository.ReportImageRepository;
 import br.app.vizo.repository.ReportRepository;
+import br.app.vizo.util.DateUtil;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
@@ -22,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -78,7 +77,7 @@ public class ReportService {
         );
 
         problem.setAccumulatedCredibility(accumulatedCredibility);
-        problem.setLastReportedAt(Instant.now());
+        problem.setLastReportedAt(DateUtil.now());
 
         if (problem.getAccumulatedCredibility() >= 100) {
             problem.setValidated(true);
