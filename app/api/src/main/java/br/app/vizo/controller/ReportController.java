@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/reports")
 public class ReportController {
@@ -26,5 +28,17 @@ public class ReportController {
         ReportDTO response = this.reportService.createReport(body, authentication);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ReportDTO>> getReports(
+            @RequestParam(name = "lat", required = false) Double latitude,
+            @RequestParam(name = "lon", required = false) Double longitude,
+            @RequestParam(name = "radius", required = false) Double radius,
+            Authentication authentication
+    ) {
+        List<ReportDTO> response = this.reportService.getReports(latitude, longitude, radius, authentication);
+
+        return ResponseEntity.ok(response);
     }
 }

@@ -7,7 +7,7 @@ import br.app.vizo.domain.report.Report;
 import br.app.vizo.controller.response.ReportDTO;
 import br.app.vizo.domain.report.ReportImage;
 import br.app.vizo.domain.user.Citizen;
-import br.app.vizo.exception.http.ConflictException;
+import br.app.vizo.exception.http.BadRequestException;
 import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.ReportMapper;
 import br.app.vizo.repository.CitizenRepository;
@@ -17,15 +17,13 @@ import br.app.vizo.repository.ReportRepository;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,12 +60,12 @@ public class ReportService {
 
         Point coordinates = this.geometryFactory.createPoint(new Coordinate(body.latitude(), body.longitude()));
 
-        Optional<Problem> existingProblem = this.findRelatedProblem(body.latitude(), body.longitude());
+        Optional<Problem> existingProblem = this.findRelatedProblem(body.latitude(), body.longitude(), 5.0);
+        boolean isProblemAlreadyReported = false;
 
         if (existingProblem.isPresent()) {
-            if (this.isProblemAlreadyReportedByCitizen(existingProblem.get().getId(), citizen.getId())) {
-                throw new ConflictException("Problem already reported by citizen.");
-            }
+            isProblemAlreadyReported =
+                    this.isProblemAlreadyReportedByCitizen(existingProblem.get().getId(), citizen.getId());
         }
 
         Problem problem = existingProblem.orElseGet(() -> new Problem(ProblemStatus.ANALYSIS, coordinates, 0.0));
@@ -75,7 +73,8 @@ public class ReportService {
         Double accumulatedCredibility = problem.getAccumulatedCredibility() + this.calculateReportCredibility(
                 citizen.getCredibilityPoints(),
                 body.description(),
-                body.imagesUrls().size()
+                body.imagesUrls().size(),
+                isProblemAlreadyReported
         );
 
         problem.setAccumulatedCredibility(accumulatedCredibility);
@@ -108,8 +107,33 @@ public class ReportService {
         return this.reportMapper.toDto(report);
     }
 
-    private Optional<Problem> findRelatedProblem(Double latitude, Double longitude) {
-        return this.problemRepository.findNearestWithinDistance(latitude, longitude, 5.0);
+    public List<ReportDTO> getReports(Double latitude, Double longitude, Double radius, Authentication authentication) {
+        Citizen citizen = this.citizenRepository.findByDocument(authentication.getName()).orElseThrow(
+                () -> new NotFoundException("User not found.")
+        );
+
+        if (latitude == null || longitude == null) {
+            return this.reportRepository.findByCitizenId(citizen.getId(), Sort.by(Sort.Direction.DESC, "createdAt"))
+                    .stream()
+                    .map(this.reportMapper::toDto)
+                    .toList();
+        }
+
+        return this.reportRepository
+                .findByCitizenIdWithinDistance(
+                        citizen.getId(),
+                        latitude,
+                        longitude,
+                        Objects.requireNonNullElse(radius, 0.5)
+                )
+                .stream()
+                .map(this.reportMapper::toDto)
+                .toList();
+
+    }
+
+    private Optional<Problem> findRelatedProblem(Double latitude, Double longitude, Double radius) {
+        return this.problemRepository.findNearestWithinDistance(latitude, longitude, radius);
     }
 
     private Boolean isProblemAlreadyReportedByCitizen(UUID problemId, UUID citizenId) {
@@ -122,7 +146,12 @@ public class ReportService {
 
     private static final int MAX_WORDS = 255;
     private static final int MAX_IMAGES = 5;
-    private Double calculateReportCredibility(Double citizenCredibility, String description, int numberOfImages) {
+    private Double calculateReportCredibility(
+            Double citizenCredibility,
+            String description,
+            int numberOfImages,
+            boolean isProblemAlreadyReportedByCitizen
+    ) {
         double reputationScore = citizenCredibility * REPUTATION_WEIGHT;
 
         long uniqueWords = Arrays.stream(description.split(" ")).distinct().count();
@@ -132,6 +161,10 @@ public class ReportService {
 
         double maxPossibleScore = REPUTATION_WEIGHT + DETAILING_SCORE + EVIDENCE_WEIGHT;
         double rawScore = reputationScore + detailingScore + evidenceScore;
+
+        if (isProblemAlreadyReportedByCitizen) {
+            rawScore -= 20.0;
+        }
 
         return (rawScore / maxPossibleScore) * 100;
     }
