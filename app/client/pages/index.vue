@@ -24,7 +24,7 @@ const map = ref<LeafletMap | null>(null);
 const zoom = ref<number>(11);
 const center = ref<PointExpression>([-23.5489, -46.6388]);
 
-const isAsideOpen = ref<boolean>(false);
+const isDetailsOpen = ref<boolean>(false);
 const selectedProblem = ref<Problem | null>(null);
 
 const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
@@ -35,7 +35,7 @@ const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
 };
 
 const onMarkerClick = (problem: Problem) => {
-  isAsideOpen.value = true;
+  isDetailsOpen.value = true;
   selectedProblem.value = problem;
   zoomToMarker(problem);
 };
@@ -62,7 +62,7 @@ const { problems, loading } = useProblems();
   <section class="relative size-full flex flex-row">
     <div
       class="size-full flex justify-center items-center lg:p-5 bg-neutral-100 dark:bg-neutral-800"
-      :class="isAsideOpen ? 'xl:min-w-[75%]' : 'xl:w-full'"
+      :class="isDetailsOpen ? 'xl:min-w-[75%]' : 'xl:w-full'"
     >
       <div v-if="loading">Loading...</div>
       <Map
@@ -96,16 +96,25 @@ const { problems, loading } = useProblems();
       </p>
     </div>
 
-    <div
+    <ProblemDetails
+      :is-open="isDetailsOpen"
+      v-if="isDetailsOpen && selectedProblem"
+      @close="isDetailsOpen = false"
+      :problem="selectedProblem"
+      :key="selectedProblem.id"
+      class="h-[40%] lg:w-[25%] lg:h-full"
+    />
+
+    <!-- <div
       class="absolute bottom-0 bg-neutral-50 z-10000000000 xl:relative h-[25rem] xl:h-full border-y xl:w-[30%] xl:border-l xl:border-y-0 border-neutral-200 dark:border-neutral-800"
-      :class="isAsideOpen ? '' : 'hidden'"
+      :class="isDetailsOpen ? '' : 'hidden'"
     >
       <ProblemDetails
-        v-if="isAsideOpen && selectedProblem"
-        @close="isAsideOpen = false"
+        v-if="isDetailsOpen && selectedProblem"
+        @close="isDetailsOpen = false"
         :problem="selectedProblem"
         :key="selectedProblem.id"
       />
-    </div>
+    </div> -->
   </section>
 </template>

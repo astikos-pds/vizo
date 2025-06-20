@@ -6,6 +6,7 @@ const { t } = useI18n();
 
 interface Props {
   problem: Problem;
+  isOpen: boolean;
 }
 const props = defineProps<Props>();
 
@@ -37,7 +38,7 @@ interface Badge {
   text: string;
 }
 
-const statusBadge = computed<Badge>(() => {
+const statusBadge: Badge = (() => {
   if (props.problem.status === "ANALYSIS") {
     return {
       color: "warning",
@@ -58,8 +59,9 @@ const statusBadge = computed<Badge>(() => {
     color: "neutral",
     text: t("problemDetails.status.default"),
   };
-});
-const credibilityBadge = computed<Badge>(() => {
+})();
+
+const credibilityBadge: Badge = (() => {
   if (props.problem.accumulatedCredibility < 50) {
     return {
       color: "warning",
@@ -75,46 +77,54 @@ const credibilityBadge = computed<Badge>(() => {
     color: "success",
     text: t("problemDetails.credibility.medium"),
   };
-});
+})();
+
+const isDesktop = useMediaQuery("(min-width: 1024px)");
 </script>
 
 <template>
-  <aside class="size-full flex flex-col p-2 xl:p-3">
-    <header class="flex items-center mb-1 xl:mb-2">
-      <button
-        class="cursor-pointer transition hover:scale-110"
-        @click="emit('close')"
-      >
-        <Icon
-          name="lucide:x"
-          mode="svg"
-          class="text-3xl lg:text-[2.8rem] xl:text-[3rem]"
-        />
-      </button>
-    </header>
-    <main class="flex flex-row flex-wrap gap-4 h-full overflow-hidden">
-      <div v-if="loading">Loading...</div>
-      <section v-else class="flex flex-col gap-3 size-full">
-        <section class="flex flex-row flex-wrap gap-2">
-          <UBadge :color="statusBadge.color" variant="subtle">{{
-            statusBadge.text
-          }}</UBadge>
-          <UBadge :color="credibilityBadge.color" variant="subtle">{{
-            credibilityBadge.text
-          }}</UBadge>
-        </section>
-        <USeparator />
-        <section
-          class="p-1 flex flex-row flex-wrap xl:flex-col xl:flex-nowrap gap-3 overflow-y-auto"
-        >
-          <ProblemReport
-            v-for="report in reports"
-            :report="report"
-            :key="report.id"
-            class="w-full md:w-[48%] lg:w-[32%] xl:w-full"
+  <UDrawer
+    :direction="isDesktop ? 'right' : 'bottom'"
+    :overlay="false"
+    :handle="!isDesktop"
+    v-model:open="props.isOpen"
+  >
+    <template #content>
+      <aside class="size-full flex flex-col p-2 xl:p-3">
+        <header v-if="isDesktop" class="flex items-center mb-1 xl:mb-2">
+          <UButton
+            color="neutral"
+            variant="ghost"
+            icon="i-lucide-x"
+            @click="emit('close')"
+            class="text-2xl cursor-pointer"
           />
-        </section>
-      </section>
-    </main>
-  </aside>
+        </header>
+        <main class="flex flex-row flex-wrap gap-4 h-full overflow-hidden">
+          <div v-if="loading">Loading...</div>
+          <section v-else class="flex flex-col gap-3 size-full">
+            <section class="flex flex-row flex-wrap gap-2">
+              <UBadge :color="statusBadge.color" variant="subtle">{{
+                statusBadge.text
+              }}</UBadge>
+              <UBadge :color="credibilityBadge.color" variant="subtle">{{
+                credibilityBadge.text
+              }}</UBadge>
+            </section>
+            <USeparator />
+            <section
+              class="p-1 pb-10 flex flex-row flex-wrap xl:flex-col xl:flex-nowrap gap-3 overflow-y-auto"
+            >
+              <ProblemReport
+                v-for="report in reports"
+                :report="report"
+                :key="report.id"
+                class="w-full sm:w-[49%] lg:w-full"
+              />
+            </section>
+          </section>
+        </main>
+      </aside>
+    </template>
+  </UDrawer>
 </template>
