@@ -1,5 +1,6 @@
 package br.app.vizo.service;
 
+import br.app.vizo.controller.filter.ReportFilter;
 import br.app.vizo.controller.request.CreateReportRequestDTO;
 import br.app.vizo.domain.problem.Problem;
 import br.app.vizo.domain.problem.ProblemStatus;
@@ -17,7 +18,8 @@ import br.app.vizo.util.DateUtil;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,29 +108,29 @@ public class ReportService {
         return this.reportMapper.toDto(report);
     }
 
-    public List<ReportDTO> getReports(Double latitude, Double longitude, Double radius, Authentication authentication) {
+    public Page<ReportDTO> getReports(
+            ReportFilter filter,
+            Pageable pageable,
+            Authentication authentication
+    ) {
         Citizen citizen = this.citizenRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
 
-        if (latitude == null || longitude == null) {
-            return this.reportRepository.findByCitizenId(citizen.getId(), Sort.by(Sort.Direction.DESC, "createdAt"))
-                    .stream()
-                    .map(this.reportMapper::toDto)
-                    .toList();
+        if (filter.lat() == null || filter.lon() == null) {
+            return this.reportRepository
+                    .findAllByCitizenId(citizen.getId(), pageable)
+                    .map(this.reportMapper::toDto);
         }
 
         return this.reportRepository
-                .findByCitizenIdWithinDistance(
+                .findAllByCitizenIdWithinDistance(
                         citizen.getId(),
-                        latitude,
-                        longitude,
-                        Objects.requireNonNullElse(radius, 0.5)
-                )
-                .stream()
-                .map(this.reportMapper::toDto)
-                .toList();
-
+                        filter.lat(),
+                        filter.lon(),
+                        Objects.requireNonNullElse(filter.radius(), 1.0),
+                        pageable
+                ).map(this.reportMapper::toDto);
     }
 
     private Optional<Problem> findRelatedProblem(Double latitude, Double longitude, Double radius) {
