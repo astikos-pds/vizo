@@ -20,13 +20,14 @@ public abstract class User {
     @Id
     protected UUID id;
 
-    @Column(unique = true)
     protected String document;
 
     @Column(unique = true)
     protected String email;
 
     protected String password;
+
+    protected String name;
 
     @Column(name = "created_at")
     protected Instant createdAt;
@@ -35,10 +36,10 @@ public abstract class User {
     protected Instant updatedAt;
 
     public User() {
-        this("", "", "");
+        this("", "", "", "");
     }
 
-    public User(String document, String email, String password) {
-        this(UUID.randomUUID(), document, email, password, DateUtil.now(), DateUtil.now());
+    public User(String document, String email, String password, String name) {
+        this(UUID.randomUUID(), document, email, password, name, DateUtil.now(), DateUtil.now());
     }
 }

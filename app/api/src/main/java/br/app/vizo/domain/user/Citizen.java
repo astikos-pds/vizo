@@ -12,24 +12,15 @@ import lombok.Setter;
 @Setter
 public class Citizen extends User {
 
-    private String name;
-
     @Column(name = "credibility_points")
     private Double credibilityPoints;
 
     public Citizen() {
-        super();
-        this.name = "";
-        this.credibilityPoints = 1.0;
+        this("", "", "", "", 1.0);
     }
 
     public Citizen(String document, String email, String password, String name, Double credibilityPoints) {
-        super(document, email, password);
-        this.name = name;
+        super(document, email, password, name);
         this.credibilityPoints = credibilityPoints;
-    }
-
-    public Citizen(String document, String email, String password, String name) {
-        this(document, email, password, name, 1.0);
     }
 }
