@@ -12,4 +12,6 @@ import java.util.UUID;
 public interface CitizenRepository extends JpaRepository<Citizen, UUID> {
 
     Optional<Citizen> findByDocument(String document);
+
+    Optional<Citizen> findByDocumentOrEmail(String document, String email);
 }

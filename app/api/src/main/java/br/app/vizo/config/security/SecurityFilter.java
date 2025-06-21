@@ -21,8 +21,8 @@ import java.util.Optional;
 public class SecurityFilter extends OncePerRequestFilter {
 
     public final String[] PUBLIC_ROUTES = {
-            "/auth/register/citizen",
-            "/auth/register/municipality",
+            "/auth/citizen/register",
+            "/auth/official/register",
             "/auth/login",
             "/auth/refresh"
     };

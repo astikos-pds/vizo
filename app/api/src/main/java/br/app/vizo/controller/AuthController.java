@@ -2,9 +2,10 @@ package br.app.vizo.controller;
 
 import br.app.vizo.controller.request.LoginRequestDTO;
 import br.app.vizo.controller.request.RefreshRequestDTO;
+import br.app.vizo.controller.response.OfficialDTO;
 import br.app.vizo.controller.response.TokenPairDTO;
 import br.app.vizo.controller.response.CitizenDTO;
-import br.app.vizo.controller.request.RegisterCitizenRequestDTO;
+import br.app.vizo.controller.request.RegisterRequestDTO;
 import br.app.vizo.service.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,14 +23,16 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @PostMapping("/register/citizen")
-    public ResponseEntity<CitizenDTO> registerCitizen(@RequestBody RegisterCitizenRequestDTO body) {
-        CitizenDTO response = this.authService.registerCitizen(
-                body.document(),
-                body.email(),
-                body.password(),
-                body.name()
-        );
+    @PostMapping("/citizen/register")
+    public ResponseEntity<CitizenDTO> registerAsCitizen(@RequestBody RegisterRequestDTO body) {
+        CitizenDTO response = this.authService.registerAsCitizen(body);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/official/register")
+    public ResponseEntity<OfficialDTO> registerAsOfficial(@RequestBody RegisterRequestDTO body) {
+        OfficialDTO response = this.authService.registerAsOfficial(body);
 
         return ResponseEntity.ok(response);
     }

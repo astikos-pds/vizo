@@ -1,6 +1,6 @@
 package br.app.vizo.controller.request;
 
-public record RegisterCitizenRequestDTO(
+public record RegisterRequestDTO(
         String document,
         String email,
         String password,
