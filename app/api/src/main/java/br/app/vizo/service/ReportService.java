@@ -117,7 +117,7 @@ public class ReportService {
                 () -> new NotFoundException("User not found.")
         );
 
-        if (filter.lat() == null || filter.lon() == null) {
+        if (filter.latitude() == null || filter.longitude() == null) {
             return this.reportRepository
                     .findAllByCitizenId(citizen.getId(), pageable)
                     .map(this.reportMapper::toDto);
@@ -126,8 +126,8 @@ public class ReportService {
         return this.reportRepository
                 .findAllByCitizenIdWithinDistance(
                         citizen.getId(),
-                        filter.lat(),
-                        filter.lon(),
+                        filter.latitude(),
+                        filter.longitude(),
                         Objects.requireNonNullElse(filter.radius(), 1.0),
                         pageable
                 ).map(this.reportMapper::toDto);
