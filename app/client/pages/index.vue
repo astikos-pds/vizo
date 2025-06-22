@@ -46,15 +46,6 @@ const {
   isLocationPrecise,
 } = useMapGeolocation();
 
-const geolocationErrorMessage = computed(() => {
-  if (geolocationError.value?.PERMISSION_DENIED)
-    return t("reportProblem.localization.error.permissionDenied");
-  if (geolocationError.value?.POSITION_UNAVAILABLE)
-    return t("reportProblem.localization.error.positionUnavailable");
-  if (geolocationError.value?.TIMEOUT)
-    return t("reportProblem.localization.error.timeout");
-});
-
 const { problems, loading } = useProblems();
 </script>
 
@@ -67,7 +58,6 @@ const { problems, loading } = useProblems();
       <div v-if="loading">Loading...</div>
       <Map
         v-else
-        v-if="!geolocationError"
         ref="map"
         class="lg:rounded-2xl lg:border lg:border-neutral-200"
         :zoom="zoom"
@@ -91,9 +81,6 @@ const { problems, loading } = useProblems();
           }"
         />
       </Map>
-      <p v-if="geolocationError" class="text-error m-2">
-        {{ geolocationErrorMessage }}
-      </p>
     </div>
 
     <ProblemDetails

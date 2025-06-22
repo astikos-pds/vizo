@@ -86,12 +86,14 @@ const isDesktop = useMediaQuery("(min-width: 1024px)");
   <UDrawer
     :direction="isDesktop ? 'right' : 'bottom'"
     :overlay="false"
-    :handle="!isDesktop"
+    :dismissible="false"
+    :modal="false"
+    :handle="false"
     v-model:open="props.isOpen"
   >
     <template #content>
       <aside class="size-full flex flex-col p-2 xl:p-3">
-        <header v-if="isDesktop" class="flex items-center mb-1 xl:mb-2">
+        <header class="flex items-center mb-1 xl:mb-2">
           <UButton
             color="neutral"
             variant="ghost"
