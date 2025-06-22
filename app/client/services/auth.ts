@@ -36,7 +36,7 @@ export const registerAsCitizenUseCase = async (
 ) => {
   const app = useNuxtApp();
 
-  return await app.$api<RegisterAsCitizenResponse>("/auth/register/citizen", {
+  return await app.$api<RegisterAsCitizenResponse>("/auth/citizen/register", {
     method: "POST",
     body: { ...request },
   });
