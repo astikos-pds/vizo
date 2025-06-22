@@ -1,4 +1,9 @@
-import { reportUseCase } from "~/services/report";
+import {
+  getReportsUseCase,
+  reportUseCase,
+  type GetReportsParams,
+  type GetReportsResponse,
+} from "~/services/report";
 import {
   uploadImageUseCase,
   type UploadImageRequest,
@@ -38,5 +43,11 @@ export const useReports = () => {
     );
   }
 
-  return { loading, report };
+  async function getReports(
+    params: GetReportsParams
+  ): Promise<GetReportsResponse | null> {
+    return await handle<GetReportsResponse>(() => getReportsUseCase(params));
+  }
+
+  return { loading, report, getReports };
 };

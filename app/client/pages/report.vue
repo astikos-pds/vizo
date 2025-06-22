@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent, RadioGroupItem } from "@nuxt/ui";
 import {
-  MAX_ACCEPTABLE_ACCURACY_IN_METERS,
   MAX_FILE_SIZE_IN_BYTES,
   MAX_FILE_SIZE_IN_MB,
   MAX_RADIUS_IN_METERS,
+  REPORT_CONFLICT_PERIOD_IN_MS,
 } from "~/utils/constants";
 import * as z from "zod";
 import { useReports } from "~/composables/use-reports";
 import type { LatLng } from "~/types/geolocation";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
-import ConfirmReportModal from "~/components/ConfirmReportModal.vue";
-import type { registerRuntimeCompiler } from "vue";
+import ModalReportImprecision from "~/components/modal/ModalReportImprecision.vue";
+import ModalRecentReport from "~/components/modal/ModalRecentReport.vue";
+import type { Report } from "~/types/domain";
 
 const { t } = useI18n();
 
@@ -137,47 +138,32 @@ watchEffect(() => {
   size.value = isMobile.value ? "md" : "xl";
 });
 
-const { loading, report } = useReports();
+const { loading, report, getReports } = useReports();
 const toast = useToast();
 
 const overlay = useOverlay();
 
 const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
-  if (event.data.location === "current" && !isLocationPrecise.value) {
-    const confirmReportModal = overlay.create(ConfirmReportModal, {
-      props: {
-        description: event.data.description,
-        imagesUrls: previewUrls.value,
-        latLng: coords.value,
-      },
-    });
-    const instace = confirmReportModal.open();
-    const shouldSubmit = await instace.result;
+  if (!(await shouldSubmitImpreciseLocation(event.data))) return;
+  if (!(await shouldSubmitOutOfBounds(event.data))) return;
 
-    if (!shouldSubmit) {
-      return;
-    }
-  }
+  const { latitude, longitude } = resolveCoordinates(event.data);
 
   if (
-    isMarkerOutOfBounds.value &&
-    event.data.location === "point" &&
-    isLocationPrecise.value
-  ) {
+    !(await shouldSubmitIfRecentlyReported({
+      latitude,
+      longitude,
+      description: event.data.description,
+      imagesUrls: previewUrls.value,
+    } as Report))
+  )
     return;
-  }
 
   const response = await report({
     description: event.data.description,
     images: event.data.images,
-    latitude:
-      event.data.location === "point"
-        ? markerPosition.latitude
-        : coords.value.latitude,
-    longitude:
-      event.data.location === "point"
-        ? markerPosition.longitude
-        : coords.value.longitude,
+    latitude: latitude,
+    longitude: longitude,
   });
 
   if (response) {
@@ -194,6 +180,68 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
     form.location = "current";
   }
 };
+
+async function shouldSubmitImpreciseLocation(
+  data: ReportSchema
+): Promise<boolean> {
+  if (data.location === "current" && !isLocationPrecise.value) {
+    const modal = overlay.create(ModalReportImprecision, {
+      props: {
+        description: data.description,
+        imagesUrls: previewUrls.value,
+        latLng: coords.value,
+      },
+    });
+    return await modal.open().result;
+  }
+  return true;
+}
+
+async function shouldSubmitOutOfBounds(data: ReportSchema): Promise<boolean> {
+  if (
+    isMarkerOutOfBounds.value &&
+    data.location === "point" &&
+    isLocationPrecise.value
+  ) {
+    return false;
+  }
+  return true;
+}
+
+async function shouldSubmitIfRecentlyReported(
+  report: Report
+): Promise<boolean> {
+  const nearbyReports = await getReports({
+    filter: {
+      latitude: report.latitude,
+      longitude: report.longitude,
+      radius: RADIUS_OF_RELATED_REPORTS_IN_METERS,
+    },
+    pageable: { size: 1 },
+  });
+
+  if (!nearbyReports || nearbyReports.content.length === 0) return true;
+
+  const lastReport = nearbyReports.content[0];
+  const diff = Math.abs(
+    new Date().getTime() - new Date(lastReport.createdAt).getTime()
+  );
+
+  if (diff <= REPORT_CONFLICT_PERIOD_IN_MS) {
+    const modal = overlay.create(ModalRecentReport, {
+      props: { lastReport: lastReport, currentReport: report },
+    });
+    return await modal.open().result;
+  }
+
+  return true;
+}
+
+function resolveCoordinates(data: ReportSchema) {
+  return data.location === "point"
+    ? { latitude: markerPosition.latitude, longitude: markerPosition.longitude }
+    : coords.value;
+}
 </script>
 
 <template>
@@ -303,9 +351,9 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
         required
         class="w-full"
         :help="
-          !isLocationPrecise && !geolocationError && coords.accuracy > 0
+          !isLocationPrecise && !geolocationError
             ? t('reportProblem.geolocationAccuracyWarning', {
-                accuracy: coords.accuracy.toFixed(0),
+                accuracy: coords.accuracy > 0 ? "inacessible" : coords.accuracy.toFixed(0),
               })
             : ''
         "

@@ -2,7 +2,6 @@ import type { LatLng } from "~/types/geolocation";
 import {
   CITY_CENTER,
   MAX_ACCEPTABLE_ACCURACY_IN_METERS,
-  MAX_RADIUS_IN_METERS,
 } from "~/utils/constants";
 
 export const useMapGeolocation = () => {
