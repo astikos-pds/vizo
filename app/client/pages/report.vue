@@ -4,6 +4,7 @@ import {
   MAX_FILE_SIZE_IN_BYTES,
   MAX_FILE_SIZE_IN_MB,
   MAX_RADIUS_IN_METERS,
+  RADIUS_OF_RELATED_REPORTS_IN_METERS,
   REPORT_CONFLICT_PERIOD_IN_MS,
 } from "~/utils/constants";
 import * as z from "zod";
@@ -353,7 +354,10 @@ function resolveCoordinates(data: ReportSchema) {
         :help="
           !isLocationPrecise && !geolocationError
             ? t('reportProblem.geolocationAccuracyWarning', {
-                accuracy: coords.accuracy > 0 ? "inacessible" : coords.accuracy.toFixed(0),
+                accuracy:
+                  coords.accuracy > 0
+                    ? coords.accuracy.toFixed(0)
+                    : 'inacessible',
               })
             : ''
         "
