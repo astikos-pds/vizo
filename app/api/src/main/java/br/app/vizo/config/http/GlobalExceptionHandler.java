@@ -14,6 +14,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDTO(e.getMessage()));
     }
 
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorDTO> handleForbidden(ForbiddenException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDTO(e.getMessage()));
+    }
+
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorDTO> handleBadRequest(BadRequestException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(e.getMessage()));
