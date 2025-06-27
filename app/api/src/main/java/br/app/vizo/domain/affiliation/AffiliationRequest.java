@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "affiliation_requests")
@@ -18,8 +19,7 @@ import java.time.Instant;
 public class AffiliationRequest {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "official_id")
@@ -43,6 +43,6 @@ public class AffiliationRequest {
     private Instant approvedAt;
 
     public AffiliationRequest() {
-        this(0L, null, null, AffiliationRequestStatus.PENDING, DateUtil.now(), null, null);
+        this(UUID.randomUUID(), null, null, AffiliationRequestStatus.PENDING, DateUtil.now(), null, null);
     }
 }
