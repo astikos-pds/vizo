@@ -2,6 +2,7 @@ package br.app.vizo.controller;
 
 import br.app.vizo.controller.filter.ReportFilter;
 import br.app.vizo.controller.request.CreateReportRequestDTO;
+import br.app.vizo.controller.response.PageResponse;
 import br.app.vizo.controller.response.ReportDTO;
 import br.app.vizo.service.ReportService;
 import org.springframework.data.domain.Page;
@@ -32,13 +33,13 @@ public class ReportController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ReportDTO>> getReports(
+    public ResponseEntity<PageResponse<ReportDTO>> getReports(
             @ModelAttribute ReportFilter filter,
             Pageable pageable,
             Authentication authentication
     ) {
         Page<ReportDTO> response = this.reportService.getReports(filter, pageable, authentication);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(PageResponse.of(response));
     }
 }
