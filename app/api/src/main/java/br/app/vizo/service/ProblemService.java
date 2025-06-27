@@ -7,7 +7,9 @@ import br.app.vizo.mapper.ProblemMapper;
 import br.app.vizo.mapper.ReportMapper;
 import br.app.vizo.repository.ProblemRepository;
 import br.app.vizo.repository.ReportRepository;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,30 +36,25 @@ public class ProblemService {
         this.reportMapper = reportMapper;
     }
 
-    public List<ProblemDTO> getProblems() {
-        return this.problemRepository.findAll()
-                .stream()
-                .map(this.problemMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<ProblemDTO> getProblems(Pageable pageable) {
+        return this.problemRepository.findAll(pageable)
+                .map(this.problemMapper::toDto);
     }
 
-    public List<ProblemDTO> getValidatedProblems() {
-        return this.problemRepository.findByValidated(true)
-                .stream()
-                .map(this.problemMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<ProblemDTO> getValidatedProblems(Pageable pageable) {
+        return this.problemRepository.findByValidated(true, pageable)
+                .map(this.problemMapper::toDto);
     }
 
-    public List<ReportDTO> getReportsOfProblem(String id) {
+    public Page<ReportDTO> getProblemReports(String id, Pageable pageable) {
         UUID problemId = UUID.fromString(id);
 
         if (!this.problemRepository.existsById(problemId)) {
             throw new NotFoundException("Problem not found.");
         }
 
-        return this.reportRepository.findByProblemId(problemId, Sort.by(Sort.Direction.DESC, "createdAt"))
-                .stream()
-                .map(this.reportMapper::toDto)
-                .collect(Collectors.toList());
+        return this.reportRepository
+                .findByProblemId(problemId, pageable)
+                .map(this.reportMapper::toDto);
     }
 }

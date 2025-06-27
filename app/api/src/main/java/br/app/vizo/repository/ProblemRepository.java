@@ -1,6 +1,8 @@
 package br.app.vizo.repository;
 
 import br.app.vizo.domain.problem.Problem;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,5 +29,5 @@ public interface ProblemRepository extends JpaRepository<Problem, UUID> {
             @Param("lon") Double longitude,
             @Param("distance") Double distance);
 
-    List<Problem> findByValidated(Boolean validated);
+    Page<Problem> findByValidated(Boolean validated, Pageable pageable);
 }

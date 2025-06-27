@@ -1,8 +1,11 @@
 package br.app.vizo.controller;
 
+import br.app.vizo.controller.response.PageResponse;
 import br.app.vizo.controller.response.ProblemDTO;
 import br.app.vizo.controller.response.ReportDTO;
 import br.app.vizo.service.ProblemService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,18 +22,24 @@ public class ProblemController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProblemDTO>> getProblems(
-            @RequestParam(required = false, defaultValue = "false") Boolean validated
+    public ResponseEntity<PageResponse<ProblemDTO>> getProblems(
+            @RequestParam(required = false, defaultValue = "false") Boolean validated,
+            Pageable pageable
     ) {
         if (validated) {
-            return ResponseEntity.ok(this.problemService.getValidatedProblems());
+            return ResponseEntity.ok(
+                    PageResponse.of(this.problemService.getValidatedProblems(pageable))
+            );
         }
-        return ResponseEntity.ok(this.problemService.getProblems());
+        return ResponseEntity.ok(
+                PageResponse.of(this.problemService.getProblems(pageable))
+        );
     }
 
     @GetMapping("/{id}/reports")
-    public ResponseEntity<List<ReportDTO>> getReportsOfProblem(@PathVariable String id) {
-        List<ReportDTO> response = this.problemService.getReportsOfProblem(id);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<PageResponse<ReportDTO>> getProblemReports(@PathVariable String id, Pageable pageable) {
+        Page<ReportDTO> response = this.problemService.getProblemReports(id, pageable);
+
+        return ResponseEntity.ok(PageResponse.of(response));
     }
 }
