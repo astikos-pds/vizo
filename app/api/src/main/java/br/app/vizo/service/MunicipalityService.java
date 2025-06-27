@@ -4,6 +4,7 @@ import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
 import br.app.vizo.controller.response.AffiliationRequestDTO;
 import br.app.vizo.domain.affiliation.AffiliationRequest;
 import br.app.vizo.domain.user.Official;
+import br.app.vizo.domain.user.OfficialRole;
 import br.app.vizo.exception.http.ForbiddenException;
 import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.AffiliationRequestMapper;
@@ -11,6 +12,8 @@ import br.app.vizo.repository.AffiliationRequestRepository;
 import br.app.vizo.repository.MunicipalityRepository;
 import br.app.vizo.repository.OfficialRepository;
 import br.app.vizo.util.DateUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -36,24 +39,30 @@ public class MunicipalityService {
         this.affiliationRequestMapper = affiliationRequestMapper;
     }
 
+    public Page<AffiliationRequestDTO> getMunicipalityAffiliations(
+            String municipalityIdRaw,
+            Pageable pageable,
+            Authentication authentication
+    ) {
+        UUID municipalityId = UUID.fromString(municipalityIdRaw);
+
+        this.checkIfOfficialIsAuthorized(municipalityId, authentication.getName());
+
+        return this.affiliationRequestRepository
+                .findAllByMunicipalityId(municipalityId, pageable)
+                .map(this.affiliationRequestMapper::toDto);
+    }
+
     public AffiliationRequestDTO updateMunicipalityAffiliation(
-            String municipalityId,
+            String municipalityIdRaw,
             String affiliationId,
             UpdateAffiliationRequestDTO body,
             Authentication authentication
     ) {
-        boolean municipalityExists = this.municipalityRepository.existsById(UUID.fromString(municipalityId));
-        if (!municipalityExists) {
-            throw new NotFoundException("Municipality not found.");
-        }
-
-        Official loggedInOfficial = this.officialRepository.findByDocument(authentication.getName()).orElseThrow(
-                () -> new NotFoundException("Official not found.")
+        Official loggedInOfficial = this.checkIfOfficialIsAuthorized(
+                UUID.fromString(municipalityIdRaw),
+                authentication.getName()
         );
-
-        if (!loggedInOfficial.getMunicipality().getId().equals(UUID.fromString(municipalityId))) {
-            throw new ForbiddenException("Permission denied to update affiliation request.");
-        }
 
         AffiliationRequest affiliationRequest = this.affiliationRequestRepository
                 .findById(UUID.fromString(affiliationId))
@@ -69,5 +78,24 @@ public class MunicipalityService {
         this.officialRepository.save(official);
 
         return this.affiliationRequestMapper.toDto(this.affiliationRequestRepository.save(affiliationRequest));
+    }
+
+    private Official checkIfOfficialIsAuthorized(UUID municipalityId, String officialDocument) {
+        boolean municipalityExists = this.municipalityRepository.existsById(municipalityId);
+        if (!municipalityExists) {
+            throw new NotFoundException("Municipality not found.");
+        }
+
+        Official loggedInOfficial = this.officialRepository.findByDocument(officialDocument).orElseThrow(
+                () -> new NotFoundException("Official not found.")
+        );
+
+        if (!loggedInOfficial.getMunicipality().getId().equals(municipalityId)
+                || loggedInOfficial.getRole() != OfficialRole.ADMIN
+        ) {
+            throw new ForbiddenException("Permission denied to update affiliation request.");
+        }
+
+        return loggedInOfficial;
     }
 }
