@@ -2,7 +2,6 @@ package br.app.vizo.service;
 
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
 import br.app.vizo.controller.response.AffiliationRequestDTO;
-import br.app.vizo.controller.response.OfficialDTO;
 import br.app.vizo.domain.affiliation.AffiliationRequest;
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.exception.http.NotFoundException;
@@ -31,7 +30,6 @@ public class AffiliationService {
         this.officialRepository = officialRepository;
         this.affiliationRequestMapper = affiliationRequestMapper;
     }
-
 
     public AffiliationRequestDTO updateAffiliation(
             String id,
