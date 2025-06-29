@@ -9,7 +9,6 @@ import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
 import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.user.Official;
-import br.app.vizo.domain.user.OfficialRole;
 import br.app.vizo.exception.http.ForbiddenException;
 import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.AffiliationRequestMapper;
@@ -20,7 +19,9 @@ import br.app.vizo.repository.MunicipalityRepository;
 import br.app.vizo.repository.OfficialRepository;
 import br.app.vizo.util.DateUtil;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -52,13 +53,26 @@ public class MunicipalityService {
         this.departmentMapper = departmentMapper;
     }
 
+    public Page<DepartmentDTO> getDepartments(UUID municipalityId, Pageable pageable, Authentication authentication) {
+        this.getAuthorizedCommonContext(municipalityId, authentication);
+
+        return this.departmentRepository.findByMunicipalityId(
+                municipalityId,
+                PageRequest.of(
+                        pageable.getPageNumber(),
+                        pageable.getPageSize(),
+                        pageable.getSortOr(Sort.by(Sort.Direction.DESC, "createdAt"))
+                )
+        ).map(this.departmentMapper::toDto);
+    }
+
     public DepartmentDTO createMunicipalityDepartment(
             UUID municipalityId,
             CreateDepartmentRequestDTO body,
             Authentication authentication
     ) {
 
-        OfficialContext officialContext = this.checkIfOfficialIsAuthorized(municipalityId, authentication.getName());
+        OfficialContext officialContext = this.getAuthorizedAdminContext(municipalityId, authentication);
 
         Department department = new Department();
         department.setName(body.name());
@@ -75,7 +89,7 @@ public class MunicipalityService {
             Pageable pageable,
             Authentication authentication
     ) {
-        this.checkIfOfficialIsAuthorized(municipalityId, authentication.getName());
+        this.getAuthorizedOfficialContext(municipalityId, authentication, true);
 
         return this.affiliationRequestRepository
                 .findAllByMunicipalityId(municipalityId, pageable)
@@ -88,8 +102,7 @@ public class MunicipalityService {
             UpdateAffiliationRequestDTO body,
             Authentication authentication
     ) {
-        Official loggedInOfficial = this.checkIfOfficialIsAuthorized(municipalityId, authentication.getName())
-                .loggedInOfficial();
+        Official loggedInOfficial = this.getAuthorizedAdminContext(municipalityId, authentication).loggedInOfficial();
 
         AffiliationRequest affiliationRequest = this.affiliationRequestRepository
                 .findById(UUID.fromString(affiliationId))
@@ -114,21 +127,38 @@ public class MunicipalityService {
             Official loggedInOfficial
     ) {}
 
-    private OfficialContext checkIfOfficialIsAuthorized(UUID municipalityId, String officialDocument) {
+    private OfficialContext getAuthorizedCommonContext(UUID municipalityId, Authentication authentication) {
+        return getAuthorizedOfficialContext(municipalityId, authentication, false);
+    }
+
+    private OfficialContext getAuthorizedAdminContext(UUID municipalityId, Authentication authentication) {
+        return getAuthorizedOfficialContext(municipalityId, authentication, true);
+    }
+
+    private OfficialContext getAuthorizedOfficialContext(
+            UUID municipalityId,
+            Authentication authentication,
+            boolean isForAdmins
+    ) {
         Municipality municipality = this.municipalityRepository.findById(municipalityId).orElseThrow(
                 () -> new NotFoundException("Municipality not found.")
         );
 
-        Official loggedInOfficial = this.officialRepository.findByDocument(officialDocument).orElseThrow(
+        Official loggedInOfficial = this.officialRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("Official not found.")
         );
 
-        if (!loggedInOfficial.getMunicipality().getId().equals(municipalityId)
-                || loggedInOfficial.getRole() != OfficialRole.ADMIN
-        ) {
-            throw new ForbiddenException("Permission denied to update affiliation request.");
-        }
+        validateOfficialAccess(municipality, loggedInOfficial, isForAdmins);
 
         return new OfficialContext(municipality, loggedInOfficial);
+    }
+
+    private void validateOfficialAccess(Municipality municipality, Official official, boolean isForAdmins) {
+        if (!official.getMunicipality().getId().equals(municipality.getId())) {
+            throw new ForbiddenException("Official does not belong to this municipality.");
+        }
+        if (isForAdmins && !official.isAdmin()) {
+            throw new ForbiddenException("Only admins are allowed to perform this action.");
+        }
     }
 }

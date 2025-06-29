@@ -25,6 +25,18 @@ public class MunicipalityController {
         this.municipalityService = municipalityService;
     }
 
+    @GetMapping("/{municipalityId}/departments")
+    public ResponseEntity<PageResponse<DepartmentDTO>> getDepartments(
+            @PathVariable UUID municipalityId,
+            Pageable pageable,
+            Authentication authentication
+    ) {
+        Page<DepartmentDTO> response = this.municipalityService
+                .getDepartments(municipalityId, pageable, authentication);
+
+        return ResponseEntity.ok(PageResponse.of(response));
+    }
+
     @PostMapping("/{municipalityId}/departments")
     public ResponseEntity<DepartmentDTO> createDepartment(
             @PathVariable UUID municipalityId,

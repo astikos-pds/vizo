@@ -39,4 +39,8 @@ public class Official extends User {
         this.role = role;
         this.wasApproved = wasApproved;
     }
+
+    public boolean isAdmin() {
+        return this.role == OfficialRole.ADMIN;
+    }
 }
