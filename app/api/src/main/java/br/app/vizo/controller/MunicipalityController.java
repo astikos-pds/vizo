@@ -1,14 +1,19 @@
 package br.app.vizo.controller;
 
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
+import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
 import br.app.vizo.controller.response.AffiliationRequestDTO;
+import br.app.vizo.controller.response.DepartmentDTO;
 import br.app.vizo.controller.response.PageResponse;
 import br.app.vizo.service.MunicipalityService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/municipalities")
@@ -20,9 +25,24 @@ public class MunicipalityController {
         this.municipalityService = municipalityService;
     }
 
+    @PostMapping("/{municipalityId}/departments")
+    public ResponseEntity<DepartmentDTO> createDepartment(
+            @PathVariable UUID municipalityId,
+            @RequestBody CreateDepartmentRequestDTO body,
+            Authentication authentication
+    ) {
+        DepartmentDTO response = this.municipalityService.createMunicipalityDepartment(
+                municipalityId,
+                body,
+                authentication
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
     @GetMapping("/{municipalityId}/affiliations")
     public ResponseEntity<PageResponse<AffiliationRequestDTO>> getMunicipalityAffiliations(
-            @PathVariable String municipalityId,
+            @PathVariable UUID municipalityId,
             Pageable pageable,
             Authentication authentication
     ) {
@@ -34,7 +54,7 @@ public class MunicipalityController {
 
     @PatchMapping("/{municipalityId}/affiliations/{affiliationId}")
     public ResponseEntity<AffiliationRequestDTO> updateMunicipalityAffiliation(
-            @PathVariable String municipalityId,
+            @PathVariable UUID municipalityId,
             @PathVariable String affiliationId,
             @RequestBody UpdateAffiliationRequestDTO body,
             Authentication authentication

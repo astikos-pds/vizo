@@ -27,6 +27,8 @@ public class Department {
 
     private String name;
 
+    private String iconUrl;
+
     @Column(name = "color_hex")
     private String colorHex;
 
@@ -41,10 +43,10 @@ public class Department {
     protected Instant updatedAt;
 
     public Department() {
-        this(null, "", "", null);
+        this(null, "", "", "", null);
     }
 
-    public Department(Municipality municipality, String name, String colorHex, Official createdBy) {
-        this(UUID.randomUUID(), municipality, name, colorHex, createdBy, DateUtil.now(), DateUtil.now());
+    public Department(Municipality municipality, String name, String iconUrl, String colorHex, Official createdBy) {
+        this(UUID.randomUUID(), municipality, name, iconUrl, colorHex, createdBy, DateUtil.now(), DateUtil.now());
     }
 }
