@@ -1,6 +1,5 @@
 package br.app.vizo.controller;
 
-import br.app.vizo.controller.request.AnswerProblemRequestDTO;
 import br.app.vizo.controller.response.PageResponse;
 import br.app.vizo.controller.response.ProblemDTO;
 import br.app.vizo.controller.response.ReportDTO;
@@ -8,7 +7,6 @@ import br.app.vizo.service.ProblemService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
