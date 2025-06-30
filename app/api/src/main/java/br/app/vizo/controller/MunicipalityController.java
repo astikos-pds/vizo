@@ -79,6 +79,23 @@ public class MunicipalityController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{municipalityId}/departments/{departmentId}/assignments/{assignmentId}")
+    public ResponseEntity<AssignmentDTO> getAssignment(
+            @PathVariable UUID municipalityId,
+            @PathVariable UUID departmentId,
+            @PathVariable UUID assignmentId,
+            Authentication authentication
+    ) {
+        AssignmentDTO response = this.municipalityService.getAssignment(
+                municipalityId,
+                departmentId,
+                assignmentId,
+                authentication
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{municipalityId}/affiliations")
     public ResponseEntity<PageResponse<AffiliationRequestDTO>> getMunicipalityAffiliations(
             @PathVariable UUID municipalityId,

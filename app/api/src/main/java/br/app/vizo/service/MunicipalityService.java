@@ -27,6 +27,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
@@ -139,6 +140,25 @@ public class MunicipalityService {
         assignment.setCanApproveOfficials(body.canApproveOfficials());
 
         return this.assignmentMapper.toDTO(this.assignmentRepository.save(assignment));
+    }
+
+    public AssignmentDTO getAssignment(
+            UUID municipalityId,
+            UUID departmentId,
+            UUID assignmentId,
+            Authentication authentication
+    ) {
+        this.getAuthorizedAdminContext(municipalityId, authentication);
+
+        this.departmentRepository.findById(departmentId).orElseThrow(
+                () -> new NotFoundException("Department not found.")
+        );
+
+        return this.assignmentMapper.toDTO(
+                this.assignmentRepository.findById(assignmentId).orElseThrow(
+                        () -> new NotFoundException("Assignment not found.")
+                )
+        );
     }
 
     public Page<AffiliationRequestDTO> getMunicipalityAffiliations(
