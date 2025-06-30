@@ -11,10 +11,6 @@ import lombok.Setter;
 @Setter
 public class Official extends User {
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "municipality_id")
-    private Municipality municipality;
-
     @Enumerated(EnumType.STRING)
     private OfficialRole role;
 
@@ -22,7 +18,7 @@ public class Official extends User {
     private Boolean wasApproved;
 
     public Official() {
-        this("", "", "", "", null, OfficialRole.OFFICIAL, false);
+        this("", "", "", "", OfficialRole.OFFICIAL, false);
     }
 
     public Official(
@@ -30,12 +26,10 @@ public class Official extends User {
             String email,
             String password,
             String name,
-            Municipality municipality,
             OfficialRole role,
             Boolean wasApproved
     ) {
         super(document, email, password, name);
-        this.municipality = municipality;
         this.role = role;
         this.wasApproved = wasApproved;
     }

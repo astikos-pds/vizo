@@ -10,7 +10,6 @@ public record OfficialDTO(
         String document,
         String email,
         String name,
-        UUID municipalityId,
         OfficialRole role,
         Boolean wasApproved,
         Instant createdAt,

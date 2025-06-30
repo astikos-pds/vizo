@@ -4,6 +4,7 @@ import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
 import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
 import br.app.vizo.controller.response.AffiliationRequestDTO;
 import br.app.vizo.controller.response.DepartmentDTO;
+import br.app.vizo.controller.response.OfficialDTO;
 import br.app.vizo.controller.response.PageResponse;
 import br.app.vizo.service.MunicipalityService;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,17 @@ public class MunicipalityController {
 
     public MunicipalityController(MunicipalityService municipalityService) {
         this.municipalityService = municipalityService;
+    }
+
+    @GetMapping("/{municipalityId}/officials")
+    public ResponseEntity<PageResponse<OfficialDTO>> getOfficials(
+            @PathVariable UUID municipalityId,
+            Pageable pageable,
+            Authentication authentication
+    ) {
+        Page<OfficialDTO> response = this.municipalityService.getOfficials(municipalityId, pageable, authentication);
+
+        return ResponseEntity.ok(PageResponse.of(response));
     }
 
     @GetMapping("/{municipalityId}/departments")

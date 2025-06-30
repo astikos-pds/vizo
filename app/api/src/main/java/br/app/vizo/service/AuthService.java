@@ -107,7 +107,6 @@ public class AuthService {
         official.setDocument(body.document());
         official.setEmail(body.email());
         official.setName(body.name());
-        official.setMunicipality(municipality);
         official.setRole(OfficialRole.OFFICIAL);
         official.setWasApproved(false);
 

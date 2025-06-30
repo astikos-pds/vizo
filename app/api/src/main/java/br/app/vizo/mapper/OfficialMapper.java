@@ -8,10 +8,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface OfficialMapper extends CommonMapper<Official, OfficialDTO> {
 
-    @Mapping(source = "municipality.id", target = "municipalityId")
     OfficialDTO toDto(Official entity);
 
     @Mapping(target = "password", ignore = true)
-    @Mapping(target = "municipality", ignore = true)
     Official toEntity(OfficialDTO dto);
 }
