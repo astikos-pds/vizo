@@ -28,5 +28,5 @@ public interface ProblemRepository extends JpaRepository<Problem, UUID> {
             @Param("lon") Double longitude,
             @Param("distance") Double distance);
 
-    Page<Problem> findByValidated(Boolean validated, Pageable pageable);
+    Page<Problem> findAllByValidated(Boolean validated);
 }

@@ -5,12 +5,12 @@ import br.app.vizo.controller.response.ReportDTO;
 import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.ProblemMapper;
 import br.app.vizo.mapper.ReportMapper;
-import br.app.vizo.repository.ProblemRepository;
-import br.app.vizo.repository.ReportRepository;
+import br.app.vizo.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -33,25 +33,28 @@ public class ProblemService {
         this.reportMapper = reportMapper;
     }
 
-    public Page<ProblemDTO> getProblems(Pageable pageable) {
-        return this.problemRepository.findAll(pageable)
-                .map(this.problemMapper::toDto);
+    public List<ProblemDTO> getProblems() {
+        return this.problemRepository.findAll()
+                .stream()
+                .map(this.problemMapper::toDto)
+                .toList();
     }
 
-    public Page<ProblemDTO> getValidatedProblems(Pageable pageable) {
-        return this.problemRepository.findByValidated(true, pageable)
-                .map(this.problemMapper::toDto);
+    public List<ProblemDTO> getValidatedProblems() {
+        return this.problemRepository.findAllByValidated(true)
+                .stream()
+                .map(this.problemMapper::toDto)
+                .toList();
     }
 
-    public Page<ReportDTO> getProblemReports(String id, Pageable pageable) {
-        UUID problemId = UUID.fromString(id);
+    public Page<ReportDTO> getProblemReports(UUID id, Pageable pageable) {
 
-        if (!this.problemRepository.existsById(problemId)) {
+        if (!this.problemRepository.existsById(id)) {
             throw new NotFoundException("Problem not found.");
         }
 
         return this.reportRepository
-                .findByProblemId(problemId, pageable)
+                .findByProblemId(id, pageable)
                 .map(this.reportMapper::toDto);
     }
 }
