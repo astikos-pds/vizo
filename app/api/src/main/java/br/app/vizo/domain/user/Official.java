@@ -1,6 +1,5 @@
 package br.app.vizo.domain.user;
 
-import br.app.vizo.domain.municipality.Municipality;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

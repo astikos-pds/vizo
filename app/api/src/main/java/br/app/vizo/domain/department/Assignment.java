@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table(name = "assignments")
@@ -17,8 +18,7 @@ import java.time.Instant;
 public class Assignment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "official_id")
@@ -42,13 +42,13 @@ public class Assignment {
     private Boolean canApproveOfficials;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "added_by")
-    private Official addedBy;
+    @JoinColumn(name = "created_by")
+    private Official createdBy;
 
-    @Column(name = "added_at")
-    private Instant addedAt;
+    @Column(name = "created_at")
+    private Instant createdAt;
 
     public Assignment() {
-        this(0L, null, null, DepartmentRole.COMMON, false, true, false, null, DateUtil.now());
+        this(UUID.randomUUID(), null, null, DepartmentRole.COMMON, false, true, false, null, DateUtil.now());
     }
 }

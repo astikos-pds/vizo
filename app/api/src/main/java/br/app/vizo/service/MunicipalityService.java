@@ -2,23 +2,24 @@ package br.app.vizo.service;
 
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
 import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
+import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
 import br.app.vizo.controller.response.AffiliationRequestDTO;
+import br.app.vizo.controller.response.AssignmentDTO;
 import br.app.vizo.controller.response.DepartmentDTO;
 import br.app.vizo.controller.response.OfficialDTO;
 import br.app.vizo.domain.affiliation.AffiliationRequest;
 import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
+import br.app.vizo.domain.department.Assignment;
 import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.exception.http.ForbiddenException;
 import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.AffiliationRequestMapper;
+import br.app.vizo.mapper.AssignmentMapper;
 import br.app.vizo.mapper.DepartmentMapper;
 import br.app.vizo.mapper.OfficialMapper;
-import br.app.vizo.repository.AffiliationRequestRepository;
-import br.app.vizo.repository.DepartmentRepository;
-import br.app.vizo.repository.MunicipalityRepository;
-import br.app.vizo.repository.OfficialRepository;
+import br.app.vizo.repository.*;
 import br.app.vizo.util.DateUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,9 +28,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class MunicipalityService {
@@ -38,26 +37,32 @@ public class MunicipalityService {
     private final AffiliationRequestRepository affiliationRequestRepository;
     private final OfficialRepository officialRepository;
     private final DepartmentRepository departmentRepository;
+    private final AssignmentRepository assignmentRepository;
     private final AffiliationRequestMapper affiliationRequestMapper;
     private final OfficialMapper officialMapper;
     private final DepartmentMapper departmentMapper;
+    private final AssignmentMapper assignmentMapper;
 
     public MunicipalityService(
             MunicipalityRepository municipalityRepository,
             AffiliationRequestRepository affiliationRequestRepository,
             OfficialRepository officialRepository,
             DepartmentRepository departmentRepository,
+            AssignmentRepository assignmentRepository,
             AffiliationRequestMapper affiliationRequestMapper,
             OfficialMapper officialMapper,
-            DepartmentMapper departmentMapper
+            DepartmentMapper departmentMapper,
+            AssignmentMapper assignmentMapper
     ) {
         this.municipalityRepository = municipalityRepository;
         this.affiliationRequestRepository = affiliationRequestRepository;
         this.officialRepository = officialRepository;
         this.departmentRepository = departmentRepository;
+        this.assignmentRepository = assignmentRepository;
         this.affiliationRequestMapper = affiliationRequestMapper;
         this.officialMapper = officialMapper;
         this.departmentMapper = departmentMapper;
+        this.assignmentMapper = assignmentMapper;
     }
 
     public Page<OfficialDTO> getOfficials(UUID municipalityId, Pageable pageable, Authentication authentication) {
@@ -99,6 +104,41 @@ public class MunicipalityService {
         department.setMunicipality(officialContext.municipality());
 
         return this.departmentMapper.toDto(this.departmentRepository.save(department));
+    }
+
+    public AssignmentDTO createOrUpdateAssignment(
+            UUID municipalityId,
+            UUID departmentId,
+            UpdateAssignmentRequestDTO body,
+            Authentication authentication
+    ) {
+        OfficialContext officialContext = this.getAuthorizedAdminContext(municipalityId, authentication);
+
+        Department department = this.departmentRepository.findById(departmentId).orElseThrow(
+                () -> new NotFoundException("Department not found.")
+        );
+
+        Official official = this.officialRepository.findById(body.officialId()).orElseThrow(
+                () -> new NotFoundException("Official not found")
+        );
+
+        Assignment assignment = this.assignmentRepository
+                .findByDepartmentIdAndOfficialId(departmentId, body.officialId())
+                .orElseGet(() -> {
+                    Assignment newAssignment = new Assignment();
+                    newAssignment.setDepartment(department);
+                    newAssignment.setOfficial(official);
+                    newAssignment.setCreatedBy(officialContext.loggedInOfficial());
+
+                    return newAssignment;
+                });
+
+        assignment.setRoleInDepartment(body.role());
+        assignment.setCanViewReports(body.canViewReports());
+        assignment.setCanUpdateStatus(body.canUpdateStatus());
+        assignment.setCanApproveOfficials(body.canApproveOfficials());
+
+        return this.assignmentMapper.toDTO(this.assignmentRepository.save(assignment));
     }
 
     public Page<AffiliationRequestDTO> getMunicipalityAffiliations(

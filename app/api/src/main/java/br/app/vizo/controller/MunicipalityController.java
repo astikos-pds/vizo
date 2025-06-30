@@ -2,10 +2,8 @@ package br.app.vizo.controller;
 
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
 import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
-import br.app.vizo.controller.response.AffiliationRequestDTO;
-import br.app.vizo.controller.response.DepartmentDTO;
-import br.app.vizo.controller.response.OfficialDTO;
-import br.app.vizo.controller.response.PageResponse;
+import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
+import br.app.vizo.controller.response.*;
 import br.app.vizo.service.MunicipalityService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -62,6 +60,23 @@ public class MunicipalityController {
         );
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PutMapping("/{municipalityId}/departments/{departmentId}/assignments")
+    public ResponseEntity<AssignmentDTO> createOrUpdateAssignment(
+            @PathVariable UUID municipalityId,
+            @PathVariable UUID departmentId,
+            @RequestBody UpdateAssignmentRequestDTO body,
+            Authentication authentication
+    ) {
+        AssignmentDTO response = this.municipalityService.createOrUpdateAssignment(
+                municipalityId,
+                departmentId,
+                body,
+                authentication
+        );
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{municipalityId}/affiliations")
