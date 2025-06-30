@@ -27,7 +27,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.UUID;
 
@@ -94,7 +93,6 @@ public class MunicipalityService {
             CreateDepartmentRequestDTO body,
             Authentication authentication
     ) {
-
         OfficialContext officialContext = this.getAuthorizedAdminContext(municipalityId, authentication);
 
         Department department = new Department();
@@ -105,6 +103,23 @@ public class MunicipalityService {
         department.setMunicipality(officialContext.municipality());
 
         return this.departmentMapper.toDto(this.departmentRepository.save(department));
+    }
+
+    public Page<OfficialDTO> getOfficialsFromDepartments(
+            UUID municipalityId,
+            UUID departmentId,
+            Pageable pageable,
+            Authentication authentication
+    ) {
+        this.getAuthorizedCommonContext(municipalityId, authentication);
+
+        this.departmentRepository.findById(departmentId).orElseThrow(
+                () -> new NotFoundException("Department not found.")
+        );
+
+        return this.assignmentRepository.findAllByDepartmentId(departmentId, pageable)
+                .map(Assignment::getOfficial)
+                .map(this.officialMapper::toDto);
     }
 
     public AssignmentDTO createOrUpdateAssignment(
