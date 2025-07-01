@@ -10,6 +10,8 @@ export const useMapGeolocation = () => {
 
   const isLocationPrecise = computed(
     () =>
+      coords.value.latitude !== Infinity &&
+      coords.value.longitude !== Infinity &&
       coords.value.accuracy <= MAX_ACCEPTABLE_ACCURACY_IN_METERS &&
       coords.value.accuracy > 0
   );

@@ -22,10 +22,10 @@ defineExpose({
     map.value?.flyTo(targetCenter, targetZoom, options),
 });
 
-const isDark = useDark();
+const colorMode = useColorMode();
 
 const tileLayerUrl = computed(() =>
-  isDark.value
+  colorMode.value === "dark"
     ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
     : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
 );

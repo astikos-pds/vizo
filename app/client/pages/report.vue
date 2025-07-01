@@ -247,7 +247,7 @@ function resolveCoordinates(data: ReportSchema) {
 
 <template>
   <section
-    class="w-full h-full flex items-center flex-col gap-5 py-15 sm:py-20 overflow-y-scroll"
+    class="w-full h-full flex items-center flex-col gap-5 py-15 sm:py-20 overflow-y-auto"
   >
     <h1 class="text-3xl text-center font-semibold px-2">
       {{ t("reportProblem.title") }}

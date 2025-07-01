@@ -52,14 +52,14 @@ const { problems, loading } = useProblems();
 <template>
   <section class="relative size-full flex flex-row">
     <div
-      class="size-full flex justify-center items-center lg:p-5 bg-neutral-100 dark:bg-neutral-800"
+      class="size-full flex justify-center items-center lg:p-5"
       :class="isDetailsOpen ? 'xl:min-w-[75%]' : 'xl:w-full'"
     >
       <div v-if="loading">Loading...</div>
       <Map
         v-else
         ref="map"
-        class="lg:rounded-2xl lg:border lg:border-neutral-200"
+        class="lg:rounded-2xl lg:border border-neutral-200 dark:border-neutral-800"
         :zoom="zoom"
         :center="center"
       >
