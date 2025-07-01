@@ -3,7 +3,7 @@ import type { DropdownMenuItem } from "@nuxt/ui";
 import * as locales from "@nuxt/ui/locale";
 
 const { t, locale, setLocale } = useI18n();
-const isDark = useDark();
+const colorMode = useColorMode();
 
 function selectLocale(newLocale: typeof locale.value) {
   setLocale(newLocale);
@@ -34,8 +34,8 @@ function createThemeItem(theme: {
     label: theme.label,
     icon: `i-lucide-${theme.icon}`,
     type: "checkbox",
-    onSelect: (e: Event) => (isDark.value = theme.id === "dark" ? true : false),
-    checked: isDark.value === (theme.id === "dark" ? true : false),
+    onSelect: (e: Event) => (colorMode.preference = theme.id),
+    checked: colorMode.preference === theme.id,
   };
 }
 
@@ -53,6 +53,11 @@ const items = computed<DropdownMenuItem[][]>(() => [
       label: t("configHeader.theme.label"),
       icon: "i-lucide-palette",
       children: [
+        createThemeItem({
+          id: "system",
+          label: t("configHeader.theme.system"),
+          icon: "monitor",
+        }),
         createThemeItem({
           id: "light",
           label: t("configHeader.theme.light"),

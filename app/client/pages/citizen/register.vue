@@ -311,12 +311,14 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
           @click="showConfimedPassword = !showConfimedPassword"
         />
 
-        <span
-          >{{ t("registerCitizen.alreadyHaveAccount") }}
-          <NuxtLink to="/login" class="text-primary dark:text-blue-500">{{
-            t("registerCitizen.logInHere")
-          }}</NuxtLink></span
-        >
+        <div class="text-center">
+          <span
+            >{{ t("registerCitizen.alreadyHaveAccount") }}
+            <NuxtLink to="/login" class="text-primary dark:text-blue-500">{{
+              t("registerCitizen.logInHere")
+            }}</NuxtLink></span
+          >
+        </div>
 
         <UButton
           type="submit"

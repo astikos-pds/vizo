@@ -19,22 +19,47 @@ const languageItems = ref([
   { id: locales.pt_br.code, label: locales.pt_br.name, icon: "i-flagpack-br" },
 ]);
 
+const themeItems = computed(() => [
+  {
+    label: t("configHeader.theme.system"),
+    value: "system",
+    icon: "i-lucide-monitor",
+  },
+  {
+    label: t("configHeader.theme.light"),
+    value: "light",
+    icon: "i-lucide-sun",
+  },
+  {
+    label: t("configHeader.theme.dark"),
+    value: "dark",
+    icon: "i-lucide-moon",
+  },
+]);
+
+const colorMode = useColorMode();
+
 const settingsSchema = z.object({
   language: z.custom<typeof locale.value>(),
+  theme: z.custom<typeof colorMode.preference>(),
 });
 
 type SettingsSchema = z.output<typeof settingsSchema>;
 
 const form = reactive<SettingsSchema>({
   language: locale.value,
+  theme: colorMode.preference,
 });
-const icon = computed(
+
+const languageIcon = computed(
   () => languageItems.value.find((item) => item.id === form.language)?.icon
 );
 
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
   await setLocale(event.data.language);
+
+  colorMode.preference = event.data.theme;
 
   toast.add({
     title: t("toast.success.title"),
@@ -46,7 +71,7 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
 
 <template>
   <section
-    class="size-full flex items-center flex-col gap-5 py-20 overflow-y-scroll"
+    class="size-full flex items-center flex-col gap-5 py-20 overflow-y-auto"
   >
     <h1 class="text-3xl font-semibold">
       {{ t("settings.title") }}
@@ -61,19 +86,40 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
       <UFormField
         :label="t('settings.languageLabel')"
         name="language"
-        size="xl"
         class="w-full"
         ><USelectMenu
           v-model="form.language"
           value-key="id"
           :items="languageItems"
-          :icon="icon"
+          :icon="languageIcon"
           :search-input="{
             placeholder: t('settings.searchPlaceholder'),
             icon: 'i-lucide-search',
           }"
           class="w-full"
       /></UFormField>
+
+      <UFormField
+        :label="t('settings.themeLabel')"
+        name="theme"
+        class="w-full rounded-1"
+      >
+        <div class="grid grid-cols-3 gap-1.5">
+          <UButton
+            v-for="item in themeItems"
+            :icon="item.icon"
+            :label="item.label"
+            @click="form.theme = item.value"
+            color="neutral"
+            variant="outline"
+            :class="[
+              form.theme === item.value
+                ? 'bg-elevated'
+                : 'hover:bg-elevated/50',
+            ]"
+          />
+        </div>
+      </UFormField>
 
       <UButton type="submit" size="xl" class="cursor-pointer">{{
         t("settings.saveButton")

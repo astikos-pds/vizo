@@ -55,20 +55,6 @@ export const useAuth = () => {
     return response;
   }
 
-  async function ensureAuthenticated(): Promise<boolean> {
-    if (!accessToken.value) return false;
-
-    if (isTokenExpired(accessToken.value)) {
-      if (!refreshToken.value) return false;
-
-      if (isTokenExpired(refreshToken.value)) return false;
-
-      return (await refresh({ token: refreshToken.value })) ? true : false;
-    }
-
-    return true;
-  }
-
   function updateTokenPair(tokens: TokenPairResponse) {
     accessToken.value = tokens.accessToken;
     refreshToken.value = tokens.refreshToken;
@@ -82,6 +68,5 @@ export const useAuth = () => {
     registerAsCitizen,
     logout,
     refresh,
-    ensureAuthenticated,
   };
 };

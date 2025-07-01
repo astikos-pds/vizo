@@ -67,9 +67,7 @@ export default defineNuxtConfig({
       installPrompt: true,
     },
     devOptions: {
-      enabled: true,
-      navigateFallback: "/",
-      type: "module",
+      enabled: false,
     },
     strategies: "generateSW",
     registerType: "autoUpdate",

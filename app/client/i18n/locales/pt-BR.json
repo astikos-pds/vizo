@@ -48,6 +48,7 @@
     },
     "theme": {
       "label": "Tema",
+      "system": "Sistema",
       "light": "Claro",
       "dark": "Escuro"
     }
@@ -153,6 +154,7 @@
     "title": "Configurações",
     "saveButton": "Salvar",
     "languageLabel": "Idioma",
+    "themeLabel": "Tema",
     "searchPlaceholder": "Pesquisar..."
   },
 

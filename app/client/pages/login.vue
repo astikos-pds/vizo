@@ -104,12 +104,14 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           @click="showPassword = !showPassword"
         />
 
-        <span
-          >{{ t("loginCitizen.dontHaveAccount") }}
-          <NuxtLink to="/citizen/register" class="text-primary">{{
-            t("loginCitizen.signUpHere")
-          }}</NuxtLink></span
-        >
+        <div class="text-center">
+          <span
+            >{{ t("loginCitizen.dontHaveAccount") }}
+            <NuxtLink to="/citizen/register" class="text-primary">{{
+              t("loginCitizen.signUpHere")
+            }}</NuxtLink></span
+          >
+        </div>
 
         <UButton
           type="submit"

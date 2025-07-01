@@ -48,6 +48,7 @@
     },
     "theme": {
       "label": "Theme",
+      "system": "System",
       "light": "Light",
       "dark": "Dark"
     }
@@ -157,6 +158,7 @@
     "title": "Settings",
     "saveButton": "Save",
     "languageLabel": "Language",
+    "themeLabel": "Theme",
     "searchPlaceholder": "Search..."
   },
 
