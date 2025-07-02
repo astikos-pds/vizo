@@ -22,7 +22,7 @@
   },
 
   "navBar": {
-    "home": "Início",
+    "index": "Início",
     "report": "Reportar",
     "settings": "Configurações",
     "exit": "Sair"

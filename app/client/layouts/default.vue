@@ -16,7 +16,7 @@ const isMobile = breakpoints.smallerOrEqual("md");
 const items = computed<NavigationMenuItem[][]>(() => [
   [
     {
-      label: t("navBar.home"),
+      label: t("navBar.index"),
       icon: "i-lucide-house",
       to: "/",
     },
@@ -104,7 +104,7 @@ const route = useRoute();
           @click="collapsed = !collapsed"
         />
         <h1 class="font-semibold text-base capitalize">
-          {{ route.name === "index" ? "home" : route.name }}
+          {{ t(`navBar.${route.name?.toString()}`) }}
         </h1>
       </header>
       <main class="h-[93%] lg:h-[92%] w-full">

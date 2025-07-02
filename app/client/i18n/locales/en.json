@@ -22,7 +22,7 @@
   },
 
   "navBar": {
-    "home": "Home",
+    "index": "Home",
     "report": "Report",
     "settings": "Settings",
     "exit": "Exit"
