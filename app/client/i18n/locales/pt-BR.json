@@ -150,6 +150,26 @@
     }
   },
 
+  "conflictModal": {
+    "title": "Você provavelmente já denunciou este problema",
+    "description": "Você denunciou um problema a menos de {meters} metros nos últimos {weeks} semanas. Tem certeza de que deseja denunciar este problema novamente?",
+    "confirm": "Enviar mesmo assim"
+  },
+  "imprecisionModal": {
+    "title": "Sua localização está imprecisa",
+    "description": "Não conseguimos localizar sua posição com precisão, então sua denúncia terá menos credibilidade. Tem certeza de que deseja enviá-la mesmo assim?",
+    "descriptionLabel": "Descrição:",
+    "imagesLabel": "Imagens:",
+    "coordinatesLabel": "Coordenadas:",
+    "accuracyLabel": "Distância da posição real:",
+    "meters": "metros",
+    "imageAlt": "Imagem",
+    "confirm": "Enviar mesmo assim"
+  },
+  "common": {
+    "cancel": "Cancelar"
+  },
+
   "settings": {
     "title": "Configurações",
     "saveButton": "Salvar",

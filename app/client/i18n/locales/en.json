@@ -154,6 +154,26 @@
     }
   },
 
+  "conflictModal": {
+    "title": "You probably already reported this problem",
+    "description": "You reported a problem within {meters} meters in the last {weeks} weeks. Are you sure you want to report this problem again?",
+    "confirm": "Send anyway"
+  },
+  "imprecisionModal": {
+    "title": "Your location is imprecise",
+    "description": "We couldn't track your position precisely, so your report will have less credibility. Are you sure you want to send this report?",
+    "descriptionLabel": "Description:",
+    "imagesLabel": "Images:",
+    "coordinatesLabel": "Coordinates:",
+    "accuracyLabel": "Distance from actual position:",
+    "meters": "meters",
+    "imageAlt": "Image",
+    "confirm": "Send anyway"
+  },
+  "common": {
+    "cancel": "Cancel"
+  },
+
   "settings": {
     "title": "Settings",
     "saveButton": "Save",

@@ -1,22 +1,29 @@
 <script lang="ts" setup>
 import type { Report } from "~/types/domain";
-import { REPORT_CONFLICT_PERIOD_IN_DAYS } from "~/utils/constants";
+import {
+  REPORT_CONFLICT_PERIOD_IN_DAYS,
+  RADIUS_OF_RELATED_REPORTS_IN_METERS,
+} from "~/utils/constants";
 
 interface Props {
   lastReport: Report;
   currentReport: Report;
 }
-const { lastReport } = defineProps<Props>();
-
+const { lastReport, currentReport } = defineProps<Props>();
 const emit = defineEmits<{ close: [boolean] }>();
+
+const { t } = useI18n();
 </script>
 
 <template>
   <UModal
-    title="You probably already reported this problem"
-    :description="`You reported a problem within ${RADIUS_OF_RELATED_REPORTS_IN_METERS} meters in the last ${
-      REPORT_CONFLICT_PERIOD_IN_DAYS / 7
-    } weeks. Are you sure you want to report this problem again?`"
+    :title="t('conflictModal.title')"
+    :description="
+      t('conflictModal.description', {
+        meters: RADIUS_OF_RELATED_REPORTS_IN_METERS,
+        weeks: REPORT_CONFLICT_PERIOD_IN_DAYS / 7,
+      })
+    "
     :ui="{
       body: 'p-5 sm:p-5',
     }"
@@ -35,14 +42,14 @@ const emit = defineEmits<{ close: [boolean] }>();
         <UButton
           color="neutral"
           variant="subtle"
-          label="Cancel"
+          :label="t('common.cancel')"
           class="cursor-pointer"
           @click="emit('close', false)"
         />
         <UButton
           color="warning"
-          label="Send anyway"
           variant="subtle"
+          :label="t('conflictModal.confirm')"
           class="cursor-pointer"
           @click="emit('close', true)"
         />

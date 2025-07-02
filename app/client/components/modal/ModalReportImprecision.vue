@@ -9,12 +9,14 @@ interface Props {
 const props = defineProps<Props>();
 
 const emit = defineEmits<{ close: [boolean] }>();
+
+const { t } = useI18n();
 </script>
 
 <template>
   <UModal
-    title="Your location is imprecise"
-    description="We couldn't track your position precisely, so your report will have less credibility. Are you sure you want to send this report?"
+    :title="t('imprecisionModal.title')"
+    :description="t('imprecisionModal.description')"
   >
     <template #body>
       <UCard
@@ -25,24 +27,28 @@ const emit = defineEmits<{ close: [boolean] }>();
         }"
       >
         <template #header>
-          <span class="font-semibold">Description:</span>
+          <span class="font-semibold">{{
+            t("imprecisionModal.descriptionLabel")
+          }}</span>
           <p>{{ props.description }}</p>
         </template>
 
         <section v-if="props.imagesUrls.length !== 0">
-          <p class="p-2 font-semibold">Images:</p>
+          <p class="p-2 font-semibold">
+            {{ t("imprecisionModal.imagesLabel") }}
+          </p>
           <section
             class="border-t border-default flex flex-row flex-wrap gap-1"
           >
             <div
               class="size-[5rem]"
               v-for="(imageUrl, index) in props.imagesUrls"
+              :key="index"
             >
               <img
                 class="w-full h-full object-cover"
                 :src="imageUrl"
-                :alt="`Image ${index}`"
-                :key="index"
+                :alt="`${t('imprecisionModal.imageAlt')} ${index + 1}`"
               />
             </div>
           </section>
@@ -50,13 +56,20 @@ const emit = defineEmits<{ close: [boolean] }>();
 
         <template #footer>
           <section class="flex flex-row gap-1">
-            <span class="font-semibold">Coordinates:</span>
+            <span class="font-semibold">{{
+              t("imprecisionModal.coordinatesLabel")
+            }}</span>
             <p>{{ latLng.latitude }}, {{ latLng.longitude }}</p>
           </section>
 
           <section class="flex flex-row gap-1">
-            <span class="font-semibold">Distance from actual position:</span>
-            <p>{{ latLng.accuracy.toFixed(0) }} meters</p>
+            <span class="font-semibold">{{
+              t("imprecisionModal.accuracyLabel")
+            }}</span>
+            <p>
+              {{ latLng.accuracy.toFixed(0) }}
+              {{ t("imprecisionModal.meters") }}
+            </p>
           </section>
         </template>
       </UCard>
@@ -66,14 +79,14 @@ const emit = defineEmits<{ close: [boolean] }>();
         <UButton
           color="neutral"
           variant="subtle"
-          label="Cancel"
+          :label="t('common.cancel')"
           class="cursor-pointer"
           @click="emit('close', false)"
         />
         <UButton
           color="warning"
-          label="Send anyway"
           variant="subtle"
+          :label="t('imprecisionModal.confirm')"
           class="cursor-pointer"
           @click="emit('close', true)"
         />
