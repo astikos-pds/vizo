@@ -1,30 +1,9 @@
 export interface Page<T> {
   content: T[];
+  page: number;
+  size: number;
   totalPages: number;
   totalElements: number;
-  size: number;
-  number: number;
-  numberOfElements: number;
-  first: boolean;
-  last: boolean;
-  empty: boolean;
-  sort?: {
-    sorted: boolean;
-    unsorted: boolean;
-    empty: boolean;
-  };
-  pageable?: {
-    pageNumber: number;
-    pageSize: number;
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
-    sort: {
-      sorted: boolean;
-      unsorted: boolean;
-      empty: boolean;
-    };
-  };
 }
 
 type SortDirection = "asc" | "desc";

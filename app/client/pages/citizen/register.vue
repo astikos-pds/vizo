@@ -155,7 +155,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
     class="relative size-full flex flex-col items-center py-25 overflow-y-auto"
   >
     <ConfigHeader />
-    <section class="w-[70%] md:w-[60%] lg:w-[65%] 2xl:w-[60%]">
+    <section class="w-[70%] md:w-[50%] lg:w-[60%] xl:w-[50%]">
       <h1
         class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50 text-center"
       >

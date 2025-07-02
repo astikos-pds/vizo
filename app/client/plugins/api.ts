@@ -38,14 +38,20 @@ export default defineNuxtPlugin((nuxtApp) => {
       console.debug(`[API] Response:`, response);
     },
 
-    async onResponseError({ response, request, options }) {
+    async onResponseError({ response, request, options }): Promise<any> {
       console.error(`[API] Error:`, response.status, response._data);
 
-      if (response.status === 401 && !request.toString().includes("auth")) {
+      if (
+        response.status === 401 &&
+        !request.toString().includes("auth") &&
+        !options.retry
+      ) {
+        options.retry = 1;
+
         try {
           const newAccessToken = await refreshAccessToken();
 
-          return await $fetch(request, {
+          return await api(request, {
             method: options.method as any,
             headers: {
               ...options.headers,

@@ -3,6 +3,7 @@ import type { Map as LeafletMap, PointExpression } from "leaflet";
 import { useProblems } from "~/composables/use-problem";
 import type { Problem } from "~/types/domain";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
+import ProblemDetails from "~/components/problem/ProblemDetails.vue";
 
 const { t } = useI18n();
 
@@ -24,9 +25,6 @@ const map = ref<LeafletMap | null>(null);
 const zoom = ref<number>(11);
 const center = ref<PointExpression>([-23.5489, -46.6388]);
 
-const isDetailsOpen = ref<boolean>(false);
-const selectedProblem = ref<Problem | null>(null);
-
 const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
   map.value?.flyTo([problem.latitude, problem.longitude], 18, {
     animate: true,
@@ -34,9 +32,16 @@ const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
   });
 };
 
+const overlay = useOverlay();
+
 const onMarkerClick = (problem: Problem) => {
-  isDetailsOpen.value = true;
-  selectedProblem.value = problem;
+  const problemDetails = overlay.create(ProblemDetails, {
+    props: {
+      problem: problem,
+    },
+  });
+  problemDetails.open();
+
   zoomToMarker(problem);
 };
 
@@ -51,10 +56,7 @@ const { problems, loading } = useProblems();
 
 <template>
   <section class="relative size-full flex flex-row">
-    <div
-      class="size-full flex justify-center items-center lg:p-5"
-      :class="isDetailsOpen ? 'xl:min-w-[75%]' : 'xl:w-full'"
-    >
+    <div class="size-full flex justify-center items-center lg:p-5">
       <div v-if="loading">Loading...</div>
       <Map
         v-else
@@ -82,14 +84,5 @@ const { problems, loading } = useProblems();
         />
       </Map>
     </div>
-
-    <ProblemDetails
-      :is-open="isDetailsOpen"
-      v-if="isDetailsOpen && selectedProblem"
-      @close="isDetailsOpen = false"
-      :problem="selectedProblem"
-      :key="selectedProblem.id"
-      class="h-[40%] lg:w-60 lg:h-full"
-    />
   </section>
 </template>

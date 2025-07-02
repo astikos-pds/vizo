@@ -35,10 +35,8 @@ const items = computed<NavigationMenuItem[][]>(() => [
     {
       label: t("navBar.exit"),
       icon: "i-lucide-log-out",
-      onSelect: async (e) => {
-        logout();
-        await navigateTo("/login");
-      },
+      to: "/login",
+      onSelect: (_) => logout(),
       class: "cursor-pointer",
     },
   ],

@@ -67,8 +67,6 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
     color: "success",
   });
 };
-
-console.log(colorMode.preference);
 </script>
 
 <template>
