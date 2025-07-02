@@ -25,14 +25,12 @@ const emit = defineEmits<{ (e: "click"): void }>();
   <UFormField
     :label="label"
     :name="name"
-    size="xl"
     class="w-full"
     :required="required"
     :error="false"
   >
     <UInput
       v-model="model"
-      size="xl"
       :color="color"
       :type="show ? 'text' : 'password'"
       :placeholder="placeholder"
@@ -43,7 +41,6 @@ const emit = defineEmits<{ (e: "click"): void }>();
           color="neutral"
           class="cursor-pointer text-xl"
           variant="link"
-          size="xl"
           :icon="show ? 'i-lucide-eye-closed' : 'i-lucide-eye'"
           :aria-label="show ? 'Hide password' : 'Show password'"
           @click="emit('click')"

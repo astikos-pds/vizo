@@ -173,7 +173,6 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
           <UFormField
             :label="t('registerCitizen.firstName')"
             name="firstName"
-            size="xl"
             class="w-full"
             required
           >
@@ -181,7 +180,6 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
               icon="i-lucide-user"
               v-model="form.firstName"
               type="text"
-              size="xl"
               :placeholder="t('registerCitizen.firstNamePlaceholder')"
               class="w-full text-xl"
             />
@@ -190,44 +188,34 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
           <UFormField
             :label="t('registerCitizen.lastName')"
             name="lastName"
-            size="xl"
             class="w-full"
             :hint="t('registerCitizen.optional')"
           >
             <UInput
               v-model="form.lastName"
               type="text"
-              size="xl"
               :placeholder="t('registerCitizen.lastNamePlaceholder')"
               class="w-full text-xl"
             />
           </UFormField>
         </div>
 
-        <UFormField
-          label="E-mail"
-          name="email"
-          size="xl"
-          class="w-full"
-          required
-        >
+        <UFormField label="E-mail" name="email" class="w-full" required>
           <UInput
             icon="i-lucide-at-sign"
             v-model="form.email"
             type="email"
-            size="xl"
             :placeholder="t('registerCitizen.emailPlaceholder')"
             class="w-full text-xl"
           />
         </UFormField>
 
         <div class="flex flex-col md:flex-row gap-3 w-full">
-          <UFormField label="CPF" name="cpf" size="xl" class="w-full" required>
+          <UFormField label="CPF" name="cpf" class="w-full" required>
             <UInput
               icon="i-lucide-id-card"
               v-model="form.cpf"
               type="text"
-              size="xl"
               :placeholder="t('registerCitizen.cpfPlaceholder')"
               class="w-full text-xl"
             />
@@ -235,14 +223,12 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
           <UFormField
             :label="t('registerCitizen.birthDate')"
             name="birthDate"
-            size="xl"
             class="w-full"
             required
           >
             <UInput
               v-model="form.birthDate"
               type="date"
-              size="xl"
               placeholder="Enter your e-mail"
               class="w-full text-xl"
             />
@@ -322,7 +308,6 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
 
         <UButton
           type="submit"
-          size="xl"
           :loading="loading"
           class="cursor-pointer text-white font-semibold"
           >{{ t("registerCitizen.signUpButton") }}</UButton

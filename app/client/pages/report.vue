@@ -133,7 +133,7 @@ const breakpoints = useBreakpoints({
 });
 
 const isMobile = breakpoints.smallerOrEqual("md");
-const size = ref<"lg" | "md" | "xl" | "xs" | "sm" | undefined>("xl");
+const size = ref<"lg" | "md" | "xl" | "xs" | "sm" | undefined>("lg");
 
 watchEffect(() => {
   size.value = isMobile.value ? "md" : "xl";
@@ -259,18 +259,16 @@ function resolveCoordinates(data: ReportSchema) {
       :state="form"
       @submit="onSubmit"
       :disabled="geolocationError !== null"
-      class="w-[85%] md:max-w-[30rem] lg:min-w-[35rem] mt-3 flex flex-col items-center gap-5"
+      class="w-80 md:w-120 lg:w-130 xl:w-150 mt-3 flex flex-col items-center gap-5"
     >
       <UFormField
         :label="t('reportProblem.description')"
         name="description"
-        :size="size"
         class="w-full"
         required
         ><UTextarea
           v-model="form.description"
           :placeholder="t('reportProblem.descriptionPlaceholder')"
-          size="xl"
           class="w-full"
           autoresize
       /></UFormField>
@@ -278,13 +276,11 @@ function resolveCoordinates(data: ReportSchema) {
       <UFormField
         :label="t('reportProblem.images')"
         name="images"
-        :size="size"
         class="w-full"
         :hint="t('reportProblem.optional')"
         :description="t('reportProblem.uploadImages')"
       >
         <UButton
-          :size="size"
           color="neutral"
           variant="outline"
           class="w-full p-0"
@@ -317,7 +313,6 @@ function resolveCoordinates(data: ReportSchema) {
           accept="image/*"
           @change="handleFileChange"
           class="sr-only"
-          :size="size"
         />
 
         <div
@@ -348,7 +343,6 @@ function resolveCoordinates(data: ReportSchema) {
 
       <UFormField
         :label="t('reportProblem.locationLabel')"
-        :size="size"
         required
         class="w-full"
         :help="
@@ -366,7 +360,6 @@ function resolveCoordinates(data: ReportSchema) {
           variant="table"
           v-model="form.location"
           :items="locationItems"
-          :size="size"
         />
         <p class="text-error mt-3">{{ geolocationErrorMessage }}</p>
 
@@ -418,7 +411,6 @@ function resolveCoordinates(data: ReportSchema) {
 
       <UButton
         type="submit"
-        size="xl"
         class="justify-center cursor-pointer text-neutral-50"
         :loading="loading"
         :disabled="geolocationError !== null"

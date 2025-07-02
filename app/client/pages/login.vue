@@ -80,7 +80,6 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         <UFormField
           :label="t('loginCitizen.cpf')"
           name="document"
-          size="xl"
           class="w-full"
           required
         >
@@ -88,7 +87,6 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
             icon="i-lucide-id-card"
             v-model="form.document"
             type="text"
-            size="xl"
             :placeholder="t('loginCitizen.cpfPlaceholder')"
             class="w-full text-xl"
           />
@@ -115,7 +113,6 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
         <UButton
           type="submit"
-          size="xl"
           class="cursor-pointer text-neutral-50 font-semibold"
           :loading="loading"
           >{{ t("loginCitizen.signInButton") }}</UButton
