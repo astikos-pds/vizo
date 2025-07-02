@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-center items-center h-screen border-x border-neutral-200 dark:border-neutral-800"
+    class="flex justify-center items-center h-screen border-x border-default"
   >
     <slot />
   </div>

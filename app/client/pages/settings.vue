@@ -83,7 +83,7 @@ console.log(colorMode.preference);
       :state="form"
       :schema="settingsSchema"
       @submit="onSubmit"
-      class="min-w-[65%] md:min-w-[55%] lg:min-w-[35%] flex flex-col items-center gap-5"
+      class="w-[65%] md:w-110 lg:w-130 flex flex-col items-center gap-5"
     >
       <UFormField
         :label="t('settings.languageLabel')"

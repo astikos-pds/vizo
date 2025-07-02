@@ -59,7 +59,7 @@ const { problems, loading } = useProblems();
       <Map
         v-else
         ref="map"
-        class="lg:rounded-2xl lg:border border-neutral-200 dark:border-neutral-800"
+        class="lg:rounded-xl lg:border border-default"
         :zoom="zoom"
         :center="center"
       >
@@ -89,19 +89,7 @@ const { problems, loading } = useProblems();
       @close="isDetailsOpen = false"
       :problem="selectedProblem"
       :key="selectedProblem.id"
-      class="h-[40%] lg:w-[25%] lg:h-full"
+      class="h-[40%] lg:w-60 lg:h-full"
     />
-
-    <!-- <div
-      class="absolute bottom-0 bg-neutral-50 z-10000000000 xl:relative h-[25rem] xl:h-full border-y xl:w-[30%] xl:border-l xl:border-y-0 border-neutral-200 dark:border-neutral-800"
-      :class="isDetailsOpen ? '' : 'hidden'"
-    >
-      <ProblemDetails
-        v-if="isDetailsOpen && selectedProblem"
-        @close="isDetailsOpen = false"
-        :problem="selectedProblem"
-        :key="selectedProblem.id"
-      />
-    </div> -->
   </section>
 </template>

@@ -50,7 +50,7 @@ const route = useRoute();
 <template>
   <div class="h-screen flex flex-row">
     <section
-      class="h-full p-4 border-x border-neutral-200 dark:border-neutral-800"
+      class="h-full p-4 border-x border-default"
       :class="{
         'min-w-60': !collapsed,
         hidden: isMobile && collapsed,
@@ -88,9 +88,9 @@ const route = useRoute();
         />
       </div>
     </section>
-    <div class="size-full border-r border-neutral-200 dark:border-neutral-800">
+    <div class="size-full border-r border-default">
       <header
-        class="h-[7%] lg:h-[8%] p-3 lg:p-5 border-b border-neutral-200 dark:border-neutral-800 flex flex-row items-center gap-1.5"
+        class="h-[7%] lg:h-[8%] p-3 lg:p-5 border-b border-default flex flex-row items-center gap-1.5"
       >
         <UButton
           :icon="

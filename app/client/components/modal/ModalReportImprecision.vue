@@ -32,7 +32,7 @@ const emit = defineEmits<{ close: [boolean] }>();
         <section v-if="props.imagesUrls.length !== 0">
           <p class="p-2 font-semibold">Images:</p>
           <section
-            class="border-t border-neutral-200 flex flex-row flex-wrap gap-1"
+            class="border-t border-default flex flex-row flex-wrap gap-1"
           >
             <div
               class="size-[5rem]"

@@ -1,6 +1,6 @@
 <template>
   <header
-    class="w-full p-1.5 xl:p-2 border-b-1 border-neutral-200 dark:border-neutral-800 flex items-center justify-between absolute top-0"
+    class="w-full p-1.5 xl:p-2 border-b-1 border-default flex items-center justify-between absolute top-0"
   >
     <ConfigOptions />
 

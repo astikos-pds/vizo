@@ -83,12 +83,10 @@ const isDesktop = useMediaQuery("(min-width: 1024px)");
 </script>
 
 <template>
-  <UDrawer
+  <USlideover
     :direction="isDesktop ? 'right' : 'bottom'"
     :overlay="false"
     :dismissible="false"
-    :modal="false"
-    :handle="false"
     v-model:open="props.isOpen"
   >
     <template #content>
@@ -128,5 +126,5 @@ const isDesktop = useMediaQuery("(min-width: 1024px)");
         </main>
       </aside>
     </template>
-  </UDrawer>
+  </USlideover>
 </template>

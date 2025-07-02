@@ -25,9 +25,7 @@ const { report } = defineProps<Props>();
 
     <section v-if="report.imagesUrls.length !== 0">
       <p class="p-2 font-semibold">Images:</p>
-      <section
-        class="border-t border-neutral-200 flex flex-row flex-wrap gap-1"
-      >
+      <section class="border-t border-default flex flex-row flex-wrap gap-1">
         <div class="size-[5rem]" v-for="(imageUrl, index) in report.imagesUrls">
           <img
             class="w-full h-full object-cover"
