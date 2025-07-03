@@ -35,12 +35,12 @@ const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
 const overlay = useOverlay();
 
 const onMarkerClick = (problem: Problem) => {
-  const problemDetails = overlay.create(ProblemDetails, {
+  const details = overlay.create(ProblemDetails, {
     props: {
-      problem: problem
+      problem: problem,
     },
   });
-  problemDetails.open();
+  details.open();
 
   zoomToMarker(problem);
 };
@@ -52,6 +52,9 @@ const {
 } = useMapGeolocation();
 
 const { problems, loading } = useProblems();
+
+const snapPoints = [0.2, 0.5, 0.8];
+const activeSnapPoint = ref(snapPoints[0]);
 </script>
 
 <template>

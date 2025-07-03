@@ -50,7 +50,7 @@ const route = useRoute();
     <section
       class="h-full p-4 border-x border-default"
       :class="{
-        'min-w-60': !collapsed,
+        'w-60': !collapsed,
         hidden: isMobile && collapsed,
         'bg-elevated/25': !isMobile,
       }"

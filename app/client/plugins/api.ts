@@ -51,7 +51,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         try {
           const newAccessToken = await refreshAccessToken();
 
-          return await api(request, {
+          return await api(request.toString(), {
             method: options.method as any,
             headers: {
               ...options.headers,

@@ -1,19 +1,17 @@
 <script lang="ts" setup>
-import { useProblemReports } from "~/composables/use-problem-reports";
 import type { Problem } from "~/types/domain";
 import type { Pageable } from "~/types/http";
-import { breakpointsTailwind } from "@vueuse/core"
-
-const { t } = useI18n();
 
 interface Props {
   problem: Problem;
 }
 const { problem } = defineProps<Props>();
 
+const { t } = useI18n();
+
 const pagination = reactive<Pageable>({
   page: 0,
-  size: 2,
+  size: 15,
 });
 
 const currentPage = computed({
@@ -21,122 +19,86 @@ const currentPage = computed({
   set: (val: number) => (pagination.page = val - 1),
 });
 
-const { reports, loading, error } = useProblemReports(
-  problem.id,
-  pagination
-);
+const { reports, loading, error } = useProblemReports(problem.id, pagination);
 
 const toast = useToast();
 watch(error, (err) => {
   if (err) {
     toast.add({
-      title: "Error",
-      description: err.message,
+      title: t("toast.error.title"),
+      description: t(
+        `toast.error.description.${err.status}`,
+        t("toast.error.description.default")
+      ),
       color: "error",
     });
   }
 });
 
-interface Badge {
-  color:
-    | "error"
-    | "primary"
-    | "secondary"
-    | "success"
-    | "info"
-    | "warning"
-    | "neutral"
-    | undefined;
-  text: string;
-}
-
-const statusBadge: Badge = (() => {
-  if (problem.status === "ANALYSIS") {
-    return {
-      color: "warning",
-      text: t("problemDetails.status.analysis"),
-    };
-  } else if (problem.status === "IN_PROGRESS") {
-    return {
-      color: "info",
-      text: t("problemDetails.status.inProgress"),
-    };
-  } else if (problem.status === "SOLVED") {
-    return {
-      color: "warning",
-      text: t("problemDetails.status.solved"),
-    };
-  }
-  return {
-    color: "neutral",
-    text: t("problemDetails.status.default"),
-  };
-})();
-
-const credibilityBadge: Badge = (() => {
-  if (problem.accumulatedCredibility < 50) {
-    return {
-      color: "warning",
-      text: t("problemDetails.credibility.low"),
-    };
-  } else if (problem.accumulatedCredibility >= 100) {
-    return {
-      color: "success",
-      text: t("problemDetails.credibility.high"),
-    };
-  }
-  return {
-    color: "success",
-    text: t("problemDetails.credibility.medium"),
-  };
-})();
-
 const breakpoints = useBreakpoints({
-  lg: 1024
+  lg: 1024,
 });
 
 const isMobile = breakpoints.smallerOrEqual("lg");
+
+const snapPoints = [0.2, 0.5, 0.8];
+const activeSnapPoint = ref(snapPoints[1]);
+
+const title = "Problem details";
+
+const ui = {
+  footer: "flex justify-center items-center",
+};
 </script>
 
 <template>
-  <USlideover
-    :side="isMobile ? 'bottom' : 'right'"
+  <UDrawer
+    v-if="isMobile"
+    :title="title"
+    direction="bottom"
     :overlay="false"
-    title="Problem details"
-    :close="{
-      class: 'text-xl'
-    }"
-    :ui="{
-      footer: 'flex justify-center items-center',
-    }"
-    class="h-100 lg:w-100 lg:h-full"
+    :ui="ui"
+    :snap-points="snapPoints"
+    :active-snap-point="activeSnapPoint"
+    @update:active-snap-point="(value) => (activeSnapPoint = value as number)"
   >
     <template #body>
-      <main class="flex flex-row flex-wrap gap-4 overflow-hidden">
-        <div v-if="loading">Loading...</div>
-        <section v-else class="flex flex-col gap-3 size-full">
-          <section class="flex flex-row flex-wrap gap-2">
-            <UBadge :color="statusBadge.color" variant="subtle">{{
-              statusBadge.text
-            }}</UBadge>
-            <UBadge :color="credibilityBadge.color" variant="subtle">{{
-              credibilityBadge.text
-            }}</UBadge>
-          </section>
-          <USeparator />
-          <section
-            v-if="reports"
-            class="p-1 flex flex-col gap-3 overflow-y-auto"
-          >
-            <ProblemReport
-              v-for="report in reports.content"
-              :report="report"
-              :key="report.id"
-              class="w-full"
-            />
-          </section>
-        </section>
-      </main>
+      <div v-if="loading">Loading...</div>
+      <ProblemDetailsBody
+        v-else
+        v-if="reports"
+        :problem="problem"
+        :reports="reports"
+      />
+    </template>
+    <template #footer>
+      <UPagination
+        v-model:page="currentPage"
+        :items-per-page="pagination.size"
+        :total="reports?.totalElements ?? 0"
+      />
+    </template>
+  </UDrawer>
+
+  <USlideover
+    v-else
+    side="right"
+    :overlay="false"
+    :title="title"
+    :close="{
+      class: 'text-xl',
+    }"
+    :ui="ui"
+    class="w-100"
+  >
+    <template #body>
+      <div v-if="loading">Loading...</div>
+      <ProblemDetailsBody
+        v-else
+        v-if="reports"
+        :problem="problem"
+        :reports="reports"
+      />
     </template>
     <template #footer>
       <UPagination
