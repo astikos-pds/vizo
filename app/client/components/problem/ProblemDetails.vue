@@ -63,7 +63,11 @@ const ui = {
     @update:active-snap-point="(value) => (activeSnapPoint = value as number)"
   >
     <template #body>
-      <div v-if="loading">Loading...</div>
+      <div v-if="loading" class="flex flex-col gap-4">
+        <USkeleton class="h-50 w-full" />
+        <USkeleton class="h-50 w-full" />
+        <USkeleton class="h-50 w-full" />
+      </div>
       <ProblemDetailsBody
         v-else
         v-if="reports"
@@ -92,7 +96,11 @@ const ui = {
     class="w-100"
   >
     <template #body>
-      <div v-if="loading">Loading...</div>
+      <div v-if="loading" class="flex flex-col gap-4">
+        <USkeleton class="h-50 w-full" />
+        <USkeleton class="h-50 w-full" />
+        <USkeleton class="h-50 w-full" />
+      </div>
       <ProblemDetailsBody
         v-else
         v-if="reports"
