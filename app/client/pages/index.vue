@@ -37,7 +37,7 @@ const overlay = useOverlay();
 const onMarkerClick = (problem: Problem) => {
   const problemDetails = overlay.create(ProblemDetails, {
     props: {
-      problem: problem,
+      problem: problem
     },
   });
   problemDetails.open();

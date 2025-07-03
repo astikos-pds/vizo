@@ -2,13 +2,14 @@
 import { useProblemReports } from "~/composables/use-problem-reports";
 import type { Problem } from "~/types/domain";
 import type { Pageable } from "~/types/http";
+import { breakpointsTailwind } from "@vueuse/core"
 
 const { t } = useI18n();
 
 interface Props {
   problem: Problem;
 }
-const props = defineProps<Props>();
+const { problem } = defineProps<Props>();
 
 const pagination = reactive<Pageable>({
   page: 0,
@@ -21,7 +22,7 @@ const currentPage = computed({
 });
 
 const { reports, loading, error } = useProblemReports(
-  props.problem.id,
+  problem.id,
   pagination
 );
 
@@ -50,17 +51,17 @@ interface Badge {
 }
 
 const statusBadge: Badge = (() => {
-  if (props.problem.status === "ANALYSIS") {
+  if (problem.status === "ANALYSIS") {
     return {
       color: "warning",
       text: t("problemDetails.status.analysis"),
     };
-  } else if (props.problem.status === "IN_PROGRESS") {
+  } else if (problem.status === "IN_PROGRESS") {
     return {
       color: "info",
       text: t("problemDetails.status.inProgress"),
     };
-  } else if (props.problem.status === "SOLVED") {
+  } else if (problem.status === "SOLVED") {
     return {
       color: "warning",
       text: t("problemDetails.status.solved"),
@@ -73,12 +74,12 @@ const statusBadge: Badge = (() => {
 })();
 
 const credibilityBadge: Badge = (() => {
-  if (props.problem.accumulatedCredibility < 50) {
+  if (problem.accumulatedCredibility < 50) {
     return {
       color: "warning",
       text: t("problemDetails.credibility.low"),
     };
-  } else if (props.problem.accumulatedCredibility >= 100) {
+  } else if (problem.accumulatedCredibility >= 100) {
     return {
       color: "success",
       text: t("problemDetails.credibility.high"),
@@ -90,24 +91,28 @@ const credibilityBadge: Badge = (() => {
   };
 })();
 
-const isDesktop = useMediaQuery("(min-width: 1024px)");
+const breakpoints = useBreakpoints({
+  lg: 1024
+});
+
+const isMobile = breakpoints.smallerOrEqual("lg");
 </script>
 
 <template>
   <USlideover
-    :direction="isDesktop ? 'right' : 'bottom'"
+    :side="isMobile ? 'bottom' : 'right'"
     :overlay="false"
     title="Problem details"
     :close="{
-      size: 'xl',
+      class: 'text-xl'
     }"
     :ui="{
       footer: 'flex justify-center items-center',
     }"
-    class="h-[40%] lg:w-80 lg:h-full"
+    class="h-100 lg:w-100 lg:h-full"
   >
     <template #body>
-      <main class="flex flex-row flex-wrap gap-4 h-full overflow-hidden">
+      <main class="flex flex-row flex-wrap gap-4 overflow-hidden">
         <div v-if="loading">Loading...</div>
         <section v-else class="flex flex-col gap-3 size-full">
           <section class="flex flex-row flex-wrap gap-2">
@@ -121,13 +126,13 @@ const isDesktop = useMediaQuery("(min-width: 1024px)");
           <USeparator />
           <section
             v-if="reports"
-            class="p-1 pb-10 flex flex-row flex-wrap xl:flex-col xl:flex-nowrap gap-3 overflow-y-auto"
+            class="p-1 flex flex-col gap-3 overflow-y-auto"
           >
             <ProblemReport
               v-for="report in reports.content"
               :report="report"
               :key="report.id"
-              class="w-full sm:w-[49%] lg:w-full"
+              class="w-full"
             />
           </section>
         </section>
