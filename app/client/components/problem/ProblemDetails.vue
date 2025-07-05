@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useProblemReports } from "~/composables/use-problem-reports";
 import type { Problem } from "~/types/domain";
 import type { Pageable } from "~/types/http";
 
@@ -41,7 +42,7 @@ const breakpoints = useBreakpoints({
 
 const isMobile = breakpoints.smallerOrEqual("lg");
 
-const snapPoints = [0.2, 0.5, 0.8];
+const snapPoints = [0.3, 0.5, 0.9];
 const activeSnapPoint = ref(snapPoints[1]);
 
 const title = "Problem details";

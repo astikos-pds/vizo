@@ -52,9 +52,6 @@ const {
 } = useMapGeolocation();
 
 const { problems, loading } = useProblems();
-
-const snapPoints = [0.2, 0.5, 0.8];
-const activeSnapPoint = ref(snapPoints[0]);
 </script>
 
 <template>

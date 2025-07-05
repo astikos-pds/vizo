@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import type { NavigationMenuItem } from "@nuxt/ui";
 import { useBreakpoints } from "@vueuse/core";
+import NavigationBody from "~/components/NavigationBody.vue";
+import NavigationHeader from "~/components/NavigationHeader.vue";
 
 const { t } = useI18n();
-const { logout } = useAuth();
 
 const collapsed = ref<boolean>(false);
+const open = ref<boolean>(false);
 
 const breakpoints = useBreakpoints({
   md: 768,
@@ -13,88 +14,62 @@ const breakpoints = useBreakpoints({
 
 const isMobile = breakpoints.smallerOrEqual("md");
 
-const items = computed<NavigationMenuItem[][]>(() => [
-  [
-    {
-      label: t("navBar.index"),
-      icon: "i-lucide-house",
-      to: "/",
-    },
-    {
-      label: t("navBar.report"),
-      icon: "i-lucide-message-square-warning",
-      to: "/report",
-    },
-    {
-      label: t("navBar.settings"),
-      icon: "i-lucide-settings",
-      to: "/settings",
-    },
-  ],
-  [
-    {
-      label: t("navBar.exit"),
-      icon: "i-lucide-log-out",
-      to: "/login",
-      onSelect: (_) => logout(),
-      class: "cursor-pointer",
-    },
-  ],
-]);
-
 const route = useRoute();
 </script>
 
 <template>
   <div class="h-screen flex flex-row">
+    <USlideover
+      v-if="isMobile"
+      side="left"
+      v-model:open="open"
+      :ui="{
+        header: 'flex flex-row justify-between px-3 sm:px-3 sm:py-0',
+        body: 'p-0 sm:p-0',
+      }"
+    >
+      <template #header>
+        <NavigationHeader :collapsed="collapsed" />
+        <UButton
+          icon="i-lucide-x"
+          color="neutral"
+          variant="ghost"
+          class="text-xl"
+          @click="open = !open"
+        />
+      </template>
+      <template #body>
+        <NavigationBody :collapsed="collapsed" />
+      </template>
+    </USlideover>
     <section
-      class="h-full p-4 border-x border-default"
+      v-else
+      class="h-full border-x border-default"
       :class="{
         'w-60': !collapsed,
-        hidden: isMobile && collapsed,
         'bg-elevated/25': !isMobile,
       }"
     >
-      <header class="min-h-[10%] flex justify-between items-center">
-        <div class="w-full flex flex-row gap-1 justify-center items-center">
-          <img
-            src="/public/favicon.svg"
-            alt="Logo"
-            :class="collapsed ? 'size-8' : 'size-12'"
-          />
-          <h1
-            v-if="!collapsed"
-            class="hidden xl:block text-3xl font-semibold uppercase"
-          >
-            Vizo
-          </h1>
-        </div>
-      </header>
-      <div class="h-[90%] w-full flex flex-col justify-between">
-        <UNavigationMenu
-          :collapsed="collapsed"
-          :items="items[0]"
-          orientation="vertical"
-          tooltip
-        />
-
-        <UNavigationMenu
-          :collapsed="collapsed"
-          :items="items[1]"
-          orientation="vertical"
-          tooltip
-        />
-      </div>
+      <NavigationHeader :collapsed="collapsed" />
+      <NavigationBody :collapsed="collapsed" />
     </section>
     <div class="size-full border-r border-default">
       <header
-        class="h-[7%] lg:h-[8%] p-3 lg:p-5 border-b border-default flex flex-row items-center gap-1.5"
+        class="h-18 p-3 lg:p-5 border-b border-default flex flex-row items-center gap-1.5"
       >
         <UButton
+          v-if="isMobile"
+          icon="i-lucide-menu"
+          color="neutral"
+          variant="ghost"
+          class="text-xl"
+          @click="open = !open"
+        />
+
+        <UButton
+          v-else
           :icon="
-            isMobile
-              ? 'i-lucide-menu'
-              : collapsed
+            collapsed
               ? 'i-lucide-square-chevron-right'
               : 'i-lucide-square-chevron-left'
           "
@@ -107,7 +82,7 @@ const route = useRoute();
           {{ t(`navBar.${route.name?.toString()}`) }}
         </h1>
       </header>
-      <main class="h-[93%] lg:h-[92%] w-full">
+      <main class="h-[calc(100vh-4.5rem)] w-full">
         <slot />
       </main>
     </div>
