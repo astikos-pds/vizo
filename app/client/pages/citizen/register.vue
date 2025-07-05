@@ -152,7 +152,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
 
 <template>
   <section
-    class="relative size-full flex flex-col items-center py-25 overflow-y-auto"
+    class="relative size-full flex flex-col items-center pt-30 pb-15 overflow-y-auto"
   >
     <ConfigHeader />
     <section class="w-[70%] md:w-[50%] lg:w-[60%] xl:w-[50%]">
