@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import { useBreakpoints } from "@vueuse/core";
-import NavigationBody from "~/components/NavigationBody.vue";
-import NavigationHeader from "~/components/NavigationHeader.vue";
+import NavigationBody from "~/components/navigation/NavigationBody.vue";
+import NavigationHeader from "~/components/navigation/NavigationHeader.vue";
+import NavigationFooter from "~/components/navigation/NavigationFooter.vue";
 
 const { t } = useI18n();
 
