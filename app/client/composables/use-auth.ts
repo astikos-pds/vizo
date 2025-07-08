@@ -37,8 +37,10 @@ export const useAuth = () => {
     );
   }
 
-  function logout() {
+  async function logout() {
     updateTokenPair({ accessToken: "", refreshToken: "" });
+
+    await navigateTo("/login");
   }
 
   async function refresh(

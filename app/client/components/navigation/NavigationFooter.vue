@@ -5,26 +5,31 @@ const { collapsed } = defineProps<{
   collapsed: boolean;
 }>();
 
-const items = ref<DropdownMenuItem[]>([
-  {
-    label: "Nothing here.",
-  },
+const { logout } = useAuth();
+
+const items = ref<DropdownMenuItem[][]>([
+  [
+    {
+      label: "Profile",
+      icon: "i-lucide-user",
+    },
+  ],
+  [
+    {
+      label: "Exit",
+      icon: "i-lucide-log-out",
+      onSelect: () => logout(),
+    },
+  ],
 ]);
 
-const department = {
-  name: undefined,
-  iconUrl: undefined,
-};
-
-const user = computed(() => {
-  return {
-    name: department.name ?? "Vizo",
-    avatar: {
-      src: department.iconUrl ?? "/favicon.svg",
-      icon: "i-lucide-image",
-      alt: "Vizo",
-    },
-  };
+const user = reactive({
+  name: "User",
+  avatar: {
+    src: "https://avatar.iran.liara.run/public/boy?username=Nuxt",
+    icon: "i-lucide-image",
+    alt: "User",
+  },
 });
 </script>
 

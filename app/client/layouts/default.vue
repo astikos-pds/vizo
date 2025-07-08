@@ -25,7 +25,8 @@ const route = useRoute();
       v-model:open="open"
       :ui="{
         header: 'flex flex-row justify-between px-3 sm:px-3 sm:py-0',
-        body: 'p-0 sm:p-0',
+        body: 'p-3 sm:p-3',
+        footer: 'px-3 sm:px-3 sm:py-0',
       }"
     >
       <template #header>
@@ -41,19 +42,31 @@ const route = useRoute();
       <template #body>
         <NavigationBody :collapsed="collapsed" />
       </template>
+      <template #footer>
+        <NavigationFooter :collapsed="collapsed" />
+      </template>
     </USlideover>
     <section
       v-else
-      class="h-full border-x border-default"
+      class="h-full border-x border-default flex flex-col"
       :class="{
         'w-60': !collapsed,
         'bg-elevated/25': !isMobile,
       }"
     >
-      <NavigationHeader :collapsed="collapsed" />
-      <NavigationBody :collapsed="collapsed" />
+      <NavigationHeader
+        :collapsed="collapsed"
+        class="my-3 flex items-center justify-center"
+      />
+      <div class="flex-1 flex flex-col justify-between">
+        <NavigationBody :collapsed="collapsed" class="px-2" />
+        <NavigationFooter
+          :collapsed="collapsed"
+          class="border-t border-default"
+        />
+      </div>
     </section>
-    <div class="size-full border-r border-default">
+    <div class="h-screen w-full flex flex-col flex-1 border-r border-default">
       <header
         class="h-18 p-3 lg:p-5 border-b border-default flex flex-row items-center gap-1.5"
       >
@@ -82,7 +95,7 @@ const route = useRoute();
           {{ t(`navBar.${route.name?.toString()}`) }}
         </h1>
       </header>
-      <main class="h-[calc(100vh-4.5rem)] w-full">
+      <main class="flex-1 w-full overflow-y-auto">
         <slot />
       </main>
     </div>

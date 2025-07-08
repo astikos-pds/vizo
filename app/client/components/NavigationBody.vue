@@ -9,50 +9,30 @@ const { collapsed } = defineProps<{
 const { t } = useI18n();
 const { logout } = useAuth();
 
-const items = computed<NavigationMenuItem[][]>(() => [
-  [
-    {
-      label: t("navBar.index"),
-      icon: "i-lucide-house",
-      to: "/",
-    },
-    {
-      label: t("navBar.report"),
-      icon: "i-lucide-message-square-warning",
-      to: "/report",
-    },
-    {
-      label: t("navBar.settings"),
-      icon: "i-lucide-settings",
-      to: "/settings",
-    },
-  ],
-  [
-    {
-      label: t("navBar.exit"),
-      icon: "i-lucide-log-out",
-      to: "/login",
-      onSelect: (_) => logout(),
-      class: "cursor-pointer",
-    },
-  ],
+const items = computed<NavigationMenuItem[]>(() => [
+  {
+    label: t("navBar.index"),
+    icon: "i-lucide-house",
+    to: "/",
+  },
+  {
+    label: t("navBar.report"),
+    icon: "i-lucide-message-square-warning",
+    to: "/report",
+  },
+  {
+    label: t("navBar.settings"),
+    icon: "i-lucide-settings",
+    to: "/settings",
+  },
 ]);
 </script>
 
 <template>
-  <div
-    class="h-full p-3 md:h-[calc(100vh-5rem)] w-full flex flex-col justify-between"
-  >
+  <div class="flex-1 w-full flex flex-col">
     <UNavigationMenu
       :collapsed="collapsed"
-      :items="items[0]"
-      orientation="vertical"
-      tooltip
-    />
-
-    <UNavigationMenu
-      :collapsed="collapsed"
-      :items="items[1]"
+      :items="items"
       orientation="vertical"
       tooltip
     />
