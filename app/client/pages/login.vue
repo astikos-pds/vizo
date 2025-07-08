@@ -59,11 +59,9 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
   <section
     class="lg:min-w-[45%] xl:min-w-[50%] h-full bg-linear-to-tr from-primary to-neutral-200 dark:to-neutral-500"
   ></section>
-  <section
-    class="relative size-full flex flex-col items-center justify-center py-20"
-  >
-    <ConfigHeader />
-    <section class="w-[70%] md:w-[50%] lg:w-[60%] xl:w-[45%]">
+  <section class="relative size-full flex flex-col items-center">
+    <ConfigHeader class="w-full" />
+    <section class="w-[70%] md:w-[50%] lg:w-[55%] 2xl:w-[45%] my-auto">
       <h1
         class="text-4xl font-semibold text-wrap text-neutral-900 dark:text-neutral-50 text-center"
       >

@@ -152,10 +152,12 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
 
 <template>
   <section
-    class="relative size-full flex flex-col items-center pt-30 pb-15 overflow-y-auto"
+    class="relative size-full flex flex-col items-center overflow-y-auto"
   >
-    <ConfigHeader />
-    <section class="w-[70%] md:w-[50%] lg:w-[60%] xl:w-[50%]">
+    <ConfigHeader class="w-full" />
+    <section
+      class="w-[70%] md:w-[50%] lg:w-[60%] 2xl:w-[50%] my-15 2xl:my-20 h-full"
+    >
       <h1
         class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50 text-center"
       >
@@ -169,7 +171,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
         :disabled="loading"
         class="flex flex-col items-center gap-4 md:gap-3 mt-8"
       >
-        <div class="flex flex-col md:flex-row gap-3 w-full">
+        <div class="flex flex-col md:flex-row gap-2 2xl:gap-3 w-full">
           <UFormField
             :label="t('registerCitizen.firstName')"
             name="firstName"
@@ -210,7 +212,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
           />
         </UFormField>
 
-        <div class="flex flex-col md:flex-row gap-3 w-full">
+        <div class="flex flex-col md:flex-row gap-2 2xl:gap-3 w-full">
           <UFormField label="CPF" name="cpf" class="w-full" required>
             <UInput
               icon="i-lucide-id-card"
