@@ -156,7 +156,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
   >
     <ConfigHeader class="w-full" />
     <section
-      class="w-[70%] md:w-[50%] lg:w-[60%] 2xl:w-[50%] my-15 2xl:my-20 h-full"
+      class="w-[70%] md:w-[50%] lg:w-[60%] 2xl:w-[50%] my-20 h-full"
     >
       <h1
         class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50 text-center"
