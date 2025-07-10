@@ -3,10 +3,6 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import { useOfficialStore } from "~/stores/official";
 
-const emit = defineEmits<{
-  (e: "next"): void;
-}>();
-
 const emailSchema = z.object({
   email: z.string().email("Invalid email"),
 });
@@ -19,15 +15,22 @@ const form = reactive<EmailSchema>({
   email: store.email,
 });
 
+const stepper = useSteps();
+
 const onSubmit = async (event: FormSubmitEvent<EmailSchema>) => {
   console.log(event);
   store.setEmail(event.data.email);
-  emit("next");
+  stepper.next();
 };
 </script>
 
 <template>
   <RegisterAsOfficialStep title="E-mail">
+    <template #description>
+      Check if your municipality is registered on Vizo by your institutional
+      e-mail.
+    </template>
+
     <UForm
       :schema="emailSchema"
       :state="form"

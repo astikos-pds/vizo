@@ -4,10 +4,6 @@ import z from 'zod';
 import { useOfficialStore } from '~/stores/official';
 import { PIN_INPUT_LENGTH } from '~/utils/constants';
 
-const emit = defineEmits<{
-  (e: "next"): void;
-}>();
-
 const codeSchema = z.object({
   code: z.array(z.string()).length(PIN_INPUT_LENGTH, "Code has to have 6 digits."),
 });
@@ -19,23 +15,33 @@ const form = reactive<CodeSchema>({
 });
 
 const store = useOfficialStore();
+const stepper = useSteps();
 
 const onSubmit = async (event: FormSubmitEvent<CodeSchema>) => {
   console.log(event.data);
-  emit("next");
+  stepper.next()
 };
+
+const resend = async () => {
+  console.log(store.email)
+}
 </script>
 
 <template>
   <RegisterAsOfficialStep title="Verify your e-mail">
-    <span class="text-sm text-center mb-4">We sent a verification code to <UBadge variant="subtle">{{ store.email }}</UBadge>. Copy and paste it below.</span>
+    <template #description>
+      We sent a verification code to <UBadge variant="subtle">{{ store.email }}</UBadge>. Copy and paste it below.
+    </template>
 
     <UForm :schema="codeSchema" :state="form" @submit="onSubmit" class="flex flex-col items-center gap-5">
       <UFormField label="Verification code" name="code">
-        <UPinInput v-model="form.code" otp :length="PIN_INPUT_LENGTH" />
+        <UPinInput v-model="form.code" otp autofocus :length="PIN_INPUT_LENGTH" />
       </UFormField>
 
-      <UButton type="submit">Verify</UButton>
+      <div class="flex gap-2">
+        <UButton color="neutral" variant="outline" @click="resend">Resend</UButton>
+        <UButton type="submit">Verify</UButton>
+      </div>
     </UForm>
   </RegisterAsOfficialStep>
 </template>

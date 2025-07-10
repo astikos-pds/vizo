@@ -10,8 +10,6 @@ definePageMeta({
   layout: "guest",
 });
 
-const stepper = useTemplateRef("stepper");
-
 const steps = [
   {
     slot: "email" as const,
@@ -26,35 +24,40 @@ const steps = [
     icon: "i-lucide-badge-check",
   },
   {
-    slot: "register" as const,
-    title: "Register",
+    slot: "details" as const,
+    title: "Details",
     description: "",
     icon: "i-lucide-book-open-text",
   },
 ] satisfies StepperItem[];
+
+const stepper = useSteps();
+stepper.setTotalSteps(steps.length);
 </script>
 
 <template>
-  <section
-    class="relative size-full flex flex-col items-center overflow-y-auto"
-  >
+  <section class="relative size-full flex flex-col items-center">
     <ConfigHeader class="w-full" />
     <UStepper
-      ref="stepper"
-      class="flex-1 w-full"
+      class="flex-1 w-full gap-0 overflow-y-auto"
       :items="steps"
+      v-model="stepper.current.value"
       linear
+      disabled
       :ui="{
-        content: 'flex flex-col items-center',
         header: 'p-3 border-b border-default',
       }"
     >
       <template #email>
-        <RegisterAsOfficialEmailStep @next="stepper?.next" />
+        <RegisterAsOfficialEmailStep />
       </template>
 
       <template #verify>
-        <RegisterAsOfficialVerificationStep @next="stepper?.next" />
+        <RegisterAsOfficialVerificationStep />
+      </template>
+
+      <template #details>
+        <RegisterAsOfficialDetailsStep />
       </template>
     </UStepper>
   </section>
