@@ -24,6 +24,7 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@nuxtjs/i18n",
     "@vite-pwa/nuxt",
+    "@pinia/nuxt",
   ],
   i18n: {
     defaultLocale: "pt-BR",
