@@ -155,9 +155,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
     class="relative size-full flex flex-col items-center overflow-y-auto"
   >
     <ConfigHeader class="w-full" />
-    <section
-      class="w-[70%] md:w-[50%] lg:w-[60%] 2xl:w-[50%] my-20 h-full"
-    >
+    <section class="w-[70%] md:w-[50%] lg:w-[60%] 2xl:w-[50%] my-20 h-full">
       <h1
         class="text-4xl font-semibold text-neutral-900 dark:text-neutral-50 text-center"
       >
@@ -308,12 +306,9 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
           >
         </div>
 
-        <UButton
-          type="submit"
-          :loading="loading"
-          class="cursor-pointer text-white font-semibold"
-          >{{ t("registerCitizen.signUpButton") }}</UButton
-        >
+        <UButton type="submit" :loading="loading">{{
+          t("registerCitizen.signUpButton")
+        }}</UButton>
       </UForm>
     </section>
   </section>

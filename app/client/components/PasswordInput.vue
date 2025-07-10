@@ -39,7 +39,7 @@ const emit = defineEmits<{ (e: "click"): void }>();
       <template #trailing>
         <UButton
           color="neutral"
-          class="cursor-pointer text-xl"
+          class="text-xl"
           variant="link"
           :icon="show ? 'i-lucide-eye-closed' : 'i-lucide-eye'"
           :aria-label="show ? 'Hide password' : 'Show password'"

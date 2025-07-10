@@ -121,9 +121,7 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
         </div>
       </UFormField>
 
-      <UButton type="submit" class="cursor-pointer">{{
-        t("settings.saveButton")
-      }}</UButton>
+      <UButton type="submit">{{ t("settings.saveButton") }}</UButton>
     </UForm>
   </section>
 </template>

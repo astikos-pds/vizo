@@ -2,8 +2,8 @@
 import type { StepperItem } from "@nuxt/ui";
 
 useHead({
-  title: "Vizo | Sign up as citizen",
-  meta: [{ name: "description", content: "Register as official in Vizo" }],
+  title: "Vizo | Sign up as official",
+  meta: [{ name: "description", content: "Register as an official in Vizo" }],
 });
 
 definePageMeta({
@@ -41,15 +41,20 @@ const steps = [
     <ConfigHeader class="w-full" />
     <UStepper
       ref="stepper"
-      class="flex-1 w-full p-3"
+      class="flex-1 w-full"
       :items="steps"
       linear
       :ui="{
         content: 'flex flex-col items-center',
+        header: 'p-3 border-b border-default',
       }"
     >
       <template #email>
         <RegisterAsOfficialEmailStep @next="stepper?.next" />
+      </template>
+
+      <template #verify>
+        <RegisterAsOfficialVerificationStep @next="stepper?.next" />
       </template>
     </UStepper>
   </section>

@@ -45,7 +45,7 @@ const user = computed(() => {
         color="neutral"
         variant="ghost"
         :avatar="user.avatar"
-        class="w-full cursor-pointer"
+        class="w-full"
         :ui="{
           base: 'p-[5px]',
         }"

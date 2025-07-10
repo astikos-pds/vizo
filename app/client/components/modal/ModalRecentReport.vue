@@ -43,14 +43,12 @@ const { t } = useI18n();
           color="neutral"
           variant="subtle"
           :label="t('common.cancel')"
-          class="cursor-pointer"
           @click="emit('close', false)"
         />
         <UButton
           color="warning"
           variant="subtle"
           :label="t('conflictModal.confirm')"
-          class="cursor-pointer"
           @click="emit('close', true)"
         />
       </div>

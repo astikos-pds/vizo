@@ -329,7 +329,7 @@ function resolveCoordinates(data: ReportSchema) {
               variant="solid"
               size="md"
               color="info"
-              class="absolute top-1 right-1 cursor-pointer"
+              class="absolute top-1 right-1"
               @click="handleFileRemove(index)"
             />
             <img
@@ -411,7 +411,6 @@ function resolveCoordinates(data: ReportSchema) {
 
       <UButton
         type="submit"
-        class="justify-center cursor-pointer text-neutral-50"
         :loading="loading"
         :disabled="geolocationError !== null"
         >{{ t("reportProblem.sendButton") }}</UButton

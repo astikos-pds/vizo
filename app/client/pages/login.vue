@@ -109,12 +109,9 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           >
         </div>
 
-        <UButton
-          type="submit"
-          class="cursor-pointer text-neutral-50 font-semibold"
-          :loading="loading"
-          >{{ t("loginCitizen.signInButton") }}</UButton
-        >
+        <UButton type="submit" :loading="loading">{{
+          t("loginCitizen.signInButton")
+        }}</UButton>
       </UForm>
     </section>
   </section>

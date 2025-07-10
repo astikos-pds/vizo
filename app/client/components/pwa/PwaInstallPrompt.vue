@@ -9,7 +9,6 @@
       variant="outline"
       size="xl"
       :disabled="useNuxtApp().$pwa?.isPWAInstalled"
-      class="cursor-pointer"
       :ui="{
         leadingIcon: 'text-lg xl:text-xl',
       }"
@@ -20,7 +19,6 @@
       icon="i-lucide-refresh-ccw"
       color="neutral"
       variant="outline"
-      class="cursor-pointer"
       :ui="{
         leadingIcon: 'text-lg xl:text-xl',
       }"
@@ -37,7 +35,6 @@
       variant="outline"
       size="xl"
       :disabled="useNuxtApp().$pwa?.isPWAInstalled"
-      class="cursor-pointer"
       :ui="{
         leadingIcon: 'text-lg xl:text-xl',
       }"
