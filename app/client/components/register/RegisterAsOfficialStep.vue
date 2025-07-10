@@ -6,9 +6,9 @@ const { title } = defineProps<{
 
 <template>
   <section
-    class="w-[65%] md:w-[50%] lg:w-[55%] p-1 h-full flex flex-col items-center"
+    class="w-[65%] md:w-[50%] lg:w-[60%] p-1 h-full flex flex-col items-center"
   >
-    <h1 class="text-3xl font-semibold text-center mt-8">
+    <h1 class="text-2xl font-semibold text-center mt-8 mb-4 lg:mb-6">
       {{ title }}
     </h1>
 
