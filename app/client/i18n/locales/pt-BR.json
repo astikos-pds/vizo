@@ -196,6 +196,7 @@
         "default": "Ocorreu um erro inesperado. Por favor, tente novamente."
       }
     },
+    
     "success": {
       "title": "Sucesso",
       "description": {
@@ -205,5 +206,54 @@
         "settingsSaved": "Configurações salvas com sucesso."
       }
     }
+  },
+
+  "solvedProblems": {
+    "title": "Problemas Resolvidos",
+    "subtitle": "Relação de problemas resolvidos nos últimos dias.",
+    "today": "Hoje",
+    "week": "Esta Semana",
+    "month": "Este Mês",
+    "solved": "Problemas Resolvidos",
+    "pending": "Problemas Pendentes"
+  },
+
+  "months": {
+    "jan": "Jan",
+    "feb": "Fev",
+    "mar": "Mar",
+    "apr": "Abr",
+    "may": "Mai",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Ago",
+    "sep": "Set",
+    "oct": "Out",
+    "nov": "Nov",
+    "dec": "Dez"
+  },
+
+  "lastProblems": {
+    "title": "Últimos Problemas",
+    "problem": "Problema",
+    "neighborhood": "Bairro",
+    "status": "Status",
+    "actions": "Ações",
+    "reports": "Reportes",
+    "seeMore": "Ver mais",
+    "statuses": {
+      "Resolvido": "Resolvido",
+      "Em Andamento": "Em Andamento",
+      "Em Análise": "Em Análise"
+    }
+  },
+
+  "problemRate": {
+    "title": "Incidência de Problemas",
+    "subtitle": "Problemas nos últimos tempos.",
+    "today": "Hoje",
+    "week": "Esta Semana",
+    "month": "Este Mês",
+    "incidence": "Incidência"
   }
 }

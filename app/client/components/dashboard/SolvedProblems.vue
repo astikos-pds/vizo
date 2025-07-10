@@ -1,27 +1,29 @@
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 import { useI18n } from 'vue-i18n';
 import type { ApexOptions } from 'apexcharts';
-const { t } = useI18n();
-const options = [
-  { label: 'Hoje', value: 'today' },
-  { label: 'Esta Semana', value: 'week' },
-  { label: 'Este Mês', value: 'month' },
-];
+const { t, locale } = useI18n();
+
+const options = computed(() => [
+  { label: t('solvedProblems.today'), value: 'today' },
+  { label: t('solvedProblems.week'), value: 'week' },
+  { label: t('solvedProblems.month'), value: 'month' },
+]);
 const selected = ref('today');
 
-const series = ref([
+const series = computed(() => [
   {
-    name: 'Problemas Resolvidos',
+    name: t('solvedProblems.solved'),
     data: [10, 20, 15, 30, 25, 40, 35],
   },
   {
-    name: 'Problemas Pendentes',
+    name: t('solvedProblems.pending'),
     data: [25, 49, 93, 54, 35, 64, 87],
   },
 ]);
-const chartOptions = ref<ApexOptions>({
+
+const chartOptions = computed<ApexOptions>(() => ({
   chart: {
     type: 'area',
     height: 200,
@@ -38,7 +40,15 @@ const chartOptions = ref<ApexOptions>({
     width: 2,
   },
   xaxis: {
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+    categories: [
+      t('months.jan'),
+      t('months.feb'),
+      t('months.mar'),
+      t('months.apr'),
+      t('months.may'),
+      t('months.jun'),
+      t('months.jul'),
+    ],
     labels: {
       style: {
         colors: '#9CA3AF',
@@ -55,7 +65,7 @@ const chartOptions = ref<ApexOptions>({
   tooltip: {
     theme: 'dark',
   },
-});
+}));
 </script>
 
 <template>
@@ -65,10 +75,10 @@ const chartOptions = ref<ApexOptions>({
     <div class="mb-6 flex flex-col gap-5 sm:flex-row sm:justify-between">
       <div class="w-full">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-          Problemas Resolvidos
+          {{ t('solvedProblems.title') }}
         </h3>
         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Relação de problemas resolvidos nos ultimos dias.
+          {{ t('solvedProblems.subtitle') }}
         </p>
       </div>
       <Dropdown :options="options" v-model="selected" />

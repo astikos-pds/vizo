@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
-const options = [
-  { label: 'Hoje', value: 'today' },
-  { label: 'Esta Semana', value: 'week' },
-  { label: 'Este Mês', value: 'month' },
-];
+const options = computed(() => [
+  { label: t('problemRate.today'), value: 'today' },
+  { label: t('problemRate.week'), value: 'week' },
+  { label: t('problemRate.month'), value: 'month' },
+]);
 
 const selected = ref('today');
 
-const series = ref([
+const series = computed(() => [
   {
-    name: 'afdafafafaf',
+    name: t('problemRate.incidence'),
     data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
   },
-])
+]);
 
-const chartOptions = ref({
+const chartOptions = computed(() => ({
   colors: ['#465fff'],
   chart: {
     fontFamily: 'Outfit, sans-serif',
@@ -46,18 +46,18 @@ const chartOptions = ref({
   },
   xaxis: {
     categories: [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      t('months.jan'),
+      t('months.feb'),
+      t('months.mar'),
+      t('months.apr'),
+      t('months.may'),
+      t('months.jun'),
+      t('months.jul'),
+      t('months.aug'),
+      t('months.sep'),
+      t('months.oct'),
+      t('months.nov'),
+      t('months.dec'),
     ],
     axisBorder: {
       show: false,
@@ -99,7 +99,7 @@ const chartOptions = ref({
       },
     },
   },
-})
+}));
 </script>
 
 <template>
@@ -109,10 +109,10 @@ const chartOptions = ref({
     <div class="flex items-center justify-between">
       <div>
         <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-          Incidência de Problemas
+          {{ t('problemRate.title') }}
         </h3>
         <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Problemas nos últimos 12 meses.
+          {{ t('problemRate.subtitle') }}
         </p>
       </div>
       <Dropdown :options="options" v-model="selected" />

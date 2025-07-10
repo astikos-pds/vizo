@@ -200,6 +200,7 @@
         "default": "An unexpected error occurred. Please try again."
       }
     },
+    
     "success": {
       "title": "Success",
       "description": {
@@ -209,5 +210,54 @@
         "settingsSaved": "Settings saved successfully."
       }
     }
+  },
+
+  "solvedProblems": {
+    "title": "Solved Problems",
+    "subtitle": "List of problems solved in the last days.",
+    "today": "Today",
+    "week": "This Week",
+    "month": "This Month",
+    "solved": "Solved Problems",
+    "pending": "Pending Problems"
+  },
+
+  "months": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
+  },
+
+  "lastProblems": {
+    "title": "Last Problems",
+    "problem": "Problem",
+    "neighborhood": "Neighborhood",
+    "status": "Status",
+    "actions": "Actions",
+    "reports": "Reports",
+    "seeMore": "See more",
+    "statuses": {
+      "Resolvido": "Solved",
+      "Em Andamento": "In Progress",
+      "Em Análise": "Under Analysis"
+    }
+  },
+
+  "problemRate": {
+    "title": "Problem Incidence",
+    "subtitle": "Problems in recent periods.",
+    "today": "Today",
+    "week": "This Week",
+    "month": "This Month",
+    "incidence": "Incidence"
   }
 }
