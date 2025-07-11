@@ -3,6 +3,7 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 import { useAuth } from "~/composables/use-auth";
 import { validateDocument } from "~/utils/document-validation";
+import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
 
@@ -18,12 +19,12 @@ definePageMeta({
 const loginSchema = z.object({
   document: z
     .string()
-    .min(1, t("loginCitizen.verification.documentRequired"))
+    .min(1, t("login.verification.documentRequired"))
     .refine(
       (document) => validateDocument(document).isValid,
-      t("loginCitizen.verification.invalidDocument")
+      t("login.verification.invalidDocument")
     ),
-  password: z.string().min(1, t("loginCitizen.verification.passwordRequired")),
+  password: z.string().min(1, t("login.verification.passwordRequired")),
 });
 
 type LoginSchema = z.infer<typeof loginSchema>;
@@ -65,7 +66,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
       <h1
         class="text-4xl font-semibold text-wrap text-neutral-900 dark:text-neutral-50 text-center"
       >
-        {{ t("loginCitizen.title") }}
+        {{ t("login.title") }}
       </h1>
 
       <UForm
@@ -76,7 +77,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         class="flex flex-col items-center gap-5 mt-8"
       >
         <UFormField
-          :label="t('loginCitizen.cpf')"
+          :label="t('login.cpf')"
           name="document"
           class="w-full"
           required
@@ -85,7 +86,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
             icon="i-lucide-id-card"
             v-model="form.document"
             type="text"
-            :placeholder="t('loginCitizen.cpfPlaceholder')"
+            :placeholder="t('login.cpfPlaceholder')"
             class="w-full text-xl"
           />
         </UFormField>
@@ -93,24 +94,30 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         <PasswordInput
           v-model="form.password"
           :show="showPassword"
-          :label="t('loginCitizen.password')"
+          :label="t('login.password')"
           name="password"
-          :placeholder="t('loginCitizen.passwordPlaceholder')"
+          :placeholder="t('login.passwordPlaceholder')"
           required
           @click="showPassword = !showPassword"
         />
 
-        <div class="text-center">
-          <span
-            >{{ t("loginCitizen.dontHaveAccount") }}
-            <NuxtLink to="/citizen/register" class="text-primary">{{
-              t("loginCitizen.signUpHere")
-            }}</NuxtLink></span
-          >
+        <div class="text-center text-sm flex flex-col">
+          <i18n-t keypath="login.dontHaveAccount" tag="span">
+            <template #citizen>
+              <NuxtLink to="/citizen/register" class="text-primary">{{
+                t("login.as.citizen")
+              }}</NuxtLink>
+            </template>
+            <template #official>
+              <NuxtLink to="/official/register" class="text-primary">{{
+                t("login.as.official")
+              }}</NuxtLink>
+            </template>
+          </i18n-t>
         </div>
 
         <UButton type="submit" :loading="loading">{{
-          t("loginCitizen.signInButton")
+          t("login.signInButton")
         }}</UButton>
       </UForm>
     </section>

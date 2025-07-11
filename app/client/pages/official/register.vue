@@ -1,38 +1,45 @@
 <script lang="ts" setup>
 import type { StepperItem } from "@nuxt/ui";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | Sign up as official",
-  meta: [{ name: "description", content: "Register as an official in Vizo" }],
+  title: t("head.registerOfficial.title"),
+  meta: [
+    { name: "description", content: t("head.registerOfficial.description") },
+  ],
 });
 
 definePageMeta({
   layout: "guest",
 });
 
-const steps = [
-  {
-    slot: "email" as const,
-    title: "E-mail",
-    description: "",
-    icon: "i-lucide-mail",
-  },
-  {
-    slot: "verify" as const,
-    title: "Verify",
-    description: "",
-    icon: "i-lucide-badge-check",
-  },
-  {
-    slot: "details" as const,
-    title: "Details",
-    description: "",
-    icon: "i-lucide-book-open-text",
-  },
-] satisfies StepperItem[];
+const steps = computed(
+  () =>
+    [
+      {
+        slot: "email" as const,
+        title: t("registerOfficial.steps.email"),
+        description: "",
+        icon: "i-lucide-mail",
+      },
+      {
+        slot: "verify" as const,
+        title: t("registerOfficial.steps.verify"),
+        description: "",
+        icon: "i-lucide-badge-check",
+      },
+      {
+        slot: "details" as const,
+        title: t("registerOfficial.steps.details"),
+        description: "",
+        icon: "i-lucide-book-open-text",
+      },
+    ] satisfies StepperItem[]
+);
 
 const stepper = useSteps();
-stepper.setTotalSteps(steps.length);
+stepper.setTotalSteps(steps.value.length);
 </script>
 
 <template>

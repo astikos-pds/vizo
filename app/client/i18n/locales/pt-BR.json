@@ -11,6 +11,10 @@
       "title": "Vizo | Cadastre-se como cidadão",
       "description": "Cadastre-se como cidadão no Vizo"
     },
+    "registerOfficial": {
+      "title": "Vizo | Cadastre-se como autoridade municipal",
+      "description": "Cadastre-se como autoridade municipal no Vizo"
+    },
     "report": {
       "title": "Vizo | Reporte um problem",
       "description": "Reporte um problema para as autoridades municipais"
@@ -55,21 +59,40 @@
   },
 
   "registerCitizen": {
-    "title": "Crie uma conta",
-    "firstName": "Nome",
-    "firstNamePlaceholder": "Insira seu nome",
-    "lastName": "Sobrenome",
-    "lastNamePlaceholder": "Insira seu sobrenome",
-    "cpf": "CPF",
-    "cpfPlaceholder": "Digite seu documento",
-    "email": "E-mail",
-    "emailPlaceholder": "Digite seu e-mail",
-    "birthDate": "Data de Nascimento",
-    "birthDatePlaceholder": "Digite sua data de nascimento",
-    "password": "Senha",
-    "passwordPlaceholder": "Digite sua senha",
-    "confirmPassword": "Confirme sua senha",
-    "confirmPasswordPlaceholder": "Confirme sua senha",
+    "title": "Crie uma conta"
+  },
+
+  "registerOfficial": {
+    "steps": {
+      "email": "E-mail",
+      "verify": "Verificação",
+      "details": "Detalhes"
+    },
+    "emailStep": {
+      "title": "E-mail",
+      "description": "Verifique se seu município está registrado no Vizo usando seu e-mail institucional.",
+      "label": "E-mail",
+      "placeholder": "Digite seu e-mail institucional",
+      "submit": "Enviar"
+    },
+    "verifyStep": {
+      "title": "Verifique seu e-mail",
+      "description": "Enviamos um código de verificação para { email }. Copie e cole abaixo.",
+      "label": "Código de verificação",
+      "expiresIn": "Expira em { time }",
+      "expired": "Código expirado, tente novamente.",
+      "resend": "Reenviar",
+      "verify": "Verificar"
+    },
+    "detailsStep": {
+      "title": "Informações pessoais",
+      "description": "E-mail verificado! Agora preencha o formulário com suas informações pessoais."
+    }
+  },
+
+  "register": {
+    "alreadyHaveAccount": "Já possui uma conta?",
+    "logInHere": "Entre aqui.",
     "passwordStrengthIndicator": " Deve conter:",
     "passwordAriaLabel": "Requisitos da senha",
     "passwordRequirements": {
@@ -86,10 +109,23 @@
       "medium": "Senha média",
       "strong": "Senha forte"
     },
-    "alreadyHaveAccount": "Já possui uma conta?",
-    "logInHere": "Faça login aqui.",
-    "signUpButton": "Cadastrar",
+    "firstName": "Nome",
+    "firstNamePlaceholder": "Digite seu nome",
+    "lastName": "Sobrenome",
+    "lastNamePlaceholder": "Digite seu sobrenome",
+    "cpf": "CPF",
+    "cpfPlaceholder": "Digite seu documento",
+    "email": "E-mail",
+    "emailPlaceholder": "Digite seu e-mail",
+    "birthDate": "Data de Nascimento",
+    "birthDatePlaceholder": "Digite sua data de nascimento",
+    "password": "Senha",
+    "passwordPlaceholder": "Digite sua senha",
+    "confirmPassword": "Confirme sua senha",
+    "confirmPasswordPlaceholder": "Confirme sua senha",
+    "signUpButton": "Cadastrar-se",
     "optional": "Opcional",
+    "submitButton": "Enviar",
     "verification": {
       "name": "Preencha seu nome",
       "email": "Email inválido",
@@ -101,13 +137,17 @@
     }
   },
 
-  "loginCitizen": {
+  "login": {
     "title": "Entre em sua conta",
     "cpf": "Documento",
     "cpfPlaceholder": "Digite seu documento",
     "password": "Senha",
     "passwordPlaceholder": "Digite sua senha",
-    "dontHaveAccount": "Ainda não possui uma conta?",
+    "dontHaveAccount": "Ainda não possui uma conta? Cadastre-se { citizen } ou { official }.",
+    "as": {
+      "citizen": "como cidadão",
+      "official": "como autoridade municipal"
+    },
     "signUpHere": "Cadastre-se aqui.",
     "signInButton": "Entrar",
     "verification": {

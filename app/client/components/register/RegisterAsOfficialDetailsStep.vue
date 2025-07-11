@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
+import { useSteps } from "~/composables/use-steps";
 
 const { t } = useI18n();
 
@@ -8,19 +9,19 @@ const passwordRequirements = computed(() => {
   return {
     minLength: {
       regex: /.{8,}/,
-      text: t("registerCitizen.passwordRequirements.length"),
+      text: t("register.passwordRequirements.length"),
     },
     hasNumber: {
       regex: /\d/,
-      text: t("registerCitizen.passwordRequirements.number"),
+      text: t("register.passwordRequirements.number"),
     },
     hasLowercase: {
       regex: /[a-z]/,
-      text: t("registerCitizen.passwordRequirements.lowercase"),
+      text: t("register.passwordRequirements.lowercase"),
     },
     hasUppercase: {
       regex: /[A-Z]/,
-      text: t("registerCitizen.passwordRequirements.uppercase"),
+      text: t("register.passwordRequirements.uppercase"),
     },
   };
 });
@@ -43,20 +44,20 @@ const passwordSchema = z
 
 const detailsSchema = z
   .object({
-    firstName: z.string().min(1, t("registerCitizen.verification.name")),
+    firstName: z.string().min(1, t("register.verification.name")),
     lastName: z.string().optional(),
     cpf: z
       .string()
-      .min(1, t("registerCitizen.verification.cpf"))
+      .min(1, t("register.verification.cpf"))
       .refine((cpf) => {
         const result = validateDocument(cpf);
         return result.isValid && result.type === "cpf";
-      }, t("registerCitizen.verification.invalidCpf")),
+      }, t("register.verification.invalidCpf")),
     password: passwordSchema,
     confirmedPassword: z.string(),
   })
   .refine((fields) => fields.confirmedPassword === fields.password, {
-    message: t("registerCitizen.verification.confirmedPassword"),
+    message: t("register.verification.confirmedPassword"),
     path: ["confirmedPassword"],
   });
 
@@ -91,14 +92,14 @@ const color = computed(() => {
 });
 
 const text = computed(() => {
-  if (score.value === 0)
-    return t("registerCitizen.passwordStrength.enterPassword");
-  if (score.value <= 2) return t("registerCitizen.passwordStrength.weak");
-  if (score.value === 3) return t("registerCitizen.passwordStrength.medium");
-  return t("registerCitizen.passwordStrength.strong");
+  if (score.value === 0) return t("register.passwordStrength.enterPassword");
+  if (score.value <= 2) return t("register.passwordStrength.weak");
+  if (score.value === 3) return t("register.passwordStrength.medium");
+  return t("register.passwordStrength.strong");
 });
 
 const store = useOfficialStore();
+const stepper = useSteps();
 
 const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {
   console.log({
@@ -106,15 +107,17 @@ const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {
     email: store.email,
   });
 
+  store.setEmail("");
+  stepper.setStep(0);
+
   await navigateTo("/login");
 };
 </script>
 
 <template>
-  <RegisterAsOfficialStep title="Personal information">
+  <RegisterAsOfficialStep :title="t('registerOfficial.detailsStep.title')">
     <template #description>
-      Email verified! Now fill out the form below with your personal
-      information.
+      {{ t("registerOfficial.detailsStep.description") }}
     </template>
 
     <UForm
@@ -125,7 +128,7 @@ const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {
     >
       <div class="flex flex-col md:flex-row gap-2 2xl:gap-3 w-full">
         <UFormField
-          :label="t('registerCitizen.firstName')"
+          :label="t('register.firstName')"
           name="firstName"
           class="w-full"
           required
@@ -134,21 +137,21 @@ const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {
             icon="i-lucide-user"
             v-model="form.firstName"
             type="text"
-            :placeholder="t('registerCitizen.firstNamePlaceholder')"
+            :placeholder="t('register.firstNamePlaceholder')"
             class="w-full text-xl"
           />
         </UFormField>
 
         <UFormField
-          :label="t('registerCitizen.lastName')"
+          :label="t('register.lastName')"
           name="lastName"
           class="w-full"
-          :hint="t('registerCitizen.optional')"
+          :hint="t('register.optional')"
         >
           <UInput
             v-model="form.lastName"
             type="text"
-            :placeholder="t('registerCitizen.lastNamePlaceholder')"
+            :placeholder="t('register.lastNamePlaceholder')"
             class="w-full text-xl"
           />
         </UFormField>
@@ -159,7 +162,7 @@ const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {
           icon="i-lucide-id-card"
           v-model="form.cpf"
           type="text"
-          :placeholder="t('registerCitizen.cpfPlaceholder')"
+          :placeholder="t('register.cpfPlaceholder')"
           class="w-full text-xl"
         />
       </UFormField>
@@ -168,9 +171,9 @@ const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {
         v-model="form.password"
         :color="color"
         :show="showPassword"
-        :label="t('registerCitizen.password')"
+        :label="t('register.password')"
         name="password"
-        :placeholder="t('registerCitizen.passwordPlaceholder')"
+        :placeholder="t('register.passwordPlaceholder')"
         required
         @click="showPassword = !showPassword"
       >
@@ -185,7 +188,7 @@ const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {
           />
 
           <p id="password-strength" class="text-sm font-medium text-left">
-            {{ text }}. {{ t("registerCitizen.passwordStrengthIndicator") }}
+            {{ text }}. {{ t("register.passwordStrengthIndicator") }}
           </p>
 
           <ul class="space-y-1 text-xl" aria-label="Password requirements">
@@ -204,7 +207,9 @@ const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {
                 {{ req.text }}
                 <span class="sr-only">
                   {{
-                    req.met ? " - Requirement met" : " - Requirement not met"
+                    req.met
+                      ? t("register.requirementMet")
+                      : t("register.requirementNotMet")
                   }}
                 </span>
               </span>
@@ -217,14 +222,14 @@ const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {
         v-model="form.confirmedPassword"
         color="neutral"
         :show="showConfimedPassword"
-        :label="t('registerCitizen.confirmPassword')"
+        :label="t('register.confirmPassword')"
         name="confirmedPassword"
-        :placeholder="t('registerCitizen.confirmPasswordPlaceholder')"
+        :placeholder="t('register.confirmPasswordPlaceholder')"
         required
         @click="showConfimedPassword = !showConfimedPassword"
       />
 
-      <UButton type="submit">Submit</UButton>
+      <UButton type="submit">{{ t("register.signUpButton") }}</UButton>
     </UForm>
   </RegisterAsOfficialStep>
 </template>

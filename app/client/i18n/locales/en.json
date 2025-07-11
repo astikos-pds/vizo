@@ -11,6 +11,10 @@
       "title": "Vizo | Sign up as citizen",
       "description": "Register as citizen in Vizo"
     },
+    "registerOfficial": {
+      "title": "Vizo | Sign up as official",
+      "description": "Register as official in Vizo"
+    },
     "report": {
       "title": "Vizo | Report a problem",
       "description": "Report a problem to municipalities"
@@ -55,28 +59,47 @@
   },
 
   "registerCitizen": {
-    "title": "Create an account",
-    "firstName": "First name",
-    "firstNamePlaceholder": "Enter your first name",
-    "lastName": "Last name",
-    "lastNamePlaceholder": "Enter your last name",
-    "cpf": "CPF",
-    "cpfPlaceholder": "Enter your document",
-    "email": "E-mail",
-    "emailPlaceholder": "Enter your e-mail",
-    "birthDate": "Birth date",
-    "birthDatePlaceholder": "Enter your birth date",
-    "password": "Password",
-    "passwordPlaceholder": "Enter your password",
-    "confirmPassword": "Confirm your password",
-    "confirmPasswordPlaceholder": "Confirm your password",
+    "title": "Create an account"
+  },
+
+  "registerOfficial": {
+    "steps": {
+      "email": "E-mail",
+      "verify": "Verification",
+      "details": "Details"
+    },
+    "emailStep": {
+      "title": "E-mail",
+      "description": "Check if your municipality is registered on Vizo using your institutional e-mail.",
+      "label": "E-mail",
+      "placeholder": "Enter your institutional e-mail",
+      "submit": "Submit"
+    },
+    "verifyStep": {
+      "title": "Verify your e-mail",
+      "description": "We sent a verification code to { email }. Copy and paste it below.",
+      "label": "Verification code",
+      "expiresIn": "Expires in { time }",
+      "expired": "Code expired, please try again.",
+      "resend": "Resend",
+      "verify": "Verify"
+    },
+    "detailsStep": {
+      "title": "Personal information",
+      "description": "E-mail verified! Now fill out the form with your personal information."
+    }
+  },
+
+  "register": {
+    "alreadyHaveAccount": "Already have an account?",
+    "logInHere": "Login here.",
     "passwordStrengthIndicator": " Must contain:",
     "passwordAriaLabel": "Password requirements",
     "passwordRequirements": {
       "length": "At least 8 characters",
       "uppercase": "One uppercase letter",
       "lowercase": "One lowercase letter",
-      "number": "At least 1 number"
+      "number": "At least one number"
     },
     "requirementMet": "- Requirement met",
     "requirementNotMet": "- Requirement not met",
@@ -86,28 +109,45 @@
       "medium": "Medium password",
       "strong": "Strong password"
     },
-    "alreadyHaveAccount": "Already have an account?",
-    "logInHere": "Log in here.",
-    "signUpButton": "Sign Up",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Enter your last name",
+    "cpf": "CPF",
+    "cpfPlaceholder": "Enter your document",
+    "email": "E-mail",
+    "emailPlaceholder": "Enter your e-mail",
+    "birthDate": "Date of Birth",
+    "birthDatePlaceholder": "Enter your birth date",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPassword": "Confirm your password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "signUpButton": "Sign up",
     "optional": "Optional",
+    "submitButton": "Submit",
     "verification": {
-      "name": "Name is required",
+      "name": "Please enter your name",
       "email": "Invalid email",
-      "cpf": "CPF is required",
+      "cpf": "Please enter your CPF",
       "invalidCpf": "Invalid CPF",
       "date": "Invalid date",
-      "confirmedPassword": "Passwords don't match",
-      "minAge": "You must be at least {age} years old"
+      "confirmedPassword": "Passwords do not match",
+      "minAge": "You must be at least { age } years old"
     }
   },
 
-  "loginCitizen": {
+  "login": {
     "title": "Log in to your account",
     "cpf": "Document",
     "cpfPlaceholder": "Enter your document",
     "password": "Password",
     "passwordPlaceholder": "Enter your password",
-    "dontHaveAccount": "Don't have an account? ",
+    "dontHaveAccount": "Don't have an account? Sign up { citizen } or { official }.",
+    "as": {
+      "citizen": "as citizen",
+      "official": "as official"
+    },
     "signUpHere": "Sign up here.",
     "signInButton": "Sign In",
     "verification": {

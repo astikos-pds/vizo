@@ -18,6 +18,10 @@ export const useSteps = () => {
   const setTotalSteps = (newTotalSteps: number) =>
     (totalSteps.value = newTotalSteps);
 
+  const setStep = (step: number) => {
+    if (step >= 0 && step < totalSteps.value) current.value = step;
+  };
+
   return {
     current,
     hasNext,
@@ -25,5 +29,6 @@ export const useSteps = () => {
     next,
     prev,
     setTotalSteps,
+    setStep,
   };
 };

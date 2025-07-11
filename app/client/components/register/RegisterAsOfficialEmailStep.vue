@@ -2,9 +2,12 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import { useOfficialStore } from "~/stores/official";
+import { useSteps } from "~/composables/use-steps";
+
+const { t } = useI18n();
 
 const emailSchema = z.object({
-  email: z.string().email("Invalid email"),
+  email: z.string().email(t("register.verification.email")),
 });
 
 type EmailSchema = z.output<typeof emailSchema>;
@@ -25,10 +28,9 @@ const onSubmit = async (event: FormSubmitEvent<EmailSchema>) => {
 </script>
 
 <template>
-  <RegisterAsOfficialStep title="E-mail">
+  <RegisterAsOfficialStep :title="t('registerOfficial.emailStep.title')">
     <template #description>
-      Check if your municipality is registered on Vizo by your institutional
-      e-mail.
+      {{ t("registerOfficial.emailStep.description") }}
     </template>
 
     <UForm
@@ -37,16 +39,20 @@ const onSubmit = async (event: FormSubmitEvent<EmailSchema>) => {
       @submit="onSubmit"
       class="size-full flex flex-col items-center gap-4 md:gap-3"
     >
-      <UFormField label="E-mail" name="email" class="w-full">
+      <UFormField
+        :label="t('registerOfficial.emailStep.label')"
+        name="email"
+        class="w-full"
+      >
         <UInput
           v-model="form.email"
           type="text"
-          placeholder="Enter your institutional e-mail"
+          :placeholder="t('registerOfficial.emailStep.placeholder')"
           class="w-full"
         />
       </UFormField>
 
-      <UButton type="submit">Submit</UButton>
+      <UButton type="submit">{{ t("register.submitButton") }}</UButton>
     </UForm>
   </RegisterAsOfficialStep>
 </template>
