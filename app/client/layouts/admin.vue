@@ -16,9 +16,14 @@ const isMobile = breakpoints.smallerOrEqual("md");
 const items = computed<NavigationMenuItem[][]>(() => [
   [
     {
-      label: "Dashboard",
+      label: "Geral",
       icon: "i-lucide-layout-dashboard",
       to: "/municipality/dashboard"
+    },
+    {
+      label: "Perfil",
+      icon: "i-lucide-user",
+      to: "/municipality/profile"
     },
     {
       label: "Problemas",
@@ -48,7 +53,7 @@ const route = useRoute();
 <template>
   <div class="h-screen flex flex-row">
     <section
-      class="h-full p-4 border-x border-default"
+      class="fixed top-0 left-0 h-screen p-4 border-x border-default z-30"
       :class="{
         'min-w-60': !collapsed,
         hidden: isMobile && collapsed,
@@ -87,7 +92,7 @@ const route = useRoute();
         />
       </div>
     </section>
-    <div class="size-full border-r border-default">
+    <div class="size-full border-r border-default" :style="{ marginLeft: !collapsed ? '15rem' : '0' }">
       <header
         class="h-[7%] lg:h-[8%] p-3 lg:p-5 border-b border-default flex flex-row items-center gap-1.5"
       >
