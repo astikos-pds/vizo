@@ -2,21 +2,10 @@ package br.app.vizo.service.auth;
 
 import br.app.vizo.config.security.JwtService;
 import br.app.vizo.config.security.UserDetailsImpl;
-import br.app.vizo.controller.request.RegisterRequestDTO;
-import br.app.vizo.controller.response.OfficialDTO;
 import br.app.vizo.controller.response.TokenPairDTO;
-import br.app.vizo.domain.affiliation.AffiliationRequest;
-import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
-import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.token.RefreshToken;
-import br.app.vizo.domain.user.Citizen;
-import br.app.vizo.domain.user.Official;
-import br.app.vizo.domain.user.OfficialRole;
 import br.app.vizo.domain.user.User;
-import br.app.vizo.controller.response.CitizenDTO;
 import br.app.vizo.exception.http.UnauthorizedException;
-import br.app.vizo.mapper.CitizenMapper;
-import br.app.vizo.mapper.OfficialMapper;
 import br.app.vizo.repository.*;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -43,26 +32,16 @@ public class AuthService {
 
     public AuthService(
             UserRepository userRepository,
-            CitizenRepository citizenRepository,
-            OfficialRepository officialRepository,
-            MunicipalityRepository municipalityRepository,
-            AffiliationRequestRepository affiliationRequestRepository,
             RefreshTokenRepository refreshTokenRepository,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
-            JwtService jwtService,
-            OfficialMapper officialMapper
+            JwtService jwtService
     ) {
         this.userRepository = userRepository;
-        this.citizenRepository = citizenRepository;
-        this.officialRepository = officialRepository;
-        this.municipalityRepository = municipalityRepository;
-        this.affiliationRequestRepository = affiliationRequestRepository;
         this.refreshTokenRepository = refreshTokenRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
-        this.officialMapper = officialMapper;
     }
 
     public TokenPairDTO login(String document, String password) {
