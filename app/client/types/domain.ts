@@ -19,3 +19,11 @@ export interface Report {
   problemId: string;
   createdAt: string;
 }
+
+export interface Municipality {
+  id: string;
+  name: string;
+  emailDomain: string;
+  createdAt: string;
+  updatedAt: string;
+}
