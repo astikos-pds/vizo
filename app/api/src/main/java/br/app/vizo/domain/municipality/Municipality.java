@@ -27,6 +27,9 @@ public class Municipality {
     @Column(name = "email_domain", unique = true)
     private String emailDomain;
 
+    @Column(name = "icon_url")
+    private String iconUrl;
+
     @Column(name = "created_at")
     protected Instant createdAt;
 
@@ -34,10 +37,10 @@ public class Municipality {
     protected Instant updatedAt;
 
     public Municipality() {
-        this("", "");
+        this("", "", "");
     }
 
-    public Municipality(String name, String emailDomain) {
-        this(UUID.randomUUID(), name, emailDomain, DateUtil.now(), DateUtil.now());
+    public Municipality(String name, String emailDomain, String iconUrl) {
+        this(UUID.randomUUID(), name, emailDomain, iconUrl, DateUtil.now(), DateUtil.now());
     }
 }

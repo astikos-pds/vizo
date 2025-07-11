@@ -2,37 +2,55 @@ package br.app.vizo.controller;
 
 import br.app.vizo.controller.request.LoginRequestDTO;
 import br.app.vizo.controller.request.RefreshRequestDTO;
+import br.app.vizo.controller.response.MunicipalityDTO;
 import br.app.vizo.controller.response.OfficialDTO;
 import br.app.vizo.controller.response.TokenPairDTO;
 import br.app.vizo.controller.response.CitizenDTO;
 import br.app.vizo.controller.request.RegisterRequestDTO;
-import br.app.vizo.service.AuthService;
+import br.app.vizo.service.auth.CitizenAuthService;
+import br.app.vizo.service.auth.AuthService;
+import br.app.vizo.service.auth.OfficialAuthService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
+    private final CitizenAuthService citizenAuthService;
+    private final OfficialAuthService officialAuthService;
 
-    public AuthController(AuthService authService) {
+    public AuthController(
+            AuthService authService,
+            CitizenAuthService citizenAuthService,
+            OfficialAuthService officialAuthService
+    ) {
         this.authService = authService;
+        this.citizenAuthService = citizenAuthService;
+        this.officialAuthService = officialAuthService;
     }
+
 
     @PostMapping("/citizen/register")
     public ResponseEntity<CitizenDTO> registerAsCitizen(@RequestBody RegisterRequestDTO body) {
-        CitizenDTO response = this.authService.registerAsCitizen(body);
+        CitizenDTO response = this.citizenAuthService.registerAsCitizen(body);
 
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/official/register")
     public ResponseEntity<OfficialDTO> registerAsOfficial(@RequestBody RegisterRequestDTO body) {
-        OfficialDTO response = this.authService.registerAsOfficial(body);
+        OfficialDTO response = this.officialAuthService.registerAsOfficial(body);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/official/check-email")
+    public ResponseEntity<MunicipalityDTO> checkEmailDomain(
+            @RequestParam("domain") String emailDomain
+    ) {
+        MunicipalityDTO response = this.officialAuthService.getMunicipalityByEmailDomain(emailDomain);
 
         return ResponseEntity.ok(response);
     }

@@ -1,4 +1,4 @@
-package br.app.vizo.service;
+package br.app.vizo.service.auth;
 
 import br.app.vizo.config.security.JwtService;
 import br.app.vizo.config.security.UserDetailsImpl;
@@ -36,16 +36,10 @@ import java.util.UUID;
 public class AuthService {
 
     private final UserRepository userRepository;
-    private final CitizenRepository citizenRepository;
-    private final OfficialRepository officialRepository;
-    private final MunicipalityRepository municipalityRepository;
-    private final AffiliationRequestRepository affiliationRequestRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-    private final CitizenMapper citizenMapper;
-    private final OfficialMapper officialMapper;
 
     public AuthService(
             UserRepository userRepository,
@@ -57,7 +51,6 @@ public class AuthService {
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
             JwtService jwtService,
-            CitizenMapper citizenMapper,
             OfficialMapper officialMapper
     ) {
         this.userRepository = userRepository;
@@ -69,60 +62,7 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
-        this.citizenMapper = citizenMapper;
         this.officialMapper = officialMapper;
-    }
-
-    public CitizenDTO registerAsCitizen(RegisterRequestDTO body) {
-        this.citizenRepository.findByDocumentOrEmail(body.document(), body.email()).ifPresent(
-                c -> {
-                    throw new UnauthorizedException("Invalid credentials.");
-                }
-        );
-
-        Citizen citizen = new Citizen();
-        citizen.setDocument(body.document());
-        citizen.setEmail(body.email());
-        citizen.setName(body.name());
-
-        String hashedPassword = this.passwordEncoder.encode(body.password());
-        citizen.setPassword(hashedPassword);
-
-        return this.citizenMapper.toDto(this.citizenRepository.save(citizen));
-    }
-
-    public OfficialDTO registerAsOfficial(RegisterRequestDTO body) {
-        this.officialRepository.findByDocumentOrEmail(body.document(), body.email()).ifPresent(
-                o -> {
-                    throw new UnauthorizedException("Invalid credentials.");
-                }
-        );
-
-        String emailDomain = body.email().split("@")[1];
-        Municipality municipality = this.municipalityRepository.findByEmailDomain(emailDomain).orElseThrow(
-                () -> new UnauthorizedException("Unknown municipality's e-mail domain.")
-        );
-
-        Official official = new Official();
-        official.setDocument(body.document());
-        official.setEmail(body.email());
-        official.setName(body.name());
-        official.setRole(OfficialRole.OFFICIAL);
-        official.setWasApproved(false);
-
-        String hashedPassword = this.passwordEncoder.encode(body.password());
-        official.setPassword(hashedPassword);
-
-        official = this.officialRepository.save(official);
-
-        AffiliationRequest affiliationRequest = new AffiliationRequest();
-        affiliationRequest.setOfficial(official);
-        affiliationRequest.setMunicipality(municipality);
-        affiliationRequest.setStatus(AffiliationRequestStatus.PENDING);
-
-        this.affiliationRequestRepository.save(affiliationRequest);
-
-        return this.officialMapper.toDto(official);
     }
 
     public TokenPairDTO login(String document, String password) {
