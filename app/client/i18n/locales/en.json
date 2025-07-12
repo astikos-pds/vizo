@@ -93,7 +93,16 @@
       "expiresIn": "Expires in { time }",
       "expired": "Code expired, please try again.",
       "resend": "Resend",
-      "verify": "Verify"
+      "verify": "Verify",
+      "continue": "Continue",
+      "toast": {
+        "request": {
+          "description": "E-mail address not found or already verified."
+        },
+        "verify": {
+          "description": "The codes doesn't match or are expired."
+        }
+      }
     },
     "detailsStep": {
       "title": "Personal information",
@@ -258,6 +267,9 @@
         "reportCreated": "Reported sucessfully with id { id }.",
         "settingsSaved": "Settings saved successfully."
       }
+    },
+    "warning": {
+      "title": "Warning"
     }
   }
 }

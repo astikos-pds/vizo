@@ -93,7 +93,16 @@
       "expiresIn": "Expira em { time }",
       "expired": "Código expirado, tente novamente.",
       "resend": "Reenviar",
-      "verify": "Verificar"
+      "verify": "Verificar",
+      "continue": "Continuar",
+      "toast": {
+        "request": {
+          "description": "E-mail não encontrado ou já verificado."
+        },
+        "verify": {
+          "description": "Os códigos não coincidem ou estão expirados."
+        }
+      }
     },
     "detailsStep": {
       "title": "Informações pessoais",
@@ -254,6 +263,9 @@
         "reportCreated": "Reporte criado com o id { id }.",
         "settingsSaved": "Configurações salvas com sucesso."
       }
+    },
+    "warning": {
+      "title": "Atenção"
     }
   }
 }

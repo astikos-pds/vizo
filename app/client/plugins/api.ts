@@ -63,7 +63,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         }
       }
 
-      toast.add({
+      const { id: toastId } = toast.add({
         title: t("toast.error.title"),
         description: t(
           `toast.error.description.${response.status}`,
@@ -71,6 +71,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         ),
         color: "error",
       });
+      const store = useToastStore();
+      store.setToastId(toastId);
+      store.setStatus(response.status);
     },
   });
 

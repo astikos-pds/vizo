@@ -5,6 +5,7 @@ import { useEmailStore } from "~/stores/email";
 import { PIN_INPUT_LENGTH } from "~/utils/constants";
 import { useCountdown } from "@vueuse/core";
 import { formatTime } from "~/utils/format";
+import type { EmailVerificationResponse } from "~/services/auth";
 
 const { t } = useI18n();
 
@@ -18,36 +19,77 @@ const form = reactive<CodeSchema>({
   code: [],
 });
 
-const store = useEmailStore();
-const stepper = useSteps();
+const verificationRequest = ref<EmailVerificationResponse>();
 
-const codeExpiresAt = ref(Date.now() + 10 * 60 * 1000);
 const expirationTime = computed(
-  () => (codeExpiresAt.value - Date.now()) / 1000
+  () =>
+    (Date.parse(verificationRequest.value?.expiresAt ?? Date.now().toString()) -
+      Date.now()) /
+    1000
 );
 const { remaining, start } = useCountdown(expirationTime);
-
-onMounted(() => {
-  start();
-});
-
 const codeExpired = computed<boolean>(() => remaining.value <= 0);
 
-const onSubmit = async (event: FormSubmitEvent<CodeSchema>) => {
-  if (event.data.code.length !== PIN_INPUT_LENGTH) return;
+const alreadyVerified = ref<boolean>(false);
 
-  console.log(event.data);
+const { loading, createVerificationRequest, verifyCode } = useAuth();
+const store = useEmailStore();
+const toast = useToast();
+
+async function sendVerificationRequest() {
+  const response = await createVerificationRequest({
+    email: store.email,
+  });
+
+  if (!response) {
+    const toastStore = useToastStore();
+
+    toast.update(toastStore.toastId, {
+      title: t("toast.warning.title"),
+      description: t("registerOfficial.verifyStep.toast.request.description"),
+      color: "warning",
+    });
+
+    if (toastStore.status === 409) alreadyVerified.value = true;
+
+    return;
+  }
+
+  verificationRequest.value = response;
+
+  start();
+}
+
+onMounted(async () => {
+  await sendVerificationRequest();
+});
+
+const stepper = useSteps();
+
+const onSubmit = async (event: FormSubmitEvent<CodeSchema>) => {
+  if (event.data.code.length !== verificationRequest.value?.codeLength) return;
+
+  const response = await verifyCode({
+    requestId: verificationRequest.value.id,
+    code: event.data.code.join(""),
+  });
+
+  if (!response) {
+    toast.update(useToastStore().toastId, {
+      title: t("toast.error.title"),
+      description: t("registerOfficial.verifyStep.toast.verify.description"),
+      color: "error",
+    });
+    return;
+  }
+
   stepper.next();
 };
 
 const resend = async () => {
-  console.log(store.email);
-  const response = {
-    expiresAt: Date.now() + 10 * 60 * 1000,
-  };
+  form.code = [];
 
-  codeExpiresAt.value = response.expiresAt;
-  start();
+  await sendVerificationRequest();
 };
 </script>
 
@@ -65,6 +107,7 @@ const resend = async () => {
       :schema="codeSchema"
       :state="form"
       @submit="onSubmit"
+      :disabled="loading || !verificationRequest"
       class="flex flex-col items-center gap-5"
     >
       <UFormField :label="t('registerOfficial.verifyStep.label')" name="code">
@@ -72,11 +115,14 @@ const resend = async () => {
           v-model="form.code"
           otp
           autofocus
-          :length="PIN_INPUT_LENGTH"
+          :length="verificationRequest?.codeLength ?? PIN_INPUT_LENGTH"
         />
       </UFormField>
 
-      <div class="flex flex-col text-center text-sm">
+      <div
+        v-if="!loading && verificationRequest"
+        class="flex flex-col text-center text-sm"
+      >
         <span>{{
           t("registerOfficial.verifyStep.expiresIn", {
             time: formatTime(remaining),
@@ -91,9 +137,20 @@ const resend = async () => {
         <UButton color="neutral" variant="outline" @click="resend">{{
           t("registerOfficial.verifyStep.resend")
         }}</UButton>
-        <UButton type="submit" :disabled="codeExpired">{{
-          t("registerOfficial.verifyStep.verify")
-        }}</UButton>
+        <UButton
+          type="submit"
+          :disabled="codeExpired || !verificationRequest"
+          :loading="loading"
+          >{{ t("registerOfficial.verifyStep.verify") }}</UButton
+        >
+        <UButton
+          v-if="alreadyVerified"
+          color="neutral"
+          variant="ghost"
+          icon="i-lucide-arrow-right"
+          @click="stepper.next"
+          >{{ t("registerOfficial.verifyStep.continue") }}</UButton
+        >
       </div>
     </UForm>
   </RegisterAsOfficialStep>

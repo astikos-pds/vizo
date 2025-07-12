@@ -7,6 +7,12 @@ import {
   type RegisterAsCitizenResponse,
   type RefreshRequest,
   refreshUseCase,
+  type EmailVerificationRequest,
+  type EmailVerificationResponse,
+  createVerificationRequestUseCase,
+  type VerificationCodeRequest,
+  type VerificationCodeResponse,
+  verifyCodeUseCase,
 } from "~/services/auth";
 
 export const useAuth = () => {
@@ -62,6 +68,18 @@ export const useAuth = () => {
     refreshToken.value = tokens.refreshToken;
   }
 
+  async function createVerificationRequest(request: EmailVerificationRequest) {
+    return await handle<EmailVerificationResponse>(() =>
+      createVerificationRequestUseCase(request)
+    );
+  }
+
+  async function verifyCode(request: VerificationCodeRequest) {
+    return await handle<VerificationCodeResponse>(() =>
+      verifyCodeUseCase(request)
+    );
+  }
+
   return {
     loading,
     accessToken,
@@ -70,5 +88,7 @@ export const useAuth = () => {
     registerAsCitizen,
     logout,
     refresh,
+    createVerificationRequest,
+    verifyCode,
   };
 };
