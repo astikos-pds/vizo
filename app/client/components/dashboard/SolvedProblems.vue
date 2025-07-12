@@ -5,12 +5,22 @@ import { useI18n } from 'vue-i18n';
 import type { ApexOptions } from 'apexcharts';
 const { t, locale } = useI18n();
 
-const options = computed(() => [
-  { label: t('solvedProblems.today'), value: 'today' },
-  { label: t('solvedProblems.week'), value: 'week' },
-  { label: t('solvedProblems.month'), value: 'month' },
-]);
-const selected = ref('today');
+const items = ref([
+  {
+    label: t('filter.today'),
+  },
+  {
+    label: t('filter.week'),
+  },
+  {
+    label: t('filter.month'),
+  },
+  {
+    label: t('filter.year'),
+  }
+])
+
+const selectedItem = ref(items.value[0]);
 
 const series = computed(() => [
   {
@@ -70,10 +80,10 @@ const chartOptions = computed<ApexOptions>(() => ({
 
 <template>
   <div
-    class="rounded-2xl border border-gray-200 bg-white px-4 pb-4 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6 sm:pb-6"
+    class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6"
   >
-    <div class="mb-6 flex flex-col gap-5 sm:flex-row sm:justify-between">
-      <div class="w-full">
+    <div class="flex items-center justify-between"> 
+      <div>
         <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
           {{ t('solvedProblems.title') }}
         </h3>
@@ -81,17 +91,21 @@ const chartOptions = computed<ApexOptions>(() => ({
           {{ t('solvedProblems.subtitle') }}
         </p>
       </div>
-      <Dropdown :options="options" v-model="selected" />
+      <USelectMenu
+        v-model="selectedItem"
+        :search-input="false"
+        :items="items"
+        class="w-48"
+      />
     </div>
-    <div class="custom-scrollbar max-w-full overflow-x-auto">
-      <div class="min-w-[350px] sm:min-w-[600px] md:min-w-[800px] xl:min-w-full pl-0 sm:pl-2">
-        <VueApexCharts
-          type="area"
-          height="200"
-          :options="chartOptions"
-          :series="series"
-        />
-      </div>
+
+    <div class="mt-4">
+      <VueApexCharts
+        type="area"
+        height="200"
+        :options="chartOptions"
+        :series="series"
+      />
     </div>
   </div>
 </template>

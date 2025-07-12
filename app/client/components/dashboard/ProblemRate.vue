@@ -2,15 +2,25 @@
 import { ref, computed } from 'vue';
 import VueApexCharts from 'vue3-apexcharts';
 import { useI18n } from 'vue-i18n';
+
 const { t } = useI18n();
 
-const options = computed(() => [
-  { label: t('problemRate.today'), value: 'today' },
-  { label: t('problemRate.week'), value: 'week' },
-  { label: t('problemRate.month'), value: 'month' },
-]);
+const items = ref([
+  {
+    label: t('filter.today'),
+  },
+  {
+    label: t('filter.week'),
+  },
+  {
+    label: t('filter.month'),
+  },
+  {
+    label: t('filter.year'),
+  }
+])
 
-const selected = ref('today');
+const selectedItem = ref(items.value[0]);
 
 const series = computed(() => [
   {
@@ -115,7 +125,12 @@ const chartOptions = computed(() => ({
           {{ t('problemRate.subtitle') }}
         </p>
       </div>
-      <Dropdown :options="options" v-model="selected" />
+      <USelectMenu
+        v-model="selectedItem"
+        :search-input="false"
+        :items="items"
+        class="w-48"
+      />
     </div>
 
     <div class="mt-4">

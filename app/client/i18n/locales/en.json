@@ -215,9 +215,6 @@
   "solvedProblems": {
     "title": "Solved Problems",
     "subtitle": "List of problems solved in the last days.",
-    "today": "Today",
-    "week": "This Week",
-    "month": "This Month",
     "solved": "Solved Problems",
     "pending": "Pending Problems"
   },
@@ -235,6 +232,13 @@
     "oct": "Oct",
     "nov": "Nov",
     "dec": "Dec"
+  },
+
+  "filter": {
+    "today": "Today",
+    "week": "This Week",
+    "month": "This Month",
+    "year": "This Year"
   },
 
   "lastProblems": {
@@ -255,9 +259,6 @@
   "problemRate": {
     "title": "Problem Incidence",
     "subtitle": "Problems in recent periods.",
-    "today": "Today",
-    "week": "This Week",
-    "month": "This Month",
     "incidence": "Incidence"
   }
 }
