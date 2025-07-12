@@ -33,6 +33,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(this.securityFilter.getPublicRoutes())
                             .permitAll()
+                        .requestMatchers("/auth/**")
+                            .permitAll()
                         .anyRequest()
                             .authenticated()
                 )

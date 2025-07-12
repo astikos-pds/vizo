@@ -7,13 +7,17 @@ import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
 import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.domain.user.OfficialRole;
+import br.app.vizo.domain.verification.EmailVerificationRequest;
 import br.app.vizo.exception.http.UnauthorizedException;
 import br.app.vizo.mapper.OfficialMapper;
 import br.app.vizo.repository.AffiliationRequestRepository;
+import br.app.vizo.repository.EmailVerificationRequestRepository;
 import br.app.vizo.repository.MunicipalityRepository;
 import br.app.vizo.repository.OfficialRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class OfficialAuthService {
@@ -22,6 +26,7 @@ public class OfficialAuthService {
     private final OfficialMapper officialMapper;
     private final MunicipalityRepository municipalityRepository;
     private final AffiliationRequestRepository affiliationRequestRepository;
+    private final EmailVerificationRequestRepository emailVerificationRequestRepository;
     private final PasswordEncoder passwordEncoder;
 
     public OfficialAuthService(
@@ -29,16 +34,25 @@ public class OfficialAuthService {
             OfficialMapper officialMapper,
             MunicipalityRepository municipalityRepository,
             AffiliationRequestRepository affiliationRequestRepository,
+            EmailVerificationRequestRepository emailVerificationRequestRepository,
             PasswordEncoder passwordEncoder
     ) {
         this.officialRepository = officialRepository;
         this.officialMapper = officialMapper;
         this.municipalityRepository = municipalityRepository;
         this.affiliationRequestRepository = affiliationRequestRepository;
+        this.emailVerificationRequestRepository = emailVerificationRequestRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public OfficialDTO registerAsOfficial(RegisterRequestDTO body) {
+        Optional<EmailVerificationRequest> emailVerificationRequest = this.emailVerificationRequestRepository
+                .findByEmail(body.email());
+
+        if (emailVerificationRequest.isEmpty() || !emailVerificationRequest.get().isVerified()) {
+            throw new UnauthorizedException("Invalid credentials.");
+        }
+
         this.officialRepository.findByDocumentOrEmail(body.document(), body.email()).ifPresent(
                 o -> {
                     throw new UnauthorizedException("Invalid credentials.");

@@ -29,6 +29,10 @@ public class SecurityFilter extends OncePerRequestFilter {
             "/municipalities"
     };
 
+    public final String[] PUBLIC_PATTERNS = {
+            "auth"
+    };
+
     private final UserRepository userRepository;
 
     private final JwtService jwtService;
@@ -93,8 +97,11 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
     private boolean shouldFilter(HttpServletRequest request) {
-        String path = request.getRequestURI().replace("/api", "");
-        return !Arrays.stream(this.PUBLIC_ROUTES).toList().contains(path);
+        final String path = request.getRequestURI().replace("/api", "");
+
+        return (!Arrays.stream(this.PUBLIC_ROUTES).toList().contains(path))
+                &&
+                (Arrays.stream(this.PUBLIC_PATTERNS).noneMatch(path::contains));
     }
 
     public String[] getPublicRoutes() {

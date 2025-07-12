@@ -1,19 +1,18 @@
 package br.app.vizo.controller;
 
-import br.app.vizo.controller.request.EmailRequestDTO;
-import br.app.vizo.controller.request.LoginRequestDTO;
-import br.app.vizo.controller.request.RefreshRequestDTO;
+import br.app.vizo.controller.request.*;
 import br.app.vizo.controller.response.EmailVerificationDTO;
 import br.app.vizo.controller.response.OfficialDTO;
 import br.app.vizo.controller.response.TokenPairDTO;
 import br.app.vizo.controller.response.CitizenDTO;
-import br.app.vizo.controller.request.RegisterRequestDTO;
 import br.app.vizo.service.auth.CitizenAuthService;
 import br.app.vizo.service.auth.AuthService;
 import br.app.vizo.service.auth.OfficialAuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
@@ -68,4 +67,12 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @PatchMapping("/verification-requests/{id}")
+    public ResponseEntity<Void> verifyEmail(@PathVariable UUID id, @RequestBody VerificationCodeRequestDTO body) {
+        this.authService.verifyEmail(id, body);
+
+        return ResponseEntity.ok().build();
+    }
+
 }
