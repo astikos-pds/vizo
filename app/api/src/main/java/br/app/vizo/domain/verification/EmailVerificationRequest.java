@@ -26,16 +26,23 @@ public class EmailVerificationRequest {
 
     private String code;
 
-    private Boolean validated;
+    private Boolean verified;
 
     @Column(name = "expires_at")
     private Instant expiresAt;
+
+    @Column(name = "created_at")
+    private Instant createdAt;
+
+    public boolean isVerified() {
+        return this.verified == true;
+    }
 
     public boolean isExpired() {
         return DateUtil.now().isAfter(this.expiresAt);
     }
 
     public EmailVerificationRequest() {
-        this(UUID.randomUUID(), "", "", false, DateUtil.now());
+        this(UUID.randomUUID(), "", "", false, DateUtil.now(), DateUtil.now());
     }
 }

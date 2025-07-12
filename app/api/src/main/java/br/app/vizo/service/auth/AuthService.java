@@ -2,11 +2,18 @@ package br.app.vizo.service.auth;
 
 import br.app.vizo.config.security.JwtService;
 import br.app.vizo.config.security.UserDetailsImpl;
+import br.app.vizo.controller.request.EmailRequestDTO;
+import br.app.vizo.controller.response.EmailVerificationDTO;
 import br.app.vizo.controller.response.TokenPairDTO;
 import br.app.vizo.domain.token.RefreshToken;
 import br.app.vizo.domain.user.User;
+import br.app.vizo.domain.verification.EmailVerificationRequest;
+import br.app.vizo.exception.http.ConflictException;
 import br.app.vizo.exception.http.UnauthorizedException;
 import br.app.vizo.repository.*;
+import br.app.vizo.service.EmailService;
+import br.app.vizo.util.CodeGenerator;
+import br.app.vizo.util.DateUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,22 +33,28 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final EmailVerificationRequestRepository emailVerificationRequestRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final EmailService emailService;
 
     public AuthService(
             UserRepository userRepository,
             RefreshTokenRepository refreshTokenRepository,
+            EmailVerificationRequestRepository emailVerificationRequestRepository,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
-            JwtService jwtService
+            JwtService jwtService,
+            EmailService emailService
     ) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
+        this.emailVerificationRequestRepository = emailVerificationRequestRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.emailService = emailService;
     }
 
     public TokenPairDTO login(String document, String password) {
@@ -111,5 +124,34 @@ public class AuthService {
         }
         var bytes = digest.digest(token.getBytes());
         return Base64.getEncoder().encodeToString(bytes);
+    }
+
+    public static int VERIFICATION_CODE_EXPIRATION_IN_MINUTES = 10;
+
+    public EmailVerificationDTO createVerificationRequest(EmailRequestDTO body) {
+        EmailVerificationRequest emailVerificationRequest = this.emailVerificationRequestRepository
+                .findByEmail(body.email())
+                .orElseGet(EmailVerificationRequest::new);
+
+        if (emailVerificationRequest.isVerified()) {
+            throw new ConflictException("E-mail is already verified.");
+        }
+
+        emailVerificationRequest.setEmail(body.email());
+        emailVerificationRequest.setCode(CodeGenerator.generate());
+        emailVerificationRequest.setVerified(false);
+
+        final int CODE_EXPIRATION_IN_SECONDS = VERIFICATION_CODE_EXPIRATION_IN_MINUTES * 60;
+        emailVerificationRequest.setExpiresAt(DateUtil.now().plusSeconds(CODE_EXPIRATION_IN_SECONDS));
+
+        emailService.sendVerificationCode(
+                emailVerificationRequest.getEmail(),
+                emailVerificationRequest.getCode(),
+                VERIFICATION_CODE_EXPIRATION_IN_MINUTES
+        );
+
+        return EmailVerificationDTO.of(
+                this.emailVerificationRequestRepository.save(emailVerificationRequest)
+        );
     }
 }

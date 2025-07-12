@@ -1,7 +1,9 @@
 package br.app.vizo.controller;
 
+import br.app.vizo.controller.request.EmailRequestDTO;
 import br.app.vizo.controller.request.LoginRequestDTO;
 import br.app.vizo.controller.request.RefreshRequestDTO;
+import br.app.vizo.controller.response.EmailVerificationDTO;
 import br.app.vizo.controller.response.OfficialDTO;
 import br.app.vizo.controller.response.TokenPairDTO;
 import br.app.vizo.controller.response.CitizenDTO;
@@ -9,6 +11,7 @@ import br.app.vizo.controller.request.RegisterRequestDTO;
 import br.app.vizo.service.auth.CitizenAuthService;
 import br.app.vizo.service.auth.AuthService;
 import br.app.vizo.service.auth.OfficialAuthService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -57,5 +60,12 @@ public class AuthController {
         TokenPairDTO response = this.authService.refresh(body.token());
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/verification-requests")
+    public ResponseEntity<EmailVerificationDTO> createVerificationRequest(@RequestBody EmailRequestDTO body) {
+        EmailVerificationDTO response = this.authService.createVerificationRequest(body);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>E-mail verification</title>
+    </head>
+    <body>
+        <h2>Welcome to Vizo!</h2>
+
+        <p>Your verification code is:</p>
+
+        <h1>
+            <span th:text="${code}"></span>
+        </h1>
+
+        <p>This code is valid for <span th:text="${expiration}"></span> minutes.</p>
+        <p>If you didn't request this e-mail, please ignore it.</p>
+
+        <br />
+        <h3>Astikos</h3>
+    </body>
+</html>
