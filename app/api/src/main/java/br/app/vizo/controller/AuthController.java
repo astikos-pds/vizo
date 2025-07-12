@@ -1,10 +1,7 @@
 package br.app.vizo.controller;
 
 import br.app.vizo.controller.request.*;
-import br.app.vizo.controller.response.EmailVerificationDTO;
-import br.app.vizo.controller.response.OfficialDTO;
-import br.app.vizo.controller.response.TokenPairDTO;
-import br.app.vizo.controller.response.CitizenDTO;
+import br.app.vizo.controller.response.*;
 import br.app.vizo.service.auth.CitizenAuthService;
 import br.app.vizo.service.auth.AuthService;
 import br.app.vizo.service.auth.OfficialAuthService;
@@ -69,10 +66,10 @@ public class AuthController {
     }
 
     @PatchMapping("/verification-requests/{id}")
-    public ResponseEntity<Void> verifyEmail(@PathVariable UUID id, @RequestBody VerificationCodeRequestDTO body) {
-        this.authService.verifyEmail(id, body);
+    public ResponseEntity<VerifiedDTO> verifyEmail(@PathVariable UUID id, @RequestBody VerificationCodeRequestDTO body) {
+        VerifiedDTO response = this.authService.verifyEmail(id, body);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(response);
     }
 
 }

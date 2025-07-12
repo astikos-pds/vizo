@@ -6,6 +6,7 @@ import br.app.vizo.controller.request.EmailRequestDTO;
 import br.app.vizo.controller.request.VerificationCodeRequestDTO;
 import br.app.vizo.controller.response.EmailVerificationDTO;
 import br.app.vizo.controller.response.TokenPairDTO;
+import br.app.vizo.controller.response.VerifiedDTO;
 import br.app.vizo.domain.token.RefreshToken;
 import br.app.vizo.domain.user.User;
 import br.app.vizo.domain.verification.EmailVerificationRequest;
@@ -158,7 +159,7 @@ public class AuthService {
         );
     }
 
-    public void verifyEmail(UUID verificationRequestId, VerificationCodeRequestDTO body) {
+    public VerifiedDTO verifyEmail(UUID verificationRequestId, VerificationCodeRequestDTO body) {
         EmailVerificationRequest emailVerificationRequest = this.emailVerificationRequestRepository
                 .findById(verificationRequestId)
                 .orElseThrow(() -> new NotFoundException("Verification request not found."));
@@ -174,5 +175,7 @@ public class AuthService {
         emailVerificationRequest.setVerified(true);
 
         this.emailVerificationRequestRepository.save(emailVerificationRequest);
+
+        return new VerifiedDTO(true);
     }
 }
