@@ -2,7 +2,6 @@ package br.app.vizo.controller;
 
 import br.app.vizo.controller.request.LoginRequestDTO;
 import br.app.vizo.controller.request.RefreshRequestDTO;
-import br.app.vizo.controller.response.MunicipalityDTO;
 import br.app.vizo.controller.response.OfficialDTO;
 import br.app.vizo.controller.response.TokenPairDTO;
 import br.app.vizo.controller.response.CitizenDTO;

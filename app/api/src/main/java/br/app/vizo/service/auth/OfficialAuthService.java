@@ -1,16 +1,13 @@
 package br.app.vizo.service.auth;
 
 import br.app.vizo.controller.request.RegisterRequestDTO;
-import br.app.vizo.controller.response.MunicipalityDTO;
 import br.app.vizo.controller.response.OfficialDTO;
 import br.app.vizo.domain.affiliation.AffiliationRequest;
 import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
 import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.domain.user.OfficialRole;
-import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.exception.http.UnauthorizedException;
-import br.app.vizo.mapper.MunicipalityMapper;
 import br.app.vizo.mapper.OfficialMapper;
 import br.app.vizo.repository.AffiliationRequestRepository;
 import br.app.vizo.repository.MunicipalityRepository;
