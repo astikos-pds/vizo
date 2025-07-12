@@ -25,7 +25,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             "/auth/official/register",
             "/auth/login",
             "/auth/refresh",
-            "/auth/check-email"
+            "/municipalities"
     };
 
     private final UserRepository userRepository;

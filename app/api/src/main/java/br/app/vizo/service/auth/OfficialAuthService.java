@@ -16,13 +16,14 @@ import br.app.vizo.repository.AffiliationRequestRepository;
 import br.app.vizo.repository.MunicipalityRepository;
 import br.app.vizo.repository.OfficialRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class OfficialAuthService {
 
     private final OfficialRepository officialRepository;
     private final OfficialMapper officialMapper;
     private final MunicipalityRepository municipalityRepository;
-    private final MunicipalityMapper municipalityMapper;
     private final AffiliationRequestRepository affiliationRequestRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -30,14 +31,12 @@ public class OfficialAuthService {
             OfficialRepository officialRepository,
             OfficialMapper officialMapper,
             MunicipalityRepository municipalityRepository,
-            MunicipalityMapper municipalityMapper,
             AffiliationRequestRepository affiliationRequestRepository,
             PasswordEncoder passwordEncoder
     ) {
         this.officialRepository = officialRepository;
         this.officialMapper = officialMapper;
         this.municipalityRepository = municipalityRepository;
-        this.municipalityMapper = municipalityMapper;
         this.affiliationRequestRepository = affiliationRequestRepository;
         this.passwordEncoder = passwordEncoder;
     }
@@ -76,11 +75,4 @@ public class OfficialAuthService {
         return this.officialMapper.toDto(official);
     }
 
-    public MunicipalityDTO getMunicipalityByEmailDomain(String domain) {
-        Municipality municipality = this.municipalityRepository.findByEmailDomain(domain).orElseThrow(
-                () -> new NotFoundException("Municipality not found.")
-        );
-
-        return this.municipalityMapper.toDto(municipality);
-    }
 }

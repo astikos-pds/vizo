@@ -32,7 +32,7 @@ public class SecurityConfig {
                         SessionCreationPolicy.STATELESS
                 ))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, this.securityFilter.getPublicRoutes())
+                        .requestMatchers(this.securityFilter.getPublicRoutes())
                             .permitAll()
                         .anyRequest()
                             .authenticated()

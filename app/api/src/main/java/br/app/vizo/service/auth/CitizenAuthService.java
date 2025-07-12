@@ -7,7 +7,9 @@ import br.app.vizo.exception.http.UnauthorizedException;
 import br.app.vizo.mapper.CitizenMapper;
 import br.app.vizo.repository.CitizenRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CitizenAuthService {
 
     private final CitizenRepository citizenRepository;

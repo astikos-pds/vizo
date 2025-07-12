@@ -32,6 +32,7 @@ public class MunicipalityService {
     private final OfficialRepository officialRepository;
     private final DepartmentRepository departmentRepository;
     private final AssignmentRepository assignmentRepository;
+    private final MunicipalityMapper municipalityMapper;
     private final AffiliationRequestMapper affiliationRequestMapper;
     private final OfficialMapper officialMapper;
     private final DepartmentMapper departmentMapper;
@@ -43,6 +44,7 @@ public class MunicipalityService {
             OfficialRepository officialRepository,
             DepartmentRepository departmentRepository,
             AssignmentRepository assignmentRepository,
+            MunicipalityMapper municipalityMapper,
             AffiliationRequestMapper affiliationRequestMapper,
             OfficialMapper officialMapper,
             DepartmentMapper departmentMapper,
@@ -53,10 +55,19 @@ public class MunicipalityService {
         this.officialRepository = officialRepository;
         this.departmentRepository = departmentRepository;
         this.assignmentRepository = assignmentRepository;
+        this.municipalityMapper = municipalityMapper;
         this.affiliationRequestMapper = affiliationRequestMapper;
         this.officialMapper = officialMapper;
         this.departmentMapper = departmentMapper;
         this.assignmentMapper = assignmentMapper;
+    }
+
+    public MunicipalityDTO getMunicipalityByEmailDomain(String domain) {
+        Municipality municipality = this.municipalityRepository.findByEmailDomain(domain).orElseThrow(
+                () -> new NotFoundException("Municipality not found.")
+        );
+
+        return this.municipalityMapper.toDto(municipality);
     }
 
     public Page<OfficialDTO> getOfficials(UUID municipalityId, Pageable pageable, Authentication authentication) {

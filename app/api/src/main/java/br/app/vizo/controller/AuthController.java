@@ -46,15 +46,6 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/official/check-email")
-    public ResponseEntity<MunicipalityDTO> checkEmailDomain(
-            @RequestParam("domain") String emailDomain
-    ) {
-        MunicipalityDTO response = this.officialAuthService.getMunicipalityByEmailDomain(emailDomain);
-
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping("/login")
     public ResponseEntity<TokenPairDTO> login(@RequestBody LoginRequestDTO body) {
         TokenPairDTO response = this.authService.login(body.document(), body.password());
