@@ -24,6 +24,7 @@ export interface Municipality {
   id: string;
   name: string;
   emailDomain: string;
+  iconUrl: string;
   createdAt: string;
   updatedAt: string;
 }

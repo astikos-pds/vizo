@@ -98,7 +98,7 @@ const text = computed(() => {
   return t("register.passwordStrength.strong");
 });
 
-const store = useOfficialStore();
+const store = useEmailStore();
 const stepper = useSteps();
 
 const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
-import { useOfficialStore } from "~/stores/official";
+import { useEmailStore } from "~/stores/email";
 import { PIN_INPUT_LENGTH } from "~/utils/constants";
 import { useCountdown } from "@vueuse/core";
 import { formatTime } from "~/utils/format";
@@ -18,7 +18,7 @@ const form = reactive<CodeSchema>({
   code: [],
 });
 
-const store = useOfficialStore();
+const store = useEmailStore();
 const stepper = useSteps();
 
 const codeExpiresAt = ref(Date.now() + 10 * 60 * 1000);

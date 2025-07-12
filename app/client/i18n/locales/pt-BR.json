@@ -69,11 +69,22 @@
       "details": "Detalhes"
     },
     "emailStep": {
-      "title": "E-mail",
+      "title": "E-mail institucional",
       "description": "Verifique se seu município está registrado no Vizo usando seu e-mail institucional.",
       "label": "E-mail",
       "placeholder": "Digite seu e-mail institucional",
-      "submit": "Enviar"
+      "submit": "Enviar",
+      "toast": {
+        "title": "Não encontrado",
+        "description": "Não conseguimos encontrar nenhuma municipalidade associada a esse domínio."
+      },
+      "municipalityCard": {
+        "title": "Encontramos a municipalidade abaixo.",
+        "description": "Confirme se você está associado a ela.",
+        "domain": "Domínio",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar"
+      }
     },
     "verifyStep": {
       "title": "Verifique seu e-mail",

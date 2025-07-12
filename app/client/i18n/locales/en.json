@@ -64,7 +64,7 @@
 
   "registerOfficial": {
     "steps": {
-      "email": "E-mail",
+      "email": "Institutional e-mail",
       "verify": "Verification",
       "details": "Details"
     },
@@ -73,7 +73,18 @@
       "description": "Check if your municipality is registered on Vizo using your institutional e-mail.",
       "label": "E-mail",
       "placeholder": "Enter your institutional e-mail",
-      "submit": "Submit"
+      "submit": "Submit",
+      "toast": {
+        "title": "Not found",
+        "description": "We couldn't find any municipality associated with this domain."
+      },
+      "municipalityCard": {
+        "title": "We encountered the municipality below.",
+        "description": "Confirm if you are associated with this municipality.",
+        "domain": "Domain",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
+      }
     },
     "verifyStep": {
       "title": "Verify your e-mail",

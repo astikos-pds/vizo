@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const useOfficialStore = defineStore("official", () => {
+export const useEmailStore = defineStore("email", () => {
   const email = ref("");
 
   function setEmail(newEmail: string) {
@@ -10,5 +10,5 @@ export const useOfficialStore = defineStore("official", () => {
   return {
     email,
     setEmail,
-  }
+  };
 });
