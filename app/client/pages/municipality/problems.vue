@@ -1,34 +1,12 @@
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { useI18n } from 'vue-i18n'
+<script setup lang="ts">
+import { h, resolveComponent, ref, computed } from 'vue'
+import { useRouter } from '#app'
+import type { TableColumn } from '@nuxt/ui'
 
-const { t } = useI18n()
-
-const problems = ref([
-  { name: 'Buraco', variants: 2, neighborhood: 'Belém', status: 'Resolvido' },
-  { name: 'Buraco', variants: 1, neighborhood: 'Brás', status: 'Em Andamento' },
-  { name: 'Árvore Caída', variants: 2, neighborhood: 'Parque São Vicente', status: 'Resolvido' },
-  { name: 'Enxente', variants: 2, neighborhood: 'Canindé', status: 'Em Análise' },
-  { name: 'Semáforo Quebrado', variants: 1, neighborhood: 'Canindé', status: 'Resolvido' },
-])
-
-const reports = ref([
-  { user: '@joao', description: 'Encontrei esse buraco', img: 'https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg' },
-  { user: '@maria', description: 'Árvore caída na praça', img: 'https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg' },
-  //{ user: '@pedro', description: 'Semáforo quebrado na esquina', img: 'https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg' },
-  //{ user: '@ana', description: 'Enxente na rua principal', img: 'https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg' },
-  //{ user: '@lucas', description: 'Buraco na calçada', img: 'https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg' },
-  //{ user: '@fernanda', description: 'Árvore caída na praça central', img: 'https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg' },
-  //{ user: '@carlos', description: 'Semáforo quebrado na avenida principal', img: 'https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg' },
-  { user: '@roberto', description: 'Enxente na rua do mercado', img: 'https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg' },
-  { user: '@juliana', description: 'Buraco na esquina da escola', img: 'https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg' },
-])
-
-const expandedIndex = ref<number | null>(null)
-
-function toggleExpand(index: number) {
-  expandedIndex.value = expandedIndex.value === index ? null : index
-}
+const UInput = resolveComponent('UInput')
+const UButton = resolveComponent('UButton')
+const UBadge = resolveComponent('UBadge')
+const UDropdownMenu = resolveComponent('UDropdownMenu')
 
 useHead({
   meta: [{ name: "viewport", content: "width=device-width, initial-scale=1.0" }],
@@ -37,113 +15,138 @@ useHead({
 definePageMeta({
   layout: 'admin',
 })
+
+type Problem = {
+  id: string
+  date: string
+  title: string
+  status: 'concluido' | 'em_andamento' | 'pendente'
+}
+
+const router = useRouter()
+
+const data = ref<Problem[]>([
+  { id: '1001', date: '2025-07-10T09:30:00', title: 'Buraco na rua', status: 'pendente' },
+  { id: '1002', date: '2025-07-09T14:15:00', title: 'Luz queimada', status: 'em_andamento' },
+  { id: '1003', date: '2025-07-08T17:45:00', title: 'Vazamento de água', status: 'concluido' },
+  { id: '1004', date: '2025-07-07T11:20:00', title: 'Coleta de lixo atrasada', status: 'pendente' },
+  { id: '1005', date: '2025-07-06T16:00:00', title: 'Árvore caída', status: 'em_andamento' }
+])
+
+const search = ref('')
+
+const filteredData = computed(() => {
+  const term = search.value.trim().toLowerCase()
+  if (!term) return data.value
+
+  return data.value.filter(item => {
+    return (
+      item.id.includes(term) ||
+      item.title.toLowerCase().includes(term) ||
+      item.status.toLowerCase().includes(term)
+    )
+  })
+})
+
+const columns: TableColumn<Problem>[] = [
+  {
+    accessorKey: 'id',
+    header: 'ID',
+    cell: ({ row }) => row.getValue('id')
+  },
+  {
+    accessorKey: 'date',
+    header: 'Data',
+    cell: ({ row }) => {
+      return new Date(row.getValue('date')).toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      })
+    }
+  },
+  {
+    accessorKey: 'title',
+    header: 'Problema',
+    cell: ({ row }) => row.getValue('title')
+  },
+  {
+    accessorKey: 'status',
+    header: 'Status',
+    cell: ({ row }) => {
+      const status = row.getValue('status') as Problem['status']
+      const color = status === 'concluido' ? 'success' : status === 'em_andamento' ? 'warning' : 'error'
+      const label = status === 'concluido' ? 'Concluído' : status === 'em_andamento' ? 'Em Andamento' : 'Pendente'
+      return h(UBadge, { class: 'capitalize', variant: 'subtle', color }, () => label)
+    }
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const items = [
+        { type: 'label', label: 'Ações' },
+        { type: 'separator' },
+        {
+          label: 'Ver Detalhes',
+          icon: 'i-lucide-arrow-right',
+          onSelect: () => {
+            router.push(`/municipality/problems/${row.original.id}`)
+          }
+        }
+      ]
+      return h(
+        'div',
+        { class: 'text-right' },
+        h(
+          UDropdownMenu,
+          {
+            content: { align: 'end' },
+            items,
+            'aria-label': 'Actions dropdown'
+          },
+          () =>
+            h(UButton, {
+              icon: 'i-lucide-ellipsis-vertical',
+              color: 'neutral',
+              variant: 'ghost',
+              class: 'ml-auto',
+              'aria-label': 'Actions dropdown'
+            })
+        )
+      )
+    }
+  }
+]
 </script>
 
 <template>
   <div class="grid grid-cols-1 gap-6 p-4 sm:p-6 md:p-8 md:grid-cols-1 xl:grid-cols-1">
-    <div class="custom-scrollbar max-w-full overflow-x-auto">
-      <table class="min-w-full">
-        <thead>
-          <tr class="border-t border-gray-100 dark:border-gray-800">
-            <th class="py-3 text-left">
-              <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                {{ t('lastProblems.problem') }}
-              </p>
-            </th>
-            <th class="py-3 text-left">
-              <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                {{ t('lastProblems.neighborhood') }}
-              </p>
-            </th>
-            <th class="py-3 text-left">
-              <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                {{ t('lastProblems.status') }}
-              </p>
-            </th>
-            <th class="py-3 text-left">
-              <p class="text-xs font-medium text-gray-500 dark:text-gray-400">
-                {{ t('lastProblems.actions') }}
-              </p>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <template v-for="(problem, index) in problems" :key="index">
-            <tr
-              class="border-t border-gray-100 dark:border-gray-800"
-            >
-              <td class="whitespace-nowrap py-3">
-                <div class="flex items-center gap-3">
-                  <div>
-                    <p class="text-sm font-medium text-gray-800 dark:text-white/90">
-                      {{ problem.name }}
-                    </p>
-                    <span class="text-xs text-gray-500 dark:text-gray-400">
-                      {{ problem.variants }} {{ t('lastProblems.reports') }}
-                    </span>
-                  </div>
-                </div>
-              </td>
-              <td class="whitespace-nowrap py-3">
-                <p class="text-sm text-gray-500 dark:text-gray-400">
-                  {{ problem.neighborhood }}
-                </p>
-              </td>
-              <td class="whitespace-nowrap py-3">
-                <span
-                  :class="{
-                    'rounded-full px-2 py-0.5 text-xs font-medium': true,
-                    'bg-success-50 text-success-600 dark:bg-success-500/15 dark:text-success-500': problem.status === 'Resolvido',
-                    'bg-warning-50 text-warning-600 dark:bg-warning-500/15 dark:text-orange-400': problem.status === 'Em Andamento',
-                    'bg-error-50 text-error-600 dark:bg-error-500/15 dark:text-error-500': problem.status === 'Em Análise',
-                  }"
-                >
-                  {{ t('lastProblems.statuses.' + problem.status) }}
-                </span>
-              </td>
-              <td class="whitespace-nowrap py-3">
-                <a
-                  href="#"
-                  class="text-primary-600 hover:underline text-xs font-medium"
-                  @click.prevent="toggleExpand(index)"
-                >
-                  {{ expandedIndex === index ? 'Fechar' : 'Expandir' }}
-                </a>
-              </td>
-            </tr>
-            <tr v-if="expandedIndex === index" class="bg-gray-50 dark:bg-gray-900/30">
-              <td colspan="4" class="py-4 px-6">
-                <div>
-                  <template v-for="(report) in reports" :key="reportIndex">
-                    <div class="mb-4"> <p><strong class="font-semibold text-gray-800 dark:text-white/90">Usuário:</strong> {{ report.user }}</p>
-                      <p><strong class="font-semibold text-gray-800 dark:text-white/90">Descrição:</strong> {{ report.description }}</p>
-                    </div>
-                  </template>
-                  <p class="mt-6 mb-2 font-semibold text-gray-800 dark:text-white/90"><strong>Banco de Imagens:</strong></p>
-                  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                    <div
-                      v-for="(report, imgIndex) in reports"
-                      :key="imgIndex"
-                      class="relative group"
-                    >
-                      <img
-                        :src="report.img"
-                        alt="Imagem do relatório"
-                        class="h-[200px] w-[200px] rounded-lg object-cover"
-                      />
-                      <div
-                        class="absolute bottom-0 left-0 right-0 p-2 text-center text-white bg-black bg-opacity-70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-b-lg"
-                      >
-                        {{ report.user }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </template>
-        </tbody>
-      </table>
+    <div
+      class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
+    >
+      <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+        Últimos Problemas
+      </h3>
+
+      <div class="my-4 px-4">
+        <UInput
+          v-model="search"
+          placeholder="Buscar por ID, título ou status..."
+          clearable
+          icon="i-lucide-search"
+        />
+      </div>
+
+      <UTable
+        ref="table"
+        :data="filteredData"
+        :columns="columns"
+        sticky
+        class="h-96"
+      />
     </div>
   </div>
 </template>

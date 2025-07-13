@@ -66,7 +66,7 @@ const columns: TableColumn<Problem>[] = [
         { type: 'label', label: 'Ações' },
         { type: 'separator' },
         {
-          label: 'Expandir Detalhes',
+          label: 'Ver Detalhes',
           icon: 'i-lucide-arrow-right',
           onSelect: () => {
             router.push(`/municipality/problems/${row.original.id}`)
@@ -92,7 +92,7 @@ const columns: TableColumn<Problem>[] = [
 <template>
   <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
     <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-      Últimos Problemas
+      Últimos Problemas (15)
     </h3>
     <div class="flex items-center gap-2 px-4 py-3.5 overflow-x-auto">
     </div>
@@ -103,9 +103,6 @@ const columns: TableColumn<Problem>[] = [
       sticky
       class="h-96"
     >
-      <template #expanded-row="{ row }">
-        <span>Carregando detalhes para o problema {{ row.id }}...</span>
-      </template>
     </UTable>
   </div>
 </template>
