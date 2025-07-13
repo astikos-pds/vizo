@@ -22,6 +22,10 @@
     "settings": {
       "title": "Vizo | Settings",
       "description": "Update your settings in Vizo"
+    },
+    "municipalities": {
+      "title": "Municipalities",
+      "description": "Explore the municipalities you are affiliated with."
     }
   },
 
@@ -248,6 +252,20 @@
 
   "problemReport": {
     "reportedAt": "Reported at"
+  },
+
+  "municipalities": {
+    "header": "Municipalities",
+    "subheader": "Below are listed the municipalities you are affiliated with and your pending affiliation requests.",
+    "myMunicipalities": "My municipalities",
+    "noMunicipality": "You have not been approved in any municipality.",
+    "requests": "Requests",
+    "noRequest": "There is no request for affiliation.",
+    "status": "Status",
+    "createdAt": "Created on {date}",
+    "requestedAt": "Requested on {date}",
+    "pending": "Pending",
+    "rejected": "Rejected"
   },
 
   "toast": {

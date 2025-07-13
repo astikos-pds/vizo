@@ -1,6 +1,6 @@
 import { getProfileUseCase } from "~/services/users";
 
-export const useProfile = () => {
+export const useUser = () => {
   const { loading, handle } = useApiHandler();
 
   async function getProfile() {

@@ -29,6 +29,18 @@ export interface Municipality {
   updatedAt: string;
 }
 
+export type AffiliationRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
+
+export interface AffiliationRequest {
+  id: string;
+  officialId: string;
+  municipalityId: string;
+  status: AffiliationRequestStatus;
+  createdAt: string;
+  approvedById: string | null;
+  approvedAt: string | null;
+}
+
 export interface Citizen {
   id: string;
   email: string;

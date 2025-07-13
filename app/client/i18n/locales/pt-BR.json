@@ -22,6 +22,10 @@
     "settings": {
       "title": "Vizo | Configurações",
       "description": "Atualize suas configurações no Vizo"
+    },
+    "municipalities": {
+      "title": "Vizo| Municipalidades",
+      "description": "Explore as municipalidades às quais você está afiliado."
     }
   },
 
@@ -244,6 +248,20 @@
 
   "problemReport": {
     "reportedAt": "Reportado em"
+  },
+
+  "municipalities": {
+    "header": "Municipalidades",
+    "subheader": "Abaixo, estão listadas as municipalidades às quais você está afiliado e os seus pedidos de afiliação ainda não aprovados.",
+    "myMunicipalities": "Minhas municipalidades",
+    "noMunicipality": "Você não foi aprovado em nenhuma municipalidade.",
+    "requests": "Pedidos",
+    "noRequest": "Não há nenhum pedido de afiliação.",
+    "status": "Status",
+    "createdAt": "Criada em {date}",
+    "requestedAt": "Requisição feita em {date}",
+    "pending": "Pendente",
+    "rejected": "Rejeitado"
   },
 
   "toast": {

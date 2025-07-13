@@ -2,7 +2,7 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 import { useAuth } from "~/composables/use-auth";
-import { useProfile } from "~/composables/use-profile";
+import { useUser } from "~/composables/use-user";
 import { validateDocument } from "~/utils/document-validation";
 import { useI18n } from "vue-i18n";
 
@@ -37,7 +37,7 @@ const form = reactive<LoginSchema>({
 const showPassword = ref<boolean>(false);
 
 const { loading, login } = useAuth();
-const { getProfile } = useProfile();
+const { getProfile } = useUser();
 
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
