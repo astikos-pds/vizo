@@ -42,4 +42,12 @@ public abstract class User {
     public User(String document, String email, String password, String name) {
         this(UUID.randomUUID(), document, email, password, name, DateUtil.now(), DateUtil.now());
     }
+
+    public UserType getType() {
+        if (this instanceof Citizen) {
+            return UserType.CITIZEN;
+        } else {
+            return UserType.OFFICIAL;
+        }
+    }
 }
