@@ -1,3 +1,5 @@
+import type { Citizen, Official } from "~/types/domain";
+
 export interface LoginRequest {
   document: string;
   password: string;
@@ -12,46 +14,44 @@ export const loginUseCase = async (request: LoginRequest) => {
 
   return await app.$api<TokenPairResponse>("/auth/login", {
     method: "POST",
-    body: { ...request },
+    body: request,
   });
 };
 
-export interface RegisterAsCitizenRequest {
+export interface RegisterRequest {
   name: string;
   document: string;
   email: string;
   password: string;
 }
-export interface RegisterAsCitizenResponse {
-  id: string;
-  email: string;
-  name: string;
-  credibilityPoints: number;
-  createdAt: string;
-  updatedAt: string;
-}
 
-export const registerAsCitizenUseCase = async (
-  request: RegisterAsCitizenRequest
-) => {
+export const registerAsCitizenUseCase = async (request: RegisterRequest) => {
   const app = useNuxtApp();
 
-  return await app.$api<RegisterAsCitizenResponse>("/auth/citizen/register", {
+  return await app.$api<Citizen>("/auth/citizen/register", {
     method: "POST",
-    body: { ...request },
+    body: request,
+  });
+};
+
+export const registerAsOfficialUseCase = async (request: RegisterRequest) => {
+  const app = useNuxtApp();
+
+  return await app.$api<Official>("/auth/official/register", {
+    method: "POST",
+    body: request,
   });
 };
 
 export interface RefreshRequest {
   token: string;
 }
-
 export const refreshUseCase = async (request: RefreshRequest) => {
   const app = useNuxtApp();
 
   return await app.$api<TokenPairResponse>("/auth/refresh", {
     method: "POST",
-    body: { ...request },
+    body: request,
   });
 };
 
@@ -80,7 +80,7 @@ export const createVerificationRequestUseCase = async (
 };
 
 export interface VerificationCodeRequest {
-  requestId: string,
+  requestId: string;
   code: string;
 }
 export interface VerificationCodeResponse {
@@ -95,8 +95,8 @@ export const verifyCodeUseCase = async (request: VerificationCodeRequest) => {
     {
       method: "PATCH",
       body: {
-        code: request.code
+        code: request.code,
       },
     }
   );
-}
+};
