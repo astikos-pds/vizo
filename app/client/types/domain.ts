@@ -28,3 +28,25 @@ export interface Municipality {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface Citizen {
+  id: string;
+  email: string;
+  name: string;
+  credibilityPoints: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type OfficialRole = "ADMIN" | "OFFICIAL";
+
+export interface Official {
+  id: string;
+  document: string;
+  email: string;
+  name: string;
+  role: OfficialRole;
+  wasApproved: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

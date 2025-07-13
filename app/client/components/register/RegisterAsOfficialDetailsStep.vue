@@ -100,17 +100,20 @@ const text = computed(() => {
 
 const store = useEmailStore();
 const stepper = useSteps();
+const { registerAsOfficial } = useAuth();
 
 const onSubmit = async (event: FormSubmitEvent<DetailsSchema>) => {
-  console.log({
-    ...event.data,
+  const ok = await registerAsOfficial({
+    name: `${event.data.firstName} ${event.data.lastName}`.trim(),
+    document: event.data.cpf,
     email: store.email,
+    password: event.data.password,
   });
 
-  store.setEmail("");
-  stepper.setStep(0);
+  if (!ok) return;
 
-  await navigateTo("/login");
+  store.setEmail("");
+  stepper.next();
 };
 </script>
 

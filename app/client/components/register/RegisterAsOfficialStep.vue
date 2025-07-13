@@ -19,7 +19,7 @@ const stepper = useSteps();
         size="lg"
         icon="i-lucide-arrow-left"
         class="text-xl"
-        v-if="stepper.hasPrev.value"
+        v-if="stepper.hasPrev.value && stepper.hasNext.value"
         @click="stepper.prev"
       />
     </header>

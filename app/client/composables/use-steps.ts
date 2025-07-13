@@ -4,6 +4,10 @@ export const useSteps = () => {
   const current = useState("current_step", () => 0);
   const totalSteps = useState("total_steps", () => 0);
 
+  watch(current, (newStep) => {
+    localStorage.setItem("official-registration-step", String(newStep));
+  });
+
   const hasNext = computed(() => current.value < totalSteps.value - 1);
   const hasPrev = computed(() => current.value > initialStep);
 

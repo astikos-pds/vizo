@@ -107,6 +107,10 @@
     "detailsStep": {
       "title": "Informações pessoais",
       "description": "E-mail verificado! Agora preencha o formulário com suas informações pessoais."
+    },
+    "approvalStep": {
+      "title": "Aguarde sua aprovação",
+      "description": "Você se cadastrou com sucesso no Vizo! Agora você precisa aguardar que um administrador aprove sua afiliação na municipalidade."
     }
   },
 

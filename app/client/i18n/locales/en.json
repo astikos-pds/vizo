@@ -107,6 +107,10 @@
     "detailsStep": {
       "title": "Personal information",
       "description": "E-mail verified! Now fill out the form with your personal information."
+    },
+    "approvalStep": {
+      "title": "Wait for approval",
+      "description": "You have successfully registered on Vizo! You now need to wait for an administrator to approve your municipality's affiliation."
     }
   },
 

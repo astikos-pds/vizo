@@ -35,11 +35,24 @@ const steps = computed(
         description: "",
         icon: "i-lucide-book-open-text",
       },
+      {
+        slot: "approval" as const,
+        title: "Approval",
+        description: "",
+        icon: "i-lucide-hourglass",
+      },
     ] satisfies StepperItem[]
 );
 
 const stepper = useSteps();
 stepper.setTotalSteps(steps.value.length);
+
+onMounted(() => {
+  const savedStep = localStorage.getItem("official-registration-step");
+  if (savedStep) {
+    stepper.current.value = Number(savedStep);
+  }
+});
 </script>
 
 <template>
@@ -65,6 +78,10 @@ stepper.setTotalSteps(steps.value.length);
 
       <template #details>
         <RegisterAsOfficialDetailsStep />
+      </template>
+
+      <template #approval>
+        <RegisterAsOfficialApprovalStep />
       </template>
     </UStepper>
   </section>

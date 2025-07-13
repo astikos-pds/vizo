@@ -3,8 +3,7 @@ import {
   registerAsCitizenUseCase,
   type LoginRequest,
   type TokenPairResponse,
-  type RegisterAsCitizenRequest,
-  type RegisterAsCitizenResponse,
+  type RegisterRequest,
   type RefreshRequest,
   refreshUseCase,
   type EmailVerificationRequest,
@@ -13,7 +12,9 @@ import {
   type VerificationCodeRequest,
   type VerificationCodeResponse,
   verifyCodeUseCase,
+  registerAsOfficialUseCase,
 } from "~/services/auth";
+import type { Citizen, Official } from "~/types/domain";
 
 export const useAuth = () => {
   const accessToken = useCookie("access_token");
@@ -35,12 +36,12 @@ export const useAuth = () => {
     return response;
   }
 
-  async function registerAsCitizen(
-    request: RegisterAsCitizenRequest
-  ): Promise<RegisterAsCitizenResponse | null> {
-    return await handle<RegisterAsCitizenResponse>(() =>
-      registerAsCitizenUseCase(request)
-    );
+  async function registerAsCitizen(request: RegisterRequest) {
+    return await handle<Citizen>(() => registerAsCitizenUseCase(request));
+  }
+
+  async function registerAsOfficial(request: RegisterRequest) {
+    return await handle<Official>(() => registerAsOfficialUseCase(request));
   }
 
   async function logout() {
@@ -86,6 +87,7 @@ export const useAuth = () => {
     refreshToken,
     login,
     registerAsCitizen,
+    registerAsOfficial,
     logout,
     refresh,
     createVerificationRequest,
