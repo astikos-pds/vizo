@@ -2,6 +2,7 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 import { useAuth } from "~/composables/use-auth";
+import { useProfile } from "~/composables/use-profile";
 import { validateDocument } from "~/utils/document-validation";
 import { useI18n } from "vue-i18n";
 
@@ -36,6 +37,7 @@ const form = reactive<LoginSchema>({
 const showPassword = ref<boolean>(false);
 
 const { loading, login } = useAuth();
+const { getProfile } = useProfile();
 
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
@@ -51,7 +53,14 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
       color: "success",
     });
 
-    await navigateTo("/");
+    const user = await getProfile();
+    if (user) {
+      useUserStore().setUser(user);
+
+      if (user.userType === "CITIZEN") await navigateTo("/");
+      else if (user.userType === "OFFICIAL")
+        await navigateTo("/municipalities");
+    }
   }
 };
 </script>

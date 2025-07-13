@@ -50,3 +50,11 @@ export interface Official {
   createdAt: string;
   updatedAt: string;
 }
+
+export type UserType = "CITIZEN" | "OFFICIAL";
+export type Profile = Citizen | Official;
+
+export interface UserProfile {
+  userType: UserType;
+  profile: Profile;
+}
