@@ -11,7 +11,7 @@ public interface UserProfileDTO {
         } else if (user instanceof Official official) {
             return new OfficialProfileDTO(official);
         } else {
-            throw new IllegalArgumentException("Tipo de usuário não suportado: " + user.getClass().getSimpleName());
+            throw new IllegalArgumentException("User type not supported: " + user.getClass().getSimpleName());
         }
     }
 }
