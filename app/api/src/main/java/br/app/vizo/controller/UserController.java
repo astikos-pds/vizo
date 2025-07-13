@@ -1,5 +1,6 @@
 package br.app.vizo.controller;
 
+import br.app.vizo.controller.response.MunicipalityAffiliationDTO;
 import br.app.vizo.controller.response.MunicipalityDTO;
 import br.app.vizo.controller.response.profile.ProfileDTO;
 import br.app.vizo.service.UserService;
@@ -27,8 +28,10 @@ public class UserController {
     }
 
     @GetMapping("/officials/me/municipalities")
-    public ResponseEntity<List<MunicipalityDTO>> getAffiliatedMunicipalities(Authentication authentication) {
-        List<MunicipalityDTO> response = this.userService.getAffiliatedMunicipalities(authentication);
+    public ResponseEntity<List<MunicipalityAffiliationDTO>> getMunicipalitiesAffiliations(
+            Authentication authentication
+    ) {
+        List<MunicipalityAffiliationDTO> response = this.userService.getMunicipalitiesAffiliations(authentication);
 
         return ResponseEntity.ok(response);
     }

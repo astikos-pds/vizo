@@ -1,9 +1,8 @@
 package br.app.vizo.service;
 
-import br.app.vizo.controller.response.MunicipalityDTO;
+import br.app.vizo.controller.response.MunicipalityAffiliationDTO;
 import br.app.vizo.controller.response.profile.ProfileDTO;
 import br.app.vizo.controller.response.profile.UserProfileDTO;
-import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.domain.user.User;
 import br.app.vizo.domain.user.UserType;
@@ -35,7 +34,7 @@ public class UserService {
         return new ProfileDTO(user.getType(), UserProfileDTO.of(user));
     }
 
-    public List<MunicipalityDTO> getAffiliatedMunicipalities(Authentication authentication) {
+    public List<MunicipalityAffiliationDTO> getMunicipalitiesAffiliations(Authentication authentication) {
         User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
@@ -47,9 +46,9 @@ public class UserService {
         Official official = (Official) user;
 
         return this.affiliationRequestRepository
-                .findAllAffiliatedMunicipalitiesByOfficial(official)
+                .findAllByOfficial(official)
                 .stream()
-                .map(MunicipalityDTO::of)
+                .map(a -> MunicipalityAffiliationDTO.of(a, a.getMunicipality()))
                 .toList();
     }
 }
