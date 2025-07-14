@@ -32,13 +32,7 @@ const statusBadge = computed<Badge>(() => {
 </script>
 
 <template>
-  <UCard
-    :ui="{
-      header: 'p-3 sm:px-3',
-      body: 'p-3 sm:p-3',
-      footer: 'p-3 sm:px-3',
-    }"
-  >
+  <UCard>
     <div class="flex items-center gap-3">
       <UAvatar
         :src="affiliation.municipality.iconUrl"

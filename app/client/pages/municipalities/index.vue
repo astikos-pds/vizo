@@ -13,11 +13,6 @@ useHead({
   ],
 });
 
-definePageMeta({
-  layout: "official",
-  middleware: ["auth", "official"],
-});
-
 const { data: affiliations } = useAsyncData("municipalities-affiliations", () =>
   getMunicipalitiesAffiliationsUseCase()
 );
@@ -32,47 +27,41 @@ const requestedAffiliations = computed(() =>
 </script>
 
 <template>
-  <div class="w-[75%] 2xl:w-[60%] p-3 flex flex-col items-center">
-    <header class="my-8 text-center flex flex-col gap-2">
-      <h1 class="text-2xl font-semibold">{{ t("municipalities.header") }}</h1>
-      <p class="text-sm">
-        {{ t("municipalities.subheader") }}
-      </p>
-    </header>
+  <OfficialPage
+    :title="t('municipalities.header')"
+    :description="t('municipalities.subheader')"
+  >
+    <MunicipalityMenu
+      v-if="approvedAffiliations"
+      :title="t('municipalities.myMunicipalities')"
+      :items="approvedAffiliations"
+      default-open
+    >
+      <template #empty>{{ t("municipalities.noMunicipality") }}</template>
 
-    <main class="w-full flex flex-col gap-3">
-      <MunicipalityMenu
-        v-if="approvedAffiliations"
-        :title="t('municipalities.myMunicipalities')"
-        :items="approvedAffiliations"
-        default-open
-      >
-        <template #empty>{{ t("municipalities.noMunicipality") }}</template>
+      <template #body>
+        <MunicipalityCard
+          v-for="affiliation in approvedAffiliations"
+          :municipality="affiliation.municipality"
+        />
+      </template>
+    </MunicipalityMenu>
 
-        <template #body>
-          <MunicipalityCard
-            v-for="affiliation in approvedAffiliations"
-            :municipality="affiliation.municipality"
-          />
-        </template>
-      </MunicipalityMenu>
+    <MunicipalityMenu
+      v-if="requestedAffiliations"
+      :title="t('municipalities.requests')"
+      :items="requestedAffiliations"
+      default-open
+    >
+      <template #empty>{{ t("municipalities.noRequest") }}</template>
 
-      <MunicipalityMenu
-        v-if="requestedAffiliations"
-        :title="t('municipalities.requests')"
-        :items="requestedAffiliations"
-        default-open
-      >
-        <template #empty>{{ t("municipalities.noRequest") }}</template>
-
-        <template #body>
-          <MunicipalityAffiliationRequestCard
-            v-for="affiliation in requestedAffiliations"
-            :affiliation-request="affiliation.affiliationRequest"
-            :municipality="affiliation.municipality"
-          />
-        </template>
-      </MunicipalityMenu>
-    </main>
-  </div>
+      <template #body>
+        <MunicipalityAffiliationRequestCard
+          v-for="affiliation in requestedAffiliations"
+          :affiliation-request="affiliation.affiliationRequest"
+          :municipality="affiliation.municipality"
+        />
+      </template>
+    </MunicipalityMenu>
+  </OfficialPage>
 </template>

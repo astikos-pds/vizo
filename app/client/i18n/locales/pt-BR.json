@@ -264,6 +264,38 @@
     "rejected": "Rejeitado"
   },
 
+  "municipalitiesId": {
+    "navigation": {
+      "home": "Início",
+      "departments": "Departamentos",
+      "members": "Membros",
+      "affiliations": "Pedidos de afiliação"
+    },
+    "options": {
+      "departments": {
+        "title": "Departamentos",
+        "description": "Explore os departamentos de {name}"
+      },
+      "members": {
+        "title": "Members",
+        "description": "Veja todos os agentes públicos afiliados a {name}"
+      },
+      "affiliations": {
+        "title": "Affiliation requests",
+        "description": "Aceite ou rejeite os pedidos de afiliação de {name}"
+      }
+    },
+    "municipality": {
+      "description": "Bem-vindo! Navegue pelos items abaixo:"
+    },
+    "loading": {
+      "municipality": "Carregando municipalidade..."
+    },
+    "error": {
+      "notFound": "Municipalidade com o id {id} não foi encontrada."
+    }
+  },
+
   "toast": {
     "error": {
       "title": "Erro",

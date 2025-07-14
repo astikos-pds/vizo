@@ -12,13 +12,7 @@ const formatted = useDateFormat(municipality.createdAt, "DD/MM/YYYY");
 
 <template>
   <NuxtLink :to="`/municipalities/${municipality.id}`">
-    <UCard
-      :ui="{
-        header: 'p-3 sm:px-3',
-        body: 'p-3 sm:p-3',
-        footer: 'p-3 sm:px-3',
-      }"
-    >
+    <UCard>
       <div class="flex items-center gap-3">
         <UAvatar
           :src="municipality.iconUrl"
