@@ -125,7 +125,9 @@ const isMarkerOutOfBounds = computed<boolean>(
 );
 
 watch(coords, (newCoords) => {
-  updateMarker(newCoords);
+  if (!isLocationPrecise.value) {
+    updateMarker(newCoords);
+  }
 });
 
 const breakpoints = useBreakpoints({
