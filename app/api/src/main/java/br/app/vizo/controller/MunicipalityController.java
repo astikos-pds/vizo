@@ -24,6 +24,13 @@ public class MunicipalityController {
         this.municipalityService = municipalityService;
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<MunicipalityDTO> getMunicipalityById(@PathVariable UUID id) {
+        MunicipalityDTO response = this.municipalityService.getMunicipalityById(id);
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping
     public ResponseEntity<MunicipalityDTO> getMunicipalityByEmailDomain(
             @RequestParam("domain") String emailDomain

@@ -62,6 +62,14 @@ public class MunicipalityService {
         this.assignmentMapper = assignmentMapper;
     }
 
+    public MunicipalityDTO getMunicipalityById(UUID id) {
+        Municipality municipality = this.municipalityRepository.findById(id).orElseThrow(
+                () -> new NotFoundException("Municipality not found.")
+        );
+
+        return this.municipalityMapper.toDto(municipality);
+    }
+
     public MunicipalityDTO getMunicipalityByEmailDomain(String domain) {
         Municipality municipality = this.municipalityRepository.findByEmailDomain(domain).orElseThrow(
                 () -> new NotFoundException("Municipality not found.")
