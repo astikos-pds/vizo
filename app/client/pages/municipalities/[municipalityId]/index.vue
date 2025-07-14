@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { NavigationMenuItem } from "@nuxt/ui";
 import { getMunicipalityByIdUseCase } from "~/services/municipality";
 import type { Municipality } from "~/types/domain";
 
@@ -8,8 +7,8 @@ definePageMeta({
   middleware: ["auth", "official"],
 });
 
-const { params } = useRoute();
-const municipalityId = params.municipalityId as string;
+const route = useRoute();
+const municipalityId = route.params.municipalityId as string;
 
 const { isAdmin } = useUserStore();
 const { t } = useI18n();

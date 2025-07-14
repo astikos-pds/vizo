@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import CollapsibleMenu from "~/components/CollapsibleMenu.vue";
 import { getMunicipalitiesAffiliationsUseCase } from "~/services/users";
 
 const { t } = useI18n();
@@ -36,7 +37,7 @@ const requestedAffiliations = computed(() =>
     :title="t('municipalities.header')"
     :description="t('municipalities.subheader')"
   >
-    <MunicipalityMenu
+    <CollapsibleMenu
       v-if="approvedAffiliations"
       :title="t('municipalities.myMunicipalities')"
       :items="approvedAffiliations"
@@ -50,9 +51,9 @@ const requestedAffiliations = computed(() =>
           :municipality="affiliation.municipality"
         />
       </template>
-    </MunicipalityMenu>
+    </CollapsibleMenu>
 
-    <MunicipalityMenu
+    <CollapsibleMenu
       v-if="requestedAffiliations"
       :title="t('municipalities.requests')"
       :items="requestedAffiliations"
@@ -67,6 +68,6 @@ const requestedAffiliations = computed(() =>
           :municipality="affiliation.municipality"
         />
       </template>
-    </MunicipalityMenu>
+    </CollapsibleMenu>
   </OfficialPage>
 </template>
