@@ -18,39 +18,14 @@ const {
   data: municipality,
   error,
   pending,
-} = await useAsyncData<Municipality>("municipality", () =>
-  getMunicipalityByIdUseCase({ id: municipalityId })
-);
-
-const items = computed<NavigationMenuItem[]>(() => {
-  const baseItems: NavigationMenuItem[] = [
-    {
-      label: t("municipalitiesId.navigation.home"),
-      icon: "i-lucide-home",
-      to: `/municipalities/${municipalityId}`,
-    },
-    {
-      label: t("municipalitiesId.navigation.departments"),
-      icon: "i-lucide-box",
-      to: `/municipalities/${municipalityId}/departments`,
-    },
-    {
-      label: t("municipalitiesId.navigation.members"),
-      icon: "i-lucide-users",
-      to: `/municipalities/${municipalityId}/members`,
-    },
-  ];
-
-  if (isAdmin) {
-    baseItems.push({
-      label: t("municipalitiesId.navigation.affiliations"),
-      icon: "i-lucide-contact",
-      to: `/municipalities/${municipalityId}/affiliations`,
-    });
+} = await useAsyncData<Municipality>(
+  `municipality-${municipalityId}`,
+  () => getMunicipalityByIdUseCase({ id: municipalityId }),
+  {
+    lazy: false,
+    server: true,
   }
-
-  return baseItems;
-});
+);
 
 const options = computed(() => {
   const name = municipality.value?.name ?? "";
@@ -66,10 +41,12 @@ const options = computed(() => {
       adminOnly: false,
     },
     {
-      to: `/municipalities/${municipalityId}/members`,
+      to: `/municipalities/${municipalityId}/officials`,
       icon: "i-lucide-users",
-      title: t("municipalitiesId.options.members.title"),
-      description: t("municipalitiesId.options.members.description", { name }),
+      title: t("municipalitiesId.options.officials.title"),
+      description: t("municipalitiesId.options.officials.description", {
+        name,
+      }),
       adminOnly: false,
     },
     {
@@ -88,7 +65,7 @@ const options = computed(() => {
 </script>
 
 <template>
-  <div v-if="pending" class="mt-8 text-center text-gray-500">
+  <div v-if="pending" class="mt-8 text-center">
     {{ t("municipalitiesId.loading.municipality") }}
   </div>
 
@@ -96,27 +73,20 @@ const options = computed(() => {
     {{ t("municipalitiesId.error.notFound", { id: municipalityId }) }}
   </div>
 
-  <div v-else class="w-full flex flex-col justify-center items-center">
-    <UNavigationMenu
-      :items
-      aria-label="Main municipality navigation"
-      class="w-full flex justify-center border-b border-default"
-    />
-
-    <OfficialPage
-      :title="municipality.name"
-      :description="t('municipalitiesId.municipality.description')"
-    >
-      <div class="size-full grid grid-cols-1 sm:grid-cols-2 gap-2 lg:gap-3">
-        <MunicipalityOption
-          v-for="option in options"
-          :key="option.to"
-          :to="option.to"
-          :icon="option.icon"
-          :title="option.title"
-          :description="option.description"
-        />
-      </div>
-    </OfficialPage>
-  </div>
+  <OfficialPage
+    v-else
+    :title="municipality.name"
+    :description="t('municipalitiesId.municipality.description')"
+  >
+    <div class="size-full grid grid-cols-1 sm:grid-cols-2 gap-2 lg:gap-3">
+      <MunicipalityOption
+        v-for="option in options"
+        :key="option.to"
+        :to="option.to"
+        :icon="option.icon"
+        :title="option.title"
+        :description="option.description"
+      />
+    </div>
+  </OfficialPage>
 </template>

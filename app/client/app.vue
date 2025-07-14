@@ -22,9 +22,10 @@ watchEffect(() => {
   <ClientOnly>
     <NuxtPwaManifest />
   </ClientOnly>
-  <UApp :locale="localesMapping[locale]">
-    <NuxtLoadingIndicator color="primary" />
 
+  <NuxtLoadingIndicator color="primary" />
+
+  <UApp :locale="localesMapping[locale]">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

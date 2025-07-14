@@ -270,9 +270,9 @@
 
   "municipalitiesId": {
     "navigation": {
-      "home": "Home",
+      "menu": "Menu",
       "departments": "Departments",
-      "members": "Members",
+      "officials": "Officials",
       "affiliations": "Affiliation requests"
     },
     "options": {
@@ -280,9 +280,9 @@
         "title": "Departments",
         "description": "Explore the departments of {name}"
       },
-      "members": {
-        "title": "Members",
-        "description": "See all members affiliated to {name}"
+      "officials": {
+        "title": "Officials",
+        "description": "See all officials affiliated to {name}"
       },
       "affiliations": {
         "title": "Affiliation requests",

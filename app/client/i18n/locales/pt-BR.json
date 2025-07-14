@@ -266,9 +266,9 @@
 
   "municipalitiesId": {
     "navigation": {
-      "home": "Início",
+      "menu": "Menu",
       "departments": "Departamentos",
-      "members": "Membros",
+      "officials": "Agentes públicos",
       "affiliations": "Pedidos de afiliação"
     },
     "options": {
@@ -276,8 +276,8 @@
         "title": "Departamentos",
         "description": "Explore os departamentos de {name}"
       },
-      "members": {
-        "title": "Members",
+      "officials": {
+        "title": "Agentes públicos",
         "description": "Veja todos os agentes públicos afiliados a {name}"
       },
       "affiliations": {

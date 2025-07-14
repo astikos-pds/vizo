@@ -13,6 +13,11 @@ useHead({
   ],
 });
 
+definePageMeta({
+  layout: "official",
+  // middleware: ["auth", "official"],
+});
+
 const { data: affiliations } = useAsyncData("municipalities-affiliations", () =>
   getMunicipalitiesAffiliationsUseCase()
 );
