@@ -26,11 +26,11 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/officials/me/municipalities")
-    public ResponseEntity<List<AffiliationRequestDTO>> getMunicipalitiesAffiliations(
+    @GetMapping("/officials/me/affiliations")
+    public ResponseEntity<List<AffiliationRequestDTO>> getAffiliations(
             Authentication authentication
     ) {
-        List<AffiliationRequestDTO> response = this.userService.getMunicipalitiesAffiliations(authentication);
+        List<AffiliationRequestDTO> response = this.userService.getAffiliations(authentication);
 
         return ResponseEntity.ok(response);
     }

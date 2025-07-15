@@ -39,7 +39,7 @@ public class UserService {
         return new ProfileDTO(user.getType(), UserProfileDTO.of(user));
     }
 
-    public List<AffiliationRequestDTO> getMunicipalitiesAffiliations(Authentication authentication) {
+    public List<AffiliationRequestDTO> getAffiliations(Authentication authentication) {
         User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
