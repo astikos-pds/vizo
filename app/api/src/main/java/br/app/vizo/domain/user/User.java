@@ -47,11 +47,7 @@ public abstract class User {
         this(UUID.randomUUID(), document, email, password, name, avatar, DateUtil.now(), DateUtil.now());
     }
 
-    public UserType getType() {
-        if (this instanceof Citizen) {
-            return UserType.CITIZEN;
-        } else {
-            return UserType.OFFICIAL;
-        }
+    public boolean isOfficial() {
+        return this instanceof Official;
     }
 }

@@ -34,9 +34,18 @@ public class UserService {
     }
 
     public ProfileDTO getLoggedInUser(Authentication authentication) {
-        User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(() -> new NotFoundException("User not found."));
+        User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
+                () -> new NotFoundException("User not found.")
+        );
 
-        return new ProfileDTO(user.getType(), UserProfileDTO.of(user));
+        UserType userType;
+        if (user.isOfficial()) {
+            userType = UserType.OFFICIAL;
+        } else {
+            userType = UserType.CITIZEN;
+        }
+
+        return new ProfileDTO(userType, UserProfileDTO.of(user));
     }
 
     public List<AffiliationRequestDTO> getAffiliations(Authentication authentication) {
@@ -44,7 +53,7 @@ public class UserService {
                 () -> new NotFoundException("User not found.")
         );
 
-        if (user.getType() != UserType.OFFICIAL) {
+        if (!user.isOfficial()) {
             throw new ForbiddenException("You don't have permission to access this resource.");
         }
 
