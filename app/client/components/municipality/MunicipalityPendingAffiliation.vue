@@ -36,15 +36,19 @@ const statusBadge = computed<Badge>(() => {
         <h3 class="font-semibold text-lg">
           {{ affiliation.municipality.name }}
         </h3>
-        <p class="text-sm">
-          {{ t("municipalities.status") }}:
-          <UBadge :color="statusBadge.color" variant="subtle">
-            {{ t(`municipalities.${statusBadge.text.toLowerCase()}`) }}
-          </UBadge>
-        </p>
-        <p class="text-sm">
-          {{ t("municipalities.requestedAt", { date: formattedRequestedAt }) }}
-        </p>
+        <div class="text-sm flex flex-col">
+          <span>
+            {{ t("municipalities.status") }}:
+            <UBadge :color="statusBadge.color" variant="subtle">
+              {{ t(`municipalities.${statusBadge.text.toLowerCase()}`) }}
+            </UBadge>
+          </span>
+          <span>
+            {{
+              t("municipalities.requestedAt", { date: formattedRequestedAt })
+            }}
+          </span>
+        </div>
       </div>
     </div>
   </UCard>

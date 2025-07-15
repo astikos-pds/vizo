@@ -5,8 +5,6 @@ const { collapsed } = defineProps<{
   collapsed: boolean;
 }>();
 
-const { logout } = useAuth();
-
 const items = ref<DropdownMenuItem[][]>([
   [
     {
@@ -46,7 +44,7 @@ const user: { name: string; avatar: AvatarProps } = reactive({
       itemLeadingIcon: 'text-lg',
     }"
   >
-    <div class="p-2">
+    <div>
       <UButton
         color="neutral"
         variant="ghost"

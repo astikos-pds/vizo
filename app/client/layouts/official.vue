@@ -65,7 +65,7 @@ const items = computed<NavigationMenuItem[]>(() => {
     <ConfigHeader class="w-full" />
 
     <div
-      class="w-full flex justify-between items-center border-b border-default"
+      class="w-full flex justify-between items-center border-b border-default p-1 2xl:p-2"
     >
       <NavigationFooter collapsed />
 

@@ -9,8 +9,6 @@ defineProps<{
 
 <template>
   <AccordionBody :items="items" :empty-text="emptyText">
-    <template v-for="item in items">
-      <slot name="item" :item="item" />
-    </template>
+    <slot />
   </AccordionBody>
 </template>

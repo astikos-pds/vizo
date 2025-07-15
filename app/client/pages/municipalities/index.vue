@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { AccordionItem } from "@nuxt/ui";
-import type { AffiliationRequest } from "~/types/domain";
+import { userRepository } from "~/repositories/user-repository";
 
 const { t } = useI18n();
 
@@ -16,48 +16,23 @@ useHead({
 
 definePageMeta({
   layout: "official",
-  // middleware: ["auth", "official"],
+  middleware: ["auth", "official"],
 });
 
-// const { data: affiliations } = useAsyncData("municipalities-affiliations", () =>
-//   getMunicipalitiesAffiliationsUseCase()
-// );
-
-const affiliations = ref<AffiliationRequest[]>([
-  {
-    id: "",
-    official: {
-      id: "",
-      document: "",
-      email: "mates@gmail.com",
-      name: "Mateus",
-      avatar: null,
-      role: "OFFICIAL",
-      wasApproved: false,
-      createdAt: "",
-      updatedAt: "",
-    },
-    municipality: {
-      id: "",
-      name: "São Paulo",
-      emailDomain: "",
-      iconUrl: "",
-      createdAt: "",
-      updatedAt: "",
-    },
-    status: "PENDING",
-    createdAt: "",
-    approvedBy: null,
-    approvedAt: null,
-  },
-]);
+const {
+  data: affiliations,
+  error,
+  pending,
+} = await userRepository.getAllUserAffiliations({
+  key: "user-affiliations",
+});
 
 const approvedAffiliations = computed(() =>
-  affiliations.value?.filter((a) => a.status === "APPROVED")
+  (affiliations.value ?? []).filter((a) => a.status === "APPROVED")
 );
 
 const requestedAffiliations = computed(() =>
-  affiliations.value?.filter((a) => a.status !== "PENDING")
+  (affiliations.value ?? []).filter((a) => a.status === "PENDING")
 );
 
 const items = ref<AccordionItem[]>([
@@ -73,7 +48,7 @@ const items = ref<AccordionItem[]>([
   },
 ]);
 
-const active = ref(["0", "1"]);
+const openSections = ref(["0", "1"]);
 </script>
 
 <template>
@@ -81,15 +56,21 @@ const active = ref(["0", "1"]);
     :title="t('municipalities.header')"
     :description="t('municipalities.subheader')"
   >
-    <UAccordion type="multiple" v-model="active" :items="items">
+    <div v-if="pending">
+      <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
+    </div>
+
+    <UAccordion v-else type="multiple" v-model="openSections" :items="items">
       <template #municipalities>
         <MunicipalityMenu
           :items="approvedAffiliations"
           :empty-text="t('municipalities.noMunicipality')"
         >
-          <template #item="{ item }">
-            <MunicipalityCard v-bind="item" />
-          </template>
+          <MunicipalityCard
+            v-for="item in approvedAffiliations"
+            v-bind="item"
+            :key="item.id"
+          />
         </MunicipalityMenu>
       </template>
 
@@ -98,9 +79,11 @@ const active = ref(["0", "1"]);
           :items="requestedAffiliations"
           :empty-text="t('municipalities.noRequest')"
         >
-          <template #item="{ item }">
-            <MunicipalityAffiliationRequestCard v-bind="item" />
-          </template>
+          <MunicipalityPendingAffiliation
+            v-for="item in requestedAffiliations"
+            v-bind="item"
+            :key="item.id"
+          />
         </MunicipalityMenu>
       </template>
     </UAccordion>

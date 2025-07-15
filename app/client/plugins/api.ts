@@ -25,8 +25,6 @@ export default defineNuxtPlugin((nuxtApp) => {
     onRequest({ request, options }) {
       console.debug(`[API] Request: ${request}`, options);
 
-      if (request.toString().includes("auth")) return;
-
       const accessToken = useCookie("access_token").value;
 
       if (accessToken) {
