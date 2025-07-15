@@ -31,3 +31,13 @@
 .dark {
   --color-primary: #2f47ff;
 }
+
+.apexcharts-tooltip {
+  background: #465fff !important;
+  color: #fff !important;
+  border: none !important;
+}
+.apexcharts-tooltip-title {
+  background: #465fff !important;
+  color: #fff !important;
+}
