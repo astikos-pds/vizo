@@ -57,7 +57,7 @@ const approvedAffiliations = computed(() =>
 );
 
 const requestedAffiliations = computed(() =>
-  affiliations.value?.filter((a) => a.status !== "APPROVED")
+  affiliations.value?.filter((a) => a.status !== "PENDING")
 );
 
 const items = ref<AccordionItem[]>([
@@ -65,13 +65,11 @@ const items = ref<AccordionItem[]>([
     label: t("municipalities.myMunicipalities"),
     icon: "i-lucide-building",
     slot: "municipalities",
-    content: "ola",
   },
   {
     label: t("municipalities.requests"),
     icon: "i-lucide-clock",
     slot: "pending",
-    content: "ola",
   },
 ]);
 
