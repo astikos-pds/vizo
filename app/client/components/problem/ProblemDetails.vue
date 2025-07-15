@@ -61,7 +61,7 @@ const ui = {
     :ui="ui"
     :snap-points="snapPoints"
     :active-snap-point="activeSnapPoint"
-    @update:active-snap-point="(value: number) => (activeSnapPoint = value as number)"
+    @update:active-snap-point="(value: number | string) => (activeSnapPoint = value as number)"
   >
     <template #body>
       <div v-if="loading" class="flex flex-col gap-4">

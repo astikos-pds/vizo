@@ -12,7 +12,7 @@ defineProps<{
       <p class="text-sm">{{ description }}</p>
     </header>
 
-    <main class="w-full my-4 flex flex-col gap-3">
+    <main class="w-full my-8 flex flex-col gap-3">
       <slot />
     </main>
   </div>

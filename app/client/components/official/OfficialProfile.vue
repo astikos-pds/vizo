@@ -37,7 +37,7 @@ const items = ref<DropdownMenuItem[]>([
     <div class="w-full flex justify-between item-center">
       <div class="flex flex-col">
         <span>{{ name }}</span>
-        <span class="text-sm text-dimmed font-normal">{{ email }}</span>
+        <span class="text-sm text-muted font-normal">{{ email }}</span>
       </div>
 
       <div class="my-auto">

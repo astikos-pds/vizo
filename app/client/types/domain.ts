@@ -29,6 +29,17 @@ export interface Municipality {
   updatedAt: string;
 }
 
+export interface Department {
+  id: string;
+  municipalityId: string;
+  name: string;
+  iconUrl: string;
+  colorHex: string;
+  createdById: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export type AffiliationRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 export interface AffiliationRequest {
