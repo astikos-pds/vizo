@@ -10,6 +10,7 @@ public record OfficialDTO(
         String document,
         String email,
         String name,
+        AvatarDTO avatar,
         OfficialRole role,
         Boolean wasApproved,
         Instant createdAt,

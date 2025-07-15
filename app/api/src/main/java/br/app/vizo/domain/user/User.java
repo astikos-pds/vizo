@@ -1,5 +1,6 @@
 package br.app.vizo.domain.user;
 
+import br.app.vizo.domain.user.avatar.Avatar;
 import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,9 @@ public abstract class User {
 
     protected String name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Avatar avatar;
+
     @Column(name = "created_at")
     protected Instant createdAt;
 
@@ -36,11 +40,11 @@ public abstract class User {
     protected Instant updatedAt;
 
     public User() {
-        this("", "", "", "");
+        this("", "", "", "", null);
     }
 
-    public User(String document, String email, String password, String name) {
-        this(UUID.randomUUID(), document, email, password, name, DateUtil.now(), DateUtil.now());
+    public User(String document, String email, String password, String name, Avatar avatar) {
+        this(UUID.randomUUID(), document, email, password, name, avatar, DateUtil.now(), DateUtil.now());
     }
 
     public UserType getType() {

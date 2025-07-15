@@ -5,7 +5,7 @@ import br.app.vizo.domain.user.Official;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AvatarMapper.class)
 public interface OfficialMapper extends CommonMapper<Official, OfficialDTO> {
 
     OfficialDTO toDto(Official entity);

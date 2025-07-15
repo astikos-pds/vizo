@@ -8,6 +8,7 @@ public record CitizenDTO(
         String document,
         String email,
         String name,
+        AvatarDTO avatar,
         Long credibilityPoints,
         Instant createdAt,
         Instant updatedAt

@@ -5,7 +5,7 @@ import br.app.vizo.controller.response.CitizenDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AvatarMapper.class)
 public interface CitizenMapper extends CommonMapper<Citizen, CitizenDTO> {
 
     CitizenDTO toDto(Citizen entity);
