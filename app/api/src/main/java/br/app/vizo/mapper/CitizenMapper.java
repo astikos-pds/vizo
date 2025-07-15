@@ -6,10 +6,5 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring", uses = AvatarMapper.class)
-public interface CitizenMapper extends CommonMapper<Citizen, CitizenDTO> {
-
-    CitizenDTO toDto(Citizen entity);
-
-    @Mapping(target = "password", ignore = true)
-    Citizen toEntity(CitizenDTO dto);
+public interface CitizenMapper extends DtoMapper<Citizen, CitizenDTO> {
 }

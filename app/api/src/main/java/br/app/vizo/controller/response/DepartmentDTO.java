@@ -5,11 +5,11 @@ import java.util.UUID;
 
 public record DepartmentDTO(
         UUID id,
-        UUID municipalityId,
+        MunicipalityDTO municipality,
         String name,
         String iconUrl,
         String colorHex,
-        UUID createdById,
+        OfficialDTO createdBy,
         Instant createdAt,
         Instant updatedAt
 ) {

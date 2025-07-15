@@ -7,11 +7,11 @@ import java.util.UUID;
 public record ReportDTO(
         UUID id,
         String description,
-        List<String> imagesUrls,
+        List<ReportImageDTO> images,
         Double latitude,
         Double longitude,
-        UUID citizenId,
-        UUID problemId,
+        CitizenDTO citizen,
+        ProblemDTO problem,
         Instant createdAt
 ) {
 }

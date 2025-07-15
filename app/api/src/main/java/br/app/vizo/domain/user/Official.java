@@ -1,5 +1,6 @@
 package br.app.vizo.domain.user;
 
+import br.app.vizo.domain.user.avatar.Avatar;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +18,7 @@ public class Official extends User {
     private Boolean wasApproved;
 
     public Official() {
-        this("", "", "", "", OfficialRole.OFFICIAL, false);
+        this("", "", "", "", null, OfficialRole.OFFICIAL, false);
     }
 
     public Official(
@@ -25,10 +26,11 @@ public class Official extends User {
             String email,
             String password,
             String name,
+            Avatar avatar,
             OfficialRole role,
             Boolean wasApproved
     ) {
-        super(document, email, password, name);
+        super(document, email, password, name, avatar);
         this.role = role;
         this.wasApproved = wasApproved;
     }

@@ -1,6 +1,6 @@
 package br.app.vizo.controller;
 
-import br.app.vizo.controller.response.MunicipalityAffiliationDTO;
+import br.app.vizo.controller.response.AffiliationRequestDTO;
 import br.app.vizo.controller.response.profile.ProfileDTO;
 import br.app.vizo.service.UserService;
 import org.springframework.http.ResponseEntity;
@@ -27,10 +27,10 @@ public class UserController {
     }
 
     @GetMapping("/officials/me/municipalities")
-    public ResponseEntity<List<MunicipalityAffiliationDTO>> getMunicipalitiesAffiliations(
+    public ResponseEntity<List<AffiliationRequestDTO>> getMunicipalitiesAffiliations(
             Authentication authentication
     ) {
-        List<MunicipalityAffiliationDTO> response = this.userService.getMunicipalitiesAffiliations(authentication);
+        List<AffiliationRequestDTO> response = this.userService.getMunicipalitiesAffiliations(authentication);
 
         return ResponseEntity.ok(response);
     }

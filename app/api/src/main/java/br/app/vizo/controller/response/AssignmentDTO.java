@@ -7,13 +7,13 @@ import java.util.UUID;
 
 public record AssignmentDTO(
         UUID id,
-        UUID officialId,
-        UUID departmentId,
+        OfficialDTO official,
+        DepartmentDTO department,
         DepartmentRole roleInDepartment,
         Boolean canUpdateStatus,
         Boolean canViewReports,
         Boolean canApproveOfficials,
-        UUID createdById,
+        OfficialDTO createdBy,
         Instant createdAt
 ) {
 }

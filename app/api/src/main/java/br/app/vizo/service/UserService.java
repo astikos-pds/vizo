@@ -1,6 +1,6 @@
 package br.app.vizo.service;
 
-import br.app.vizo.controller.response.MunicipalityAffiliationDTO;
+import br.app.vizo.controller.response.AffiliationRequestDTO;
 import br.app.vizo.controller.response.profile.ProfileDTO;
 import br.app.vizo.controller.response.profile.UserProfileDTO;
 import br.app.vizo.domain.user.Official;
@@ -8,6 +8,8 @@ import br.app.vizo.domain.user.User;
 import br.app.vizo.domain.user.UserType;
 import br.app.vizo.exception.http.ForbiddenException;
 import br.app.vizo.exception.http.NotFoundException;
+import br.app.vizo.mapper.AffiliationRequestMapper;
+import br.app.vizo.mapper.MunicipalityMapper;
 import br.app.vizo.repository.AffiliationRequestRepository;
 import br.app.vizo.repository.UserRepository;
 import org.springframework.security.core.Authentication;
@@ -20,21 +22,25 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final AffiliationRequestRepository affiliationRequestRepository;
+    private final AffiliationRequestMapper affiliationRequestMapper;
 
-    public UserService(UserRepository userRepository, AffiliationRequestRepository affiliationRequestRepository) {
+    public UserService(
+            UserRepository userRepository,
+            AffiliationRequestRepository affiliationRequestRepository,
+            AffiliationRequestMapper affiliationRequestMapper
+    ) {
         this.userRepository = userRepository;
         this.affiliationRequestRepository = affiliationRequestRepository;
+        this.affiliationRequestMapper = affiliationRequestMapper;
     }
 
     public ProfileDTO getLoggedInUser(Authentication authentication) {
-        User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
-                () -> new NotFoundException("User not found.")
-        );
+        User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(() -> new NotFoundException("User not found."));
 
         return new ProfileDTO(user.getType(), UserProfileDTO.of(user));
     }
 
-    public List<MunicipalityAffiliationDTO> getMunicipalitiesAffiliations(Authentication authentication) {
+    public List<AffiliationRequestDTO> getMunicipalitiesAffiliations(Authentication authentication) {
         User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
@@ -48,7 +54,7 @@ public class UserService {
         return this.affiliationRequestRepository
                 .findAllByOfficial(official)
                 .stream()
-                .map(a -> MunicipalityAffiliationDTO.of(a, a.getMunicipality()))
+                .map(this.affiliationRequestMapper::toDto)
                 .toList();
     }
 }
