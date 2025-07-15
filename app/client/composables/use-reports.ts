@@ -4,23 +4,12 @@ import {
   type GetReportsParams,
   type GetReportsResponse,
 } from "~/services/report";
-import {
-  uploadImageUseCase,
-  type UploadImageRequest,
-  type UploadImageResponse,
-} from "~/services/upload";
 import type { Report } from "~/types/domain";
+import { useImage } from "~/composables/use-image";
 
 export const useReports = () => {
   const { loading, handle } = useApiHandler();
-
-  async function uploadImage(request: UploadImageRequest): Promise<string> {
-    const response = await handle<UploadImageResponse>(() =>
-      uploadImageUseCase(request)
-    );
-
-    return response?.secure_url ?? "";
-  }
+  const { uploadImage } = useImage();
 
   interface RawReportRequest {
     description: string;
