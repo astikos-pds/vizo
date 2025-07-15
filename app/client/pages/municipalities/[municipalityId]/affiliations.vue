@@ -2,6 +2,16 @@
 import type { AccordionItem } from "@nuxt/ui";
 import type { AffiliationRequest, Municipality } from "~/types/domain";
 
+useHead({
+  title: "Vizo | Affiliation requests",
+  meta: [
+    {
+      name: "description",
+      content: "Find all affiliation requests of this municipality",
+    },
+  ],
+});
+
 definePageMeta({
   layout: "official",
 });

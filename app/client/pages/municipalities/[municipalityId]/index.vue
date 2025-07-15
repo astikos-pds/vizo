@@ -26,6 +26,16 @@ const {
   }
 );
 
+useHead({
+  title: `Vizo | ${municipality.value?.name}`,
+  meta: [
+    {
+      name: "description",
+      content: "Find all officials affiliated to municipality",
+    },
+  ],
+});
+
 const options = computed(() => {
   const name = municipality.value?.name ?? "";
 

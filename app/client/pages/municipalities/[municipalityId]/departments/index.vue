@@ -1,6 +1,16 @@
 <script lang="ts" setup>
 import type { Department, Municipality } from "~/types/domain";
 
+useHead({
+  title: "Vizo | Departments",
+  meta: [
+    {
+      name: "description",
+      content: "Find all departments of this municipality.",
+    },
+  ],
+});
+
 definePageMeta({
   layout: "official",
   // middleware: ["auth", "official"],

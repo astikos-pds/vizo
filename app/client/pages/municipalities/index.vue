@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import type { AccordionItem } from "@nuxt/ui";
-import CollapsibleMenu from "~/components/CollapsibleMenu.vue";
-import {
-  getMunicipalitiesAffiliationsUseCase,
-  type MunicipalityAffiliation,
-} from "~/services/users";
+import { type MunicipalityAffiliation } from "~/services/users";
 
 const { t } = useI18n();
 

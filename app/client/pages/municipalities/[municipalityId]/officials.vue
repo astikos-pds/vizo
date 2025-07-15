@@ -2,6 +2,16 @@
 import type { AccordionItem } from "@nuxt/ui";
 import type { Municipality, Official } from "~/types/domain";
 
+useHead({
+  title: "Vizo | Officials",
+  meta: [
+    {
+      name: "description",
+      content: "Find all officials affiliated to municipality",
+    },
+  ],
+});
+
 definePageMeta({
   layout: "official",
   // middleware: ["auth", "official"],

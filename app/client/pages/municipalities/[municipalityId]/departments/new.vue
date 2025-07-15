@@ -1,8 +1,17 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
-import { refine } from "zod/v4";
 import type { Municipality } from "~/types/domain";
+
+useHead({
+  title: "Vizo | New department",
+  meta: [
+    {
+      name: "description",
+      content: "Create a new department in this municipality.",
+    },
+  ],
+});
 
 definePageMeta({
   layout: "official",
