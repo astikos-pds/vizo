@@ -1,17 +1,11 @@
 <script lang="ts" setup>
-import type {
-  AffiliationRequest,
-  AffiliationRequestStatus,
-  Municipality,
-} from "~/types/domain";
+import type { MunicipalityAffiliation } from "~/services/users";
+import type { AffiliationRequestStatus } from "~/types/domain";
 import type { Badge } from "~/types/ui";
 
 const { t } = useI18n();
 
-const affiliation = defineProps<{
-  affiliationRequest: AffiliationRequest;
-  municipality: Municipality;
-}>();
+const affiliation = defineProps<MunicipalityAffiliation>();
 
 const formattedRequestedAt = useDateFormat(
   affiliation.affiliationRequest.createdAt,

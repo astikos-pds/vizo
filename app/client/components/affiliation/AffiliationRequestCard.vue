@@ -33,10 +33,16 @@ const chipColor = computed(() => {
 
   return colorByStatus[status];
 });
+
+function approve(requestId: string) {}
+
+function reject(requestId: string) {}
+
+function cancel(requestId: string) {}
 </script>
 
 <template>
-  <UChip :color="chipColor">
+  <UChip :color="chipColor" size="xl">
     <UCard
       class="w-full"
       :variant="status === 'PENDING' ? 'outline' : 'subtle'"
@@ -59,10 +65,18 @@ const chipColor = computed(() => {
 
       <template #footer>
         <div v-if="status === 'PENDING'" class="w-full grid grid-cols-2 gap-2">
-          <UButton class="flex justify-center" color="error" variant="subtle"
+          <UButton
+            class="flex justify-center"
+            color="error"
+            variant="subtle"
+            @click="reject(id)"
             >Reject</UButton
           >
-          <UButton class="flex justify-center" color="success" variant="subtle"
+          <UButton
+            class="flex justify-center"
+            color="success"
+            variant="subtle"
+            @click="approve(id)"
             >Approve</UButton
           >
         </div>
@@ -71,6 +85,7 @@ const chipColor = computed(() => {
             class="w-full flex justify-center"
             color="neutral"
             variant="solid"
+            @click="cancel(id)"
             >Cancel</UButton
           >
         </div>

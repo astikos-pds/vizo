@@ -1,6 +1,10 @@
 <script lang="ts" setup>
+import type { AccordionItem } from "@nuxt/ui";
 import CollapsibleMenu from "~/components/CollapsibleMenu.vue";
-import { getMunicipalitiesAffiliationsUseCase } from "~/services/users";
+import {
+  getMunicipalitiesAffiliationsUseCase,
+  type MunicipalityAffiliation,
+} from "~/services/users";
 
 const { t } = useI18n();
 
@@ -19,9 +23,31 @@ definePageMeta({
   // middleware: ["auth", "official"],
 });
 
-const { data: affiliations } = useAsyncData("municipalities-affiliations", () =>
-  getMunicipalitiesAffiliationsUseCase()
-);
+// const { data: affiliations } = useAsyncData("municipalities-affiliations", () =>
+//   getMunicipalitiesAffiliationsUseCase()
+// );
+
+const affiliations = ref<MunicipalityAffiliation[]>([
+  {
+    affiliationRequest: {
+      id: "",
+      officialId: "",
+      municipalityId: "",
+      status: "PENDING",
+      createdAt: "2023-05-21",
+      approvedById: null,
+      approvedAt: null,
+    },
+    municipality: {
+      id: "",
+      name: "São Paulo",
+      emailDomain: "",
+      iconUrl: "",
+      createdAt: "2023-05-21",
+      updatedAt: "",
+    },
+  },
+]);
 
 const approvedAffiliations = computed(() =>
   affiliations.value?.filter((a) => a.affiliationRequest.status === "APPROVED")
@@ -30,6 +56,23 @@ const approvedAffiliations = computed(() =>
 const requestedAffiliations = computed(() =>
   affiliations.value?.filter((a) => a.affiliationRequest.status !== "APPROVED")
 );
+
+const items = ref<AccordionItem[]>([
+  {
+    label: t("municipalities.myMunicipalities"),
+    icon: "i-lucide-building",
+    slot: "municipalities",
+    content: "ola",
+  },
+  {
+    label: t("municipalities.requests"),
+    icon: "i-lucide-clock",
+    slot: "pending",
+    content: "ola",
+  },
+]);
+
+const active = ref(["0", "1"]);
 </script>
 
 <template>
@@ -37,37 +80,28 @@ const requestedAffiliations = computed(() =>
     :title="t('municipalities.header')"
     :description="t('municipalities.subheader')"
   >
-    <CollapsibleMenu
-      v-if="approvedAffiliations"
-      :title="t('municipalities.myMunicipalities')"
-      :items="approvedAffiliations"
-      default-open
-    >
-      <template #empty>{{ t("municipalities.noMunicipality") }}</template>
-
-      <template #body>
-        <MunicipalityCard
-          v-for="affiliation in approvedAffiliations"
-          :municipality="affiliation.municipality"
-        />
+    <UAccordion type="multiple" v-model="active" :items="items">
+      <template #municipalities>
+        <MunicipalityMenu
+          :items="approvedAffiliations"
+          :empty-text="t('municipalities.noMunicipality')"
+        >
+          <template #item="{ item }">
+            <MunicipalityCard v-bind="item" />
+          </template>
+        </MunicipalityMenu>
       </template>
-    </CollapsibleMenu>
 
-    <CollapsibleMenu
-      v-if="requestedAffiliations"
-      :title="t('municipalities.requests')"
-      :items="requestedAffiliations"
-      default-open
-    >
-      <template #empty>{{ t("municipalities.noRequest") }}</template>
-
-      <template #body>
-        <MunicipalityAffiliationRequestCard
-          v-for="affiliation in requestedAffiliations"
-          :affiliation-request="affiliation.affiliationRequest"
-          :municipality="affiliation.municipality"
-        />
+      <template #pending>
+        <MunicipalityMenu
+          :items="requestedAffiliations"
+          :empty-text="t('municipalities.noRequest')"
+        >
+          <template #item="{ item }">
+            <MunicipalityAffiliationRequestCard v-bind="item" />
+          </template>
+        </MunicipalityMenu>
       </template>
-    </CollapsibleMenu>
+    </UAccordion>
   </OfficialPage>
 </template>

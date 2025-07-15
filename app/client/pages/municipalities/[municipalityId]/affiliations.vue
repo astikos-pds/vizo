@@ -74,6 +74,8 @@ const items = ref<AccordionItem[]>([
     slot: "rejected" as const,
   },
 ]);
+
+const active = ref(["1"]);
 </script>
 
 <template>
@@ -89,7 +91,7 @@ const items = ref<AccordionItem[]>([
     title="Affiliation requests"
     :description="`Manage the affiliation requests for ${municipality.name}.`"
   >
-    <UAccordion type="multiple" :items="items">
+    <UAccordion type="multiple" v-model="active" :items="items">
       <template #all>
         <AffiliationRequestMenu
           :items="requests"
