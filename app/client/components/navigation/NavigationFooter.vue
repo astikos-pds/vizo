@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { DropdownMenuItem } from "@nuxt/ui";
+import type { AvatarProps, DropdownMenuItem } from "@nuxt/ui";
 
 const { collapsed } = defineProps<{
   collapsed: boolean;
@@ -18,17 +18,18 @@ const items = ref<DropdownMenuItem[][]>([
     {
       label: "Exit",
       icon: "i-lucide-log-out",
-      onSelect: () => logout(),
+      to: "/logout",
     },
   ],
 ]);
 
-const user = reactive({
+const user: { name: string; avatar: AvatarProps } = reactive({
   name: "User",
   avatar: {
     src: "https://avatar.iran.liara.run/public/boy?username=Nuxt",
     icon: "i-lucide-image",
     alt: "User",
+    size: "md",
   },
 });
 </script>
