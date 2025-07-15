@@ -18,7 +18,7 @@ export default defineAppConfig({
     },
     navigationMenu: {
       slots: {
-        link: "text-sm 2xl:text-base",
+        link: "text-sm",
         linkLeadingIcon: "text-lg",
       },
     },

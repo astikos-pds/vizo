@@ -1,31 +1,32 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
+import type { Municipality } from "~/types/domain";
 
 const { t } = useI18n();
 
 const route = useRoute();
-
 const municipalityId = computed(() => route.params.municipalityId as string);
+
+// const municipality = useNuxtData<Municipality>(`municipality-${municipalityId}`)
+const municipality: Municipality = {
+  id: "",
+  name: "São Paulo",
+  emailDomain: "",
+  iconUrl: "",
+  createdAt: "",
+  updatedAt: "",
+};
 
 const { isAdmin } = useUserStore();
 
 const items = computed<NavigationMenuItem[]>(() => {
-  const baseItems: NavigationMenuItem[] = [
-    {
-      label: "Municipalidades",
-      icon: "i-lucide-building",
-      to: "/municipalities",
-    },
-  ];
+  const baseItems: NavigationMenuItem[] = [];
 
   if (!municipalityId.value) {
     return baseItems;
   }
 
   const nestedItems = [
-    {
-      icon: "i-lucide-chevron-right",
-    },
     {
       label: t("municipalitiesId.navigation.menu"),
       icon: "i-lucide-menu",
@@ -63,11 +64,25 @@ const items = computed<NavigationMenuItem[]>(() => {
   <div class="h-screen flex flex-col">
     <ConfigHeader class="w-full" />
 
-    <UNavigationMenu
-      v-if="items.length > 0"
-      :items="items"
-      class="w-full flex justify-center border-b border-default"
-    />
+    <div
+      class="w-full flex justify-between items-center border-b border-default"
+    >
+      <NavigationFooter collapsed />
+
+      <UNavigationMenu v-if="items.length > 0" :items="items" />
+
+      <UButton
+        v-if="municipalityId"
+        size="xl"
+        variant="link"
+        to="/municipalities"
+        :avatar="{
+          src: municipality.iconUrl,
+          alt: municipality.name,
+          size: 'md',
+        }"
+      />
+    </div>
 
     <div class="w-full flex flex-col items-center justify-center">
       <slot />
