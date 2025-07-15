@@ -36,7 +36,7 @@ const stepper = useSteps();
 
       <slot />
     </main>
-    <footer class="w-full p-1 flex justify-center items-center">
+    <footer class="w-full pb-5 flex justify-center items-center">
       <span class="text-sm"
         >{{ t("register.alreadyHaveAccount") }}
         <NuxtLink to="/login" class="text-primary">{{
