@@ -1,5 +1,6 @@
 package br.app.vizo.service;
 
+import br.app.vizo.controller.filter.AffiliationRequestFilter;
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
 import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
@@ -34,7 +35,6 @@ public class MunicipalityService {
     private final AssignmentRepository assignmentRepository;
     private final MunicipalityMapper municipalityMapper;
     private final AffiliationRequestMapper affiliationRequestMapper;
-    private final OfficialMapper officialMapper;
     private final DepartmentMapper departmentMapper;
     private final AssignmentMapper assignmentMapper;
 
@@ -46,7 +46,6 @@ public class MunicipalityService {
             AssignmentRepository assignmentRepository,
             MunicipalityMapper municipalityMapper,
             AffiliationRequestMapper affiliationRequestMapper,
-            OfficialMapper officialMapper,
             DepartmentMapper departmentMapper,
             AssignmentMapper assignmentMapper
     ) {
@@ -57,7 +56,6 @@ public class MunicipalityService {
         this.assignmentRepository = assignmentRepository;
         this.municipalityMapper = municipalityMapper;
         this.affiliationRequestMapper = affiliationRequestMapper;
-        this.officialMapper = officialMapper;
         this.departmentMapper = departmentMapper;
         this.assignmentMapper = assignmentMapper;
     }
@@ -76,15 +74,6 @@ public class MunicipalityService {
         );
 
         return this.municipalityMapper.toDto(municipality);
-    }
-
-    public Page<OfficialDTO> getOfficials(UUID municipalityId, Pageable pageable, Authentication authentication) {
-        this.getAuthorizedAdminContext(municipalityId, authentication);
-
-        return this.affiliationRequestRepository
-                .findAllByMunicipalityIdAndStatus(municipalityId, AffiliationRequestStatus.APPROVED, pageable)
-                .map(AffiliationRequest::getOfficial)
-                .map(this.officialMapper::toDto);
     }
 
     public Page<DepartmentDTO> getDepartments(UUID municipalityId, Pageable pageable, Authentication authentication) {
@@ -118,7 +107,7 @@ public class MunicipalityService {
         return this.departmentMapper.toDto(this.departmentRepository.save(department));
     }
 
-    public Page<OfficialDTO> getOfficialsFromDepartments(
+    public Page<AssignmentDTO> getAssignments(
             UUID municipalityId,
             UUID departmentId,
             Pageable pageable,
@@ -131,8 +120,7 @@ public class MunicipalityService {
         );
 
         return this.assignmentRepository.findAllByDepartmentId(departmentId, pageable)
-                .map(Assignment::getOfficial)
-                .map(this.officialMapper::toDto);
+                .map(this.assignmentMapper::toDto);
     }
 
     public AssignmentDTO createOrUpdateAssignment(
@@ -167,7 +155,7 @@ public class MunicipalityService {
         assignment.setCanUpdateStatus(body.canUpdateStatus());
         assignment.setCanApproveOfficials(body.canApproveOfficials());
 
-        return this.assignmentMapper.toDTO(this.assignmentRepository.save(assignment));
+        return this.assignmentMapper.toDto(this.assignmentRepository.save(assignment));
     }
 
     public AssignmentDTO getAssignment(
@@ -182,7 +170,7 @@ public class MunicipalityService {
                 () -> new NotFoundException("Department not found.")
         );
 
-        return this.assignmentMapper.toDTO(
+        return this.assignmentMapper.toDto(
                 this.assignmentRepository.findById(assignmentId).orElseThrow(
                         () -> new NotFoundException("Assignment not found.")
                 )
@@ -191,13 +179,20 @@ public class MunicipalityService {
 
     public Page<AffiliationRequestDTO> getMunicipalityAffiliations(
             UUID municipalityId,
+            AffiliationRequestFilter filter,
             Pageable pageable,
             Authentication authentication
     ) {
         this.getAuthorizedOfficialContext(municipalityId, authentication, true);
 
+        if (filter.status() == null) {
+            return this.affiliationRequestRepository
+                    .findAllByMunicipalityId(municipalityId, pageable)
+                    .map(this.affiliationRequestMapper::toDto);
+        }
+
         return this.affiliationRequestRepository
-                .findAllByMunicipalityId(municipalityId, pageable)
+                .findAllByMunicipalityIdAndStatus(municipalityId, filter.status(), pageable)
                 .map(this.affiliationRequestMapper::toDto);
     }
 

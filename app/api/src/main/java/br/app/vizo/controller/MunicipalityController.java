@@ -1,5 +1,6 @@
 package br.app.vizo.controller;
 
+import br.app.vizo.controller.filter.AffiliationRequestFilter;
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
 import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
@@ -40,15 +41,31 @@ public class MunicipalityController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{municipalityId}/officials")
-    public ResponseEntity<PageResponse<OfficialDTO>> getOfficials(
+
+    @GetMapping("/{municipalityId}/affiliations")
+    public ResponseEntity<PageResponse<AffiliationRequestDTO>> getMunicipalityAffiliations(
             @PathVariable UUID municipalityId,
+            @ModelAttribute AffiliationRequestFilter filter,
             Pageable pageable,
             Authentication authentication
     ) {
-        Page<OfficialDTO> response = this.municipalityService.getOfficials(municipalityId, pageable, authentication);
+        Page<AffiliationRequestDTO> response = this.municipalityService
+                .getMunicipalityAffiliations(municipalityId, filter, pageable, authentication);
 
         return ResponseEntity.ok(PageResponse.of(response));
+    }
+
+    @PatchMapping("/{municipalityId}/affiliations/{affiliationId}")
+    public ResponseEntity<AffiliationRequestDTO> updateMunicipalityAffiliation(
+            @PathVariable UUID municipalityId,
+            @PathVariable String affiliationId,
+            @RequestBody UpdateAffiliationRequestDTO body,
+            Authentication authentication
+    ) {
+        AffiliationRequestDTO response = this.municipalityService
+                .updateMunicipalityAffiliation(municipalityId, affiliationId, body, authentication);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{municipalityId}/departments")
@@ -78,14 +95,14 @@ public class MunicipalityController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{municipalityId}/departments/{departmentId}/officials")
-    public ResponseEntity<PageResponse<OfficialDTO>> getOfficialsFromDepartments(
+    @GetMapping("/{municipalityId}/departments/{departmentId}/assignments")
+    public ResponseEntity<PageResponse<AssignmentDTO>> getAssignments(
             @PathVariable UUID municipalityId,
             @PathVariable UUID departmentId,
             Pageable pageable,
             Authentication authentication
     ) {
-        Page<OfficialDTO> response = this.municipalityService.getOfficialsFromDepartments(
+        Page<AssignmentDTO> response = this.municipalityService.getAssignments(
                 municipalityId,
                 departmentId,
                 pageable,
@@ -125,31 +142,6 @@ public class MunicipalityController {
                 assignmentId,
                 authentication
         );
-
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{municipalityId}/affiliations")
-    public ResponseEntity<PageResponse<AffiliationRequestDTO>> getMunicipalityAffiliations(
-            @PathVariable UUID municipalityId,
-            Pageable pageable,
-            Authentication authentication
-    ) {
-        Page<AffiliationRequestDTO> response = this.municipalityService
-                .getMunicipalityAffiliations(municipalityId, pageable, authentication);
-
-        return ResponseEntity.ok(PageResponse.of(response));
-    }
-
-    @PatchMapping("/{municipalityId}/affiliations/{affiliationId}")
-    public ResponseEntity<AffiliationRequestDTO> updateMunicipalityAffiliation(
-            @PathVariable UUID municipalityId,
-            @PathVariable String affiliationId,
-            @RequestBody UpdateAffiliationRequestDTO body,
-            Authentication authentication
-    ) {
-        AffiliationRequestDTO response = this.municipalityService
-                .updateMunicipalityAffiliation(municipalityId, affiliationId, body, authentication);
 
         return ResponseEntity.ok(response);
     }

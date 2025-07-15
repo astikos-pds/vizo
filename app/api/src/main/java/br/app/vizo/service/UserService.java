@@ -9,7 +9,6 @@ import br.app.vizo.domain.user.UserType;
 import br.app.vizo.exception.http.ForbiddenException;
 import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.AffiliationRequestMapper;
-import br.app.vizo.mapper.MunicipalityMapper;
 import br.app.vizo.repository.AffiliationRequestRepository;
 import br.app.vizo.repository.UserRepository;
 import org.springframework.security.core.Authentication;
