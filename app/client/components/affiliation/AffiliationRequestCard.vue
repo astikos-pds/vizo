@@ -13,6 +13,7 @@ const official: Official = {
   document: "",
   email: "mates@gmail.com",
   name: "Mateus",
+  avatar: null,
   role: "OFFICIAL",
   wasApproved: false,
   createdAt: "",

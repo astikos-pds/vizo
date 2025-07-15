@@ -27,7 +27,7 @@ const items = ref<DropdownMenuItem[][]>([
     {
       label: "Edit",
       icon: "i-lucide-pencil",
-      to: `/municipality/${department.municipalityId}/departments/${department.id}/edit`,
+      to: `/municipality/${department.municipality.id}/departments/${department.id}/edit`,
     },
     {
       label: "Delete",

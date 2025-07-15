@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-import type { MunicipalityAffiliation } from "~/services/users";
+import type { AffiliationRequest } from "~/types/domain";
 
 const { t } = useI18n();
 
-const { municipality } = defineProps<MunicipalityAffiliation>();
+const { municipality } = defineProps<AffiliationRequest>();
 
 const formatted = useDateFormat(municipality.createdAt, "DD/MM/YYYY");
 </script>

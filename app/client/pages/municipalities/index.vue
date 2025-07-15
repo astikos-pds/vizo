@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { AccordionItem } from "@nuxt/ui";
-import { type MunicipalityAffiliation } from "~/services/users";
+import type { AffiliationRequest } from "~/types/domain";
 
 const { t } = useI18n();
 
@@ -23,34 +23,41 @@ definePageMeta({
 //   getMunicipalitiesAffiliationsUseCase()
 // );
 
-const affiliations = ref<MunicipalityAffiliation[]>([
+const affiliations = ref<AffiliationRequest[]>([
   {
-    affiliationRequest: {
+    id: "",
+    official: {
       id: "",
-      officialId: "",
-      municipalityId: "",
-      status: "PENDING",
-      createdAt: "2023-05-21",
-      approvedById: null,
-      approvedAt: null,
+      document: "",
+      email: "mates@gmail.com",
+      name: "Mateus",
+      avatar: null,
+      role: "OFFICIAL",
+      wasApproved: false,
+      createdAt: "",
+      updatedAt: "",
     },
     municipality: {
       id: "",
       name: "São Paulo",
       emailDomain: "",
       iconUrl: "",
-      createdAt: "2023-05-21",
+      createdAt: "",
       updatedAt: "",
     },
+    status: "PENDING",
+    createdAt: "",
+    approvedBy: null,
+    approvedAt: null,
   },
 ]);
 
 const approvedAffiliations = computed(() =>
-  affiliations.value?.filter((a) => a.affiliationRequest.status === "APPROVED")
+  affiliations.value?.filter((a) => a.status === "APPROVED")
 );
 
 const requestedAffiliations = computed(() =>
-  affiliations.value?.filter((a) => a.affiliationRequest.status !== "APPROVED")
+  affiliations.value?.filter((a) => a.status !== "APPROVED")
 );
 
 const items = ref<AccordionItem[]>([

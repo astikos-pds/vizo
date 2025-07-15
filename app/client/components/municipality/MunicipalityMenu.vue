@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import type { MunicipalityAffiliation } from "~/services/users";
+import type { AffiliationRequest } from "~/types/domain";
 
 defineProps<{
-  items: MunicipalityAffiliation[];
+  items: AffiliationRequest[];
   emptyText: string;
 }>();
 </script>

@@ -9,14 +9,18 @@ export interface Problem {
   lastReportedAt: string;
 }
 
+export interface ReportImage {
+  url: string;
+}
+
 export interface Report {
   id: string;
   description: string;
-  imagesUrls: string[];
+  images: ReportImage[];
   latitude: number;
   longitude: number;
-  citizenId: string;
-  problemId: string;
+  citizen: Citizen;
+  problem: Problem;
   createdAt: string;
 }
 
@@ -31,11 +35,11 @@ export interface Municipality {
 
 export interface Department {
   id: string;
-  municipalityId: string;
+  municipality: Municipality;
   name: string;
   iconUrl: string;
   colorHex: string;
-  createdById: string;
+  createdBy: Official;
   createdAt: string;
   updatedAt: string;
 }
@@ -44,35 +48,38 @@ export type AffiliationRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 export interface AffiliationRequest {
   id: string;
-  officialId: string;
-  municipalityId: string;
+  official: Official;
+  municipality: Municipality;
   status: AffiliationRequestStatus;
   createdAt: string;
-  approvedById: string | null;
+  approvedBy: Official | null;
   approvedAt: string | null;
 }
 
-export interface Citizen {
-  id: string;
-  email: string;
-  name: string;
-  credibilityPoints: number;
-  createdAt: string;
-  updatedAt: string;
+export interface Avatar {
+  url: string;
 }
 
-export type OfficialRole = "ADMIN" | "OFFICIAL";
-
-export interface Official {
+export interface User {
   id: string;
   document: string;
   email: string;
   name: string;
-  role: OfficialRole;
-  wasApproved: boolean;
+  avatar: Avatar | null;
   createdAt: string;
   updatedAt: string;
 }
+
+export type Citizen = User & {
+  credibilityPoints: number;
+};
+
+export type OfficialRole = "ADMIN" | "OFFICIAL";
+
+export type Official = User & {
+  role: OfficialRole;
+  wasApproved: boolean;
+};
 
 export type UserType = "CITIZEN" | "OFFICIAL";
 export type Profile = Citizen | Official;

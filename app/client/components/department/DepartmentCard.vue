@@ -3,7 +3,7 @@ import type { Department } from "~/types/domain";
 
 const department = defineProps<Department>();
 
-const departmentLink = `/municipalities/${department.municipalityId}/departments/${department.id}`;
+const departmentLink = `/municipalities/${department.municipality.id}/departments/${department.id}`;
 
 const formattedCreatedAt = useDateFormat(department.createdAt, "DD/MM/YYYY");
 </script>

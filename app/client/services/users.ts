@@ -1,8 +1,4 @@
-import type {
-  AffiliationRequest,
-  Municipality,
-  UserProfile,
-} from "~/types/domain";
+import type { AffiliationRequest, UserProfile } from "~/types/domain";
 
 export const getProfileUseCase = async () => {
   const app = useNuxtApp();
@@ -12,18 +8,10 @@ export const getProfileUseCase = async () => {
   });
 };
 
-export interface MunicipalityAffiliation {
-  affiliationRequest: AffiliationRequest;
-  municipality: Municipality;
-}
-
-export const getMunicipalitiesAffiliationsUseCase = async () => {
+export const getUserAffiliationsUseCase = async () => {
   const app = useNuxtApp();
 
-  return await app.$api<MunicipalityAffiliation[]>(
-    "/officials/me/municipalities",
-    {
-      method: "GET",
-    }
-  );
+  return await app.$api<AffiliationRequest[]>("/officials/me/affiliations", {
+    method: "GET",
+  });
 };

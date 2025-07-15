@@ -1,19 +1,18 @@
 <script lang="ts" setup>
-import type { MunicipalityAffiliation } from "~/services/users";
-import type { AffiliationRequestStatus } from "~/types/domain";
+import type {
+  AffiliationRequest,
+  AffiliationRequestStatus,
+} from "~/types/domain";
 import type { Badge } from "~/types/ui";
 
 const { t } = useI18n();
 
-const affiliation = defineProps<MunicipalityAffiliation>();
+const affiliation = defineProps<AffiliationRequest>();
 
-const formattedRequestedAt = useDateFormat(
-  affiliation.affiliationRequest.createdAt,
-  "DD/MM/YYYY"
-);
+const formattedRequestedAt = useDateFormat(affiliation.createdAt, "DD/MM/YYYY");
 
 const statusBadge = computed<Badge>(() => {
-  const status = affiliation.affiliationRequest.status;
+  const status = affiliation.status;
 
   const badgeMap: Record<AffiliationRequestStatus, Badge> = {
     PENDING: { color: "warning", text: status },
