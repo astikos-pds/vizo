@@ -11,6 +11,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
       color: "error",
     });
 
-    return navigateTo(to.path === from.path ? "/login" : from.path);
+    return navigateTo("/login");
   }
 });

@@ -8,20 +8,14 @@ const { t } = useI18n();
 const route = useRoute();
 const municipalityId = computed(() => route.params.municipalityId as string);
 
-const { data: municipality, execute } = municipalityRepository.getById(
+const { data: municipality } = await municipalityRepository.getById(
   municipalityId.value,
   {
     key: `municipality-${municipalityId.value}`,
     immediate: false,
+    watch: [municipalityId],
   }
 );
-
-watch(municipalityId, (id) => {
-  console.log(id);
-  if (id) {
-    execute();
-  }
-});
 
 const { isAdmin } = useUserStore();
 

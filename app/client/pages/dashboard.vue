@@ -2,11 +2,17 @@
 import ProblemRate from "~/components/dashboard/ProblemRate.vue";
 import LastProblems from "~/components/dashboard/LastProblems.vue";
 import SolvedProblems from "~/components/dashboard/SolvedProblems.vue";
+import type { Pageable } from "~/types/http";
 
 const { t } = useI18n();
 
 definePageMeta({
   middleware: ["auth", "official", "department"],
+});
+
+const pagination = ref<Pageable>({
+  page: 0,
+  size: 5,
 });
 </script>
 
@@ -16,6 +22,9 @@ definePageMeta({
   >
     <ProblemRate class="col-span-1" />
     <SolvedProblems class="col-span-1" />
-    <LastProblems class="col-span-1 md:col-span-2 xl:col-span-2" />
+    <ProblemTable
+      v-model:pagination="pagination"
+      class="col-span-1 md:col-span-2 xl:col-span-2"
+    />
   </div>
 </template>

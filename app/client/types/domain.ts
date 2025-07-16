@@ -1,8 +1,10 @@
+export type ProblemStatus = "ANALYSIS" | "IN_PROGRESS" | "SOLVED" | "REJECTED";
+
 export type ProblemType = string;
 
 export interface Problem {
   id: string;
-  status: string;
+  status: ProblemStatus;
   latitude: number;
   longitude: number;
   type: ProblemType;

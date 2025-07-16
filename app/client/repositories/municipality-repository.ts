@@ -5,6 +5,7 @@ import type {
   Assignment,
   Department,
   Municipality,
+  Problem,
   ProblemType,
 } from "~/types/domain";
 import type { Page, Pageable } from "~/types/http";
@@ -27,6 +28,8 @@ type CreateDepartmentRequest = {
   problemTypes: ProblemType[];
 };
 type CreateDepartmentResponse = Department;
+
+type GetAllVisibleProblemsInDepartmentResponse = Page<Problem>;
 
 type GetAllAssignmentsOfDepartmentResponse = Page<Assignment>;
 
@@ -116,6 +119,23 @@ export const municipalityRepository = {
       `/municipalities/${municipalityId}/departments/${departmentId}`,
       {
         method: "DELETE",
+      }
+    );
+  },
+
+  getAllVisibleProblemsInDepartment: (
+    municipalityId: string,
+    departmentId: string,
+    params?: Pageable,
+    options?: UseFetchOptions<GetAllVisibleProblemsInDepartmentResponse>
+  ) => {
+    return useQuery(
+      `/municipalities/${municipalityId}/departments/${departmentId}/problems`,
+      {
+        query: {
+          ...params,
+        },
+        ...options,
       }
     );
   },
