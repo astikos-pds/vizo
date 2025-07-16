@@ -282,7 +282,7 @@ const statusColor = computed(() => {
                 variant="subtle"
                 class="ml-2 capitalize"
               >
-                {{ t("details.statusLabel." + problem.status) }}
+                {{ problem.status }}
               </UBadge>
             </div>
           </div>
