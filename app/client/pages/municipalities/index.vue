@@ -19,13 +19,10 @@ definePageMeta({
   middleware: ["auth", "official"],
 });
 
-const {
-  data: affiliations,
-  error,
-  pending,
-} = await userRepository.getAllUserAffiliations({
-  key: "user-affiliations",
-});
+const { data: affiliations, pending } =
+  await userRepository.getAllUserAffiliations({
+    key: "user-affiliations",
+  });
 
 const approvedAffiliations = computed(() =>
   (affiliations.value ?? []).filter((a) => a.status === "APPROVED")

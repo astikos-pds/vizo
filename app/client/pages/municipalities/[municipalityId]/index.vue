@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { getMunicipalityByIdUseCase } from "~/services/municipality";
-import type { Municipality } from "~/types/domain";
+import { municipalityRepository } from "~/repositories/municipality-repository";
 
 definePageMeta({
   layout: "official",
@@ -17,14 +16,9 @@ const {
   data: municipality,
   error,
   pending,
-} = await useAsyncData<Municipality>(
-  `municipality-${municipalityId}`,
-  () => getMunicipalityByIdUseCase({ id: municipalityId }),
-  {
-    lazy: false,
-    server: true,
-  }
-);
+} = await municipalityRepository.getById(municipalityId, {
+  key: `municipality-${municipalityId}`,
+});
 
 useHead({
   title: `Vizo | ${municipality.value?.name}`,
