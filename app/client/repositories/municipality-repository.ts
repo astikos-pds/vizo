@@ -31,6 +31,8 @@ type CreateDepartmentResponse = Department;
 
 type GetAllVisibleProblemsInDepartmentResponse = Page<Problem>;
 
+type GetDepartmentProblemByIdResponse = Problem;
+
 type GetAllAssignmentsOfDepartmentResponse = Page<Assignment>;
 
 type AssignToDepartmentInBatchRequest = {
@@ -137,6 +139,18 @@ export const municipalityRepository = {
         },
         ...options,
       }
+    );
+  },
+
+  getDepartmentProblemById: (
+    municipalityId: string,
+    departmentId: string,
+    problemId: string,
+    options?: UseFetchOptions<GetDepartmentProblemByIdResponse>
+  ) => {
+    return useQuery(
+      `/municipalities/${municipalityId}/departments/${departmentId}/problems/${problemId}`,
+      options
     );
   },
 

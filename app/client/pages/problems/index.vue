@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import type { Pageable } from "~/types/http";
-
-const { t } = useI18n();
 
 definePageMeta({
   middleware: ["auth", "official", "department"],
