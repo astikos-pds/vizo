@@ -12,6 +12,7 @@ import br.app.vizo.domain.department.Assignment;
 import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.department.DepartmentRole;
 import br.app.vizo.domain.municipality.Municipality;
+import br.app.vizo.domain.problem.Problem;
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.dto.OfficialContextDTO;
 import br.app.vizo.exception.http.NotFoundException;
@@ -25,6 +26,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,6 +161,25 @@ public class MunicipalityService {
 
         return this.problemRepository.findAllByTypeIn(department.getProblemTypes(), pageable)
                 .map(this.problemMapper::toDto);
+    }
+
+    public ProblemDTO getDepartmentProblemById(
+            UUID municipalityId,
+            UUID departmentId,
+            UUID problemId,
+            Authentication authentication
+    ) {
+        this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
+
+        this.departmentRepository.findById(departmentId).orElseThrow(
+                () -> new NotFoundException("Department not found.")
+        );
+
+        Problem problem = this.problemRepository.findById(problemId).orElseThrow(
+                () -> new NotFoundException("Problem not found.")
+        );
+
+        return this.problemMapper.toDto(problem);
     }
 
     public Page<AssignmentDTO> getAssignments(

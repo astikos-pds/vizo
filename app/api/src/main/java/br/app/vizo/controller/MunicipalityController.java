@@ -125,6 +125,23 @@ public class MunicipalityController {
         return ResponseEntity.ok(PageResponse.of(response));
     }
 
+    @GetMapping("/{municipalityId}/departments/{departmentId}/problems/{problemId}")
+    public ResponseEntity<ProblemDTO> getDepartmentProblemById(
+            @PathVariable UUID municipalityId,
+            @PathVariable UUID departmentId,
+            @PathVariable UUID problemId,
+            Authentication authentication
+    ) {
+        ProblemDTO response = this.municipalityService.getDepartmentProblemById(
+                municipalityId,
+                departmentId,
+                problemId,
+                authentication
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/{municipalityId}/departments/{departmentId}/assignments")
     public ResponseEntity<PageResponse<AssignmentDTO>> getAssignments(
             @PathVariable UUID municipalityId,
