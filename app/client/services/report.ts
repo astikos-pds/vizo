@@ -1,4 +1,4 @@
-import type { Report } from "~/types/domain";
+import type { ProblemType, Report } from "~/types/domain";
 import { toParams, type Page, type Pageable } from "~/types/http";
 
 export interface ReportRequest {
@@ -6,6 +6,7 @@ export interface ReportRequest {
   imagesUrls: string[];
   latitude: number;
   longitude: number;
+  problemType: ProblemType;
 }
 
 export const reportUseCase = async (
@@ -15,7 +16,7 @@ export const reportUseCase = async (
 
   return await app.$api<Report>("/reports", {
     method: "POST",
-    body: { ...request },
+    body: request,
   });
 };
 

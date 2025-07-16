@@ -1,8 +1,11 @@
+export type ProblemType = string;
+
 export interface Problem {
   id: string;
   status: string;
   latitude: number;
   longitude: number;
+  type: ProblemType;
   accumulatedCredibility: number;
   validated: boolean;
   firstReportedAt: string;
@@ -39,6 +42,7 @@ export interface Department {
   name: string;
   iconUrl: string;
   colorHex: string;
+  problemTypes: ProblemType[];
   createdBy: Official;
   createdAt: string;
   updatedAt: string;

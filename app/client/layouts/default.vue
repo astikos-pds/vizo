@@ -9,13 +9,14 @@ const { t } = useI18n();
 const collapsed = ref<boolean>(false);
 const open = ref<boolean>(false);
 
+const route = useRoute();
+const name = computed(() => route.meta.name);
+
 const breakpoints = useBreakpoints({
   md: 768,
 });
 
 const isMobile = breakpoints.smallerOrEqual("md");
-
-const route = useRoute();
 </script>
 
 <template>
@@ -90,7 +91,7 @@ const route = useRoute();
           @click="collapsed = !collapsed"
         />
         <h1 class="font-semibold text-base capitalize">
-          {{ t(`navBar.${route.name?.toString()}`) }}
+          {{ name ?? t(`navBar.${route.name?.toString()}`) }}
         </h1>
       </header>
       <main class="flex-1 w-full overflow-y-auto">

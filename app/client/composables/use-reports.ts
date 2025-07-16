@@ -4,7 +4,7 @@ import {
   type GetReportsParams,
   type GetReportsResponse,
 } from "~/services/report";
-import type { Report } from "~/types/domain";
+import type { ProblemType, Report } from "~/types/domain";
 import { useImage } from "~/composables/use-image";
 
 export const useReports = () => {
@@ -16,6 +16,7 @@ export const useReports = () => {
     images: File[];
     latitude: number;
     longitude: number;
+    problemType: ProblemType;
   }
   async function report(request: RawReportRequest): Promise<Report | null> {
     const imagesUrls = await Promise.all(
@@ -24,10 +25,8 @@ export const useReports = () => {
 
     return await handle<Report>(() =>
       reportUseCase({
-        description: request.description,
         imagesUrls: imagesUrls.filter((imageUrl) => imageUrl !== ""),
-        latitude: request.latitude,
-        longitude: request.longitude,
+        ...request,
       })
     );
   }

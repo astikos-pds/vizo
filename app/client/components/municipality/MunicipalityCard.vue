@@ -49,11 +49,11 @@ function exitMunicipality(id: string) {}
             <span v-if="approvedBy">Approved by {{ approvedBy.name }}</span>
           </div>
 
-          <div>
+          <!-- <div>
             <UButton color="error" size="xs" @click="exitMunicipality(id)"
               >Exit</UButton
             >
-          </div>
+          </div> -->
         </div>
       </template>
     </UCard>

@@ -6,10 +6,20 @@ import { municipalityRepository } from "~/repositories/municipality-repository";
 const { t } = useI18n();
 
 const route = useRoute();
-const municipalityId = route.params.municipalityId as string;
+const municipalityId = computed(() => route.params.municipalityId as string);
 
-const { data: municipality } = municipalityRepository.getById(municipalityId, {
-  key: `municipality-${municipalityId}`,
+const { data: municipality, execute } = municipalityRepository.getById(
+  municipalityId.value,
+  {
+    key: `municipality-${municipalityId.value}`,
+    immediate: false,
+  }
+);
+
+watchEffect(() => {
+  if (municipalityId) {
+    execute();
+  }
 });
 
 const { isAdmin } = useUserStore();
@@ -25,17 +35,17 @@ const navigationItems = computed<NavigationMenuItem[]>(() => {
     {
       label: t("municipalitiesId.navigation.menu"),
       icon: "i-lucide-house",
-      to: `/municipalities/${municipalityId}`,
+      to: `/municipalities/${municipalityId.value}`,
     },
     {
       label: t("municipalitiesId.navigation.departments"),
       icon: "i-lucide-box",
-      to: `/municipalities/${municipalityId}/departments`,
+      to: `/municipalities/${municipalityId.value}/departments`,
     },
     {
       label: t("municipalitiesId.navigation.officials"),
       icon: "i-lucide-users",
-      to: `/municipalities/${municipalityId}/officials`,
+      to: `/municipalities/${municipalityId.value}/officials`,
     },
   ];
 
@@ -47,7 +57,7 @@ const navigationItems = computed<NavigationMenuItem[]>(() => {
     {
       label: t("municipalitiesId.navigation.affiliations"),
       icon: "i-lucide-contact",
-      to: `/municipalities/${municipalityId}/affiliations`,
+      to: `/municipalities/${municipalityId.value}/affiliations`,
     },
   ];
 

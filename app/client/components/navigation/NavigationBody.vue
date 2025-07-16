@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
-import { useAuth } from "~/composables/use-auth";
 
 const { collapsed } = defineProps<{
   collapsed: boolean;
@@ -47,7 +46,7 @@ const items = computed<NavigationMenuItem[][]>(() => {
       {
         label: "Problems",
         icon: "i-lucide-badge-alert",
-        to: "/dashboard",
+        to: "/problems",
       },
     ],
     [...baseItems],

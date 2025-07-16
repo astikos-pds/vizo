@@ -13,7 +13,7 @@ import type { LatLng } from "~/types/geolocation";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
 import ModalReportImprecision from "~/components/modal/ModalReportImprecision.vue";
 import ModalRecentReport from "~/components/modal/ModalRecentReport.vue";
-import type { Report, ReportImage } from "~/types/domain";
+import type { ProblemType, Report, ReportImage } from "~/types/domain";
 
 const { t } = useI18n();
 
@@ -45,6 +45,7 @@ const reportSchema = z.object({
       t("reportProblem.validation.imageSize", { size: MAX_FILE_SIZE_IN_MB })
     ),
   location: z.string(),
+  problemType: z.custom<ProblemType>(),
 });
 
 type ReportSchema = z.output<typeof reportSchema>;
@@ -53,6 +54,7 @@ const form = reactive<ReportSchema>({
   description: "",
   images: [],
   location: "current",
+  problemType: "",
 });
 
 const formRef = useTemplateRef("formRef");
@@ -165,8 +167,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
     return;
 
   const response = await report({
-    description: event.data.description,
-    images: event.data.images,
+    ...event.data,
     latitude: latitude,
     longitude: longitude,
   });
@@ -411,6 +412,15 @@ function resolveCoordinates(data: ReportSchema) {
             })
           }}
         </p>
+      </UFormField>
+
+      <UFormField
+        label="Problem type"
+        name="problemType"
+        required
+        class="w-full"
+      >
+        <ProblemTypeSelect class="w-full" v-model="form.problemType" />
       </UFormField>
 
       <UButton

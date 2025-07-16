@@ -26,6 +26,7 @@ const { user } = useUserStore();
 
 <template>
   <UDropdownMenu
+    v-if="user && user.profile"
     :items="items"
     :content="{
       align: 'start',

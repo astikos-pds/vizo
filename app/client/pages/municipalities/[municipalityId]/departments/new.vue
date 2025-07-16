@@ -2,7 +2,7 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import { municipalityRepository } from "~/repositories/municipality-repository";
-import type { Municipality, Official } from "~/types/domain";
+import type { Municipality, Official, ProblemType } from "~/types/domain";
 
 useHead({
   title: "Vizo | New department",
@@ -34,6 +34,7 @@ const departmentSchema = z.object({
     ),
   colorHex: z.string(),
   selectedOfficials: z.array(z.custom<Official>()),
+  problemTypes: z.array(z.custom<ProblemType>()),
 });
 
 type DepartmentSchema = z.infer<typeof departmentSchema>;
@@ -43,6 +44,7 @@ const form = reactive<DepartmentSchema>({
   icon: undefined,
   colorHex: "#000000",
   selectedOfficials: [],
+  problemTypes: [],
 });
 
 const previewUrl = ref("");
@@ -91,9 +93,8 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
 
   const deparment = await handle(() =>
     municipalityRepository.createDepartment(municipalityId, {
-      name: event.data.name,
       iconUrl,
-      colorHex: event.data.colorHex,
+      ...event.data,
     })
   );
 
@@ -173,6 +174,19 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
         class="w-full border border-default rounded-md"
         v-model="form.selectedOfficials"
       />
+
+      <UFormField
+        label="Visible problem types"
+        name="problemTypes"
+        required
+        class="w-full"
+      >
+        <ProblemTypeSelect
+          class="w-full"
+          multiple
+          v-model="form.problemTypes"
+        />
+      </UFormField>
 
       <UButton type="submit" :loading="loading">Submit</UButton>
     </UForm>

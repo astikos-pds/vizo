@@ -5,6 +5,7 @@ import type {
   Assignment,
   Department,
   Municipality,
+  ProblemType,
 } from "~/types/domain";
 import type { Page, Pageable } from "~/types/http";
 
@@ -23,6 +24,7 @@ type CreateDepartmentRequest = {
   name: string;
   iconUrl: string;
   colorHex: string;
+  problemTypes: ProblemType[];
 };
 type CreateDepartmentResponse = Department;
 
