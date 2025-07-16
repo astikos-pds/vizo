@@ -13,7 +13,7 @@ import type { LatLng } from "~/types/geolocation";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
 import ModalReportImprecision from "~/components/modal/ModalReportImprecision.vue";
 import ModalRecentReport from "~/components/modal/ModalRecentReport.vue";
-import type { Report } from "~/types/domain";
+import type { Report, ReportImage } from "~/types/domain";
 
 const { t } = useI18n();
 
@@ -157,7 +157,9 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
       latitude,
       longitude,
       description: event.data.description,
-      imagesUrls: previewUrls.value,
+      images: previewUrls.value.map<ReportImage>((p) => {
+        return { url: p };
+      }),
     } as Report))
   )
     return;
