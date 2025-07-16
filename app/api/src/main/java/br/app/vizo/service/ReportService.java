@@ -62,7 +62,7 @@ public class ReportService {
 
         Point coordinates = this.geometryFactory.createPoint(new Coordinate(body.latitude(), body.longitude()));
 
-        Optional<Problem> existingProblem = this.findRelatedProblem(body.latitude(), body.longitude(), 5.0, body.problemType());
+        Optional<Problem> existingProblem = this.findRelatedProblem(body.latitude(), body.longitude(), 5.0);
         boolean isProblemAlreadyReported = false;
 
         if (existingProblem.isPresent()) {
@@ -136,8 +136,8 @@ public class ReportService {
                 ).map(this.reportMapper::toDto);
     }
 
-    private Optional<Problem> findRelatedProblem(Double latitude, Double longitude, Double radius, ProblemType problemType) {
-        return this.problemRepository.findNearestWithinDistance(latitude, longitude, radius, problemType);
+    private Optional<Problem> findRelatedProblem(Double latitude, Double longitude, Double radius) {
+        return this.problemRepository.findNearestWithinDistance(latitude, longitude, radius);
     }
 
     private Boolean isProblemAlreadyReportedByCitizen(UUID problemId, UUID citizenId) {
