@@ -26,6 +26,16 @@ const items = computed<NavigationMenuItem[][]>(() => [
       to: "/report",
     },
     {
+      label: "Perfil",
+      icon: "i-lucide-user",
+      to: "/municipality/profile"
+    },
+    {
+      label: "Notificações",
+      icon: "i-lucide-bell",
+      to: "/notifications"
+    },
+    {
       label: t("navBar.settings"),
       icon: "i-lucide-settings",
       to: "/settings",
