@@ -2,7 +2,11 @@ import { defineStore } from "pinia";
 import type { Official, UserProfile } from "~/types/domain";
 
 export const useUserStore = defineStore("user", () => {
-  const user = useState<UserProfile>("user");
+  const user = computed<UserProfile>({
+    get: () => JSON.parse(localStorage.getItem("user") ?? ""),
+    set: (value: UserProfile) =>
+      localStorage.setItem("user", JSON.stringify(value)),
+  });
 
   const setUser = (value: UserProfile) => {
     user.value = value;

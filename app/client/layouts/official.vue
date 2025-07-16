@@ -16,8 +16,9 @@ const { data: municipality, execute } = municipalityRepository.getById(
   }
 );
 
-watchEffect(() => {
-  if (municipalityId) {
+watch(municipalityId, (id) => {
+  console.log(id);
+  if (id) {
     execute();
   }
 });
@@ -27,7 +28,7 @@ const { isAdmin } = useUserStore();
 const navigationItems = computed<NavigationMenuItem[]>(() => {
   const baseItems: NavigationMenuItem[] = [];
 
-  if (!municipalityId) {
+  if (!municipalityId.value) {
     return baseItems;
   }
 
