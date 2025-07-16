@@ -1,7 +1,8 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
-import type { Municipality } from "~/types/domain";
+import { municipalityRepository } from "~/repositories/municipality-repository";
+import type { Municipality, Official } from "~/types/domain";
 
 useHead({
   title: "Vizo | New department",
@@ -32,14 +33,16 @@ const departmentSchema = z.object({
       "Image must have at most 5 mb"
     ),
   colorHex: z.string(),
+  selectedOfficials: z.array(z.custom<Official>()),
 });
 
 type DepartmentSchema = z.infer<typeof departmentSchema>;
 
-const form = reactive<Partial<DepartmentSchema>>({
+const form = reactive<DepartmentSchema>({
   name: "",
   icon: undefined,
   colorHex: "#000000",
+  selectedOfficials: [],
 });
 
 const previewUrl = ref("");
@@ -68,8 +71,39 @@ const { data: municipality } = useNuxtData<Municipality>(
   `municipality-${municipalityId}`
 );
 
+const { uploadImage } = useImage();
+
 async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
-  console.log("sdfsdaf");
+  const icon = event.data.icon;
+
+  let iconUrl = "";
+  if (icon) {
+    iconUrl = await uploadImage({
+      file: icon,
+    });
+  }
+
+  const deparment = await municipalityRepository.createDepartment(
+    municipalityId,
+    {
+      name: event.data.name,
+      iconUrl,
+      colorHex: event.data.colorHex,
+    }
+  );
+
+  if (!deparment) return;
+
+  const assignments = await municipalityRepository.assignToDepartmentInBatch(
+    municipalityId,
+    deparment.id,
+    {
+      ids: event.data.selectedOfficials.map((o) => o.id),
+    }
+  );
+
+  if (!assignments) return;
+
   await navigateTo(`/municipalities/${municipalityId}/departments`);
 }
 </script>
@@ -121,6 +155,8 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
           </template>
         </UPopover>
       </UFormField>
+
+      <MunicipalityOfficialsPalette v-model="form.selectedOfficials" />
 
       <UButton type="submit">Submit</UButton>
     </UForm>

@@ -1,5 +1,6 @@
 <script lang="ts" setup generic="T">
-import type { Official } from "~/types/domain";
+import { municipalityRepository } from "~/repositories/municipality-repository";
+import type { Pageable } from "~/types/http";
 
 const props = defineProps<{
   modelValue: T[];
@@ -14,41 +15,27 @@ watch(values, (newVal) => {
   emit("update:modelValue", newVal as T[]);
 });
 
-const officials: Official[] = [
+const route = useRoute();
+const municipalityId = route.params.municipalityId as string;
+
+const pageable = reactive<Pageable>({
+  page: 0,
+  size: 100,
+});
+
+const { data: page, pending } = municipalityRepository.getAllAffiliations(
+  municipalityId,
+  pageable,
   {
-    id: "",
-    document: "",
-    email: "mateus@gmail.com",
-    name: "Mateus",
-    avatar: null,
-    role: "OFFICIAL",
-    wasApproved: false,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "",
-    document: "",
-    email: "mateus@gmail.com",
-    name: "Mateus",
-    avatar: null,
-    role: "OFFICIAL",
-    wasApproved: false,
-    createdAt: "",
-    updatedAt: "",
-  },
-  {
-    id: "",
-    document: "",
-    email: "mateus@gmail.com",
-    name: "Mateus",
-    avatar: null,
-    role: "OFFICIAL",
-    wasApproved: false,
-    createdAt: "",
-    updatedAt: "",
-  },
-];
+    key: `municipality-${municipalityId}-affiliations`,
+  }
+);
+
+const affiliations = computed(() => page.value?.content);
+
+const officials = computed(() =>
+  (affiliations.value ?? []).map((a) => a.official)
+);
 
 interface Item {
   label: string;
@@ -57,7 +44,7 @@ interface Item {
 }
 
 const items = computed<Item[]>(() =>
-  officials.map<Item>((o) => {
+  officials.value.map<Item>((o) => {
     return {
       label: o.name,
       suffix: o.email,
@@ -79,5 +66,11 @@ const groups = ref([
 </script>
 
 <template>
-  <UCommandPalette multiple v-model="values" :groups="groups" class="flex-1" />
+  <UCommandPalette
+    multiple
+    :loading="pending"
+    v-model="values"
+    :groups="groups"
+    class="flex-1"
+  />
 </template>

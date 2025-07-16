@@ -44,6 +44,20 @@ export interface Department {
   updatedAt: string;
 }
 
+export type DepartmentRole = "COMMOM" | "COORDINATOR";
+
+export interface Assignment {
+  id: string;
+  official: Official;
+  department: Department;
+  roleInDepartment: DepartmentRole;
+  canUpdateStatus: boolean;
+  canViewReports: boolean;
+  canApproveOfficials: boolean;
+  createdBy: Official;
+  createdAt: string;
+}
+
 export type AffiliationRequestStatus = "PENDING" | "APPROVED" | "REJECTED";
 
 export interface AffiliationRequest {
