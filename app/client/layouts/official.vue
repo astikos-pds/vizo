@@ -1,46 +1,42 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 import type { Municipality } from "~/types/domain";
+import UserProfile from "~/components/navigation/UserProfile.vue";
+import { municipalityRepository } from "~/repositories/municipality-repository";
 
 const { t } = useI18n();
 
 const route = useRoute();
-const municipalityId = computed(() => route.params.municipalityId as string);
+const municipalityId = route.params.municipalityId as string;
 
-// const municipality = useNuxtData<Municipality>(`municipality-${municipalityId}`)
-const municipality: Municipality = {
-  id: "",
-  name: "São Paulo",
-  emailDomain: "",
-  iconUrl: "",
-  createdAt: "",
-  updatedAt: "",
-};
+const { data: municipality } = municipalityRepository.getById(municipalityId, {
+  key: `municipality-${municipalityId}`,
+});
 
 const { isAdmin } = useUserStore();
 
-const items = computed<NavigationMenuItem[]>(() => {
+const navigationItems = computed<NavigationMenuItem[]>(() => {
   const baseItems: NavigationMenuItem[] = [];
 
-  if (!municipalityId.value) {
+  if (!municipalityId) {
     return baseItems;
   }
 
   const nestedItems = [
     {
       label: t("municipalitiesId.navigation.menu"),
-      icon: "i-lucide-menu",
-      to: `/municipalities/${municipalityId.value}`,
+      icon: "i-lucide-house",
+      to: `/municipalities/${municipalityId}`,
     },
     {
       label: t("municipalitiesId.navigation.departments"),
       icon: "i-lucide-box",
-      to: `/municipalities/${municipalityId.value}/departments`,
+      to: `/municipalities/${municipalityId}/departments`,
     },
     {
       label: t("municipalitiesId.navigation.officials"),
       icon: "i-lucide-users",
-      to: `/municipalities/${municipalityId.value}/officials`,
+      to: `/municipalities/${municipalityId}/officials`,
     },
   ];
 
@@ -58,6 +54,25 @@ const items = computed<NavigationMenuItem[]>(() => {
 
   return [...baseItems, ...nestedItems, ...adminItems];
 });
+
+const breakpoints = useBreakpoints({
+  md: 768,
+});
+
+const isMobile = breakpoints.smallerOrEqual("md");
+
+const items = computed<NavigationMenuItem[]>(() => {
+  if (!isMobile.value) {
+    return navigationItems.value;
+  }
+
+  return [
+    {
+      icon: "i-lucide-menu",
+      children: navigationItems.value,
+    },
+  ];
+});
 </script>
 
 <template>
@@ -67,9 +82,13 @@ const items = computed<NavigationMenuItem[]>(() => {
     <div
       class="w-full flex justify-between items-center border-b border-default p-1 2xl:p-2"
     >
-      <NavigationFooter collapsed />
+      <UserProfile collapsed />
 
-      <UNavigationMenu v-if="items.length > 0" :items="items" />
+      <UNavigationMenu
+        v-if="items.length > 0"
+        :items="items"
+        class="w-full flex justify-center items-center"
+      />
 
       <UButton
         v-if="municipalityId"
@@ -77,8 +96,8 @@ const items = computed<NavigationMenuItem[]>(() => {
         variant="link"
         to="/municipalities"
         :avatar="{
-          src: municipality.iconUrl,
-          alt: municipality.name,
+          src: municipality?.iconUrl,
+          alt: municipality?.name,
           size: 'md',
         }"
       />

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { AvatarProps, DropdownMenuItem } from "@nuxt/ui";
+import type { DropdownMenuItem } from "@nuxt/ui";
 
 const { collapsed } = defineProps<{
   collapsed: boolean;
@@ -21,15 +21,7 @@ const items = ref<DropdownMenuItem[][]>([
   ],
 ]);
 
-const user: { name: string; avatar: AvatarProps } = reactive({
-  name: "User",
-  avatar: {
-    src: "https://avatar.iran.liara.run/public/boy?username=Nuxt",
-    icon: "i-lucide-image",
-    alt: "User",
-    size: "md",
-  },
-});
+const { user } = useUserStore();
 </script>
 
 <template>
@@ -48,13 +40,17 @@ const user: { name: string; avatar: AvatarProps } = reactive({
       <UButton
         color="neutral"
         variant="ghost"
-        :avatar="user.avatar"
+        :avatar="{
+          src: user.profile.avatar?.url,
+          alt: user.profile.name,
+          size: 'md',
+        }"
         class="w-full"
         :ui="{
           base: 'p-[5px]',
         }"
       >
-        {{ !collapsed ? user.name : "" }}
+        {{ !collapsed ? user.profile.name : "" }}
       </UButton>
     </div>
   </UDropdownMenu>

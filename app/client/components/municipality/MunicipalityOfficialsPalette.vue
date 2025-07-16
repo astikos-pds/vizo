@@ -34,7 +34,9 @@ const { data: page, pending } = municipalityRepository.getAllAffiliations(
 const affiliations = computed(() => page.value?.content);
 
 const officials = computed(() =>
-  (affiliations.value ?? []).map((a) => a.official)
+  (affiliations.value ?? [])
+    .map((a) => a.official)
+    .filter((o) => o.role !== "ADMIN")
 );
 
 interface Item {
@@ -71,6 +73,7 @@ const groups = ref([
     :loading="pending"
     v-model="values"
     :groups="groups"
+    placeholder="Search for a user..."
     class="flex-1"
   />
 </template>

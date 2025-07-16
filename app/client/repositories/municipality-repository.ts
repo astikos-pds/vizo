@@ -31,7 +31,7 @@ type AssignToDepartmentInBatchResponse = Assignment[];
 export const municipalityRepository = {
   getById: (id: string, options?: UseFetchOptions<Municipality>) => {
     return useQuery<GetMunicipalityByIdResponse>(
-      `/municipalitites/${id}`,
+      `/municipalities/${id}`,
       options
     );
   },
@@ -114,7 +114,7 @@ export const municipalityRepository = {
     return $api<AssignToDepartmentInBatchResponse>(
       `/municipalities/${municipalityId}/departments/${departmentId}/assignments/batch`,
       {
-        method: "POST",
+        method: "PUT",
         body,
       }
     );

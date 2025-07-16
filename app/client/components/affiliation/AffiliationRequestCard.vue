@@ -8,18 +8,6 @@ import type {
 
 const affiliationRequest = defineProps<AffiliationRequest>();
 
-const official: Official = {
-  id: "",
-  document: "",
-  email: "mates@gmail.com",
-  name: "Mateus",
-  avatar: null,
-  role: "OFFICIAL",
-  wasApproved: false,
-  createdAt: "",
-  updatedAt: "",
-};
-
 const requestedAt = Date.parse(affiliationRequest.createdAt);
 const formattedRequestedAt = useDateFormat(requestedAt, "DD/MM/YYYY");
 
@@ -64,7 +52,7 @@ function cancel(requestId: string) {}
         </div>
       </div>
 
-      <template #footer>
+      <template v-if="official.role === 'OFFICIAL'" #footer>
         <div v-if="status === 'PENDING'" class="w-full grid grid-cols-2 gap-2">
           <UButton
             class="flex justify-center"

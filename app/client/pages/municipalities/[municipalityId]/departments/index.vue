@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { municipalityRepository } from "~/repositories/municipality-repository";
+import { userRepository } from "~/repositories/user-repository";
 import type { Municipality } from "~/types/domain";
 import type { Pageable } from "~/types/http";
 
@@ -25,20 +26,12 @@ const { data: municipality } = useNuxtData<Municipality>(
   `municipality-${municipalityId}`
 );
 
-const pageable = reactive<Pageable>({
-  page: 0,
-  size: 100,
-});
+const { data: assignments, pending } =
+  userRepository.getAllUserAssignmentsByMunicipalityId(municipalityId, {
+    key: `municipalities-${municipalityId}-assignments`,
+  });
 
-const { data: page, pending } = municipalityRepository.getAllDepartments(
-  municipalityId,
-  pageable,
-  {
-    key: `municipality-${municipalityId}-departments`,
-  }
-);
-
-const departments = computed(() => page.value?.content);
+const departments = computed(() => assignments.value?.map((a) => a.department));
 
 const newDepartmentLink = `/municipalities/${municipalityId}/departments/new`;
 </script>
@@ -63,7 +56,13 @@ const newDepartmentLink = `/municipalities/${municipalityId}/departments/new`;
         >
       </div>
 
-      <div class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <NotFoundMessage v-if="departments?.length === 0"
+        >No departments found.</NotFoundMessage
+      >
+      <div
+        v-else
+        class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      >
         <DepartmentCard
           v-for="department in departments"
           v-bind="department"

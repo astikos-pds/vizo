@@ -70,7 +70,8 @@
     "steps": {
       "email": "Institutional e-mail",
       "verify": "Verification",
-      "details": "Details"
+      "details": "Details",
+      "approval": "Approval"
     },
     "emailStep": {
       "title": "E-mail",

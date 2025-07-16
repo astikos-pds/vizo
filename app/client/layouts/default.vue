@@ -2,7 +2,7 @@
 import { useBreakpoints } from "@vueuse/core";
 import NavigationBody from "~/components/navigation/NavigationBody.vue";
 import NavigationHeader from "~/components/navigation/NavigationHeader.vue";
-import NavigationFooter from "~/components/navigation/NavigationFooter.vue";
+import UserProfile from "~/components/navigation/UserProfile.vue";
 
 const { t } = useI18n();
 
@@ -44,7 +44,7 @@ const route = useRoute();
         <NavigationBody :collapsed="collapsed" />
       </template>
       <template #footer>
-        <NavigationFooter :collapsed="collapsed" />
+        <UserProfile :collapsed="collapsed" />
       </template>
     </USlideover>
     <section
@@ -61,10 +61,7 @@ const route = useRoute();
       />
       <div class="flex-1 flex flex-col justify-between">
         <NavigationBody :collapsed="collapsed" class="px-2" />
-        <NavigationFooter
-          :collapsed="collapsed"
-          class="border-t border-default"
-        />
+        <UserProfile :collapsed="collapsed" class="border-t border-default" />
       </div>
     </section>
     <div class="h-screen w-full flex flex-col flex-1 border-r border-default">

@@ -156,7 +156,10 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
         </UPopover>
       </UFormField>
 
-      <MunicipalityOfficialsPalette v-model="form.selectedOfficials" />
+      <MunicipalityOfficialsPalette
+        class="w-full border border-default rounded-md"
+        v-model="form.selectedOfficials"
+      />
 
       <UButton type="submit">Submit</UButton>
     </UForm>

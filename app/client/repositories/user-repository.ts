@@ -1,14 +1,23 @@
 import type { UseFetchOptions } from "#app";
-import type { AffiliationRequest } from "~/types/domain";
+import type { AffiliationRequest, Assignment } from "~/types/domain";
 
-type GetAffiliationsResponse = AffiliationRequest[];
+type GetAllAffiliationsResponse = AffiliationRequest[];
+
+type GetAllAssignmentsResponse = Assignment[];
 
 export const userRepository = {
   getAllUserAffiliations: (
-    options?: UseFetchOptions<GetAffiliationsResponse>
+    options?: UseFetchOptions<GetAllAffiliationsResponse>
   ) => {
-    return useQuery<GetAffiliationsResponse>(
-      "/officials/me/affiliations",
+    return useQuery("/officials/me/affiliations", options);
+  },
+
+  getAllUserAssignmentsByMunicipalityId: (
+    municipalityId: string,
+    options?: UseFetchOptions<GetAllAssignmentsResponse>
+  ) => {
+    return useQuery(
+      `/officials/me/municipalities/${municipalityId}/assignments`,
       options
     );
   },

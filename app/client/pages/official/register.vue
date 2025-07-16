@@ -37,7 +37,7 @@ const steps = computed(
       },
       {
         slot: "approval" as const,
-        title: "Approval",
+        title: t("registerOfficial.steps.approval"),
         description: "",
         icon: "i-lucide-hourglass",
       },
@@ -46,13 +46,6 @@ const steps = computed(
 
 const stepper = useSteps();
 stepper.setTotalSteps(steps.value.length);
-
-onMounted(() => {
-  const savedStep = localStorage.getItem("official-registration-step");
-  if (savedStep) {
-    stepper.current.value = Number(savedStep);
-  }
-});
 </script>
 
 <template>

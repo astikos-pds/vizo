@@ -3,7 +3,6 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 import { useAuth } from "~/composables/use-auth";
 import { useUser } from "~/composables/use-user";
-import { validateDocument } from "~/utils/document-validation";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -18,13 +17,7 @@ definePageMeta({
 });
 
 const loginSchema = z.object({
-  document: z
-    .string()
-    .min(1, t("login.verification.documentRequired"))
-    .refine(
-      (document) => validateDocument(document).isValid,
-      t("login.verification.invalidDocument")
-    ),
+  document: z.string().min(1, t("login.verification.documentRequired")),
   password: z.string().min(1, t("login.verification.passwordRequired")),
 });
 
