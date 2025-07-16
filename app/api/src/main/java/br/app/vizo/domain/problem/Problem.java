@@ -24,6 +24,9 @@ public class Problem {
     @Column(columnDefinition = "geometry(Point,4326)")
     private Point coordinates;
 
+    @Enumerated(EnumType.STRING)
+    private ProblemType type;
+
     @Column(name = "accumulated_credibility")
     private Double accumulatedCredibility;
 
@@ -36,25 +39,27 @@ public class Problem {
     private Instant lastReportedAt;
 
     public Problem() {
-        this(null, null, 0.0);
+        this(null, null, ProblemType.OTHER, 0.0);
     }
 
     public Problem(
             ProblemStatus status,
             Point coordinates,
+            ProblemType type,
             Double accumulatedCredibility
     ) {
-        this(status, coordinates, accumulatedCredibility, false, DateUtil.now(), DateUtil.now());
+        this(status, coordinates, type, accumulatedCredibility, false, DateUtil.now(), DateUtil.now());
     }
 
     public Problem(
             ProblemStatus status,
             Point coordinates,
+            ProblemType type,
             Double accumulatedCredibility,
             Boolean validated,
             Instant firstReportedAt,
             Instant lastReportedAt
     ) {
-        this(UUID.randomUUID(), status, coordinates, accumulatedCredibility, validated, firstReportedAt, lastReportedAt);
+        this(UUID.randomUUID(), status, coordinates, type, accumulatedCredibility, validated, firstReportedAt, lastReportedAt);
     }
 }

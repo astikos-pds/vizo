@@ -1,6 +1,7 @@
 package br.app.vizo.repository;
 
 import br.app.vizo.domain.problem.Problem;
+import br.app.vizo.domain.problem.ProblemType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,13 +20,15 @@ public interface ProblemRepository extends JpaRepository<Problem, UUID> {
                 p.coordinates::geography,
                 ST_SetSRID(ST_MakePoint(:lat, :lon), 4326)::geography,
                 :distance
-            )
+            ) AND p.type = :type
             LIMIT 1
            """, nativeQuery = true)
     Optional<Problem> findNearestWithinDistance(
             @Param("lat") Double latitude,
             @Param("lon") Double longitude,
-            @Param("distance") Double distance);
+            @Param("distance") Double distance,
+            @Param("type") ProblemType problemType
+    );
 
     List<Problem> findAllByValidated(Boolean validated);
 }

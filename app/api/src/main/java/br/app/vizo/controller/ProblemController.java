@@ -4,6 +4,7 @@ import br.app.vizo.controller.request.UpdateProblemRequestDTO;
 import br.app.vizo.controller.response.PageResponse;
 import br.app.vizo.controller.response.ProblemDTO;
 import br.app.vizo.controller.response.ReportDTO;
+import br.app.vizo.domain.problem.ProblemType;
 import br.app.vizo.service.ProblemService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,13 @@ public class ProblemController {
         Page<ReportDTO> response = this.problemService.getProblemReports(id, pageable);
 
         return ResponseEntity.ok(PageResponse.of(response));
+    }
+
+    @GetMapping("/types")
+    public ResponseEntity<List<ProblemType>> getProblemTypes(Authentication authentication) {
+        List<ProblemType> response = this.problemService.getProblemTypes(authentication);
+
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{id}")

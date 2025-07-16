@@ -4,6 +4,7 @@ import br.app.vizo.controller.filter.ReportFilter;
 import br.app.vizo.controller.request.CreateReportRequestDTO;
 import br.app.vizo.domain.problem.Problem;
 import br.app.vizo.domain.problem.ProblemStatus;
+import br.app.vizo.domain.problem.ProblemType;
 import br.app.vizo.domain.report.Report;
 import br.app.vizo.controller.response.ReportDTO;
 import br.app.vizo.domain.report.ReportImage;
@@ -61,7 +62,7 @@ public class ReportService {
 
         Point coordinates = this.geometryFactory.createPoint(new Coordinate(body.latitude(), body.longitude()));
 
-        Optional<Problem> existingProblem = this.findRelatedProblem(body.latitude(), body.longitude(), 5.0);
+        Optional<Problem> existingProblem = this.findRelatedProblem(body.latitude(), body.longitude(), 5.0, body.problemType());
         boolean isProblemAlreadyReported = false;
 
         if (existingProblem.isPresent()) {
@@ -69,7 +70,9 @@ public class ReportService {
                     this.isProblemAlreadyReportedByCitizen(existingProblem.get().getId(), citizen.getId());
         }
 
-        Problem problem = existingProblem.orElseGet(() -> new Problem(ProblemStatus.ANALYSIS, coordinates, 0.0));
+        Problem problem = existingProblem.orElseGet(
+                () -> new Problem(ProblemStatus.ANALYSIS, coordinates, body.problemType(), 0.0)
+        );
 
         Double accumulatedCredibility = problem.getAccumulatedCredibility() + this.calculateReportCredibility(
                 citizen.getCredibilityPoints(),
@@ -133,8 +136,8 @@ public class ReportService {
                 ).map(this.reportMapper::toDto);
     }
 
-    private Optional<Problem> findRelatedProblem(Double latitude, Double longitude, Double radius) {
-        return this.problemRepository.findNearestWithinDistance(latitude, longitude, radius);
+    private Optional<Problem> findRelatedProblem(Double latitude, Double longitude, Double radius, ProblemType problemType) {
+        return this.problemRepository.findNearestWithinDistance(latitude, longitude, radius, problemType);
     }
 
     private Boolean isProblemAlreadyReportedByCitizen(UUID problemId, UUID citizenId) {

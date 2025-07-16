@@ -110,6 +110,7 @@ public class MunicipalityService {
         department.setName(body.name());
         department.setIconUrl(body.iconUrl());
         department.setColorHex(body.colorHex());
+        department.setProblemTypes(body.problemTypes());
         department.setCreatedBy(officialContext.loggedInOfficial());
         department.setMunicipality(officialContext.municipality());
 

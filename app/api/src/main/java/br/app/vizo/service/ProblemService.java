@@ -4,6 +4,7 @@ import br.app.vizo.controller.request.UpdateProblemRequestDTO;
 import br.app.vizo.controller.response.ProblemDTO;
 import br.app.vizo.controller.response.ReportDTO;
 import br.app.vizo.domain.problem.Problem;
+import br.app.vizo.domain.problem.ProblemType;
 import br.app.vizo.domain.user.User;
 import br.app.vizo.exception.http.ForbiddenException;
 import br.app.vizo.exception.http.NotFoundException;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,9 +68,17 @@ public class ProblemService {
                 .map(this.reportMapper::toDto);
     }
 
+    public List<ProblemType> getProblemTypes(Authentication authentication) {
+        this.userRepository.findByDocument(authentication.getName()).orElseThrow(
+                () -> new NotFoundException("User not found.")
+        );
+
+        return Arrays.stream(ProblemType.values()).sorted().toList();
+    }
+
     public ProblemDTO updateProblem(UUID id, UpdateProblemRequestDTO body, Authentication authentication) {
         User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
-                () -> new NotFoundException("User not found")
+                () -> new NotFoundException("User not found.")
         );
 
         if (!user.isOfficial()) {
