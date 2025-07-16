@@ -16,4 +16,6 @@ public interface AssignmentRepository extends JpaRepository<Assignment, UUID> {
     Page<Assignment> findAllByDepartmentId(UUID departmentId, Pageable pageable);
 
     List<Assignment> findAllByDepartmentMunicipalityIdAndOfficialId(UUID municipalityId, UUID officialId);
+
+    void deleteAllByDepartmentId(UUID departmentId);
 }

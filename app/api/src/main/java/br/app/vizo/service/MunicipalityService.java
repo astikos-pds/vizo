@@ -129,6 +129,15 @@ public class MunicipalityService {
         return this.departmentMapper.toDto(department);
     }
 
+    @Transactional
+    public void deleteDepartment(UUID municipalityId, UUID departmentId, Authentication authentication) {
+        this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
+
+        this.assignmentRepository.deleteAllByDepartmentId(departmentId);
+
+        this.departmentRepository.deleteById(departmentId);
+    }
+
     public Page<AssignmentDTO> getAssignments(
             UUID municipalityId,
             UUID departmentId,
@@ -193,7 +202,7 @@ public class MunicipalityService {
                 () -> new NotFoundException("Department not found.")
         );
 
-        List<AssignmentDTO> assignments = new ArrayList<>();
+        List<Assignment> assignments = new ArrayList<>();
 
         for (UUID id : body.ids()) {
             Official official = this.officialRepository.findById(id).orElseThrow(
@@ -212,13 +221,16 @@ public class MunicipalityService {
                         newAssignment.setCanUpdateStatus(true);
                         newAssignment.setCanApproveOfficials(false);
 
-                        return this.assignmentRepository.save(newAssignment);
+                        return newAssignment;
                     });
 
-            assignments.add(this.assignmentMapper.toDto(assignment));
+            assignments.add(assignment);
         }
 
-        return assignments;
+        return this.assignmentRepository.saveAll(assignments)
+                .stream()
+                .map(this.assignmentMapper::toDto)
+                .toList();
     }
 
     public AssignmentDTO getAssignment(

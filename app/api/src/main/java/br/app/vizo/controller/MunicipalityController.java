@@ -97,6 +97,17 @@ public class MunicipalityController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @DeleteMapping("/{municipalityId}/departments/{departmentId}")
+    public ResponseEntity<Void> deleteDepartment(
+            @PathVariable UUID municipalityId,
+            @PathVariable UUID departmentId,
+            Authentication authentication
+    ) {
+        this.municipalityService.deleteDepartment(municipalityId, departmentId, authentication);
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{municipalityId}/departments/{departmentId}/assignments")
     public ResponseEntity<PageResponse<AssignmentDTO>> getAssignments(
             @PathVariable UUID municipalityId,
