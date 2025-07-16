@@ -72,37 +72,50 @@ const { data: municipality } = useNuxtData<Municipality>(
 );
 
 const { uploadImage } = useImage();
+const { loading, handle } = useApiHandler();
+
+const toast = useToast();
 
 async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
   const icon = event.data.icon;
 
   let iconUrl = "";
   if (icon) {
-    iconUrl = await uploadImage({
-      file: icon,
-    });
+    iconUrl =
+      (await handle(() =>
+        uploadImage({
+          file: icon,
+        })
+      )) ?? "";
   }
 
-  const deparment = await municipalityRepository.createDepartment(
-    municipalityId,
-    {
+  const deparment = await handle(() =>
+    municipalityRepository.createDepartment(municipalityId, {
       name: event.data.name,
       iconUrl,
       colorHex: event.data.colorHex,
-    }
+    })
   );
 
   if (!deparment) return;
 
-  const assignments = await municipalityRepository.assignToDepartmentInBatch(
-    municipalityId,
-    deparment.id,
-    {
-      ids: event.data.selectedOfficials.map((o) => o.id),
-    }
+  const assignments = await handle(() =>
+    municipalityRepository.assignToDepartmentInBatch(
+      municipalityId,
+      deparment.id,
+      {
+        ids: event.data.selectedOfficials.map((o) => o.id),
+      }
+    )
   );
 
   if (!assignments) return;
+
+  toast.add({
+    title: "Success",
+    description: "Department created successfully!",
+    color: "success",
+  });
 
   await navigateTo(`/municipalities/${municipalityId}/departments`);
 }
@@ -161,7 +174,7 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
         v-model="form.selectedOfficials"
       />
 
-      <UButton type="submit">Submit</UButton>
+      <UButton type="submit" :loading="loading">Submit</UButton>
     </UForm>
   </OfficialPage>
 </template>
