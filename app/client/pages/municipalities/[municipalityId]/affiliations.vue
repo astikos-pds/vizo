@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { AccordionItem } from "@nuxt/ui";
-import type { AffiliationRequest, Municipality } from "~/types/domain";
+import { municipalityRepository } from "~/repositories/municipality-repository";
+import type { Municipality } from "~/types/domain";
+import type { Pageable } from "~/types/http";
 
 useHead({
   title: "Vizo | Affiliation requests",
@@ -14,60 +16,44 @@ useHead({
 
 definePageMeta({
   layout: "official",
+  middleware: ["auth", "official"],
 });
 
-const { params } = useRoute();
-const municipalityId = params.municipalityId as string;
+const route = useRoute();
+const municipalityId = route.params.municipalityId as string;
 
-// const municipality = useNuxtData<Municipality>(`municipality-${municipalityId}`)
-const municipality: Municipality = {
-  id: "",
-  name: "São Paulo",
-  emailDomain: "",
-  iconUrl: "",
-  createdAt: "",
-  updatedAt: "",
-};
+const { data: municipality } = useNuxtData<Municipality>(
+  `municipality-${municipalityId}`
+);
 
-const requests: AffiliationRequest[] = [
+const pageable: Pageable = reactive({
+  page: 0,
+  size: 100,
+});
+
+const { data: page, pending } = municipalityRepository.getAllAffiliations(
+  municipalityId,
   {
-    id: "",
-    official: {
-      id: "",
-      document: "",
-      email: "mates@gmail.com",
-      name: "Mateus",
-      avatar: null,
-      role: "OFFICIAL",
-      wasApproved: false,
-      createdAt: "",
-      updatedAt: "",
+    key: `municipality-${municipalityId}-affiliations`,
+    query: {
+      page: pageable.page,
+      size: pageable.size,
     },
-    municipality: {
-      id: "",
-      name: "São Paulo",
-      emailDomain: "",
-      iconUrl: "",
-      createdAt: "",
-      updatedAt: "",
-    },
-    status: "PENDING",
-    createdAt: "",
-    approvedBy: null,
-    approvedAt: null,
-  },
-];
+  }
+);
+
+const affiliations = computed(() => page.value?.content);
 
 const pendingRequests = computed(() =>
-  requests.filter((a) => a.status === "PENDING")
+  (affiliations.value ?? []).filter((a) => a.status === "PENDING")
 );
 
 const approvedRequests = computed(() =>
-  requests.filter((a) => a.status === "APPROVED")
+  (affiliations.value ?? []).filter((a) => a.status === "APPROVED")
 );
 
 const rejectedRequests = computed(() =>
-  requests.filter((a) => a.status === "REJECTED")
+  (affiliations.value ?? []).filter((a) => a.status === "REJECTED")
 );
 
 const items = ref<AccordionItem[]>([
@@ -97,22 +83,18 @@ const active = ref(["1"]);
 </script>
 
 <template>
-  <!-- <div v-if="pending" class="mt-8 text-center">
-    {{ t("municipalitiesId.loading.municipality") }}
-  </div>
-
-  <div v-else-if="error || !municipality" class="mt-8 text-center">
-    {{ t("municipalitiesId.error.notFound", { id: municipalityId }) }}
-  </div> -->
-
   <OfficialPage
     title="Affiliation requests"
-    :description="`Manage the affiliation requests for ${municipality.name}.`"
+    :description="`Manage the affiliation requests for ${municipality?.name}.`"
   >
-    <UAccordion type="multiple" v-model="active" :items="items">
+    <div v-if="pending || !affiliations">
+      <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
+    </div>
+
+    <UAccordion v-else type="multiple" v-model="active" :items="items">
       <template #all>
         <AffiliationRequestMenu
-          :items="requests"
+          :items="affiliations"
           empty-text="No requests were found."
         />
       </template>

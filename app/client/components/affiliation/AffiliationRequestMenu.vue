@@ -1,6 +1,8 @@
 <script lang="ts" setup>
+import type { AffiliationRequest } from "~/types/domain";
+
 defineProps<{
-  items: any[];
+  items: AffiliationRequest[];
   emptyText: string;
 }>();
 </script>
