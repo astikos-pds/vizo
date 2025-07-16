@@ -1,5 +1,7 @@
 <script lang="ts" setup>
-import type { Department, Municipality } from "~/types/domain";
+import { municipalityRepository } from "~/repositories/municipality-repository";
+import type { Municipality } from "~/types/domain";
+import type { Pageable } from "~/types/http";
 
 useHead({
   title: "Vizo | Departments",
@@ -13,54 +15,30 @@ useHead({
 
 definePageMeta({
   layout: "official",
-  // middleware: ["auth", "official"],
+  middleware: ["auth", "official"],
 });
 
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 
-// const municipality = useNuxtData<Municipality>(`municipality-${municipalityId}`)
-const municipality: Municipality = {
-  id: municipalityId,
-  name: "São Paulo",
-  emailDomain: "",
-  iconUrl: "",
-  createdAt: "",
-  updatedAt: "",
-};
+const { data: municipality } = useNuxtData<Municipality>(
+  `municipality-${municipalityId}`
+);
 
-const departments = ref<Department[]>([
+const pageable = reactive<Pageable>({
+  page: 0,
+  size: 100,
+});
+
+const { data: page, pending } = municipalityRepository.getAllDepartments(
+  municipalityId,
+  pageable,
   {
-    id: "1",
-    municipalityId: municipality.id,
-    name: "Tapa-buraco",
-    iconUrl: "",
-    colorHex: "#000000",
-    createdById: "",
-    createdAt: "2024-09-01",
-    updatedAt: "",
-  },
-  {
-    id: "1",
-    municipalityId: municipality.id,
-    name: "Tapa-buraco",
-    iconUrl: "",
-    colorHex: "#000000",
-    createdById: "",
-    createdAt: "2024-09-01",
-    updatedAt: "",
-  },
-  {
-    id: "1",
-    municipalityId: municipality.id,
-    name: "Tapa-buraco",
-    iconUrl: "",
-    colorHex: "#000000",
-    createdById: "",
-    createdAt: "2024-09-01",
-    updatedAt: "",
-  },
-]);
+    key: `municipality-${municipalityId}-departments`,
+  }
+);
+
+const departments = computed(() => page.value?.content);
 
 const newDepartmentLink = `/municipalities/${municipalityId}/departments/new`;
 </script>
@@ -68,12 +46,16 @@ const newDepartmentLink = `/municipalities/${municipalityId}/departments/new`;
 <template>
   <OfficialPage
     title="Departments"
-    :description="`Enter in one of the departments of ${municipality.name}.`"
+    :description="`Enter in one of the departments of ${municipality?.name}.`"
   >
-    <div class="size-full flex flex-col">
+    <div v-if="pending">
+      <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
+    </div>
+
+    <div v-else class="size-full flex flex-col">
       <div class="flex my-4 justify-between items-center">
         <span class="text-muted">
-          Encontered {{ departments.length }} department(s)
+          Encontered {{ (departments ?? []).length }} department(s)
         </span>
 
         <UButton icon="i-lucide-plus" :to="newDepartmentLink"

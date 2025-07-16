@@ -26,19 +26,16 @@ const { data: municipality } = useNuxtData<Municipality>(
   `municipality-${municipalityId}`
 );
 
-const pageable: Pageable = reactive({
+const pageable = reactive<Pageable>({
   page: 0,
   size: 100,
 });
 
 const { data: page, pending } = municipalityRepository.getAllAffiliations(
   municipalityId,
+  pageable,
   {
     key: `municipality-${municipalityId}-affiliations`,
-    query: {
-      page: pageable.page,
-      size: pageable.size,
-    },
   }
 );
 

@@ -15,7 +15,7 @@ useHead({
 
 definePageMeta({
   layout: "official",
-  // middleware: ["auth", "official"],
+  middleware: ["auth", "official"],
 });
 
 const departmentSchema = z.object({
@@ -64,15 +64,9 @@ const chip = computed(() => ({ backgroundColor: form.colorHex }));
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 
-// const municipality = useNuxtData<Municipality>(`municipality-${municipalityId}`)
-const municipality: Municipality = {
-  id: municipalityId,
-  name: "São Paulo",
-  emailDomain: "",
-  iconUrl: "",
-  createdAt: "",
-  updatedAt: "",
-};
+const { data: municipality } = useNuxtData<Municipality>(
+  `municipality-${municipalityId}`
+);
 
 async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
   console.log("sdfsdaf");
@@ -83,7 +77,7 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
 <template>
   <OfficialPage
     title="New department"
-    :description="`Create a new department in ${municipality.name}`"
+    :description="`Create a new department in ${municipality?.name}`"
     class="max-w-180"
   >
     <UForm
