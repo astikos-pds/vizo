@@ -12,6 +12,11 @@ type GetMunicipalityByIdResponse = Municipality;
 
 type GetAllAffiliationsResponse = Page<AffiliationRequest>;
 
+type UpdateAffiliationStatusRequest = {
+  status: AffiliationRequestStatus;
+};
+type UpdateAffiliationStatusResponse = AffiliationRequest;
+
 type GetAllDepartmentsResponse = Page<Department>;
 
 type CreateDepartmentRequest = {
@@ -62,6 +67,21 @@ export const municipalityRepository = {
       },
       ...options,
     });
+  },
+
+  updateAffiliationStatus: (
+    municipalityId: String,
+    affiliationRequestId: string,
+    body: UpdateAffiliationStatusRequest
+  ) => {
+    const { $api } = useNuxtApp();
+    return $api<UpdateAffiliationStatusResponse>(
+      `/municipalities/${municipalityId}/affiliations/${affiliationRequestId}`,
+      {
+        method: "PATCH",
+        body,
+      }
+    );
   },
 
   getAllDepartments: (

@@ -6,7 +6,7 @@ import type { Pageable } from "~/types/http";
 
 const official = defineProps<Official>();
 
-const profileLink = `/profile/${official.id}`;
+const profileLink = "";
 
 const registeredAt = Date.parse(official.createdAt);
 const formattedRegisteredAt = useDateFormat(registeredAt, "DD/MM/YYYY");

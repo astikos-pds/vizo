@@ -31,6 +31,8 @@ const selectedOfficials = ref<Official[]>(officialsAlreadyAssigned.value ?? []);
 const { loading, handle } = useApiHandler();
 
 async function save() {
+  if (selectedOfficials.value.length === 0) return;
+
   const response = await handle(() =>
     municipalityRepository.assignToDepartmentInBatch(
       department.municipality.id,
@@ -54,8 +56,8 @@ async function save() {
     }"
   >
     <template #body>
-      <div v-if="pending">
-        <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
+      <div v-if="pending" class="p-4 flex flex-col gap-2">
+        <USkeleton class="h-20 w-full" v-for="i in 2" :key="i" />
       </div>
       <MunicipalityOfficialsPalette v-else v-model="selectedOfficials" />
     </template>

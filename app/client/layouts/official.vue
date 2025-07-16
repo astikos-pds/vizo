@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
-import type { Municipality } from "~/types/domain";
 import UserProfile from "~/components/navigation/UserProfile.vue";
 import { municipalityRepository } from "~/repositories/municipality-repository";
 

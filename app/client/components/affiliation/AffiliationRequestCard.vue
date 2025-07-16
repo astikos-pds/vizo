@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { ChipProps } from "@nuxt/ui";
+import { municipalityRepository } from "~/repositories/municipality-repository";
 import type {
   AffiliationRequest,
   AffiliationRequestStatus,
-  Official,
 } from "~/types/domain";
 
 const affiliationRequest = defineProps<AffiliationRequest>();
@@ -23,11 +23,31 @@ const chipColor = computed(() => {
   return colorByStatus[status];
 });
 
-function approve(requestId: string) {}
+async function updateAffiliationStatus(status: AffiliationRequestStatus) {
+  const municipalityId = affiliationRequest.municipality.id;
 
-function reject(requestId: string) {}
+  await municipalityRepository.updateAffiliationStatus(
+    municipalityId,
+    affiliationRequest.id,
+    {
+      status,
+    }
+  );
 
-function cancel(requestId: string) {}
+  await refreshNuxtData(`municipality-${municipalityId}-affiliations`);
+}
+
+async function approve() {
+  await updateAffiliationStatus("APPROVED");
+}
+
+async function reject() {
+  await updateAffiliationStatus("REJECTED");
+}
+
+async function cancel() {
+  await updateAffiliationStatus("PENDING");
+}
 </script>
 
 <template>
@@ -58,14 +78,14 @@ function cancel(requestId: string) {}
             class="flex justify-center"
             color="error"
             variant="subtle"
-            @click="reject(id)"
+            @click="reject"
             >Reject</UButton
           >
           <UButton
             class="flex justify-center"
             color="success"
             variant="subtle"
-            @click="approve(id)"
+            @click="approve"
             >Approve</UButton
           >
         </div>
@@ -74,7 +94,7 @@ function cancel(requestId: string) {}
             class="w-full flex justify-center"
             color="neutral"
             variant="solid"
-            @click="cancel(id)"
+            @click="cancel"
             >Cancel</UButton
           >
         </div>
