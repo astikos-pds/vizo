@@ -1,14 +1,14 @@
 export default defineNuxtRouteMiddleware((to, from) => {
-  const { user } = useUserStore();
+  const { currentDepartment } = useDepartmentStore();
   const toast = useToast();
 
-  if (!user || user.userType !== "OFFICIAL") {
+  if (!currentDepartment) {
     toast.add({
       title: "Forbidden",
       description: "You don't have permission to access this resource.",
       color: "error",
     });
 
-    return navigateTo(to.path === from.path ? "/" : "/login");
+    return navigateTo(from.path);
   }
 });

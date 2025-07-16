@@ -16,7 +16,7 @@
       "description": "Cadastre-se como autoridade municipal no Vizo"
     },
     "report": {
-      "title": "Vizo | Reporte um problem",
+      "title": "Vizo | Reporte um problema",
       "description": "Reporte um problema para as autoridades municipais"
     },
     "settings": {
@@ -28,14 +28,13 @@
       "description": "Explore as municipalidades às quais você está afiliado."
     }
   },
-
   "navBar": {
     "index": "Início",
     "report": "Reportar",
     "settings": "Configurações",
+    "municipality-dashboard": "Painel Municipal",
     "exit": "Sair"
   },
-
   "problemDetails": {
     "status": {
       "analysis": "Esse problema está sob análise pelas autoridades municipais",
@@ -49,7 +48,6 @@
       "high": "Muitos cidadãos reportaram esse problema"
     }
   },
-
   "configHeader": {
     "language": {
       "label": "Idioma"
@@ -61,7 +59,6 @@
       "dark": "Escuro"
     }
   },
-
   "registerCitizen": {
     "title": "Crie uma conta"
   },
@@ -185,7 +182,6 @@
       "passwordRequired": "Insira a senha"
     }
   },
-
   "reportProblem": {
     "title": "Reportar problema",
     "description": "Descrição",
@@ -218,7 +214,6 @@
       "imageSize": "Cada imagem deve ter no máximo { size } mb"
     }
   },
-
   "conflictModal": {
     "title": "Você provavelmente já denunciou este problema",
     "description": "Você denunciou um problema a menos de {meters} metros nos últimos {weeks} semanas. Tem certeza de que deseja denunciar este problema novamente?",
@@ -238,7 +233,6 @@
   "common": {
     "cancel": "Cancelar"
   },
-
   "settings": {
     "title": "Configurações",
     "saveButton": "Salvar",
@@ -246,7 +240,6 @@
     "themeLabel": "Tema",
     "searchPlaceholder": "Pesquisar..."
   },
-
   "problemReport": {
     "reportedAt": "Reportado em"
   },

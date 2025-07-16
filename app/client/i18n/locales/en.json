@@ -28,14 +28,13 @@
       "description": "Explore the municipalities you are affiliated with."
     }
   },
-
   "navBar": {
     "index": "Home",
     "report": "Report",
     "settings": "Settings",
+    "municipality-dashboard": "Main Pannel",
     "exit": "Exit"
   },
-
   "problemDetails": {
     "status": {
       "analysis": "This problem is under analysis by the municipalities",
@@ -49,7 +48,6 @@
       "high": "Many citizens reported this problem"
     }
   },
-
   "configHeader": {
     "language": {
       "label": "Language"
@@ -61,7 +59,6 @@
       "dark": "Dark"
     }
   },
-
   "registerCitizen": {
     "title": "Create an account"
   },
@@ -185,7 +182,6 @@
       "passwordRequired": "Password required"
     }
   },
-
   "reportProblem": {
     "title": "Report a problem",
     "description": "Description",
@@ -222,7 +218,6 @@
       "imageSize": "Each image must have at most { size } mb"
     }
   },
-
   "conflictModal": {
     "title": "You probably already reported this problem",
     "description": "You reported a problem within {meters} meters in the last {weeks} weeks. Are you sure you want to report this problem again?",
@@ -242,7 +237,6 @@
   "common": {
     "cancel": "Cancel"
   },
-
   "settings": {
     "title": "Settings",
     "saveButton": "Save",
@@ -250,7 +244,6 @@
     "themeLabel": "Theme",
     "searchPlaceholder": "Search..."
   },
-
   "problemReport": {
     "reportedAt": "Reported at"
   },
@@ -325,6 +318,142 @@
     },
     "warning": {
       "title": "Warning"
+    }
+  },
+  "solvedProblems": {
+    "title": "Solved Problems",
+    "subtitle": "List of problems solved in the last days.",
+    "solved": "Solved Problems",
+    "pending": "Pending Problems"
+  },
+  "months": {
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec"
+  },
+  "filter": {
+    "today": "Today",
+    "week": "This Week",
+    "month": "This Month",
+    "year": "This Year"
+  },
+  "lastProblems": {
+    "title": "Last Problems",
+    "problem": "Problem",
+    "neighborhood": "Neighborhood",
+    "status": "Status",
+    "actions": "Actions",
+    "reports": "Reports",
+    "seeMore": "See more",
+    "id": "ID",
+    "date": "Date",
+    "viewDetails": "View Details"
+  },
+  "problemRate": {
+    "title": "Problem Incidence",
+    "subtitle": "Problems in recent periods.",
+    "incidence": "Incidence"
+  },
+  "statusTypes": {
+    "completed": "Completed",
+    "in_progress": "In Progress",
+    "pending": "Pending"
+  },
+  "problems": {
+    "title": "Latest Problems",
+    "searchPlaceholder": "Search by ID, title or status...",
+    "id": "ID",
+    "date": "Date",
+    "problem": "Problem",
+    "status": "Status",
+    "actions": "Actions",
+    "viewDetails": "View Details",
+    "statusLabel": {
+      "completed": "Completed",
+      "in_progress": "In Progress",
+      "pending": "Pending"
+    }
+  },
+  "profile": {
+    "tab": {
+      "account": {
+        "label": "My Account",
+        "description": "Make changes to your profile, such as username and email."
+      },
+      "admin": {
+        "label": "Administration",
+        "description": "Manage users and permissions."
+      }
+    },
+    "form": {
+      "name": "Name",
+      "username": "Username",
+      "email": "Email",
+      "cellphone": "Cellphone",
+      "address": "Address",
+      "save": "Save Changes"
+    },
+    "reports": {
+      "title": "Reports Made",
+      "type": "Report Type",
+      "date": "Date",
+      "description": "Report Description",
+      "delete": "Delete"
+    },
+    "stats": {
+      "solved": "Problems Solved",
+      "helped": "People Helped by You"
+    },
+    "badges": {
+      "solver": "Problem Solver",
+      "helper": "Helper"
+    },
+    "fields": {
+      "permission": "Permission",
+      "city": "City",
+      "team": "Team"
+    }
+  },
+  "details": {
+    "title": "Problem Details",
+    "form": {
+      "id": "ID",
+      "title": "Title",
+      "status": "Status",
+      "date": "Date",
+      "address": "Address",
+      "description": "Description"
+    },
+    "photos": "Photos:",
+    "reports": {
+      "title": "User Reports",
+      "user": "User:",
+      "date": "Date:",
+      "description": "Description:",
+      "imageAlt": "Report photo"
+    },
+    "statusLabel": {
+      "completed": "Completed",
+      "in_progress": "In Progress",
+      "pending": "Pending"
+    }
+  },
+  "notifications": {
+    "title": "Notifications",
+    "searchPlaceholder": "Search by ID, title or status...",
+    "table": {
+      "date": "Date",
+      "title": "Title",
+      "description": "Description"
     }
   }
 }

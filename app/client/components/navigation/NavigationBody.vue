@@ -7,25 +7,52 @@ const { collapsed } = defineProps<{
 }>();
 
 const { t } = useI18n();
-const { logout } = useAuth();
 
-const items = computed<NavigationMenuItem[]>(() => [
-  {
-    label: t("navBar.index"),
-    icon: "i-lucide-house",
-    to: "/",
-  },
-  {
-    label: t("navBar.report"),
-    icon: "i-lucide-message-square-warning",
-    to: "/report",
-  },
-  {
-    label: t("navBar.settings"),
-    icon: "i-lucide-settings",
-    to: "/settings",
-  },
-]);
+const { isAdmin } = useUserStore();
+
+const items = computed<NavigationMenuItem[][]>(() => {
+  const baseItems = [
+    {
+      label: "Settings",
+      icon: "i-lucide-settings",
+      to: "/settings",
+    },
+  ];
+
+  if (!isAdmin) {
+    return [
+      [
+        {
+          label: t("navBar.index"),
+          icon: "i-lucide-house",
+          to: "/",
+        },
+        {
+          label: t("navBar.report"),
+          icon: "i-lucide-message-square-warning",
+          to: "/report",
+        },
+      ],
+      [...baseItems],
+    ];
+  }
+
+  return [
+    [
+      {
+        label: "Dashboard",
+        icon: "i-lucide-layout-dashboard",
+        to: "/dashboard",
+      },
+      {
+        label: "Problems",
+        icon: "i-lucide-badge-alert",
+        to: "/dashboard",
+      },
+    ],
+    [...baseItems],
+  ];
+});
 </script>
 
 <template>
