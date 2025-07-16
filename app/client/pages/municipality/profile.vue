@@ -53,7 +53,7 @@ const badges = ref([
   { icon: 'i-lucide-heart-handshake', label: 'Ajudante' },
 ]);
 
-const avatarOptions = [
+/* const avatarOptions = [
   "https://avatar.iran.liara.run/public/4",
   "https://avatar.iran.liara.run/public/74",
   "https://avatar.iran.liara.run/public/57",
@@ -66,13 +66,13 @@ const avatarOptions = [
   "https://avatar.iran.liara.run/public/14",
   "https://avatar.iran.liara.run/public/19",
   "https://avatar.iran.liara.run/public/96"
-]
+] */
 </script>
 
 <template>
   <div class="grid grid-cols-1 gap-6 p-4 sm:p-6 md:p-8 xl:grid-cols-1">
-    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 flex flex-col items-center">
-      <img :src="user.avatar || 'https://avatar.iran.liara.run/public'" height="120" width="120" class="rounded-full mb-4" /> <!-- placeholder do avatar-->
+    <div class="overflow-hidden rounded-2xl sm:px-6 flex flex-col items-center">
+      <!-- <img :src="user.avatar || 'https://avatar.iran.liara.run/public'" height="120" width="120" class="rounded-full mb-4" /> 
       <UModal title="Escolha um Avatar">
         <UButton class="mb-4 px-4 py-2">Alterar avatar</UButton>
         <template #body>
@@ -88,7 +88,8 @@ const avatarOptions = [
             </div>
           </div>
         </template>
-      </UModal>
+      </UModal> -->
+      <UAvatar :alt="user.name" size="3xl" />
       <UTabs :items="items" variant="link" :ui="{ trigger: 'grow' }" class="gap-4 w-full">
         <template #account="{ item }">
           <p class="text-muted mb-4">
@@ -119,7 +120,7 @@ const avatarOptions = [
             </div>
             <UButton label="Salvar Mudanças" type="submit" variant="soft" class="self-end mt-4" />
           </UForm>
-          <div class="bg-gray-50 dark:bg-neutral-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mt-8">
+          <div class="border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] p-6 mt-8">
             <h2 class="text-xl font-semibold mb-6">Reportes Realizados</h2>
             <div class="flex flex-col gap-8">
               <div v-for="(report, idx) in reports" :key="report.id" class="flex flex-col gap-4">
@@ -155,14 +156,14 @@ const avatarOptions = [
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
               <div class="flex flex-col items-center justify-center">
                 <h1 class="text-4xl font-bold mb-6 text-center">
-                  <span class="text-gray-700">Problemas Resolvidos</span>
+                  <span class="text-gray-400">Problemas Resolvidos</span>
                   <br>
                   <span class="text-green-600 text-5xl font-extrabold">{{ user.problemsSolved }}</span>
                 </h1>
               </div>
               <div class="flex flex-col items-center justify-center">
                 <h1 class="text-4xl font-bold mb-6 text-center">
-                  <span class="text-gray-700">Pessoas Beneficiadas por você</span>
+                  <span class="text-gray-400">Pessoas Beneficiadas por você</span>
                   <br>
                   <span class="text-green-600 text-5xl font-extrabold">{{ user.helpedPeople }}</span>
                 </h1>
