@@ -39,10 +39,12 @@ public class MunicipalityService {
     private final OfficialRepository officialRepository;
     private final DepartmentRepository departmentRepository;
     private final AssignmentRepository assignmentRepository;
+    private final ProblemRepository problemRepository;
     private final MunicipalityMapper municipalityMapper;
     private final AffiliationRequestMapper affiliationRequestMapper;
     private final DepartmentMapper departmentMapper;
     private final AssignmentMapper assignmentMapper;
+    private final ProblemMapper problemMapper;
 
     public MunicipalityService(
             OfficialService officialService,
@@ -51,10 +53,12 @@ public class MunicipalityService {
             OfficialRepository officialRepository,
             DepartmentRepository departmentRepository,
             AssignmentRepository assignmentRepository,
+            ProblemRepository problemRepository,
             MunicipalityMapper municipalityMapper,
             AffiliationRequestMapper affiliationRequestMapper,
             DepartmentMapper departmentMapper,
-            AssignmentMapper assignmentMapper
+            AssignmentMapper assignmentMapper,
+            ProblemMapper problemMapper
     ) {
         this.officialService = officialService;
         this.municipalityRepository = municipalityRepository;
@@ -62,10 +66,12 @@ public class MunicipalityService {
         this.officialRepository = officialRepository;
         this.departmentRepository = departmentRepository;
         this.assignmentRepository = assignmentRepository;
+        this.problemRepository = problemRepository;
         this.municipalityMapper = municipalityMapper;
         this.affiliationRequestMapper = affiliationRequestMapper;
         this.departmentMapper = departmentMapper;
         this.assignmentMapper = assignmentMapper;
+        this.problemMapper = problemMapper;
     }
 
     public MunicipalityDTO getMunicipalityById(UUID id) {
@@ -139,6 +145,22 @@ public class MunicipalityService {
         this.departmentRepository.deleteById(departmentId);
     }
 
+    public Page<ProblemDTO> getDepartmentVisibleProblems(
+            UUID municipalityId,
+            UUID departmentId,
+            Pageable pageable,
+            Authentication authentication
+    ) {
+        this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
+
+        Department department = this.departmentRepository.findById(departmentId).orElseThrow(
+                () -> new NotFoundException("Department not found.")
+        );
+
+        return this.problemRepository.findAllByTypeIn(department.getProblemTypes(), pageable)
+                .map(this.problemMapper::toDto);
+    }
+
     public Page<AssignmentDTO> getAssignments(
             UUID municipalityId,
             UUID departmentId,
@@ -147,9 +169,9 @@ public class MunicipalityService {
     ) {
         this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
 
-        this.departmentRepository.findById(departmentId).orElseThrow(
-                () -> new NotFoundException("Department not found.")
-        );
+        if (!this.departmentRepository.existsById(departmentId)) {
+            throw new NotFoundException("Department not found.");
+        }
 
         return this.assignmentRepository.findAllByDepartmentId(departmentId, pageable)
                 .map(this.assignmentMapper::toDto);

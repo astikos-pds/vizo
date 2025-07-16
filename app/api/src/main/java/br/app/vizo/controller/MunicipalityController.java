@@ -108,6 +108,23 @@ public class MunicipalityController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{municipalityId}/departments/{departmentId}/problems")
+    public ResponseEntity<PageResponse<ProblemDTO>> getAllDepartmentProblems(
+            @PathVariable UUID municipalityId,
+            @PathVariable UUID departmentId,
+            Pageable pageable,
+            Authentication authentication
+    ) {
+        Page<ProblemDTO> response = this.municipalityService.getDepartmentVisibleProblems(
+                municipalityId,
+                departmentId,
+                pageable,
+                authentication
+        );
+
+        return ResponseEntity.ok(PageResponse.of(response));
+    }
+
     @GetMapping("/{municipalityId}/departments/{departmentId}/assignments")
     public ResponseEntity<PageResponse<AssignmentDTO>> getAssignments(
             @PathVariable UUID municipalityId,

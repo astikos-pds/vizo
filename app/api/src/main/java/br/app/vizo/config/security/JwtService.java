@@ -93,7 +93,7 @@ public class JwtService {
     public Instant accessTokenExpiresAt() {
         return ZonedDateTime
                 .now(ZoneId.of("America/Sao_Paulo"))
-                .plusMinutes(15)
+                .plusHours(3)
                 .toInstant();
     }
 
