@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { h, resolveComponent, ref, computed } from 'vue'
 import type { TableColumn } from '@nuxt/ui'
@@ -77,17 +76,17 @@ const totalItems = computed(() => {
 const columns: TableColumn<Notification>[] = [
   {
     accessorKey: 'date',
-    header: 'Data',
+    header: t('notifications.table.date'),
     cell: ({ row }) => row.getValue('date')
   },
   {
     accessorKey: 'title',
-    header: 'Título',
+    header: t('notifications.table.title'),
     cell: ({ row }) => row.getValue('title')
   },
   {
     accessorKey: 'description',
-    header: 'Descrição',
+    header: t('notifications.table.description'),
     cell: ({ row }) => row.getValue('description')
   }
 ]
@@ -99,13 +98,13 @@ const columns: TableColumn<Notification>[] = [
       class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
     >
       <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-        Notificações
+        {{ t('notifications.title') }}
       </h3>
 
       <div class="my-4 px-4">
         <UInput
           v-model="search"
-          placeholder="Buscar por ID, título, descrição ou status..."
+          :placeholder="t('notifications.searchPlaceholder')"
           clearable
           icon="i-lucide-search"
         />

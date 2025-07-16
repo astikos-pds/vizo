@@ -2,6 +2,9 @@
 import { h, resolveComponent, ref } from 'vue'
 import { useRouter } from '#app'
 import type { TableColumn } from '@nuxt/ui'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 
 const UButton = resolveComponent('UButton')
 const UBadge = resolveComponent('UBadge')
@@ -11,51 +14,44 @@ type Problem = {
   id: string
   date: string
   title: string
-  status: 'concluido' | 'em_andamento' | 'pendente'
+  status: 'completed' | 'in_progress' | 'pending'
 }
 
 const router = useRouter()
 
 const data = ref<Problem[]>([
-  { id: '1001', date: '2025-07-10T09:30:00', title: 'Buraco na rua', status: 'pendente' },
-  { id: '1002', date: '2025-07-09T14:15:00', title: 'Luz queimada', status: 'em_andamento' },
-  { id: '1003', date: '2025-07-08T17:45:00', title: 'Vazamento de água', status: 'concluido' },
-  { id: '1004', date: '2025-07-07T11:20:00', title: 'Coleta de lixo atrasada', status: 'pendente' },
-  { id: '1005', date: '2025-07-06T16:00:00', title: 'Árvore caída', status: 'em_andamento' }
+  { id: '1001', date: '10/07/2025 09:30:00', title: 'Buraco na rua', status: 'pending' },
+  { id: '1002', date: '09/07/2025 14:15:00', title: 'Luz queimada', status: 'in_progress' },
+  { id: '1003', date: '08/07/2025 17:45:00', title: 'Vazamento de água', status: 'completed' },
+  { id: '1004', date: '07/07/2025 11:20:00', title: 'Coleta de lixo atrasada', status: 'pending' },
+  { id: '1005', date: '06/07/2025 16:00:00', title: 'Árvore caída', status: 'in_progress' }
 ])
+
+const totalProblems = computed(() => data.value.length)
 
 const columns: TableColumn<Problem>[] = [
   {
     accessorKey: 'id',
-    header: 'ID',
+    header: t('lastProblems.id'),
     cell: ({ row }) => row.getValue('id')
   },
   {
     accessorKey: 'date',
-    header: 'Data',
-    cell: ({ row }) => {
-      return new Date(row.getValue('date')).toLocaleString('pt-BR', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-      })
-    }
+    header: t('lastProblems.date'),
+    cell: ({ row }) => row.getValue('date')
   },
   {
     accessorKey: 'title',
-    header: 'Problema',
+    header: t('lastProblems.problem'),
     cell: ({ row }) => row.getValue('title')
   },
   {
     accessorKey: 'status',
-    header: 'Status',
+    header: t('lastProblems.status'),
     cell: ({ row }) => {
       const status = row.getValue('status') as Problem['status']
-      const color = status === 'concluido' ? 'success' : status === 'em_andamento' ? 'warning' : 'error'
-      const label = status === 'concluido' ? 'Concluído' : status === 'em_andamento' ? 'Em Andamento' : 'Pendente'
+      const color = status === 'completed' ? 'success' : status === 'in_progress' ? 'warning' : 'error'
+      const label = t(`statusTypes.${status}`)
       return h(UBadge, { class: 'capitalize', variant: 'subtle', color }, () => label)
     }
   },
@@ -63,10 +59,10 @@ const columns: TableColumn<Problem>[] = [
     id: 'actions',
     cell: ({ row }) => {
       const items = [
-        { type: 'label', label: 'Ações' },
+        { type: 'label', label: t('lastProblems.actions') },
         { type: 'separator' },
         {
-          label: 'Ver Detalhes',
+          label: t('lastProblems.viewDetails'),
           icon: 'i-lucide-arrow-right',
           onSelect: () => {
             router.push(`/municipality/problems/${row.original.id}`)
@@ -92,7 +88,7 @@ const columns: TableColumn<Problem>[] = [
 <template>
   <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
     <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-      Últimos Problemas (15)
+      {{ t('lastProblems.title') }} ({{ totalProblems }})
     </h3>
     <div class="flex items-center gap-2 px-4 py-3.5 overflow-x-auto">
     </div>

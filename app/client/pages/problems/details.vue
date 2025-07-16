@@ -6,15 +6,11 @@ import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const route = useRoute();
 const problemId = Array.isArray(route.params.id) ? route.params.id[0] : (route.params.id || '1001');
-import { useProblems } from "~/composables/use-problem";
-import type { Problem } from "~/types/domain";
-import { useMapGeolocation } from "~/composables/use-map-geolocation";
-import ProblemDetails from "~/components/problem/ProblemDetails.vue";
 
 const problem = ref({
   id: problemId,
   title: 'Buraco na rua',
-  status: 'pendente',
+  status: 'pending',
   address: 'Rua pedro vicente, 18912, Canindé',
   latitude: -23.525395,
   longitude: -46.621716,
@@ -57,56 +53,56 @@ const reports = ref([
           />
         </Map>
       </div>
-      <h2 class="text-2xl font-bold mb-2">Detalhes do Problema</h2>
+      <h2 class="text-2xl font-bold mb-2">{{ t('details.title') }}</h2>
       <div class="w-full max-w-2xl">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <div class="flex flex-col gap-4">
             <UForm :state="problem" class="flex flex-col gap-4">
-              <UFormField label="ID" name="id">
+              <UFormField :label="t('details.form.id')" name="id">
                 <UInput v-model="problem.id" disabled />
               </UFormField>
-              <UFormField label="Título" name="title">
+              <UFormField :label="t('details.form.title')" name="title">
                 <UInput v-model="problem.title" disabled />
               </UFormField>
-              <UFormField label="Status" name="status">
-                <UBadge :color="problem.status === 'concluido' ? 'success' : problem.status === 'em_andamento' ? 'warning' : 'error'" variant="subtle">
-                  {{ problem.status === 'concluido' ? 'Concluído' : problem.status === 'em_andamento' ? 'Em Andamento' : 'Pendente' }}
+              <UFormField :label="t('details.form.status')" name="status">
+                <UBadge :color="problem.status === 'completed' ? 'success' : problem.status === 'in_progress' ? 'warning' : 'error'" variant="subtle">
+                  {{ t('details.statusLabel.' + problem.status) }}
                 </UBadge>
               </UFormField>
-              <UFormField label="Data" name="date">
+              <UFormField :label="t('details.form.date')" name="date">
                 <UInput v-model="problem.date" disabled />
               </UFormField>
-              <UFormField label="Endereço" name="address">
+              <UFormField :label="t('details.form.address')" name="address">
                 <UTextarea v-model="problem.address" :rows="2" autoresize disabled class="max-h-20 overflow-auto break-words" />
               </UFormField>
             </UForm>
           </div>
           <div class="flex flex-col gap-4">
-            <UFormField label="Descrição" name="description">
+            <UFormField :label="t('details.form.description')" name="description">
               <UTextarea v-model="problem.description" :rows="4" autoresize disabled class="max-h-40 overflow-auto break-words" />
             </UFormField>
           </div>
         </div>
         <div class="mb-6">
-          <span class="font-semibold">Fotos:</span>
+          <span class="font-semibold">{{ t('details.photos') }}</span>
           <div class="flex gap-4 mt-2 flex-wrap">
-            <img v-for="(photo, idx) in problem.photos" :key="idx" :src="photo" class="rounded-lg w-[120px] h-[120px] object-cover aspect-square border" />
+            <img v-for="(photo, idx) in problem.photos" :key="idx" :src="photo" :alt="t('details.reports.imageAlt')" class="rounded-lg w-[120px] h-[120px] object-cover aspect-square border" />
           </div>
         </div>
-        <div class=" rounded-xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] p-6 mt-8">
-          <h3 class="text-xl font-semibold mb-6">Reportes de Usuários</h3>
+        <div class="rounded-xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] p-6 mt-8">
+          <h3 class="text-xl font-semibold mb-6">{{ t('details.reports.title') }}</h3>
           <div class="flex flex-col gap-8">
             <div v-for="(report, idx) in reports" :key="idx" class="flex flex-col gap-4">
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="flex flex-col gap-2">
-                  <div><span class="font-semibold">Usuário:</span> {{ report.username }}</div>
-                  <div><span class="font-semibold">Data:</span> {{ report.date }}</div>
+                  <div><span class="font-semibold">{{ t('details.reports.user') }}</span> {{ report.username }}</div>
+                  <div><span class="font-semibold">{{ t('details.reports.date') }}</span> {{ report.date }}</div>
                 </div>
                 <div class="flex flex-col gap-2 md:col-span-2">
-                  <div><span class="font-semibold">Descrição:</span></div>
+                  <div><span class="font-semibold">{{ t('details.reports.description') }}</span></div>
                   <div class="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-gray-700 p-3 max-h-40 overflow-auto break-words">{{ report.description }}</div>
                   <div class="w-[120px] h-[120px] mt-2">
-                    <img :src="report.photo" class="rounded-lg w-full h-full object-cover aspect-square" />
+                    <img :src="report.photo" :alt="t('details.reports.imageAlt')" class="rounded-lg w-full h-full object-cover aspect-square" />
                   </div>
                 </div>
               </div>

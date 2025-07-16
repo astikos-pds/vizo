@@ -12,7 +12,7 @@
       "description": "Cadastre-se como cidadão no Vizo"
     },
     "report": {
-      "title": "Vizo | Reporte um problem",
+      "title": "Vizo | Reporte um problema",
       "description": "Reporte um problema para as autoridades municipais"
     },
     "settings": {
@@ -20,7 +20,6 @@
       "description": "Atualize suas configurações no Vizo"
     }
   },
-
   "navBar": {
     "index": "Início",
     "report": "Reportar",
@@ -28,7 +27,6 @@
     "municipality-dashboard": "Painel Municipal",
     "exit": "Sair"
   },
-
   "problemDetails": {
     "status": {
       "analysis": "Esse problema está sob análise pelas autoridades municipais",
@@ -42,7 +40,6 @@
       "high": "Muitos cidadãos reportaram esse problema"
     }
   },
-
   "configHeader": {
     "language": {
       "label": "Idioma"
@@ -54,7 +51,6 @@
       "dark": "Escuro"
     }
   },
-
   "registerCitizen": {
     "title": "Crie uma conta",
     "firstName": "Nome",
@@ -101,7 +97,6 @@
       "minAge": "Você deve ter pelo menos { age } anos"
     }
   },
-
   "loginCitizen": {
     "title": "Entre em sua conta",
     "cpf": "Documento",
@@ -117,7 +112,6 @@
       "passwordRequired": "Insira a senha"
     }
   },
-
   "reportProblem": {
     "title": "Reportar problema",
     "description": "Descrição",
@@ -150,7 +144,6 @@
       "imageSize": "Cada imagem deve ter no máximo { size } mb"
     }
   },
-
   "conflictModal": {
     "title": "Você provavelmente já denunciou este problema",
     "description": "Você denunciou um problema a menos de {meters} metros nos últimos {weeks} semanas. Tem certeza de que deseja denunciar este problema novamente?",
@@ -170,7 +163,6 @@
   "common": {
     "cancel": "Cancelar"
   },
-
   "settings": {
     "title": "Configurações",
     "saveButton": "Salvar",
@@ -178,11 +170,9 @@
     "themeLabel": "Tema",
     "searchPlaceholder": "Pesquisar..."
   },
-
   "problemReport": {
     "reportedAt": "Reportado em"
   },
-
   "toast": {
     "error": {
       "title": "Erro",
@@ -196,7 +186,6 @@
         "default": "Ocorreu um erro inesperado. Por favor, tente novamente."
       }
     },
-    
     "success": {
       "title": "Sucesso",
       "description": {
@@ -207,14 +196,12 @@
       }
     }
   },
-
   "solvedProblems": {
     "title": "Problemas Resolvidos",
     "subtitle": "Relação de problemas resolvidos nos últimos dias.",
     "solved": "Problemas Resolvidos",
     "pending": "Problemas Pendentes"
   },
-
   "months": {
     "jan": "Jan",
     "feb": "Fev",
@@ -229,14 +216,12 @@
     "nov": "Nov",
     "dec": "Dez"
   },
-
   "filter": {
     "today": "Hoje",
     "week": "Esta Semana",
     "month": "Este Mês",
     "year": "Este Ano"
   },
-
   "lastProblems": {
     "title": "Últimos Problemas",
     "problem": "Problema",
@@ -245,16 +230,107 @@
     "actions": "Ações",
     "reports": "Reportes",
     "seeMore": "Ver mais",
-    "statuses": {
-      "Resolvido": "Resolvido",
-      "Em Andamento": "Em Andamento",
-      "Em Análise": "Em Análise"
-    }
+    "id": "ID",
+    "date": "Data",
+    "viewDetails": "Ver Detalhes"
   },
-
   "problemRate": {
     "title": "Incidência de Problemas",
     "subtitle": "Problemas nos últimos tempos.",
     "incidence": "Incidência"
+  },
+  "statusTypes": {
+      "completed": "Concluído",
+      "in_progress": "Em Andamento",
+      "pending": "Pendente"
+    },
+  "problems": {
+    "title": "Últimos Problemas",
+    "searchPlaceholder": "Buscar por ID, título ou status...",
+    "id": "ID",
+    "date": "Data",
+    "problem": "Problema",
+    "status": "Status",
+    "actions": "Ações",
+    "viewDetails": "Ver Detalhes",
+    "statusLabel": {
+      "completed": "Concluído",
+      "in_progress": "Em Andamento",
+      "pending": "Pendente"
+    }
+  },
+  "profile": {
+    "tab": {
+      "account": {
+        "label": "Minha Conta",
+        "description": "Faça alterações no seu perfil, como nome de usuário e email."
+      },
+      "admin": {
+        "label": "Administração",
+        "description": "Faça Gerenciamento de usuários e permissões."
+      }
+    },
+    "form": {
+      "name": "Nome",
+      "username": "Nome de Usuário",
+      "email": "Email",
+      "cellphone": "Celular",
+      "address": "Endereço",
+      "save": "Salvar Mudanças"
+    },
+    "reports": {
+      "title": "Reportes Realizados",
+      "type": "Tipo de Reporte",
+      "date": "Data",
+      "description": "Descrição do Reporte",
+      "delete": "Excluir"
+    },
+    "stats": {
+      "solved": "Problemas Resolvidos",
+      "helped": "Pessoas Beneficiadas por você"
+    },
+    "badges": {
+      "solver": "Resolvedor de Problemas",
+      "helper": "Ajudante"
+    },
+    "fields": {
+      "permission": "Permissão",
+      "city": "Cidade",
+      "team": "Equipe"
+    }
+  },
+  "details": {
+    "title": "Detalhes do Problema",
+    "form": {
+      "id": "ID",
+      "title": "Título",
+      "status": "Status",
+      "date": "Data",
+      "address": "Endereço",
+      "description": "Descrição"
+    },
+    "photos": "Fotos:",
+    "reports": {
+      "title": "Reportes de Usuários",
+      "user": "Usuário:",
+      "date": "Data:",
+      "description": "Descrição:",
+      "imageAlt": "Foto do reporte"
+    },
+    "statusLabel": {
+      "completed": "Concluído",
+      "in_progress": "Em andamento",
+      "pending": "Pendente"
+    }
+  },
+  "notifications": {
+    "title": "Notificações",
+    "searchPlaceholder": "Buscar por ID, título ou status...",
+    "table": {
+      "date": "Data",
+      "title": "Título",
+      "description": "Descrição"
+    }
   }
+  
 }

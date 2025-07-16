@@ -15,14 +15,14 @@ definePageMeta({
 
 const items = [
   {
-    label: 'Minha Conta',
-    description: 'Faça alterações no seu perfil, como nome de usuário e email.',
+    label: t('profile.tab.account.label'),
+    description: t('profile.tab.account.description'),
     icon: 'i-lucide-user',
     slot: 'account' as const
   },
   {
-    label: 'Administração',
-    description: 'Faça Gerenciamento de usuários e permissões.',
+    label: t('profile.tab.admin.label'),
+    description: t('profile.tab.admin.description'),
     icon: 'i-lucide-lock',
     slot: 'password' as const
   }
@@ -43,14 +43,14 @@ const user = reactive({
 })
 
 const reports = ref([
-  { id: '1001', date: '2025-07-10 09:30:00', title: 'Buraco na rua', description: "Encontrei esse buraco no canto da rua, esta juntando mosquitos da dengue até.", image: "https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg", status: 'pendente' },
-  { id: '1002', date: '2025-07-09 14:15:00', title: 'Luz queimada em poste', description: "A luz do poste esta queimada quase fui atropelado por um cara que gritava \" chora garotinho\".", image: "https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg", status: 'em_andamento' },
-  { id: '1003', date: '2025-07-08 17:45:00', title: 'Vazamento de água', description: "SDhjnkdfjdsbnkfjsdbfjsdl,.fhusdlfhjdsf,ljsdfghbu", image: "https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg", status: 'concluido' },
+  { id: '1001', date: '2025-07-10 09:30:00', title: 'Buraco na rua', description: "Encontrei esse buraco no canto da rua, esta juntando mosquitos da dengue até.", image: "https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg", status: 'pending' },
+  { id: '1002', date: '2025-07-09 14:15:00', title: 'Luz queimada em poste', description: "A luz do poste esta queimada quase fui atropelado por um cara que gritava \" chora garotinho\".", image: "https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg", status: 'in_progress' },
+  { id: '1003', date: '2025-07-08 17:45:00', title: 'Vazamento de água', description: "SDhjnkdfjdsbnkfjsdbfjsdl,.fhusdlfhjdsf,ljsdfghbu", image: "https://s2-g1.glbimg.com/BXoCVbSSUMqwk8SrldbMK3pYYbg=/0x0:1280x960/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_59edd422c0c84a879bd37670ae4f538a/internal_photos/bs/2018/1/p/JbO1BoTCu5FmmTAWCQvA/cratera-joao-pessoa-bayeux.jpg", status: 'completed' },
 ]);
 
 const badges = ref([
-  { icon: 'i-lucide-headset', label: 'Resolvedor de Problemas' },
-  { icon: 'i-lucide-heart-handshake', label: 'Ajudante' },
+  { icon: 'i-lucide-headset', label: t('profile.badges.solver') },
+  { icon: 'i-lucide-heart-handshake', label: t('profile.badges.helper') },
 ]);
 
 /* const avatarOptions = [
@@ -99,46 +99,46 @@ const badges = ref([
           <UForm :state="user" class="flex flex-col gap-4">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div class="flex flex-col gap-4">
-                <UFormField label="Nome" name="name">
-                  <UInput v-model="user.name" class="w-100" required />
+                <UFormField :label="t('profile.form.name')" name="name">
+                  <UInput v-model="user.name" class="w-80" required />
                 </UFormField>
-                <UFormField label="Nome de Usuário" name="username">
-                  <UInput v-model="user.username" class="w-100" required :disabled="true" />
+                <UFormField :label="t('profile.form.username')" name="username">
+                  <UInput v-model="user.username" class="w-80" required :disabled="true" />
                 </UFormField>
-                <UFormField label="Email" name="email">
-                  <UInput v-model="user.email" class="w-100" required :disabled="true" />
+                <UFormField :label="t('profile.form.email')" name="email">
+                  <UInput v-model="user.email" class="w-80" required :disabled="true" />
                 </UFormField>
               </div>
               <div class="flex flex-col gap-4">
-                <UFormField label="Celular" name="cellphone">
-                  <UInput v-model="user.phone" class="w-100" required />
+                <UFormField :label="t('profile.form.cellphone')" name="cellphone">
+                  <UInput v-model="user.phone" class="w-40" required />
                 </UFormField>
-                <UFormField label="Endereço" name="address">
-                  <UInput v-model="user.address" class="w-100" required />
+                <UFormField :label="t('profile.form.address')" name="address">
+                  <UInput v-model="user.address" class="w-80" required />
                 </UFormField>
               </div>
             </div>
-            <UButton label="Salvar Mudanças" type="submit" variant="soft" class="self-end mt-4" />
+            <UButton :label="t('profile.form.save')" type="submit" variant="soft" class="self-end mt-4" />
           </UForm>
           <div class="border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] p-6 mt-8">
-            <h2 class="text-xl font-semibold mb-6">Reportes Realizados</h2>
+            <h2 class="text-xl font-semibold mb-6">{{ t('profile.reports.title') }}</h2>
             <div class="flex flex-col gap-8">
               <div v-for="(report, idx) in reports" :key="report.id" class="flex flex-col gap-4">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div class="flex flex-col gap-4">
-                    <UFormField label="Tipo de Reporte" :name="`reportType-${idx}`">
+                    <UFormField :label="t('profile.reports.type')" :name="`reportType-${idx}`">
                       <UInput v-model="report.title" :disabled="true" />
                     </UFormField>
-                    <UFormField label="Data" :name="`reportDate-${idx}`">
+                    <UFormField :label="t('profile.reports.date')" :name="`reportDate-${idx}`">
                       <UInput v-model="report.date" :disabled="true" />
                     </UFormField>
                   </div>
                   <div class="flex flex-col gap-4">
-                    <UFormField label="Descrição do Reporte" :name="`reportDescription-${idx}`">
+                    <UFormField :label="t('profile.reports.description')" :name="`reportDescription-${idx}`">
                       <UTextarea v-model="report.description" :rows="5" :maxrows="5" autoresize class="w-full" :disabled="true"/>
                     </UFormField>
                     <div class="flex justify-end">
-                      <UButton icon="i-lucide-trash-2" size="md" color="error" variant="solid" class="mt-2" />
+                      <UButton :label="t('profile.reports.delete')" icon="i-lucide-trash-2" size="md" color="error" variant="solid" class="mt-2" />
                     </div>
                     <div class="w-[200px] h-[200px]">
                       <img :src="report.image" class="rounded-lg w-full h-full object-cover aspect-square" />
@@ -156,16 +156,14 @@ const badges = ref([
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
               <div class="flex flex-col items-center justify-center">
                 <h1 class="text-4xl font-bold mb-6 text-center">
-                  <span class="text-gray-400">Problemas Resolvidos</span>
-                  <br>
-                  <span class="text-green-600 text-5xl font-extrabold">{{ user.problemsSolved }}</span>
+                  <h1 class="text-gray-600 dark:text-gray-300">{{ t('profile.stats.solved') }}</h1>
+                  <h1 class="text-green-600 text-5xl font-extrabold">{{ user.problemsSolved }}</h1>
                 </h1>
               </div>
               <div class="flex flex-col items-center justify-center">
                 <h1 class="text-4xl font-bold mb-6 text-center">
-                  <span class="text-gray-400">Pessoas Beneficiadas por você</span>
-                  <br>
-                  <span class="text-green-600 text-5xl font-extrabold">{{ user.helpedPeople }}</span>
+                  <h1 class="text-gray-600 dark:text-gray-300">{{ t('profile.stats.helped') }}</h1>
+                  <h1 class="text-green-600 text-5xl font-extrabold">{{ user.helpedPeople }}</h1>
                 </h1>
               </div>
             </div>
@@ -190,13 +188,13 @@ const badges = ref([
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="flex flex-col gap-4">
-              <UFormField label="Permissão" :name="'permission'">
+              <UFormField :label="t('profile.fields.permission')" :name="'permission'">
                 <UInput v-model="user.permission" :disabled="true" />
               </UFormField>
-              <UFormField label="Cidade" :name="'city'">
+              <UFormField :label="t('profile.fields.city')" :name="'city'">
                 <UInput v-model="user.city" :disabled="true" />
               </UFormField>
-              <UFormField label="Equipe" :name="'team'">
+              <UFormField :label="t('profile.fields.team')" :name="'team'">
                 <UInput v-model="user.team" :disabled="true" />
               </UFormField>
             </div>
