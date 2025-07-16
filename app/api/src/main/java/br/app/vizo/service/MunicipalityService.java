@@ -98,6 +98,7 @@ public class MunicipalityService {
                 .map(this.departmentMapper::toDto);
     }
 
+    @Transactional
     public DepartmentDTO createMunicipalityDepartment(
             UUID municipalityId,
             CreateDepartmentRequestDTO body,
@@ -112,7 +113,20 @@ public class MunicipalityService {
         department.setCreatedBy(officialContext.loggedInOfficial());
         department.setMunicipality(officialContext.municipality());
 
-        return this.departmentMapper.toDto(this.departmentRepository.save(department));
+        department = this.departmentRepository.save(department);
+
+        Assignment assignment = new Assignment();
+        assignment.setDepartment(department);
+        assignment.setOfficial(officialContext.loggedInOfficial());
+        assignment.setCreatedBy(officialContext.loggedInOfficial());
+        assignment.setRoleInDepartment(DepartmentRole.ADMIN);
+        assignment.setCanViewReports(true);
+        assignment.setCanUpdateStatus(true);
+        assignment.setCanApproveOfficials(true);
+
+        this.assignmentRepository.save(assignment);
+
+        return this.departmentMapper.toDto(department);
     }
 
     public Page<AssignmentDTO> getAssignments(
