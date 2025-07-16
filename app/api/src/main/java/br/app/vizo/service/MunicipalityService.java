@@ -288,11 +288,9 @@ public class MunicipalityService {
         affiliationRequest.setApprovedBy(loggedInOfficial);
         affiliationRequest.setApprovedAt(DateUtil.now());
 
-        if (body.status() == AffiliationRequestStatus.APPROVED) {
-            Official official = affiliationRequest.getOfficial();
-            official.setWasApproved(true);
-            this.officialRepository.save(official);
-        }
+        Official official = affiliationRequest.getOfficial();
+        official.setWasApproved(body.status() == AffiliationRequestStatus.APPROVED);
+        this.officialRepository.save(official);
 
         return this.affiliationRequestMapper.toDto(this.affiliationRequestRepository.save(affiliationRequest));
     }
