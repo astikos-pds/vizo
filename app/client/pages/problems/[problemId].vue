@@ -196,6 +196,11 @@ import { problemRepository } from "~/repositories/problem-repository";
 const { t } = useI18n();
 const route = useRoute();
 
+definePageMeta({
+  name: "Problem",
+  middleware: ["auth", "official", "department"],
+});
+
 const problemId = computed(() => route.params.problemId as string);
 const { currentDepartment } = useDepartmentStore();
 

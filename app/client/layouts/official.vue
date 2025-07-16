@@ -8,15 +8,6 @@ const { t } = useI18n();
 const route = useRoute();
 const municipalityId = computed(() => route.params.municipalityId as string);
 
-const { data: municipality } = await municipalityRepository.getById(
-  municipalityId.value,
-  {
-    key: `municipality-${municipalityId.value}`,
-    immediate: false,
-    watch: [municipalityId],
-  }
-);
-
 const { isAdmin } = useUserStore();
 
 const navigationItems = computed<NavigationMenuItem[]>(() => {
@@ -86,7 +77,14 @@ const items = computed<NavigationMenuItem[]>(() => {
     <div
       class="w-full flex justify-between items-center border-b border-default p-1 2xl:p-2"
     >
-      <UserProfile collapsed />
+      <UButton
+        v-if="municipalityId"
+        size="xl"
+        variant="link"
+        to="/municipalities"
+        icon="i-lucide-arrow-left"
+        color="neutral"
+      />
 
       <UNavigationMenu
         v-if="items.length > 0"
@@ -94,17 +92,7 @@ const items = computed<NavigationMenuItem[]>(() => {
         class="w-full flex justify-center items-center"
       />
 
-      <UButton
-        v-if="municipalityId"
-        size="xl"
-        variant="link"
-        to="/municipalities"
-        :avatar="{
-          src: municipality?.iconUrl,
-          alt: municipality?.name,
-          size: 'md',
-        }"
-      />
+      <UserProfile collapsed />
     </div>
 
     <div class="w-full flex flex-col items-center justify-center">

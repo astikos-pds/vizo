@@ -2,6 +2,7 @@
 import type { Pageable } from "~/types/http";
 
 definePageMeta({
+  name: "Problems",
   middleware: ["auth", "official", "department"],
 });
 
