@@ -1,7 +1,10 @@
 import type { UseFetchOptions } from "#app";
-import type { Municipality } from "~/types/domain";
+import type { AffiliationRequest, Municipality } from "~/types/domain";
+import type { Page } from "~/types/http";
 
 type GetMunicipalityByIdResponse = Municipality;
+
+type GetAllAffiliationsResponse = Page<AffiliationRequest>;
 
 export const municipalityRepository = {
   getById: (id: string, options?: UseFetchOptions<Municipality>) => {
@@ -9,5 +12,12 @@ export const municipalityRepository = {
       `/municipalitites/${id}`,
       options
     );
+  },
+
+  getAllAffiliations: (
+    municipalityId: string,
+    options?: UseFetchOptions<GetAllAffiliationsResponse>
+  ) => {
+    return useQuery(`/municipalities/${municipalityId}/affiliations`, options);
   },
 };

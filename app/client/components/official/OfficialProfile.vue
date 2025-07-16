@@ -28,7 +28,7 @@ const items = ref<DropdownMenuItem[]>([
     color="neutral"
     variant="link"
     :avatar="{
-      src: '',
+      src: avatar?.url,
       alt: name,
       size: 'xl',
     }"

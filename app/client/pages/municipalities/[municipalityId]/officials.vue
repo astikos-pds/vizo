@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { AccordionItem } from "@nuxt/ui";
+import { municipalityRepository } from "~/repositories/municipality-repository";
 import type { Municipality, Official } from "~/types/domain";
+import type { Pageable } from "~/types/http";
 
 useHead({
   title: "Vizo | Officials",
@@ -14,94 +16,37 @@ useHead({
 
 definePageMeta({
   layout: "official",
-  // middleware: ["auth", "official"],
+  middleware: ["auth", "official"],
 });
 
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 
-// const municipality = useNuxtData<Municipality>(`municipality-${municipalityId}`)
-const municipality: Municipality = {
-  id: "",
-  name: "São Paulo",
-  emailDomain: "",
-  iconUrl: "",
-  createdAt: "",
-  updatedAt: "",
-};
+const { data: municipality } = useNuxtData<Municipality>(
+  `municipality-${municipalityId}`
+);
 
-const officials = ref<Official[]>([
+const pageable: Pageable = reactive({
+  page: 0,
+  size: 100,
+});
+
+const { data: page, pending } = municipalityRepository.getAllAffiliations(
+  municipalityId,
   {
-    id: "",
-    document: "",
-    email: "mateus@gmail.com",
-    name: "Mateus",
-    role: "OFFICIAL",
-    wasApproved: false,
-    createdAt: "2023-06-04",
-    updatedAt: "",
-  },
-  {
-    id: "",
-    document: "",
-    email: "mateus@gmail.com",
-    name: "Mateus",
-    role: "OFFICIAL",
-    wasApproved: false,
-    createdAt: "2023-06-04",
-    updatedAt: "",
-  },
-  {
-    id: "",
-    document: "",
-    email: "mateus@gmail.com",
-    name: "Mateus",
-    role: "OFFICIAL",
-    wasApproved: false,
-    createdAt: "2023-06-04",
-    updatedAt: "",
-  },
-  {
-    id: "",
-    document: "",
-    email: "mateus@gmail.com",
-    name: "Ana",
-    role: "OFFICIAL",
-    wasApproved: false,
-    createdAt: "2023-06-04",
-    updatedAt: "",
-  },
-  {
-    id: "",
-    document: "",
-    email: "mateus@gmail.com",
-    name: "Mateus",
-    role: "OFFICIAL",
-    wasApproved: false,
-    createdAt: "2023-06-04",
-    updatedAt: "",
-  },
-  {
-    id: "",
-    document: "",
-    email: "mateus@gmail.com",
-    name: "Mateus",
-    role: "OFFICIAL",
-    wasApproved: false,
-    createdAt: "2023-06-04",
-    updatedAt: "",
-  },
-  {
-    id: "",
-    document: "",
-    email: "mateus@gmail.com",
-    name: "Mateus",
-    role: "ADMIN",
-    wasApproved: false,
-    createdAt: "2023-06-04",
-    updatedAt: "",
-  },
-]);
+    key: `municipality-${municipalityId}-affiliations`,
+    query: {
+      page: pageable.page,
+      size: pageable.size,
+    },
+  }
+);
+
+const affiliations = computed(() => page.value?.content);
+
+const officials = computed<Official[]>(() =>
+  (affiliations.value ?? []).map((a) => a.official)
+);
 
 const commomOfficials = computed(() =>
   officials.value
@@ -136,10 +81,14 @@ const active = ref(["0", "1"]);
 <template>
   <OfficialPage
     title="Officials"
-    :description="`See below the officials affiliated with ${municipality.name}`"
+    :description="`See below the officials affiliated with ${municipality?.name}`"
     class="max-w-150"
   >
-    <UAccordion type="multiple" v-model="active" :items="items">
+    <div v-if="pending">
+      <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
+    </div>
+
+    <UAccordion v-else type="multiple" v-model="active" :items="items">
       <template #agents>
         <OfficialList :items="commomOfficials" />
       </template>
