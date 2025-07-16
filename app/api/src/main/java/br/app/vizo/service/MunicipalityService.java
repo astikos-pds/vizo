@@ -1,6 +1,7 @@
 package br.app.vizo.service;
 
 import br.app.vizo.controller.filter.AffiliationRequestFilter;
+import br.app.vizo.controller.request.BatchUpdateAssignmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
 import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
@@ -9,6 +10,7 @@ import br.app.vizo.domain.affiliation.AffiliationRequest;
 import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
 import br.app.vizo.domain.department.Assignment;
 import br.app.vizo.domain.department.Department;
+import br.app.vizo.domain.department.DepartmentRole;
 import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.dto.OfficialContextDTO;
@@ -22,7 +24,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -159,6 +164,47 @@ public class MunicipalityService {
         assignment.setCanApproveOfficials(body.canApproveOfficials());
 
         return this.assignmentMapper.toDto(this.assignmentRepository.save(assignment));
+    }
+
+    @Transactional
+    public List<AssignmentDTO> createOrUpdateAssignmentInBatch(
+            UUID municipalityId,
+            UUID departmentId,
+            BatchUpdateAssignmentRequestDTO body,
+            Authentication authentication
+    ) {
+        OfficialContextDTO officialContext = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
+
+        Department department = this.departmentRepository.findById(departmentId).orElseThrow(
+                () -> new NotFoundException("Department not found.")
+        );
+
+        List<AssignmentDTO> assignments = new ArrayList<>();
+
+        for (UUID id : body.ids()) {
+            Official official = this.officialRepository.findById(id).orElseThrow(
+                    () -> new NotFoundException("Official not found")
+            );
+
+            Assignment assignment = this.assignmentRepository
+                    .findByDepartmentIdAndOfficialId(departmentId, id)
+                    .orElseGet(() -> {
+                        Assignment newAssignment = new Assignment();
+                        newAssignment.setDepartment(department);
+                        newAssignment.setOfficial(official);
+                        newAssignment.setCreatedBy(officialContext.loggedInOfficial());
+                        newAssignment.setRoleInDepartment(DepartmentRole.COMMON);
+                        newAssignment.setCanViewReports(true);
+                        newAssignment.setCanUpdateStatus(true);
+                        newAssignment.setCanApproveOfficials(false);
+
+                        return this.assignmentRepository.save(newAssignment);
+                    });
+
+            assignments.add(this.assignmentMapper.toDto(assignment));
+        }
+
+        return assignments;
     }
 
     public AssignmentDTO getAssignment(

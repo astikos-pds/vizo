@@ -1,6 +1,7 @@
 package br.app.vizo.controller;
 
 import br.app.vizo.controller.filter.AffiliationRequestFilter;
+import br.app.vizo.controller.request.BatchUpdateAssignmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
 import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -120,6 +122,23 @@ public class MunicipalityController {
             Authentication authentication
     ) {
         AssignmentDTO response = this.municipalityService.createOrUpdateAssignment(
+                municipalityId,
+                departmentId,
+                body,
+                authentication
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{municipalityId}/departments/{departmentId}/assignments/batch")
+    public ResponseEntity<List<AssignmentDTO>> createOrUpdateAssignmentInBatch(
+            @PathVariable UUID municipalityId,
+            @PathVariable UUID departmentId,
+            @RequestBody BatchUpdateAssignmentRequestDTO body,
+            Authentication authentication
+    ) {
+        List<AssignmentDTO> response = this.municipalityService.createOrUpdateAssignmentInBatch(
                 municipalityId,
                 departmentId,
                 body,
