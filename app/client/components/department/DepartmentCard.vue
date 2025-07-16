@@ -1,11 +1,13 @@
 <script lang="ts" setup>
-import type { Department } from "~/types/domain";
+import type { Department, Official } from "~/types/domain";
 
 const department = defineProps<Department>();
 
 const departmentLink = `/municipalities/${department.municipality.id}/departments/${department.id}`;
 
 const formattedCreatedAt = useDateFormat(department.createdAt, "DD/MM/YYYY");
+
+const { isAdmin } = useUserStore();
 </script>
 
 <template>
@@ -18,15 +20,15 @@ const formattedCreatedAt = useDateFormat(department.createdAt, "DD/MM/YYYY");
       <div class="p-4 flex items-center justify-between">
         <div class="flex gap-3 items-center">
           <UAvatar :src="iconUrl" :alt="name" size="3xl" />
-          <div class="flex flex-col gap-1">
+          <div class="flex flex-col">
             <h3 class="font-semibold text-lg">{{ name }}</h3>
             <span class="text-sm">Created at {{ formattedCreatedAt }}</span>
           </div>
         </div>
 
-        <DepartmentCardActions v-bind="department" />
+        <DepartmentCardActions v-if="isAdmin" v-bind="department" />
       </div>
-      <div :class="`bg-[${colorHex}]`" class="w-full h-1"></div>
+      <div :style="{ backgroundColor: colorHex }" class="w-full h-1"></div>
     </UCard>
   </NuxtLink>
 </template>

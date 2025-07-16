@@ -2,6 +2,7 @@
 import type { DropdownMenuItem } from "@nuxt/ui";
 import DepartmentAssignmentModal from "./DepartmentAssignmentModal.vue";
 import type { Department } from "~/types/domain";
+import { municipalityRepository } from "~/repositories/municipality-repository";
 
 const department = defineProps<Department>();
 
@@ -13,13 +14,28 @@ function openModal() {
   modal.open(department);
 }
 
-function deleteDepartment(id: string) {}
+const toast = useToast();
+
+async function deleteDepartment() {
+  const municipalityId = department.municipality.id;
+
+  await municipalityRepository.deleteDepartment(municipalityId, department.id);
+
+  toast.add({
+    title: "Success",
+    description: "Department deleted successfully!",
+    color: "success",
+  });
+
+  await refreshNuxtData(`municipalities-${municipalityId}-assignments`);
+}
 
 const items = ref<DropdownMenuItem[][]>([
   [
     {
       label: "Assign",
       icon: "i-lucide-user-plus",
+      color: "info",
       onSelect: openModal,
     },
   ],
@@ -32,7 +48,8 @@ const items = ref<DropdownMenuItem[][]>([
     {
       label: "Delete",
       icon: "i-lucide-trash",
-      onSelect: (_) => deleteDepartment(department.id),
+      color: "error",
+      onSelect: deleteDepartment,
     },
   ],
 ]);

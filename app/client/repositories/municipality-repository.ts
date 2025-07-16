@@ -88,6 +88,16 @@ export const municipalityRepository = {
     );
   },
 
+  deleteDepartment: (municipalityId: string, departmentId: string) => {
+    const { $api } = useNuxtApp();
+    return $api(
+      `/municipalities/${municipalityId}/departments/${departmentId}`,
+      {
+        method: "DELETE",
+      }
+    );
+  },
+
   getAllAssignmentsOfDepartment: (
     municipalityId: string,
     departmentId: string,

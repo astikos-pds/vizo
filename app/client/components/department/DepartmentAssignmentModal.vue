@@ -28,7 +28,21 @@ const officialsAlreadyAssigned = computed(() =>
 
 const selectedOfficials = ref<Official[]>(officialsAlreadyAssigned.value ?? []);
 
-function save() {}
+const { loading, handle } = useApiHandler();
+
+async function save() {
+  const response = await handle(() =>
+    municipalityRepository.assignToDepartmentInBatch(
+      department.municipality.id,
+      department.id,
+      {
+        ids: selectedOfficials.value.map((o) => o.id),
+      }
+    )
+  );
+
+  if (!response) return;
+}
 </script>
 
 <template>
@@ -51,7 +65,13 @@ function save() {}
         <UButton color="neutral" variant="solid" @click="emit('close')"
           >Cancel</UButton
         >
-        <UButton color="success" variant="subtle" @click="save">Save</UButton>
+        <UButton
+          color="success"
+          variant="subtle"
+          :loading="loading"
+          @click="save"
+          >Save</UButton
+        >
       </div>
     </template>
   </UModal>

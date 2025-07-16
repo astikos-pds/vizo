@@ -1,8 +1,6 @@
 <script lang="ts" setup>
-import { municipalityRepository } from "~/repositories/municipality-repository";
 import { userRepository } from "~/repositories/user-repository";
 import type { Municipality } from "~/types/domain";
-import type { Pageable } from "~/types/http";
 
 useHead({
   title: "Vizo | Departments",
@@ -34,6 +32,8 @@ const { data: assignments, pending } =
 const departments = computed(() => assignments.value?.map((a) => a.department));
 
 const newDepartmentLink = `/municipalities/${municipalityId}/departments/new`;
+
+const { isAdmin } = useUserStore();
 </script>
 
 <template>
@@ -51,7 +51,7 @@ const newDepartmentLink = `/municipalities/${municipalityId}/departments/new`;
           Encontered {{ (departments ?? []).length }} department(s)
         </span>
 
-        <UButton icon="i-lucide-plus" :to="newDepartmentLink"
+        <UButton v-if="isAdmin" icon="i-lucide-plus" :to="newDepartmentLink"
           >New department</UButton
         >
       </div>
