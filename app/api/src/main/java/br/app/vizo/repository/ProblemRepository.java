@@ -23,14 +23,13 @@ public interface ProblemRepository extends JpaRepository<Problem, UUID> {
                 p.coordinates::geography,
                 ST_SetSRID(ST_MakePoint(:lat, :lon), 4326)::geography,
                 :distance
-            ) AND p.type = :type
+            )
             LIMIT 1
            """, nativeQuery = true)
     Optional<Problem> findNearestWithinDistance(
             @Param("lat") Double latitude,
             @Param("lon") Double longitude,
-            @Param("distance") Double distance,
-            @Param("type") ProblemType problemType
+            @Param("distance") Double distance
     );
 
     List<Problem> findAllByValidated(Boolean validated);
