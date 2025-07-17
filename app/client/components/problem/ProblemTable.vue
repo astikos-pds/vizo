@@ -172,7 +172,7 @@ const filteredData = computed(() => {
   >
     <div class="flex flex-col gap-3 px-4 py-3.5">
       <h3 class="text-lg font-semibold">
-        {{ t("lastProblems.title") }} ({{ problems?.totalElements }})
+        Problems ({{ problems?.totalElements }})
       </h3>
       <UInput
         v-model="search"

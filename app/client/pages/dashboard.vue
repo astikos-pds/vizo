@@ -1,12 +1,20 @@
 <script lang="ts" setup>
-import ProblemRate from "~/components/dashboard/ProblemRate.vue";
-import LastProblems from "~/components/dashboard/LastProblems.vue";
-import SolvedProblems from "~/components/dashboard/SolvedProblems.vue";
 import type { Pageable } from "~/types/http";
 
 const { t } = useI18n();
 
+useHead({
+  title: "Vizo | Dashboard",
+  meta: [
+    {
+      name: "description",
+      content: "Dashboard",
+    },
+  ],
+});
+
 definePageMeta({
+  name: "Dashboard",
   middleware: ["auth", "official", "department"],
 });
 

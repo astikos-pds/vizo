@@ -91,19 +91,21 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
       )) ?? "";
   }
 
-  const deparment = await handle(() =>
+  const department = await handle(() =>
     municipalityRepository.createDepartment(municipalityId, {
+      name: event.data.name,
       iconUrl,
-      ...event.data,
+      colorHex: event.data.colorHex,
+      problemTypes: event.data.problemTypes,
     })
   );
 
-  if (!deparment) return;
+  if (!department) return;
 
   const assignments = await handle(() =>
     municipalityRepository.assignToDepartmentInBatch(
       municipalityId,
-      deparment.id,
+      department.id,
       {
         ids: event.data.selectedOfficials.map((o) => o.id),
       }

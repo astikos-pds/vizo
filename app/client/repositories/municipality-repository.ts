@@ -21,7 +21,7 @@ type UpdateAffiliationStatusResponse = AffiliationRequest;
 
 type GetAllDepartmentsResponse = Page<Department>;
 
-type CreateDepartmentRequest = {
+interface CreateDepartmentRequest {
   name: string;
   iconUrl: string;
   colorHex: string;
