@@ -20,13 +20,10 @@ import br.app.vizo.mapper.*;
 import br.app.vizo.repository.*;
 import br.app.vizo.util.DateUtil;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,61 +87,6 @@ public class MunicipalityService {
         );
 
         return this.municipalityMapper.toDto(municipality);
-    }
-
-    public Page<DepartmentDTO> getDepartments(UUID municipalityId, Pageable pageable, Authentication authentication) {
-        this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
-
-        return this.departmentRepository
-                .findByMunicipalityId(municipalityId,
-                        PageRequest.of(
-                                pageable.getPageNumber(),
-                                pageable.getPageSize(),
-                                pageable.getSortOr(Sort.by(Sort.Direction.DESC, "createdAt"))
-                        )
-                )
-                .map(this.departmentMapper::toDto);
-    }
-
-    @Transactional
-    public DepartmentDTO createMunicipalityDepartment(
-            UUID municipalityId,
-            CreateDepartmentRequestDTO body,
-            Authentication authentication
-    ) {
-        OfficialContextDTO officialContext = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
-
-        Department department = new Department();
-        department.setName(body.name());
-        department.setIconUrl(body.iconUrl());
-        department.setColorHex(body.colorHex());
-        department.setProblemTypes(body.problemTypes());
-        department.setCreatedBy(officialContext.loggedInOfficial());
-        department.setMunicipality(officialContext.municipality());
-
-        department = this.departmentRepository.save(department);
-
-        Assignment assignment = new Assignment();
-        assignment.setDepartment(department);
-        assignment.setOfficial(officialContext.loggedInOfficial());
-        assignment.setCreatedBy(officialContext.loggedInOfficial());
-        assignment.setRoleInDepartment(DepartmentRole.ADMIN);
-        assignment.setCanViewReports(true);
-        assignment.setCanUpdateStatus(true);
-        assignment.setCanApproveOfficials(true);
-
-        this.assignmentRepository.save(assignment);
-
-        return this.departmentMapper.toDto(department);
-    }
-
-    @Transactional
-    public void deleteDepartment(UUID municipalityId, UUID departmentId, Authentication authentication) {
-        this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
-
-        this.assignmentRepository.deleteAllByDepartmentId(departmentId);
-
-        this.departmentRepository.deleteById(departmentId);
     }
 
     public Page<ProblemDTO> getDepartmentVisibleProblems(

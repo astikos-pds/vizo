@@ -43,7 +43,6 @@ public class MunicipalityController {
         return ResponseEntity.ok(response);
     }
 
-
     @GetMapping("/{municipalityId}/affiliations")
     public ResponseEntity<PageResponse<AffiliationRequestDTO>> getMunicipalityAffiliations(
             @PathVariable UUID municipalityId,
@@ -68,44 +67,6 @@ public class MunicipalityController {
                 .updateMunicipalityAffiliation(municipalityId, affiliationId, body, authentication);
 
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{municipalityId}/departments")
-    public ResponseEntity<PageResponse<DepartmentDTO>> getDepartments(
-            @PathVariable UUID municipalityId,
-            Pageable pageable,
-            Authentication authentication
-    ) {
-        Page<DepartmentDTO> response = this.municipalityService
-                .getDepartments(municipalityId, pageable, authentication);
-
-        return ResponseEntity.ok(PageResponse.of(response));
-    }
-
-    @PostMapping("/{municipalityId}/departments")
-    public ResponseEntity<DepartmentDTO> createDepartment(
-            @PathVariable UUID municipalityId,
-            @RequestBody CreateDepartmentRequestDTO body,
-            Authentication authentication
-    ) {
-        DepartmentDTO response = this.municipalityService.createMunicipalityDepartment(
-                municipalityId,
-                body,
-                authentication
-        );
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
-    @DeleteMapping("/{municipalityId}/departments/{departmentId}")
-    public ResponseEntity<Void> deleteDepartment(
-            @PathVariable UUID municipalityId,
-            @PathVariable UUID departmentId,
-            Authentication authentication
-    ) {
-        this.municipalityService.deleteDepartment(municipalityId, departmentId, authentication);
-
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{municipalityId}/departments/{departmentId}/problems")

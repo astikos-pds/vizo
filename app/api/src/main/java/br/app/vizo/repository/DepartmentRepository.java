@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface DepartmentRepository extends JpaRepository<Department, UUID> {
 
-    Page<Department> findByMunicipalityId(UUID municipalityId, Pageable pageable);
+    Page<Department> findAllByMunicipalityId(UUID municipalityId, Pageable pageable);
 }
