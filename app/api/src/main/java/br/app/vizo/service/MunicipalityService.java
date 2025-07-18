@@ -1,20 +1,14 @@
 package br.app.vizo.service;
 
 import br.app.vizo.controller.filter.AffiliationRequestFilter;
-import br.app.vizo.controller.request.BatchUpdateAssignmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
-import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
-import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
 import br.app.vizo.controller.response.*;
 import br.app.vizo.domain.affiliation.AffiliationRequest;
 import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
-import br.app.vizo.domain.department.Assignment;
 import br.app.vizo.domain.department.Department;
-import br.app.vizo.domain.department.DepartmentRole;
 import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.problem.Problem;
 import br.app.vizo.domain.user.Official;
-import br.app.vizo.dto.OfficialContextDTO;
 import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.*;
 import br.app.vizo.repository.*;
@@ -23,10 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -37,12 +28,9 @@ public class MunicipalityService {
     private final AffiliationRequestRepository affiliationRequestRepository;
     private final OfficialRepository officialRepository;
     private final DepartmentRepository departmentRepository;
-    private final AssignmentRepository assignmentRepository;
     private final ProblemRepository problemRepository;
     private final MunicipalityMapper municipalityMapper;
     private final AffiliationRequestMapper affiliationRequestMapper;
-    private final DepartmentMapper departmentMapper;
-    private final AssignmentMapper assignmentMapper;
     private final ProblemMapper problemMapper;
 
     public MunicipalityService(
@@ -51,12 +39,9 @@ public class MunicipalityService {
             AffiliationRequestRepository affiliationRequestRepository,
             OfficialRepository officialRepository,
             DepartmentRepository departmentRepository,
-            AssignmentRepository assignmentRepository,
             ProblemRepository problemRepository,
             MunicipalityMapper municipalityMapper,
             AffiliationRequestMapper affiliationRequestMapper,
-            DepartmentMapper departmentMapper,
-            AssignmentMapper assignmentMapper,
             ProblemMapper problemMapper
     ) {
         this.officialService = officialService;
@@ -64,12 +49,9 @@ public class MunicipalityService {
         this.affiliationRequestRepository = affiliationRequestRepository;
         this.officialRepository = officialRepository;
         this.departmentRepository = departmentRepository;
-        this.assignmentRepository = assignmentRepository;
         this.problemRepository = problemRepository;
         this.municipalityMapper = municipalityMapper;
         this.affiliationRequestMapper = affiliationRequestMapper;
-        this.departmentMapper = departmentMapper;
-        this.assignmentMapper = assignmentMapper;
         this.problemMapper = problemMapper;
     }
 
@@ -122,120 +104,6 @@ public class MunicipalityService {
         );
 
         return this.problemMapper.toDto(problem);
-    }
-
-    public Page<AssignmentDTO> getAssignments(
-            UUID municipalityId,
-            UUID departmentId,
-            Pageable pageable,
-            Authentication authentication
-    ) {
-        this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
-
-        if (!this.departmentRepository.existsById(departmentId)) {
-            throw new NotFoundException("Department not found.");
-        }
-
-        return this.assignmentRepository.findAllByDepartmentId(departmentId, pageable)
-                .map(this.assignmentMapper::toDto);
-    }
-
-    public AssignmentDTO createOrUpdateAssignment(
-            UUID municipalityId,
-            UUID departmentId,
-            UpdateAssignmentRequestDTO body,
-            Authentication authentication
-    ) {
-        OfficialContextDTO officialContext = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
-
-        Department department = this.departmentRepository.findById(departmentId).orElseThrow(
-                () -> new NotFoundException("Department not found.")
-        );
-
-        Official official = this.officialRepository.findById(body.officialId()).orElseThrow(
-                () -> new NotFoundException("Official not found")
-        );
-
-        Assignment assignment = this.assignmentRepository
-                .findByDepartmentIdAndOfficialId(departmentId, body.officialId())
-                .orElseGet(() -> {
-                    Assignment newAssignment = new Assignment();
-                    newAssignment.setDepartment(department);
-                    newAssignment.setOfficial(official);
-                    newAssignment.setCreatedBy(officialContext.loggedInOfficial());
-
-                    return newAssignment;
-                });
-
-        assignment.setRoleInDepartment(body.role());
-        assignment.setCanViewReports(body.canViewReports());
-        assignment.setCanUpdateStatus(body.canUpdateStatus());
-        assignment.setCanApproveOfficials(body.canApproveOfficials());
-
-        return this.assignmentMapper.toDto(this.assignmentRepository.save(assignment));
-    }
-
-    @Transactional
-    public List<AssignmentDTO> createOrUpdateAssignmentInBatch(
-            UUID municipalityId,
-            UUID departmentId,
-            BatchUpdateAssignmentRequestDTO body,
-            Authentication authentication
-    ) {
-        OfficialContextDTO officialContext = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
-
-        Department department = this.departmentRepository.findById(departmentId).orElseThrow(
-                () -> new NotFoundException("Department not found.")
-        );
-
-        List<Assignment> assignments = new ArrayList<>();
-
-        for (UUID id : body.ids()) {
-            Official official = this.officialRepository.findById(id).orElseThrow(
-                    () -> new NotFoundException("Official not found")
-            );
-
-            Assignment assignment = this.assignmentRepository
-                    .findByDepartmentIdAndOfficialId(departmentId, id)
-                    .orElseGet(() -> {
-                        Assignment newAssignment = new Assignment();
-                        newAssignment.setDepartment(department);
-                        newAssignment.setOfficial(official);
-                        newAssignment.setCreatedBy(officialContext.loggedInOfficial());
-                        newAssignment.setRoleInDepartment(DepartmentRole.COMMON);
-                        newAssignment.setCanViewReports(true);
-                        newAssignment.setCanUpdateStatus(true);
-                        newAssignment.setCanApproveOfficials(false);
-
-                        return newAssignment;
-                    });
-
-            assignments.add(assignment);
-        }
-
-        return this.assignmentRepository.saveAll(assignments)
-                .stream()
-                .map(this.assignmentMapper::toDto)
-                .toList();
-    }
-
-    public AssignmentDTO getAssignment(
-            UUID municipalityId,
-            UUID departmentId,
-            UUID assignmentId,
-            Authentication authentication
-    ) {
-        this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
-
-        this.departmentRepository.findById(departmentId).orElseThrow(
-                () -> new NotFoundException("Department not found.")
-        );
-
-        return this.assignmentMapper.toDto(
-                this.assignmentRepository.findById(assignmentId).orElseThrow(
-                        () -> new NotFoundException("Assignment not found.")
-                )
-        );
     }
 
     public Page<AffiliationRequestDTO> getMunicipalityAffiliations(

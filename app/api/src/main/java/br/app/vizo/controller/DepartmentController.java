@@ -39,7 +39,7 @@ public class DepartmentController {
     @GetMapping("/{id}")
     public ResponseEntity<DepartmentDTO> getDepartment(
             @PathVariable UUID municipalityId,
-            @PathVariable UUID departmentId,
+            @PathVariable(name = "id") UUID departmentId,
             Authentication authentication
     ) {
         DepartmentDTO response = this.departmentService.getDepartment(
@@ -67,7 +67,7 @@ public class DepartmentController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDepartment(
             @PathVariable UUID municipalityId,
-            @PathVariable UUID departmentId,
+            @PathVariable(name = "id") UUID departmentId,
             Authentication authentication
     ) {
         this.departmentService.deleteDepartment(municipalityId, departmentId, authentication);
