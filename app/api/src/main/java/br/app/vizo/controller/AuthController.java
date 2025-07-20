@@ -29,7 +29,6 @@ public class AuthController {
         this.officialAuthService = officialAuthService;
     }
 
-
     @PostMapping("/citizen/register")
     public ResponseEntity<CitizenDTO> registerAsCitizen(@RequestBody RegisterRequestDTO body) {
         CitizenDTO response = this.citizenAuthService.registerAsCitizen(body);
