@@ -4,6 +4,7 @@ import z from "zod";
 import { useEmailStore } from "~/stores/email";
 import { useSteps } from "~/composables/use-steps";
 import type { Municipality } from "~/types/domain";
+import { useMunicipalities } from "~/composables/use-municipalities";
 
 const { t } = useI18n();
 
@@ -22,7 +23,7 @@ const form = reactive<EmailSchema>({
 const municipalityCardOpen = ref(false);
 const municipality = ref<Municipality>();
 
-const { loading, getMunicipalityByDomain } = useMunicipality();
+const { loading, getMunicipalityByDomain } = useMunicipalities();
 const toast = useToast();
 
 const onSubmit = async (event: FormSubmitEvent<EmailSchema>) => {

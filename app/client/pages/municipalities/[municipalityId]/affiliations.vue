@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { AccordionItem } from "@nuxt/ui";
+import { useAffiliations } from "~/composables/use-affiliations";
 import { municipalityRepository } from "~/repositories/municipality-repository";
 import type { Municipality } from "~/types/domain";
 import type { Pageable } from "~/types/http";
@@ -31,12 +32,11 @@ const pageable = reactive<Pageable>({
   size: 100,
 });
 
-const { data: page, pending } = municipalityRepository.getAllAffiliations(
+const { getAffiliationsByMunicipalityId } = useAffiliations();
+
+const { data: page, pending } = await getAffiliationsByMunicipalityId(
   municipalityId,
-  pageable,
-  {
-    key: `municipality-${municipalityId}-affiliations`,
-  }
+  pageable
 );
 
 const affiliations = computed(() => page.value?.content);

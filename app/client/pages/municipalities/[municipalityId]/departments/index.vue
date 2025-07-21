@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { userRepository } from "~/repositories/user-repository";
 import type { Municipality } from "~/types/domain";
 
 useHead({
@@ -24,12 +23,15 @@ const { data: municipality } = useNuxtData<Municipality>(
   `municipality-${municipalityId}`
 );
 
-const { data: assignments, pending } =
-  userRepository.getAllUserAssignmentsByMunicipalityId(municipalityId, {
-    key: `municipalities-${municipalityId}-assignments`,
-  });
+const { getAssignmentsByMunicipalityId } = useUser();
 
-const departments = computed(() => assignments.value?.map((a) => a.department));
+const { data: assignments, pending } = await getAssignmentsByMunicipalityId(
+  municipalityId
+);
+
+const departments = computed(() =>
+  (assignments.value ?? []).map((a) => a.department)
+);
 
 const newDepartmentLink = `/municipalities/${municipalityId}/departments/new`;
 
@@ -48,7 +50,7 @@ const { isAdmin } = useUserStore();
     <div v-else class="size-full flex flex-col">
       <div class="flex my-4 justify-between items-center">
         <span class="text-muted">
-          Encontered {{ (departments ?? []).length }} department(s)
+          Encontered {{ departments.length }} department(s)
         </span>
 
         <UButton v-if="isAdmin" icon="i-lucide-plus" :to="newDepartmentLink"
@@ -56,7 +58,7 @@ const { isAdmin } = useUserStore();
         >
       </div>
 
-      <NotFoundMessage v-if="departments?.length === 0"
+      <NotFoundMessage v-if="departments.length === 0"
         >No departments found.</NotFoundMessage
       >
       <div

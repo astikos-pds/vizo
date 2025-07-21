@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { Map as LeafletMap, PointExpression } from "leaflet";
-import { useProblems } from "~/composables/use-problem";
+import { useProblems } from "~/composables/use-problems";
 import type { Problem } from "~/types/domain";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
 import ProblemDetails from "~/components/problem/ProblemDetails.vue";

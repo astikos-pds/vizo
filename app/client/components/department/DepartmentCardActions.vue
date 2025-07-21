@@ -3,6 +3,7 @@ import type { DropdownMenuItem } from "@nuxt/ui";
 import DepartmentAssignmentModal from "./DepartmentAssignmentModal.vue";
 import type { Department } from "~/types/domain";
 import { municipalityRepository } from "~/repositories/municipality-repository";
+import { useDepartments } from "~/composables/use-departments";
 
 const department = defineProps<Department>();
 
@@ -19,7 +20,7 @@ const toast = useToast();
 async function deleteDepartment() {
   const municipalityId = department.municipality.id;
 
-  await municipalityRepository.deleteDepartment(municipalityId, department.id);
+  await useDepartments().deleteDepartment(municipalityId, department.id);
 
   toast.add({
     title: "Success",

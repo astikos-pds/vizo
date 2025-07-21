@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { AccordionItem } from "@nuxt/ui";
-import { userRepository } from "~/repositories/user-repository";
 
 const { t } = useI18n();
 
@@ -19,10 +18,9 @@ definePageMeta({
   middleware: ["auth", "official"],
 });
 
-const { data: affiliations, pending } =
-  await userRepository.getAllUserAffiliations({
-    key: "user-affiliations",
-  });
+const { getAffiliations } = useUser();
+
+const { data: affiliations, pending } = await getAffiliations();
 
 const approvedAffiliations = computed(() =>
   (affiliations.value ?? []).filter((a) => a.status === "APPROVED")
@@ -56,7 +54,6 @@ const openSections = ref(["0", "1"]);
     <div v-if="pending">
       <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
     </div>
-
     <UAccordion v-else type="multiple" v-model="openSections" :items="items">
       <template #municipalities>
         <MunicipalityMenu

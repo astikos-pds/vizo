@@ -1,3 +1,5 @@
+export type Api = typeof $fetch;
+
 export interface Page<T> {
   content: T[];
   page: number;

@@ -1,19 +1,14 @@
 import {
-  loginUseCase,
-  registerAsCitizenUseCase,
-  type LoginRequest,
-  type TokenPairResponse,
-  type RegisterRequest,
-  type RefreshRequest,
-  refreshUseCase,
+  createAuthRepository,
   type EmailVerificationRequest,
   type EmailVerificationResponse,
-  createVerificationRequestUseCase,
+  type LoginRequest,
+  type RefreshRequest,
+  type RegisterRequest,
+  type TokenPairResponse,
   type VerificationCodeRequest,
   type VerificationCodeResponse,
-  verifyCodeUseCase,
-  registerAsOfficialUseCase,
-} from "~/services/auth";
+} from "~/repositories/auth";
 import type { Citizen, Official } from "~/types/domain";
 
 export const useAuth = () => {
@@ -22,11 +17,12 @@ export const useAuth = () => {
 
   const { loading, handle } = useApiHandler();
 
-  async function login(
-    request: LoginRequest
-  ): Promise<TokenPairResponse | null> {
+  const { $api } = useNuxtApp();
+  const authRepository = createAuthRepository($api);
+
+  async function login(request: LoginRequest) {
     const response = await handle<TokenPairResponse>(() =>
-      loginUseCase(request)
+      authRepository.login(request)
     );
 
     if (response) {
@@ -37,11 +33,15 @@ export const useAuth = () => {
   }
 
   async function registerAsCitizen(request: RegisterRequest) {
-    return await handle<Citizen>(() => registerAsCitizenUseCase(request));
+    return await handle<Citizen>(() =>
+      authRepository.registerAsCitizen(request)
+    );
   }
 
   async function registerAsOfficial(request: RegisterRequest) {
-    return await handle<Official>(() => registerAsOfficialUseCase(request));
+    return await handle<Official>(() =>
+      authRepository.registerAsOfficial(request)
+    );
   }
 
   async function logout() {
@@ -52,7 +52,7 @@ export const useAuth = () => {
     request: RefreshRequest
   ): Promise<TokenPairResponse | null> {
     const response = await handle<TokenPairResponse>(() =>
-      refreshUseCase(request)
+      authRepository.refresh(request)
     );
 
     if (response) {
@@ -69,13 +69,16 @@ export const useAuth = () => {
 
   async function createVerificationRequest(request: EmailVerificationRequest) {
     return await handle<EmailVerificationResponse>(() =>
-      createVerificationRequestUseCase(request)
+      authRepository.createVerificationRequest(request)
     );
   }
 
-  async function verifyCode(request: VerificationCodeRequest) {
+  async function verifyCode(
+    requestId: string,
+    request: VerificationCodeRequest
+  ) {
     return await handle<VerificationCodeResponse>(() =>
-      verifyCodeUseCase(request)
+      authRepository.verifyCode(requestId, request)
     );
   }
 

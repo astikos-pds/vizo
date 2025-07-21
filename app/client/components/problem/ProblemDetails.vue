@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { useProblemReports } from "~/composables/use-problem-reports";
 import type { Problem } from "~/types/domain";
 import type { Pageable } from "~/types/http";
 
@@ -20,7 +19,13 @@ const currentPage = computed({
   set: (val: number) => (pagination.page = val - 1),
 });
 
-const { reports, loading, error } = useProblemReports(problem.id, pagination);
+const { getReportsByProblemId } = useReports();
+
+const {
+  data: reports,
+  pending,
+  error,
+} = getReportsByProblemId(problem.id, pagination);
 
 const toast = useToast();
 watch(error, (err) => {
@@ -28,7 +33,7 @@ watch(error, (err) => {
     toast.add({
       title: t("toast.error.title"),
       description: t(
-        `toast.error.description.${err.status}`,
+        `toast.error.description.${err.statusCode}`,
         t("toast.error.description.default")
       ),
       color: "error",
@@ -64,7 +69,7 @@ const ui = {
     @update:active-snap-point="(value: number | string) => (activeSnapPoint = value as number)"
   >
     <template #body>
-      <div v-if="loading" class="flex flex-col gap-4">
+      <div v-if="pending" class="flex flex-col gap-4">
         <USkeleton class="h-50 w-full" />
         <USkeleton class="h-50 w-full" />
         <USkeleton class="h-50 w-full" />
@@ -97,7 +102,7 @@ const ui = {
     class="w-100"
   >
     <template #body>
-      <div v-if="loading" class="flex flex-col gap-4">
+      <div v-if="pending" class="flex flex-col gap-4">
         <USkeleton class="h-50 w-full" />
         <USkeleton class="h-50 w-full" />
         <USkeleton class="h-50 w-full" />

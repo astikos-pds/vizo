@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { ChipProps } from "@nuxt/ui";
+import { useAffiliations } from "~/composables/use-affiliations";
 import { municipalityRepository } from "~/repositories/municipality-repository";
 import type {
   AffiliationRequest,
@@ -25,13 +26,12 @@ const chipColor = computed(() => {
 
 async function updateAffiliationStatus(status: AffiliationRequestStatus) {
   const municipalityId = affiliationRequest.municipality.id;
+  const affiliationId = affiliationRequest.id;
 
-  await municipalityRepository.updateAffiliationStatus(
+  await useAffiliations().updateAffiliationStatus(
     municipalityId,
-    affiliationRequest.id,
-    {
-      status,
-    }
+    affiliationId,
+    { status }
   );
 
   await refreshNuxtData(`municipality-${municipalityId}-affiliations`);
