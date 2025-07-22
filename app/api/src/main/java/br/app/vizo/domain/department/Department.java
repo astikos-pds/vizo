@@ -51,7 +51,7 @@ public class Department {
     protected Instant updatedAt;
 
     public Department() {
-        this(null, "", "", "", Set.of(), null);
+        this(null, "", "", "", null, null);
     }
 
     public Department(
