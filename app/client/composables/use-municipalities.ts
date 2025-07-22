@@ -4,7 +4,7 @@ import {
 } from "~/services/municipality";
 import type { Municipality } from "~/types/domain";
 
-export const useMunicipality = () => {
+export const useMunicipalities = () => {
   const { loading, handle } = useApiHandler();
 
   async function getMunicipalityByDomain(

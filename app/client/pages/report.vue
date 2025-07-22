@@ -215,18 +215,17 @@ async function shouldSubmitOutOfBounds(data: ReportSchema): Promise<boolean> {
 async function shouldSubmitIfRecentlyReported(
   report: Report
 ): Promise<boolean> {
-  const nearbyReports = await getReports({
-    filter: {
-      latitude: report.latitude,
-      longitude: report.longitude,
-      radius: RADIUS_OF_RELATED_REPORTS_IN_METERS,
-    },
-    pageable: { size: 1 },
+  const { data: nearbyReports } = await getReports({
+    latitude: report.latitude,
+    longitude: report.longitude,
+    radius: RADIUS_OF_RELATED_REPORTS_IN_METERS,
+    size: 1,
   });
 
-  if (!nearbyReports || nearbyReports.content.length === 0) return true;
+  if (!nearbyReports.value || nearbyReports.value.content.length === 0)
+    return true;
 
-  const lastReport = nearbyReports.content[0];
+  const lastReport = nearbyReports.value.content[0];
   const diff = Math.abs(
     new Date().getTime() - new Date(lastReport.createdAt).getTime()
   );

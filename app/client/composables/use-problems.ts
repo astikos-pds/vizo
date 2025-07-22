@@ -1,8 +1,11 @@
-import { getProblemsUseCase } from "~/services/problem";
+import { createProblemRepository } from "~/repositories/problem";
 
 export const useProblems = () => {
+  const { $api } = useNuxtApp();
+  const problemRepository = createProblemRepository($api);
+
   const { data, pending, error, refresh } = useAsyncData("problems", () =>
-    getProblemsUseCase()
+    problemRepository.findAll()
   );
 
   return {

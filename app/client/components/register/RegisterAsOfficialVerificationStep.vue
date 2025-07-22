@@ -5,7 +5,7 @@ import { useEmailStore } from "~/stores/email";
 import { PIN_INPUT_LENGTH } from "~/utils/constants";
 import { useCountdown } from "@vueuse/core";
 import { formatTime } from "~/utils/format";
-import type { EmailVerificationResponse } from "~/services/auth";
+import type { EmailVerificationResponse } from "~/repositories/auth";
 
 const { t } = useI18n();
 
@@ -69,8 +69,7 @@ const stepper = useSteps();
 const onSubmit = async (event: FormSubmitEvent<CodeSchema>) => {
   if (event.data.code.length !== verificationRequest.value?.codeLength) return;
 
-  const response = await verifyCode({
-    requestId: verificationRequest.value.id,
+  const response = await verifyCode(verificationRequest.value.id, {
     code: event.data.code.join(""),
   });
 

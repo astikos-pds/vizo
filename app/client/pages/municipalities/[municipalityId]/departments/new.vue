@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
+import { useDepartments } from "~/composables/use-departments";
 import { municipalityRepository } from "~/repositories/municipality-repository";
 import type { Municipality, Official, ProblemType } from "~/types/domain";
 
@@ -92,7 +93,7 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
   }
 
   const department = await handle(() =>
-    municipalityRepository.createDepartment(municipalityId, {
+    useDepartments().createDepartment(municipalityId, {
       name: event.data.name,
       iconUrl,
       colorHex: event.data.colorHex,
