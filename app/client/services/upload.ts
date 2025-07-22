@@ -1,5 +1,5 @@
 export interface UploadImageRequest {
-  file: File;
+  file?: File;
 }
 export interface UploadImageResponse {
   secure_url: string;
@@ -8,6 +8,8 @@ export interface UploadImageResponse {
 export const uploadImageUseCase = async (
   request: UploadImageRequest
 ): Promise<UploadImageResponse> => {
+  if (!request.file) return { secure_url: "" };
+
   const config = useRuntimeConfig();
   const url = `https://api.cloudinary.com/v1_1/${config.public.cloudinaryName}/upload`;
 

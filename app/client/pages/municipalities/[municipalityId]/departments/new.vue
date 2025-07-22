@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
+import { useAssignments } from "~/composables/use-assignments";
 import { useDepartments } from "~/composables/use-departments";
-import { municipalityRepository } from "~/repositories/municipality-repository";
 import type { Municipality, Official, ProblemType } from "~/types/domain";
 
 useHead({
@@ -35,7 +35,9 @@ const departmentSchema = z.object({
     ),
   colorHex: z.string(),
   selectedOfficials: z.array(z.custom<Official>()),
-  problemTypes: z.array(z.custom<ProblemType>()),
+  problemTypes: z
+    .array(z.custom<ProblemType>())
+    .min(1, "At least one problem type is required"),
 });
 
 type DepartmentSchema = z.infer<typeof departmentSchema>;
@@ -75,6 +77,7 @@ const { data: municipality } = useNuxtData<Municipality>(
 );
 
 const { uploadImage } = useImage();
+const { assignToDepartmentInBatch } = useAssignments();
 const { loading, handle } = useApiHandler();
 
 const toast = useToast();
@@ -82,15 +85,12 @@ const toast = useToast();
 async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
   const icon = event.data.icon;
 
-  let iconUrl = "";
-  if (icon) {
-    iconUrl =
-      (await handle(() =>
-        uploadImage({
-          file: icon,
-        })
-      )) ?? "";
-  }
+  const iconUrl =
+    (await handle(() =>
+      uploadImage({
+        file: icon,
+      })
+    )) ?? "";
 
   const department = await handle(() =>
     useDepartments().createDepartment(municipalityId, {
@@ -104,13 +104,9 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
   if (!department) return;
 
   const assignments = await handle(() =>
-    municipalityRepository.assignToDepartmentInBatch(
-      municipalityId,
-      department.id,
-      {
-        ids: event.data.selectedOfficials.map((o) => o.id),
-      }
-    )
+    assignToDepartmentInBatch(municipalityId, department.id, {
+      ids: event.data.selectedOfficials.map((o) => o.id),
+    })
   );
 
   if (!assignments) return;
@@ -150,7 +146,11 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
         />
 
         <div v-if="form.icon" class="w-full flex justify-center p-3">
-          <OverlayImage :src="previewUrl" :alt="form.icon.name" />
+          <OverlayImage
+            :src="previewUrl"
+            :alt="form.icon.name"
+            class="size-60"
+          />
         </div>
       </UFormField>
 

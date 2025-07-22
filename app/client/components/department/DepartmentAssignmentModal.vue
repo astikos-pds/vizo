@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { municipalityRepository } from "~/repositories/municipality-repository";
+import { useAssignments } from "~/composables/use-assignments";
 import type { Department, Official } from "~/types/domain";
 import type { Pageable } from "~/types/http";
 
@@ -12,15 +12,13 @@ const pageable = reactive<Pageable>({
   size: 100,
 });
 
-const { data: page, pending } =
-  municipalityRepository.getAllAssignmentsOfDepartment(
-    department.municipality.id,
-    department.id,
-    pageable,
-    {
-      key: `municipalities-${department.municipality.id}-departments-${department}-assignments`,
-    }
-  );
+const { getAssignmentsByDepartmentId } = useAssignments();
+
+const { data: page, pending } = await getAssignmentsByDepartmentId(
+  department.municipality.id,
+  department.id,
+  pageable
+);
 
 const officialsAlreadyAssigned = computed(() =>
   page.value?.content.map((a) => a.official)
@@ -28,22 +26,27 @@ const officialsAlreadyAssigned = computed(() =>
 
 const selectedOfficials = ref<Official[]>(officialsAlreadyAssigned.value ?? []);
 
+const { assignToDepartmentInBatch } = useAssignments();
 const { loading, handle } = useApiHandler();
+
+const toast = useToast();
 
 async function save() {
   if (selectedOfficials.value.length === 0) return;
 
   const response = await handle(() =>
-    municipalityRepository.assignToDepartmentInBatch(
-      department.municipality.id,
-      department.id,
-      {
-        ids: selectedOfficials.value.map((o) => o.id),
-      }
-    )
+    assignToDepartmentInBatch(department.municipality.id, department.id, {
+      ids: selectedOfficials.value.map((o) => o.id),
+    })
   );
 
   if (!response) return;
+
+  toast.add({
+    title: "Success",
+    description: `${response.length} users were assigned to ${department.name}`,
+    color: "success",
+  });
 }
 </script>
 

@@ -4,7 +4,7 @@ import type { BadgeProps, TableColumn } from "@nuxt/ui";
 import { useI18n } from "vue-i18n";
 import type { Problem, ProblemStatus } from "~/types/domain";
 import type { Pageable } from "~/types/http";
-import { municipalityRepository } from "~/repositories/municipality-repository";
+import { useProblems } from "~/composables/use-problems";
 
 const { t, locale } = useI18n();
 
@@ -19,16 +19,13 @@ const { currentDepartment } = useDepartmentStore();
 const municipalityId = computed(() => currentDepartment?.municipality.id ?? "");
 const departmentId = computed(() => currentDepartment?.id ?? "");
 
-const { data: problems } =
-  await municipalityRepository.getAllVisibleProblemsInDepartment(
-    municipalityId.value,
-    departmentId.value,
-    pagination.value,
-    {
-      key: `municipalities-${municipalityId.value}-departments-${departmentId}-problems`,
-      watch: [municipalityId, departmentId, pagination],
-    }
-  );
+const { getProblemsByDepartmentId } = useProblems();
+
+const { data: problems } = await getProblemsByDepartmentId(
+  municipalityId.value,
+  departmentId.value,
+  pagination.value
+);
 
 const data = computed(() => problems.value?.content ?? []);
 

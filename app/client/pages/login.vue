@@ -39,22 +39,26 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
     password: event.data.password,
   });
 
-  if (ok) {
-    toast.add({
-      title: t("toast.success.title"),
-      description: t("toast.success.description.loggedIn"),
-      color: "success",
-    });
+  if (!ok) return;
 
-    const user = await getProfile();
-    if (user) {
-      useUserStore().setUser(user);
+  toast.add({
+    title: t("toast.success.title"),
+    description: t("toast.success.description.loggedIn"),
+    color: "success",
+  });
 
-      if (user.userType === "CITIZEN") await navigateTo("/");
-      else if (user.userType === "OFFICIAL")
-        await navigateTo("/municipalities");
-    }
+  const user = await getProfile();
+
+  if (!user) return;
+
+  useUserStore().setUser(user);
+
+  if (user.userType === "OFFICIAL") {
+    await navigateTo("/municipalities");
+    return;
   }
+
+  await navigateTo("/");
 };
 </script>
 

@@ -2,7 +2,6 @@
 import type { DropdownMenuItem } from "@nuxt/ui";
 import DepartmentAssignmentModal from "./DepartmentAssignmentModal.vue";
 import type { Department } from "~/types/domain";
-import { municipalityRepository } from "~/repositories/municipality-repository";
 import { useDepartments } from "~/composables/use-departments";
 
 const department = defineProps<Department>();

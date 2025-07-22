@@ -46,6 +46,7 @@ export const useAuth = () => {
 
   async function logout() {
     updateTokenPair({ accessToken: "", refreshToken: "" });
+    useUserStore().setUser(null);
   }
 
   async function refresh(

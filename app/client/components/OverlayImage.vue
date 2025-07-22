@@ -7,7 +7,7 @@ defineProps<{
 
 <template>
   <UModal>
-    <UButton variant="link" class="size-60">
+    <UButton variant="link">
       <img
         :src="src"
         :alt="alt"

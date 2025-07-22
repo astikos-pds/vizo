@@ -1,10 +1,10 @@
-import type { MunicipalityId } from "~/repositories/affiliation";
 import {
   createDepartmentRepository,
   type CreateDepartmentRequest,
   type DepartmentId,
   type GetAllDepartmentsParams,
 } from "~/repositories/department";
+import type { MunicipalityId } from "~/repositories/municipality";
 
 export const useDepartments = () => {
   const { $api } = useNuxtApp();

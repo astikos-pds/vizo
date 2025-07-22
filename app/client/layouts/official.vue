@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 import UserProfile from "~/components/navigation/UserProfile.vue";
-import { municipalityRepository } from "~/repositories/municipality-repository";
 
 const { t } = useI18n();
 

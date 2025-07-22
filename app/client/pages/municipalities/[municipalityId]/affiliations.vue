@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { AccordionItem } from "@nuxt/ui";
 import { useAffiliations } from "~/composables/use-affiliations";
-import { municipalityRepository } from "~/repositories/municipality-repository";
 import type { Municipality } from "~/types/domain";
 import type { Pageable } from "~/types/http";
 

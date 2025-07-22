@@ -6,7 +6,7 @@ export const useUser = () => {
   const userRepository = createUserRepository($api);
 
   function getProfile() {
-    return useAsyncData("profile", () => userRepository.getProfile());
+    return userRepository.getProfile();
   }
 
   function getAffiliations() {
