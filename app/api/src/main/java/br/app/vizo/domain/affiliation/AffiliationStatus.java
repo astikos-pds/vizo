@@ -1,6 +1,6 @@
 package br.app.vizo.domain.affiliation;
 
-public enum AffiliationRequestStatus {
+public enum AffiliationStatus {
     PENDING,
     APPROVED,
     REJECTED

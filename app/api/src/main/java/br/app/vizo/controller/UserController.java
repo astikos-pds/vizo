@@ -1,6 +1,6 @@
 package br.app.vizo.controller;
 
-import br.app.vizo.dto.AffiliationRequestDTO;
+import br.app.vizo.dto.AffiliationDTO;
 import br.app.vizo.dto.AssignmentDTO;
 import br.app.vizo.dto.UserDTO;
 import br.app.vizo.service.UserService;
@@ -30,10 +30,10 @@ public class UserController {
     }
 
     @GetMapping("/officials/me/affiliations")
-    public ResponseEntity<List<AffiliationRequestDTO>> getAffiliations(
+    public ResponseEntity<List<AffiliationDTO>> getAffiliations(
             Authentication authentication
     ) {
-        List<AffiliationRequestDTO> response = this.userService.getAffiliations(authentication);
+        List<AffiliationDTO> response = this.userService.getAffiliations(authentication);
 
         return ResponseEntity.ok(response);
     }

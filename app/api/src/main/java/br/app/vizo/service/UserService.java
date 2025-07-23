@@ -1,14 +1,14 @@
 package br.app.vizo.service;
 
-import br.app.vizo.dto.AffiliationRequestDTO;
+import br.app.vizo.dto.AffiliationDTO;
 import br.app.vizo.dto.AssignmentDTO;
 import br.app.vizo.dto.UserDTO;
 import br.app.vizo.domain.user.User;
 import br.app.vizo.exception.NotFoundException;
-import br.app.vizo.mapper.AffiliationRequestMapper;
+import br.app.vizo.mapper.AffiliationMapper;
 import br.app.vizo.mapper.AssignmentMapper;
 import br.app.vizo.mapper.UserMapper;
-import br.app.vizo.repository.AffiliationRequestRepository;
+import br.app.vizo.repository.AffiliationRepository;
 import br.app.vizo.repository.AssignmentRepository;
 import br.app.vizo.repository.UserRepository;
 import org.springframework.security.core.Authentication;
@@ -21,25 +21,25 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final AffiliationRequestRepository affiliationRequestRepository;
+    private final AffiliationRepository affiliationRepository;
     private final AssignmentRepository assignmentRepository;
     private final UserMapper userMapper;
-    private final AffiliationRequestMapper affiliationRequestMapper;
+    private final AffiliationMapper affiliationMapper;
     private final AssignmentMapper assignmentMapper;
 
     public UserService(
             UserRepository userRepository,
-            AffiliationRequestRepository affiliationRequestRepository,
+            AffiliationRepository affiliationRepository,
             AssignmentRepository assignmentRepository,
             UserMapper userMapper,
-            AffiliationRequestMapper affiliationRequestMapper,
+            AffiliationMapper affiliationMapper,
             AssignmentMapper assignmentMapper
     ) {
         this.userRepository = userRepository;
-        this.affiliationRequestRepository = affiliationRequestRepository;
+        this.affiliationRepository = affiliationRepository;
         this.assignmentRepository = assignmentRepository;
         this.userMapper = userMapper;
-        this.affiliationRequestMapper = affiliationRequestMapper;
+        this.affiliationMapper = affiliationMapper;
         this.assignmentMapper = assignmentMapper;
     }
 
@@ -51,15 +51,15 @@ public class UserService {
         return this.userMapper.toDto(user);
     }
 
-    public List<AffiliationRequestDTO> getAffiliations(Authentication authentication) {
+    public List<AffiliationDTO> getAffiliations(Authentication authentication) {
         User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
 
-        return this.affiliationRequestRepository
+        return this.affiliationRepository
                 .findAllByUserId(user.getId())
                 .stream()
-                .map(this.affiliationRequestMapper::toDto)
+                .map(this.affiliationMapper::toDto)
                 .toList();
     }
 

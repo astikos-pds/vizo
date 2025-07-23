@@ -1,15 +1,15 @@
 package br.app.vizo.dto;
 
-import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
+import br.app.vizo.domain.affiliation.AffiliationStatus;
 
 import java.time.Instant;
 import java.util.UUID;
 
-public record AffiliationRequestDTO(
+public record AffiliationDTO(
         UUID id,
         UserDTO user,
         MunicipalityDTO municipality,
-        AffiliationRequestStatus status,
+        AffiliationStatus status,
         Instant createdAt,
         UserDTO approver,
         Instant approvedAt

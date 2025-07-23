@@ -5,23 +5,21 @@ import br.app.vizo.domain.user.User;
 import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "affiliation_requests")
-@Getter
-@Setter
+@Table(name = "affiliations")
+@Data
 @AllArgsConstructor
-public class AffiliationRequest {
+public class Affiliation {
 
     @Id
     private UUID id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -29,8 +27,11 @@ public class AffiliationRequest {
     @JoinColumn(name = "municipality_id")
     private Municipality municipality;
 
+    @Column(name = "institutional_email", unique = true, nullable = false)
+    private String institutionalEmail;
+
     @Enumerated(EnumType.STRING)
-    private AffiliationRequestStatus status;
+    private AffiliationStatus status;
 
     @Column(name = "created_at")
     private Instant createdAt;
@@ -42,7 +43,7 @@ public class AffiliationRequest {
     @Column(name = "approved_at")
     private Instant approvedAt;
 
-    public AffiliationRequest() {
-        this(UUID.randomUUID(), null, null, AffiliationRequestStatus.PENDING, DateUtil.now(), null, null);
+    public Affiliation() {
+        this(UUID.randomUUID(), null, null, "", AffiliationStatus.PENDING, DateUtil.now(), null, null);
     }
 }

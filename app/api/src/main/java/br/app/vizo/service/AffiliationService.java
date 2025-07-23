@@ -1,13 +1,13 @@
 package br.app.vizo.service;
 
-import br.app.vizo.controller.filter.AffiliationRequestFilter;
-import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
+import br.app.vizo.controller.filter.AffiliationFilter;
+import br.app.vizo.controller.request.UpdateAffiliationDTO;
 import br.app.vizo.domain.user.User;
-import br.app.vizo.dto.AffiliationRequestDTO;
-import br.app.vizo.domain.affiliation.AffiliationRequest;
+import br.app.vizo.dto.AffiliationDTO;
+import br.app.vizo.domain.affiliation.Affiliation;
 import br.app.vizo.exception.NotFoundException;
-import br.app.vizo.mapper.AffiliationRequestMapper;
-import br.app.vizo.repository.AffiliationRequestRepository;
+import br.app.vizo.mapper.AffiliationMapper;
+import br.app.vizo.repository.AffiliationRepository;
 import br.app.vizo.util.DateUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,61 +19,61 @@ import java.util.UUID;
 @Service
 public class AffiliationService {
 
-    private final AffiliationRequestRepository affiliationRequestRepository;
-    private final AffiliationRequestMapper affiliationRequestMapper;
+    private final AffiliationRepository affiliationRepository;
+    private final AffiliationMapper affiliationMapper;
 
     private final OfficialService officialService;
 
     public AffiliationService(
-            AffiliationRequestRepository affiliationRequestRepository,
-            AffiliationRequestMapper affiliationRequestMapper,
+            AffiliationRepository affiliationRepository,
+            AffiliationMapper affiliationMapper,
             OfficialService officialService
     ) {
-        this.affiliationRequestRepository = affiliationRequestRepository;
-        this.affiliationRequestMapper = affiliationRequestMapper;
+        this.affiliationRepository = affiliationRepository;
+        this.affiliationMapper = affiliationMapper;
         this.officialService = officialService;
     }
 
-    public Page<AffiliationRequestDTO> getAffiliations(
+    public Page<AffiliationDTO> getAffiliations(
             UUID municipalityId,
-            AffiliationRequestFilter filter,
+            AffiliationFilter filter,
             Pageable pageable,
             Authentication authentication
     ) {
         this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
 
         if (filter.status().isEmpty()) {
-            return this.affiliationRequestRepository
+            return this.affiliationRepository
                     .findAllByMunicipalityId(municipalityId, pageable)
-                    .map(this.affiliationRequestMapper::toDto);
+                    .map(this.affiliationMapper::toDto);
         }
 
-        return this.affiliationRequestRepository
+        return this.affiliationRepository
                 .findAllByMunicipalityIdAndStatus(municipalityId, filter.status().get(), pageable)
-                .map(this.affiliationRequestMapper::toDto);
+                .map(this.affiliationMapper::toDto);
     }
 
-    public AffiliationRequestDTO updateAffiliation(
+    public AffiliationDTO updateAffiliation(
             UUID municipalityId,
             UUID affiliationId,
-            UpdateAffiliationRequestDTO body,
+            UpdateAffiliationDTO body,
             Authentication authentication
     ) {
         User loggedInUser = this.officialService
                 .getAuthorizedAdminContext(municipalityId, authentication)
                 .loggedInUser();
 
-        AffiliationRequest affiliationRequest = this.affiliationRequestRepository
+        Affiliation affiliation = this.affiliationRepository
                 .findById(affiliationId)
                 .orElseThrow(() -> new NotFoundException("Affiliation request not found."));
 
-        affiliationRequest.setStatus(body.status());
-        affiliationRequest.setApprover(loggedInUser);
-        affiliationRequest.setApprovedAt(DateUtil.now());
+        affiliation.setStatus(body.status());
+        affiliation.setApprover(loggedInUser);
+        affiliation.setApprovedAt(DateUtil.now());
 
-        AffiliationRequest saved = this.affiliationRequestRepository.save(affiliationRequest);
+        Affiliation saved = this.affiliationRepository.save(affiliation);
 
-        return this.affiliationRequestMapper.toDto(saved);
+        return this.affiliationMapper.toDto(saved);
     }
 
     public void deleteAffiliation(
@@ -83,6 +83,6 @@ public class AffiliationService {
     ) {
         this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
 
-        this.affiliationRequestRepository.deleteById(affiliationId);
+        this.affiliationRepository.deleteById(affiliationId);
     }
 }

@@ -1,8 +1,8 @@
 package br.app.vizo.controller;
 
-import br.app.vizo.controller.filter.AffiliationRequestFilter;
-import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
-import br.app.vizo.dto.AffiliationRequestDTO;
+import br.app.vizo.controller.filter.AffiliationFilter;
+import br.app.vizo.controller.request.UpdateAffiliationDTO;
+import br.app.vizo.dto.AffiliationDTO;
 import br.app.vizo.dto.PageResponse;
 import br.app.vizo.service.AffiliationService;
 import org.springframework.data.domain.Page;
@@ -24,26 +24,26 @@ public class AffiliationController {
     }
 
     @GetMapping
-    public ResponseEntity<PageResponse<AffiliationRequestDTO>> getAffiliations(
+    public ResponseEntity<PageResponse<AffiliationDTO>> getAffiliations(
             @PathVariable UUID municipalityId,
-            @ModelAttribute AffiliationRequestFilter filter,
+            @ModelAttribute AffiliationFilter filter,
             Pageable pageable,
             Authentication authentication
     ) {
-        Page<AffiliationRequestDTO> response = this.affiliationService
+        Page<AffiliationDTO> response = this.affiliationService
                 .getAffiliations(municipalityId, filter, pageable, authentication);
 
         return ResponseEntity.ok(PageResponse.of(response));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<AffiliationRequestDTO> updateAffiliation(
+    public ResponseEntity<AffiliationDTO> updateAffiliation(
             @PathVariable UUID municipalityId,
             @PathVariable(name = "id") UUID affiliationId,
-            @RequestBody UpdateAffiliationRequestDTO body,
+            @RequestBody UpdateAffiliationDTO body,
             Authentication authentication
     ) {
-        AffiliationRequestDTO response = this.affiliationService
+        AffiliationDTO response = this.affiliationService
                 .updateAffiliation(municipalityId, affiliationId, body, authentication);
 
         return ResponseEntity.ok(response);

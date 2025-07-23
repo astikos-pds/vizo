@@ -1,12 +1,12 @@
 package br.app.vizo.service;
 
-import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
+import br.app.vizo.domain.affiliation.AffiliationStatus;
 import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.user.User;
 import br.app.vizo.dto.AffiliatedUserContextDTO;
 import br.app.vizo.exception.ForbiddenException;
 import br.app.vizo.exception.NotFoundException;
-import br.app.vizo.repository.AffiliationRequestRepository;
+import br.app.vizo.repository.AffiliationRepository;
 import br.app.vizo.repository.MunicipalityRepository;
 import br.app.vizo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class OfficialService {
 
     private final UserRepository userRepository;
     private final MunicipalityRepository municipalityRepository;
-    private final AffiliationRequestRepository affiliationRequestRepository;
+    private final AffiliationRepository affiliationRepository;
 
     public AffiliatedUserContextDTO getAuthorizedCommonContext(UUID municipalityId, Authentication authentication) {
         return getAuthorizedOfficialContext(municipalityId, authentication, false);
@@ -67,11 +67,11 @@ public class OfficialService {
 //            throw new ForbiddenException("Only admins are allowed to perform this action.");
 //        }
 
-        boolean officialBelongsToMunicipality = this.affiliationRequestRepository
+        boolean officialBelongsToMunicipality = this.affiliationRepository
                 .existsByMunicipalityIdAndUserIdAndStatus(
                         municipality.getId(),
                         user.getId(),
-                        AffiliationRequestStatus.APPROVED
+                        AffiliationStatus.APPROVED
                 );
 
         if (!officialBelongsToMunicipality) {
