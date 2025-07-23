@@ -65,7 +65,7 @@ public class AuthController {
     }
 
     @PatchMapping("/verification-requests/{id}")
-    public ResponseEntity<Void> verifyEmail(@PathVariable UUID id, @RequestBody VerificationCodeRequestDTO body) {
+    public ResponseEntity<Void> verifyEmail(@PathVariable UUID id, @RequestBody VerifyCodeRequestDTO body) {
         this.authService.verifyEmail(id, body);
 
         return ResponseEntity.ok().build();

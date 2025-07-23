@@ -3,7 +3,7 @@ package br.app.vizo.service.auth;
 import br.app.vizo.config.security.JwtService;
 import br.app.vizo.config.security.UserDetailsImpl;
 import br.app.vizo.controller.request.EmailRequestDTO;
-import br.app.vizo.controller.request.VerificationCodeRequestDTO;
+import br.app.vizo.controller.request.VerifyCodeRequestDTO;
 import br.app.vizo.dto.EmailVerificationDTO;
 import br.app.vizo.dto.TokenPairDTO;
 import br.app.vizo.domain.token.RefreshToken;
@@ -158,7 +158,7 @@ public class AuthService {
         );
     }
 
-    public void verifyEmail(UUID verificationRequestId, VerificationCodeRequestDTO body) {
+    public void verifyEmail(UUID verificationRequestId, VerifyCodeRequestDTO body) {
         EmailVerificationRequest emailVerificationRequest = this.emailVerificationRequestRepository
                 .findById(verificationRequestId)
                 .orElseThrow(() -> new NotFoundException("Verification request not found."));

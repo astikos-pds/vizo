@@ -1,6 +1,6 @@
 package br.app.vizo.controller.request;
 
-public record VerificationCodeRequestDTO(
+public record VerifyCodeRequestDTO(
         String code
 ) {
 }
