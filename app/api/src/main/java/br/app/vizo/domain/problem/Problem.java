@@ -3,7 +3,8 @@ package br.app.vizo.domain.problem;
 import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.locationtech.jts.geom.Point;
 
 import java.time.Instant;
@@ -11,7 +12,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "problems")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class Problem {
 

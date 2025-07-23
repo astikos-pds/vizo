@@ -5,14 +5,16 @@ import br.app.vizo.domain.user.User;
 import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Table(name = "affiliations")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class Affiliation {
 
