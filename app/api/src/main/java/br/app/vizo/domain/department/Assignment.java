@@ -1,6 +1,6 @@
 package br.app.vizo.domain.department;
 
-import br.app.vizo.domain.user.Official;
+import br.app.vizo.domain.user.User;
 import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,8 +21,8 @@ public class Assignment {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "official_id")
-    private Official official;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
@@ -42,8 +42,8 @@ public class Assignment {
     private Boolean canApproveOfficials;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by")
-    private Official createdBy;
+    @JoinColumn(name = "assignor_id")
+    private User assignor;
 
     @Column(name = "created_at")
     private Instant createdAt;

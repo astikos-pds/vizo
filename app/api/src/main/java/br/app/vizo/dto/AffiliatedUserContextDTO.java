@@ -1,9 +1,9 @@
 package br.app.vizo.dto;
 
 import br.app.vizo.domain.municipality.Municipality;
-import br.app.vizo.domain.user.Official;
+import br.app.vizo.domain.user.User;
 
-public record OfficialContextDTO(
+public record AffiliatedUserContextDTO(
         Municipality municipality,
-        Official loggedInOfficial
+        User loggedInUser
 ) {}

@@ -5,15 +5,12 @@ import br.app.vizo.controller.request.CreateReportRequestDTO;
 import br.app.vizo.domain.problem.Problem;
 import br.app.vizo.domain.problem.ProblemStatus;
 import br.app.vizo.domain.report.Report;
+import br.app.vizo.domain.user.User;
 import br.app.vizo.dto.ReportDTO;
 import br.app.vizo.domain.report.ReportImage;
-import br.app.vizo.domain.user.Citizen;
 import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.mapper.ReportMapper;
-import br.app.vizo.repository.CitizenRepository;
-import br.app.vizo.repository.ProblemRepository;
-import br.app.vizo.repository.ReportImageRepository;
-import br.app.vizo.repository.ReportRepository;
+import br.app.vizo.repository.*;
 import br.app.vizo.util.DateUtil;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
@@ -33,7 +30,7 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final ReportImageRepository reportImageRepository;
     private final ProblemRepository problemRepository;
-    private final CitizenRepository citizenRepository;
+    private final UserRepository userRepository;
     private final ReportMapper reportMapper;
     private final GeometryFactory geometryFactory;
 
@@ -41,21 +38,21 @@ public class ReportService {
             ReportRepository reportRepository,
             ReportImageRepository reportImageRepository,
             ProblemRepository problemRepository,
-            CitizenRepository citizenRepository,
+            UserRepository userRepository,
             ReportMapper reportMapper,
             GeometryFactory geometryFactory
     ) {
         this.reportRepository = reportRepository;
         this.reportImageRepository = reportImageRepository;
         this.problemRepository = problemRepository;
-        this.citizenRepository = citizenRepository;
+        this.userRepository = userRepository;
         this.reportMapper = reportMapper;
         this.geometryFactory = geometryFactory;
     }
 
     @Transactional
     public ReportDTO createReport(CreateReportRequestDTO body, Authentication authentication) {
-        Citizen citizen = this.citizenRepository.findByDocument(authentication.getName()).orElseThrow(
+        User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
 
@@ -66,7 +63,7 @@ public class ReportService {
 
         if (existingProblem.isPresent()) {
             isProblemAlreadyReported =
-                    this.isProblemAlreadyReportedByCitizen(existingProblem.get().getId(), citizen.getId());
+                    this.isProblemAlreadyReportedByUser(existingProblem.get().getId(), user.getId());
         }
 
         Problem problem = existingProblem.orElseGet(
@@ -74,7 +71,7 @@ public class ReportService {
         );
 
         Double accumulatedCredibility = problem.getAccumulatedCredibility() + this.calculateReportCredibility(
-                citizen.getCredibilityPoints(),
+                user.getCredibilityPoints(),
                 body.description(),
                 body.imagesUrls().size(),
                 isProblemAlreadyReported
@@ -92,7 +89,7 @@ public class ReportService {
         Report report = new Report();
         report.setDescription(body.description());
         report.setCoordinates(coordinates);
-        report.setCitizen(citizen);
+        report.setUser(user);
         report.setProblem(problem);
         report = this.reportRepository.save(report);
 
@@ -115,19 +112,19 @@ public class ReportService {
             Pageable pageable,
             Authentication authentication
     ) {
-        Citizen citizen = this.citizenRepository.findByDocument(authentication.getName()).orElseThrow(
+        User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
 
         if (filter.latitude() == null || filter.longitude() == null) {
             return this.reportRepository
-                    .findAllByCitizenId(citizen.getId(), pageable)
+                    .findAllByUserId(user.getId(), pageable)
                     .map(this.reportMapper::toDto);
         }
 
         return this.reportRepository
-                .findAllByCitizenIdWithinDistance(
-                        citizen.getId(),
+                .findAllByUserIdWithinDistance(
+                        user.getId(),
                         filter.latitude(),
                         filter.longitude(),
                         Objects.requireNonNullElse(filter.radius(), 1.0),
@@ -139,8 +136,8 @@ public class ReportService {
         return this.problemRepository.findNearestWithinDistance(latitude, longitude, radius);
     }
 
-    private Boolean isProblemAlreadyReportedByCitizen(UUID problemId, UUID citizenId) {
-        return this.reportRepository.existsByProblemIdAndCitizenId(problemId, citizenId);
+    private Boolean isProblemAlreadyReportedByUser(UUID problemId, UUID userId) {
+        return this.reportRepository.existsByProblemIdAndUserId(problemId, userId);
     }
 
     private static final double REPUTATION_WEIGHT = 3;

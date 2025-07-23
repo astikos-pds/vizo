@@ -2,7 +2,7 @@ package br.app.vizo.controller;
 
 import br.app.vizo.dto.AffiliationRequestDTO;
 import br.app.vizo.dto.AssignmentDTO;
-import br.app.vizo.dto.profile.ProfileDTO;
+import br.app.vizo.dto.UserDTO;
 import br.app.vizo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -23,8 +23,8 @@ public class UserController {
     }
 
     @GetMapping("/users/me")
-    public ResponseEntity<ProfileDTO> getProfile(Authentication authentication) {
-        ProfileDTO response = this.userService.getLoggedInUser(authentication);
+    public ResponseEntity<UserDTO> getProfile(Authentication authentication) {
+        UserDTO response = this.userService.getLoggedInUser(authentication);
 
         return ResponseEntity.ok(response);
     }

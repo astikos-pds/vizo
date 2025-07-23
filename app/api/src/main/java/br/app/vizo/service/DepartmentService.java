@@ -5,7 +5,7 @@ import br.app.vizo.dto.DepartmentDTO;
 import br.app.vizo.domain.department.Assignment;
 import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.department.DepartmentRole;
-import br.app.vizo.dto.OfficialContextDTO;
+import br.app.vizo.dto.AffiliatedUserContextDTO;
 import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.mapper.DepartmentMapper;
 import br.app.vizo.repository.AssignmentRepository;
@@ -63,22 +63,22 @@ public class DepartmentService {
             CreateDepartmentRequestDTO body,
             Authentication authentication
     ) {
-        OfficialContextDTO context = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
+        AffiliatedUserContextDTO context = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
 
         Department department = new Department();
         department.setName(body.name());
         department.setIconUrl(body.iconUrl());
         department.setColorHex(body.colorHex());
         department.setProblemTypes(body.problemTypes());
-        department.setCreatedBy(context.loggedInOfficial());
+        department.setCreator(context.loggedInUser());
         department.setMunicipality(context.municipality());
 
         Department saved = this.departmentRepository.save(department);
 
         Assignment assignment = new Assignment();
         assignment.setDepartment(department);
-        assignment.setOfficial(context.loggedInOfficial());
-        assignment.setCreatedBy(context.loggedInOfficial());
+        assignment.setUser(context.loggedInUser());
+        assignment.setAssignor(context.loggedInUser());
         assignment.setRoleInDepartment(DepartmentRole.ADMIN);
         assignment.setCanViewReports(true);
         assignment.setCanUpdateStatus(true);

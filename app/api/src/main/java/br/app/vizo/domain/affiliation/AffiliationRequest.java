@@ -1,7 +1,7 @@
 package br.app.vizo.domain.affiliation;
 
 import br.app.vizo.domain.municipality.Municipality;
-import br.app.vizo.domain.user.Official;
+import br.app.vizo.domain.user.User;
 import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,8 +22,8 @@ public class AffiliationRequest {
     private UUID id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "official_id")
-    private Official official;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "municipality_id")
@@ -36,8 +36,8 @@ public class AffiliationRequest {
     private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "approved_by")
-    private Official approvedBy;
+    @JoinColumn(name = "approver_by")
+    private User approver;
 
     @Column(name = "approved_at")
     private Instant approvedAt;

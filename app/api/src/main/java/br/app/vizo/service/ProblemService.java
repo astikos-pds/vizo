@@ -81,10 +81,6 @@ public class ProblemService {
                 () -> new NotFoundException("User not found.")
         );
 
-        if (!user.isOfficial()) {
-            throw new ForbiddenException("You don't have permission to access this resource.");
-        }
-
         Problem problem = this.problemRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Problem not found.")
         );

@@ -1,5 +1,7 @@
 package br.app.vizo.dto;
 
+import br.app.vizo.domain.user.User;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -10,7 +12,7 @@ public record ReportDTO(
         List<ReportImageDTO> images,
         Double latitude,
         Double longitude,
-        CitizenDTO citizen,
+        User user,
         ProblemDTO problem,
         Instant createdAt
 ) {

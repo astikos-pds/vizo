@@ -7,11 +7,11 @@ import java.util.UUID;
 
 public record AffiliationRequestDTO(
         UUID id,
-        OfficialDTO official,
+        UserDTO user,
         MunicipalityDTO municipality,
         AffiliationRequestStatus status,
         Instant createdAt,
-        OfficialDTO approvedBy,
+        UserDTO approver,
         Instant approvedAt
 ) {
 }

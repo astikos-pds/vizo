@@ -1,22 +1,18 @@
 package br.app.vizo.domain.user;
 
-import br.app.vizo.domain.user.avatar.Avatar;
 import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.JOINED)
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
-public abstract class User {
+public class User {
 
     @Id
     protected UUID id;
@@ -33,6 +29,8 @@ public abstract class User {
     @ManyToOne(fetch = FetchType.LAZY)
     private Avatar avatar;
 
+    private Double credibilityPoints;
+
     @Column(name = "created_at")
     protected Instant createdAt;
 
@@ -40,14 +38,10 @@ public abstract class User {
     protected Instant updatedAt;
 
     public User() {
-        this("", "", "", "", null);
+        this("", "", "", "", null, 1.0);
     }
 
-    public User(String document, String email, String password, String name, Avatar avatar) {
-        this(UUID.randomUUID(), document, email, password, name, avatar, DateUtil.now(), DateUtil.now());
-    }
-
-    public boolean isOfficial() {
-        return this instanceof Official;
+    public User(String document, String email, String password, String name, Avatar avatar, Double credibilityPoints) {
+        this(UUID.randomUUID(), document, email, password, name, avatar, credibilityPoints, DateUtil.now(), DateUtil.now());
     }
 }

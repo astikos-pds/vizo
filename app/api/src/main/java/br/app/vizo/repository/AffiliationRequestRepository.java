@@ -2,11 +2,9 @@ package br.app.vizo.repository;
 
 import br.app.vizo.domain.affiliation.AffiliationRequest;
 import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
-import br.app.vizo.domain.user.Official;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,11 +19,11 @@ public interface AffiliationRequestRepository extends JpaRepository<AffiliationR
             Pageable pageable
     );
 
-    boolean existsByMunicipalityIdAndOfficialIdAndStatus(
+    boolean existsByMunicipalityIdAndUserIdAndStatus(
             UUID municipalityId,
-            UUID officialId,
+            UUID userId,
             AffiliationRequestStatus status
     );
 
-    List<AffiliationRequest> findAllByOfficial(@Param("official") Official official);
+    List<AffiliationRequest> findAllByUserId(UUID userId);
 }

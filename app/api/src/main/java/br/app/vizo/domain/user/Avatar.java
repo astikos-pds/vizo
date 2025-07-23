@@ -1,4 +1,4 @@
-package br.app.vizo.domain.user.avatar;
+package br.app.vizo.domain.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

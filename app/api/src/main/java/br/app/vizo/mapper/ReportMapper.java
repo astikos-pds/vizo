@@ -5,7 +5,7 @@ import br.app.vizo.domain.report.Report;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {CitizenMapper.class, ProblemMapper.class, ReportImageMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, ProblemMapper.class, ReportImageMapper.class})
 public interface ReportMapper extends DtoMapper<Report, ReportDTO> {
 
     @Mapping(source = "coordinates.x", target = "latitude")

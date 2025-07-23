@@ -2,7 +2,7 @@ package br.app.vizo.domain.department;
 
 import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.problem.ProblemType;
-import br.app.vizo.domain.user.Official;
+import br.app.vizo.domain.user.User;
 import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -41,8 +41,8 @@ public class Department {
     private Set<ProblemType> problemTypes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_by")
-    private Official createdBy;
+    @JoinColumn(name = "creator_id")
+    private User creator;
 
     @Column(name = "created_at")
     protected Instant createdAt;
@@ -60,8 +60,8 @@ public class Department {
             String iconUrl,
             String colorHex,
             Set<ProblemType> problemTypes,
-            Official createdBy
+            User creator
     ) {
-        this(UUID.randomUUID(), municipality, name, iconUrl, colorHex, problemTypes, createdBy, DateUtil.now(), DateUtil.now());
+        this(UUID.randomUUID(), municipality, name, iconUrl, colorHex, problemTypes, creator, DateUtil.now(), DateUtil.now());
     }
 }

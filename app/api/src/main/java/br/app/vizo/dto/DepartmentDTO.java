@@ -13,7 +13,7 @@ public record DepartmentDTO(
         String iconUrl,
         String colorHex,
         Set<ProblemType> problemTypes,
-        OfficialDTO createdBy,
+        UserDTO creator,
         Instant createdAt,
         Instant updatedAt
 ) {

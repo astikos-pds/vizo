@@ -2,15 +2,12 @@ package br.app.vizo.service;
 
 import br.app.vizo.dto.AffiliationRequestDTO;
 import br.app.vizo.dto.AssignmentDTO;
-import br.app.vizo.dto.profile.ProfileDTO;
-import br.app.vizo.dto.profile.UserProfileDTO;
-import br.app.vizo.domain.user.Official;
+import br.app.vizo.dto.UserDTO;
 import br.app.vizo.domain.user.User;
-import br.app.vizo.domain.user.UserType;
-import br.app.vizo.exception.ForbiddenException;
 import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.mapper.AffiliationRequestMapper;
 import br.app.vizo.mapper.AssignmentMapper;
+import br.app.vizo.mapper.UserMapper;
 import br.app.vizo.repository.AffiliationRequestRepository;
 import br.app.vizo.repository.AssignmentRepository;
 import br.app.vizo.repository.UserRepository;
@@ -26,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final AffiliationRequestRepository affiliationRequestRepository;
     private final AssignmentRepository assignmentRepository;
+    private final UserMapper userMapper;
     private final AffiliationRequestMapper affiliationRequestMapper;
     private final AssignmentMapper assignmentMapper;
 
@@ -33,29 +31,24 @@ public class UserService {
             UserRepository userRepository,
             AffiliationRequestRepository affiliationRequestRepository,
             AssignmentRepository assignmentRepository,
+            UserMapper userMapper,
             AffiliationRequestMapper affiliationRequestMapper,
             AssignmentMapper assignmentMapper
     ) {
         this.userRepository = userRepository;
         this.affiliationRequestRepository = affiliationRequestRepository;
         this.assignmentRepository = assignmentRepository;
+        this.userMapper = userMapper;
         this.affiliationRequestMapper = affiliationRequestMapper;
         this.assignmentMapper = assignmentMapper;
     }
 
-    public ProfileDTO getLoggedInUser(Authentication authentication) {
+    public UserDTO getLoggedInUser(Authentication authentication) {
         User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
 
-        UserType userType;
-        if (user.isOfficial()) {
-            userType = UserType.OFFICIAL;
-        } else {
-            userType = UserType.CITIZEN;
-        }
-
-        return new ProfileDTO(userType, UserProfileDTO.of(user));
+        return this.userMapper.toDto(user);
     }
 
     public List<AffiliationRequestDTO> getAffiliations(Authentication authentication) {
@@ -63,14 +56,8 @@ public class UserService {
                 () -> new NotFoundException("User not found.")
         );
 
-        if (!user.isOfficial()) {
-            throw new ForbiddenException("You don't have permission to access this resource.");
-        }
-
-        Official official = (Official) user;
-
         return this.affiliationRequestRepository
-                .findAllByOfficial(official)
+                .findAllByUserId(user.getId())
                 .stream()
                 .map(this.affiliationRequestMapper::toDto)
                 .toList();
@@ -81,12 +68,8 @@ public class UserService {
                 () -> new NotFoundException("User not found.")
         );
 
-        if (!user.isOfficial()) {
-            throw new ForbiddenException("You don't have permission to access this resource.");
-        }
-
         return this.assignmentRepository
-                .findAllByDepartmentMunicipalityIdAndOfficialId(id, user.getId())
+                .findAllByDepartmentMunicipalityIdAndUserId(id, user.getId())
                 .stream()
                 .map(this.assignmentMapper::toDto)
                 .toList();

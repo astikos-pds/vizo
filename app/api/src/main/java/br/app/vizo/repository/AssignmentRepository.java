@@ -11,11 +11,11 @@ import java.util.UUID;
 
 public interface AssignmentRepository extends JpaRepository<Assignment, UUID> {
 
-    Optional<Assignment> findByDepartmentIdAndOfficialId(UUID departmentId, UUID officialId);
+    Optional<Assignment> findByDepartmentIdAndUserId(UUID departmentId, UUID userId);
 
     Page<Assignment> findAllByDepartmentId(UUID departmentId, Pageable pageable);
 
-    List<Assignment> findAllByDepartmentMunicipalityIdAndOfficialId(UUID municipalityId, UUID officialId);
+    List<Assignment> findAllByDepartmentMunicipalityIdAndUserId(UUID municipalityId, UUID userId);
 
     void deleteAllByDepartmentId(UUID departmentId);
 }

@@ -1,20 +1,22 @@
-package br.app.vizo.service.auth;
+package br.app.vizo.service;
 
 import br.app.vizo.config.security.JwtService;
 import br.app.vizo.config.security.UserDetailsImpl;
 import br.app.vizo.controller.request.EmailRequestDTO;
+import br.app.vizo.controller.request.RegisterRequestDTO;
 import br.app.vizo.controller.request.VerifyCodeRequestDTO;
 import br.app.vizo.dto.EmailVerificationDTO;
 import br.app.vizo.dto.TokenPairDTO;
 import br.app.vizo.domain.token.RefreshToken;
 import br.app.vizo.domain.user.User;
 import br.app.vizo.domain.verification.EmailVerificationRequest;
+import br.app.vizo.dto.UserDTO;
 import br.app.vizo.exception.ConflictException;
 import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.exception.UnauthorizedException;
 import br.app.vizo.exception.UnprocessableEntityException;
+import br.app.vizo.mapper.UserMapper;
 import br.app.vizo.repository.*;
-import br.app.vizo.service.EmailService;
 import br.app.vizo.util.CodeGenerator;
 import br.app.vizo.util.DateUtil;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -35,6 +37,8 @@ import java.util.UUID;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
+
     private final RefreshTokenRepository refreshTokenRepository;
     private final EmailVerificationRequestRepository emailVerificationRequestRepository;
     private final PasswordEncoder passwordEncoder;
@@ -44,6 +48,7 @@ public class AuthService {
 
     public AuthService(
             UserRepository userRepository,
+            UserMapper userMapper,
             RefreshTokenRepository refreshTokenRepository,
             EmailVerificationRequestRepository emailVerificationRequestRepository,
             PasswordEncoder passwordEncoder,
@@ -52,6 +57,7 @@ public class AuthService {
             EmailService emailService
     ) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
         this.refreshTokenRepository = refreshTokenRepository;
         this.emailVerificationRequestRepository = emailVerificationRequestRepository;
         this.passwordEncoder = passwordEncoder;
@@ -60,13 +66,31 @@ public class AuthService {
         this.emailService = emailService;
     }
 
+    public UserDTO register(RegisterRequestDTO body) {
+        boolean credentialsAlreadyInUse = this.userRepository.existsByDocumentOrEmail(body.document(), body.email());
+        if (credentialsAlreadyInUse) {
+            throw new UnauthorizedException("Invalid credentials.");
+        }
+
+        User user = new User();
+        user.setName(body.name());
+        user.setDocument(body.document());
+        user.setEmail(body.email());
+        user.setCredibilityPoints(1.0);
+
+        String hashedPassword = this.passwordEncoder.encode(body.password());
+        user.setPassword(hashedPassword);
+
+        return this.userMapper.toDto(user);
+    }
+
     public TokenPairDTO login(String document, String password) {
         User user = this.userRepository.findByDocument(document).orElseThrow(
-                () -> new UnauthorizedException("Invalid credentials")
+                () -> new UnauthorizedException("Invalid credentials.")
         );
 
         boolean passwordMatches = this.passwordEncoder.matches(password, user.getPassword());
-        if (!passwordMatches) throw new UnauthorizedException("Invalid credentials");
+        if (!passwordMatches) throw new UnauthorizedException("Invalid credentials.");
 
         var authConfig = new UsernamePasswordAuthenticationToken(document, password);
         Authentication authentication = this.authenticationManager.authenticate(authConfig);
