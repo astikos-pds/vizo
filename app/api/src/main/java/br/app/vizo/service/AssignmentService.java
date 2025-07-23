@@ -2,7 +2,7 @@ package br.app.vizo.service;
 
 import br.app.vizo.controller.request.BatchUpdateAssignmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
-import br.app.vizo.controller.response.AssignmentDTO;
+import br.app.vizo.dto.AssignmentDTO;
 import br.app.vizo.domain.department.Assignment;
 import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.department.DepartmentRole;

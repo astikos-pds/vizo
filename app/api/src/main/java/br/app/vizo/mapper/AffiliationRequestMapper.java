@@ -1,6 +1,6 @@
 package br.app.vizo.mapper;
 
-import br.app.vizo.controller.response.AffiliationRequestDTO;
+import br.app.vizo.dto.AffiliationRequestDTO;
 import br.app.vizo.domain.affiliation.AffiliationRequest;
 import org.mapstruct.Mapper;
 

@@ -2,8 +2,8 @@ package br.app.vizo.controller;
 
 import br.app.vizo.controller.filter.AffiliationRequestFilter;
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
-import br.app.vizo.controller.response.AffiliationRequestDTO;
-import br.app.vizo.controller.response.PageResponse;
+import br.app.vizo.dto.AffiliationRequestDTO;
+import br.app.vizo.dto.PageResponse;
 import br.app.vizo.service.AffiliationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

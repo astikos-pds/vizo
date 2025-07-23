@@ -1,8 +1,8 @@
 package br.app.vizo.controller;
 
-import br.app.vizo.controller.response.AffiliationRequestDTO;
-import br.app.vizo.controller.response.AssignmentDTO;
-import br.app.vizo.controller.response.profile.ProfileDTO;
+import br.app.vizo.dto.AffiliationRequestDTO;
+import br.app.vizo.dto.AssignmentDTO;
+import br.app.vizo.dto.profile.ProfileDTO;
 import br.app.vizo.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;

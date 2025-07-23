@@ -1,6 +1,6 @@
 package br.app.vizo.mapper;
 
-import br.app.vizo.controller.response.AssignmentDTO;
+import br.app.vizo.dto.AssignmentDTO;
 import br.app.vizo.domain.department.Assignment;
 import org.mapstruct.Mapper;
 

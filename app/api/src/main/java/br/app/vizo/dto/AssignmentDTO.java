@@ -1,4 +1,4 @@
-package br.app.vizo.controller.response;
+package br.app.vizo.dto;
 
 import br.app.vizo.domain.department.DepartmentRole;
 

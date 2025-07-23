@@ -1,7 +1,7 @@
 package br.app.vizo.mapper;
 
 import br.app.vizo.domain.user.Citizen;
-import br.app.vizo.controller.response.CitizenDTO;
+import br.app.vizo.dto.CitizenDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring", uses = AvatarMapper.class)

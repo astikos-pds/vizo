@@ -1,9 +1,10 @@
 package br.app.vizo.service;
 
-import br.app.vizo.controller.response.*;
 import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.problem.Problem;
+import br.app.vizo.dto.MunicipalityDTO;
+import br.app.vizo.dto.ProblemDTO;
 import br.app.vizo.exception.http.NotFoundException;
 import br.app.vizo.mapper.*;
 import br.app.vizo.repository.*;

@@ -1,7 +1,7 @@
 package br.app.vizo.service;
 
 import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
-import br.app.vizo.controller.response.DepartmentDTO;
+import br.app.vizo.dto.DepartmentDTO;
 import br.app.vizo.domain.department.Assignment;
 import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.department.DepartmentRole;

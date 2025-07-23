@@ -2,8 +2,8 @@ package br.app.vizo.controller;
 
 import br.app.vizo.controller.request.BatchUpdateAssignmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
-import br.app.vizo.controller.response.AssignmentDTO;
-import br.app.vizo.controller.response.PageResponse;
+import br.app.vizo.dto.AssignmentDTO;
+import br.app.vizo.dto.PageResponse;
 import br.app.vizo.service.AssignmentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

@@ -1,7 +1,7 @@
 package br.app.vizo.service.auth;
 
 import br.app.vizo.controller.request.RegisterRequestDTO;
-import br.app.vizo.controller.response.OfficialDTO;
+import br.app.vizo.dto.OfficialDTO;
 import br.app.vizo.domain.affiliation.AffiliationRequest;
 import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
 import br.app.vizo.domain.municipality.Municipality;

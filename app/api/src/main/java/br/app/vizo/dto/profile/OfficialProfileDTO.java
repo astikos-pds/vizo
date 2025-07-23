@@ -1,4 +1,4 @@
-package br.app.vizo.controller.response.profile;
+package br.app.vizo.dto.profile;
 
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.domain.user.OfficialRole;

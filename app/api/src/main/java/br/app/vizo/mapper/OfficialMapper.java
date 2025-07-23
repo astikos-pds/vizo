@@ -1,6 +1,6 @@
 package br.app.vizo.mapper;
 
-import br.app.vizo.controller.response.OfficialDTO;
+import br.app.vizo.dto.OfficialDTO;
 import br.app.vizo.domain.user.Official;
 import org.mapstruct.Mapper;
 

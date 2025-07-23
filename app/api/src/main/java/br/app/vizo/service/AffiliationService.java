@@ -2,7 +2,7 @@ package br.app.vizo.service;
 
 import br.app.vizo.controller.filter.AffiliationRequestFilter;
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
-import br.app.vizo.controller.response.AffiliationRequestDTO;
+import br.app.vizo.dto.AffiliationRequestDTO;
 import br.app.vizo.domain.affiliation.AffiliationRequest;
 import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
 import br.app.vizo.domain.user.Official;

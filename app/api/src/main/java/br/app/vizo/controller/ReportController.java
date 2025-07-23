@@ -2,8 +2,8 @@ package br.app.vizo.controller;
 
 import br.app.vizo.controller.filter.ReportFilter;
 import br.app.vizo.controller.request.CreateReportRequestDTO;
-import br.app.vizo.controller.response.PageResponse;
-import br.app.vizo.controller.response.ReportDTO;
+import br.app.vizo.dto.PageResponse;
+import br.app.vizo.dto.ReportDTO;
 import br.app.vizo.service.ReportService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

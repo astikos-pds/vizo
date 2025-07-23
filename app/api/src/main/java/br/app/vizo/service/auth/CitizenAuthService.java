@@ -1,7 +1,7 @@
 package br.app.vizo.service.auth;
 
 import br.app.vizo.controller.request.RegisterRequestDTO;
-import br.app.vizo.controller.response.CitizenDTO;
+import br.app.vizo.dto.CitizenDTO;
 import br.app.vizo.domain.user.Citizen;
 import br.app.vizo.exception.http.UnauthorizedException;
 import br.app.vizo.mapper.CitizenMapper;

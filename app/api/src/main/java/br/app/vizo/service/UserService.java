@@ -1,9 +1,9 @@
 package br.app.vizo.service;
 
-import br.app.vizo.controller.response.AffiliationRequestDTO;
-import br.app.vizo.controller.response.AssignmentDTO;
-import br.app.vizo.controller.response.profile.ProfileDTO;
-import br.app.vizo.controller.response.profile.UserProfileDTO;
+import br.app.vizo.dto.AffiliationRequestDTO;
+import br.app.vizo.dto.AssignmentDTO;
+import br.app.vizo.dto.profile.ProfileDTO;
+import br.app.vizo.dto.profile.UserProfileDTO;
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.domain.user.User;
 import br.app.vizo.domain.user.UserType;

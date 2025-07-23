@@ -1,9 +1,9 @@
 package br.app.vizo.controller;
 
 import br.app.vizo.controller.request.UpdateProblemRequestDTO;
-import br.app.vizo.controller.response.PageResponse;
-import br.app.vizo.controller.response.ProblemDTO;
-import br.app.vizo.controller.response.ReportDTO;
+import br.app.vizo.dto.PageResponse;
+import br.app.vizo.dto.ProblemDTO;
+import br.app.vizo.dto.ReportDTO;
 import br.app.vizo.domain.problem.ProblemType;
 import br.app.vizo.service.ProblemService;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package br.app.vizo.controller.response;
+package br.app.vizo.dto;
 
 public record TokenPairDTO(
         String accessToken,

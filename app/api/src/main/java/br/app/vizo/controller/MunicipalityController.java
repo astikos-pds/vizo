@@ -1,6 +1,8 @@
 package br.app.vizo.controller;
 
-import br.app.vizo.controller.response.*;
+import br.app.vizo.dto.MunicipalityDTO;
+import br.app.vizo.dto.PageResponse;
+import br.app.vizo.dto.ProblemDTO;
 import br.app.vizo.service.MunicipalityService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
