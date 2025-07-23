@@ -9,6 +9,7 @@ import br.app.vizo.dto.AffiliatedUserContextDTO;
 import br.app.vizo.dto.AffiliationDTO;
 import br.app.vizo.domain.affiliation.Affiliation;
 import br.app.vizo.exception.NotFoundException;
+import br.app.vizo.exception.UnprocessableEntityException;
 import br.app.vizo.mapper.AffiliationMapper;
 import br.app.vizo.repository.AffiliationRepository;
 import br.app.vizo.util.DateUtil;
@@ -62,6 +63,12 @@ public class AffiliationService {
             Authentication authentication
     ) {
         AffiliatedUserContextDTO context = this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
+
+        String institutionalDomain = body.institutionalEmail().split("@")[1];
+
+        if (!institutionalDomain.equals(context.municipality().getEmailDomain())) {
+            throw new UnprocessableEntityException("Institutional domain doesn't match municipality's.");
+        }
 
         Affiliation affiliation = new Affiliation();
         affiliation.setUser(context.loggedInUser());
