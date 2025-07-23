@@ -1,8 +1,11 @@
 package br.app.vizo.service;
 
 import br.app.vizo.controller.filter.AffiliationFilter;
+import br.app.vizo.controller.request.CreateAffiliationRequestDTO;
 import br.app.vizo.controller.request.UpdateAffiliationDTO;
+import br.app.vizo.domain.affiliation.AffiliationStatus;
 import br.app.vizo.domain.user.User;
+import br.app.vizo.dto.AffiliatedUserContextDTO;
 import br.app.vizo.dto.AffiliationDTO;
 import br.app.vizo.domain.affiliation.Affiliation;
 import br.app.vizo.exception.NotFoundException;
@@ -51,6 +54,24 @@ public class AffiliationService {
         return this.affiliationRepository
                 .findAllByMunicipalityIdAndStatus(municipalityId, filter.status().get(), pageable)
                 .map(this.affiliationMapper::toDto);
+    }
+
+    public AffiliationDTO createAffiliation(
+            UUID municipalityId,
+            CreateAffiliationRequestDTO body,
+            Authentication authentication
+    ) {
+        AffiliatedUserContextDTO context = this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
+
+        Affiliation affiliation = new Affiliation();
+        affiliation.setUser(context.loggedInUser());
+        affiliation.setMunicipality(context.municipality());
+        affiliation.setInstitutionalEmail(body.institutionalEmail());
+        affiliation.setStatus(AffiliationStatus.PENDING);
+
+        Affiliation saved = this.affiliationRepository.save(affiliation);
+
+        return this.affiliationMapper.toDto(saved);
     }
 
     public AffiliationDTO updateAffiliation(

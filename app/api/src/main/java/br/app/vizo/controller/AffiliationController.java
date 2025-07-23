@@ -1,6 +1,7 @@
 package br.app.vizo.controller;
 
 import br.app.vizo.controller.filter.AffiliationFilter;
+import br.app.vizo.controller.request.CreateAffiliationRequestDTO;
 import br.app.vizo.controller.request.UpdateAffiliationDTO;
 import br.app.vizo.dto.AffiliationDTO;
 import br.app.vizo.dto.PageResponse;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.UUID;
 
@@ -34,6 +36,19 @@ public class AffiliationController {
                 .getAffiliations(municipalityId, filter, pageable, authentication);
 
         return ResponseEntity.ok(PageResponse.of(response));
+    }
+
+    @PostMapping
+    public ResponseEntity<AffiliationDTO> createAffiliation(
+            @PathVariable UUID municipalityId,
+            @RequestBody CreateAffiliationRequestDTO body,
+            Authentication authentication
+    ) {
+        AffiliationDTO response = this.affiliationService.createAffiliation(municipalityId, body, authentication);
+
+        var uri = UriComponentsBuilder.fromPath("/{id}").buildAndExpand(response.id()).toUri();
+
+        return ResponseEntity.created(uri).body(response);
     }
 
     @PatchMapping("/{id}")
