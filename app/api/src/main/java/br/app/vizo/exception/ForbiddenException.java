@@ -1,4 +1,4 @@
-package br.app.vizo.exception.http;
+package br.app.vizo.exception;
 
 public class ForbiddenException extends RuntimeException {
     public ForbiddenException(String message) {

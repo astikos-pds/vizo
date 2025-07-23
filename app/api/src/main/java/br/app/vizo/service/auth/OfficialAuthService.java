@@ -8,7 +8,7 @@ import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.domain.user.OfficialRole;
 import br.app.vizo.domain.verification.EmailVerificationRequest;
-import br.app.vizo.exception.http.UnauthorizedException;
+import br.app.vizo.exception.UnauthorizedException;
 import br.app.vizo.mapper.OfficialMapper;
 import br.app.vizo.repository.AffiliationRequestRepository;
 import br.app.vizo.repository.EmailVerificationRequestRepository;

@@ -5,7 +5,7 @@ import br.app.vizo.domain.municipality.Municipality;
 import br.app.vizo.domain.problem.Problem;
 import br.app.vizo.dto.MunicipalityDTO;
 import br.app.vizo.dto.ProblemDTO;
-import br.app.vizo.exception.http.NotFoundException;
+import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.mapper.*;
 import br.app.vizo.repository.*;
 import org.springframework.data.domain.Page;

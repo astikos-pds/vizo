@@ -6,7 +6,7 @@ import br.app.vizo.dto.AffiliationRequestDTO;
 import br.app.vizo.domain.affiliation.AffiliationRequest;
 import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
 import br.app.vizo.domain.user.Official;
-import br.app.vizo.exception.http.NotFoundException;
+import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.mapper.AffiliationRequestMapper;
 import br.app.vizo.repository.AffiliationRequestRepository;
 import br.app.vizo.repository.OfficialRepository;

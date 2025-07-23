@@ -1,4 +1,4 @@
-package br.app.vizo.exception.http;
+package br.app.vizo.exception;
 
 public class NotFoundException extends RuntimeException {
     public NotFoundException(String message) {

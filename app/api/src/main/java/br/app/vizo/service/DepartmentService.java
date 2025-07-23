@@ -6,7 +6,7 @@ import br.app.vizo.domain.department.Assignment;
 import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.department.DepartmentRole;
 import br.app.vizo.dto.OfficialContextDTO;
-import br.app.vizo.exception.http.NotFoundException;
+import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.mapper.DepartmentMapper;
 import br.app.vizo.repository.AssignmentRepository;
 import br.app.vizo.repository.DepartmentRepository;

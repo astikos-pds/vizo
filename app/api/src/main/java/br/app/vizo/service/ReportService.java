@@ -8,7 +8,7 @@ import br.app.vizo.domain.report.Report;
 import br.app.vizo.dto.ReportDTO;
 import br.app.vizo.domain.report.ReportImage;
 import br.app.vizo.domain.user.Citizen;
-import br.app.vizo.exception.http.NotFoundException;
+import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.mapper.ReportMapper;
 import br.app.vizo.repository.CitizenRepository;
 import br.app.vizo.repository.ProblemRepository;

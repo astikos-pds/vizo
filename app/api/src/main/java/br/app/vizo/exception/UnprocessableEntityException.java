@@ -1,4 +1,4 @@
-package br.app.vizo.exception.http;
+package br.app.vizo.exception;
 
 public class UnprocessableEntityException extends RuntimeException {
     public UnprocessableEntityException(String message) {

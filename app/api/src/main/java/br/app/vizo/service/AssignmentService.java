@@ -8,7 +8,7 @@ import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.department.DepartmentRole;
 import br.app.vizo.domain.user.Official;
 import br.app.vizo.dto.OfficialContextDTO;
-import br.app.vizo.exception.http.NotFoundException;
+import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.mapper.AssignmentMapper;
 import br.app.vizo.repository.AssignmentRepository;
 import br.app.vizo.repository.DepartmentRepository;
