@@ -39,7 +39,7 @@ public class Affiliation {
     private Instant createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "approver_by")
+    @JoinColumn(name = "approver_id")
     private User approver;
 
     @Column(name = "approved_at")

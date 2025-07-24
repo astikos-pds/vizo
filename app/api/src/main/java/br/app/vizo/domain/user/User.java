@@ -17,16 +17,16 @@ import java.util.UUID;
 public class User {
 
     @Id
-    protected UUID id;
+    private UUID id;
 
-    protected String document;
+    private String document;
 
     @Column(unique = true)
-    protected String email;
+    private String email;
 
-    protected String password;
+    private String password;
 
-    protected String name;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Avatar avatar;
@@ -34,10 +34,10 @@ public class User {
     private Double credibilityPoints;
 
     @Column(name = "created_at")
-    protected Instant createdAt;
+    private Instant createdAt;
 
     @Column(name = "updated_at")
-    protected Instant updatedAt;
+    private Instant updatedAt;
 
     public User() {
         this("", "", "", "", null, 1.0);
