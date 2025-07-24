@@ -1,20 +1,15 @@
 package br.app.vizo.controller;
 
 import br.app.vizo.controller.filter.AffiliationRequestFilter;
-import br.app.vizo.controller.request.BatchUpdateAssignmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAffiliationRequestDTO;
-import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
-import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
 import br.app.vizo.controller.response.*;
 import br.app.vizo.service.MunicipalityService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
