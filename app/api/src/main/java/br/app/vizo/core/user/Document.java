@@ -1,22 +1,15 @@
 package br.app.vizo.core.user;
 
 import br.app.vizo.core.shared.exception.InvalidDocumentException;
-import lombok.Getter;
 
-@Getter
-public class Document {
+public record Document(
+        String value
+) {
 
-    private String value;
-
-    public Document(String value) {
-        setValue(value);
-    }
-
-    public void setValue(String value) {
+    public Document {
         if (value == null || !isCPFValid(value)) {
             throw new InvalidDocumentException();
         }
-        this.value = value;
     }
 
     private boolean isCPFValid(String cpf) {

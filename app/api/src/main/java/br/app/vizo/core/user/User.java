@@ -24,7 +24,7 @@ public class User {
     private final MutationTimestamps timestamps;
 
     public User(String name, Document document, Email email, HashedPassword password) {
-        this(UUID.randomUUID(), name, document, email, password, new Image(), new Credibility(), MutationTimestamps.create());
+        this(UUID.randomUUID(), name, document, email, password, null, new Credibility(), MutationTimestamps.create());
     }
 
     public Report report(Problem problem, String description, Double latitude, Double longitude, Set<String> imageUrls) {
@@ -55,11 +55,11 @@ public class User {
     }
 
     public String getDocument() {
-        return this.document.getValue();
+        return this.document.value();
     }
 
     public String getEmail() {
-        return this.email.getValue();
+        return this.email.value();
     }
 
     public String getAvatarUrl() {
