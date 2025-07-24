@@ -2,17 +2,17 @@ package br.app.vizo.service;
 
 import br.app.vizo.controller.request.BatchUpdateAssignmentRequestDTO;
 import br.app.vizo.controller.request.UpdateAssignmentRequestDTO;
-import br.app.vizo.controller.response.AssignmentDTO;
+import br.app.vizo.domain.user.User;
+import br.app.vizo.dto.AssignmentDTO;
 import br.app.vizo.domain.department.Assignment;
 import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.department.DepartmentRole;
-import br.app.vizo.domain.user.Official;
-import br.app.vizo.dto.OfficialContextDTO;
-import br.app.vizo.exception.http.NotFoundException;
+import br.app.vizo.dto.AffiliatedUserContextDTO;
+import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.mapper.AssignmentMapper;
 import br.app.vizo.repository.AssignmentRepository;
 import br.app.vizo.repository.DepartmentRepository;
-import br.app.vizo.repository.OfficialRepository;
+import br.app.vizo.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -31,7 +31,7 @@ public class AssignmentService {
 
     private final DepartmentRepository departmentRepository;
 
-    private final OfficialRepository officialRepository;
+    private final UserRepository userRepository;
 
     private final OfficialService officialService;
 
@@ -39,13 +39,13 @@ public class AssignmentService {
             AssignmentRepository assignmentRepository,
             AssignmentMapper assignmentMapper,
             DepartmentRepository departmentRepository,
-            OfficialRepository officialRepository,
+            UserRepository userRepository,
             OfficialService officialService
     ) {
         this.assignmentRepository = assignmentRepository;
         this.assignmentMapper = assignmentMapper;
         this.departmentRepository = departmentRepository;
-        this.officialRepository = officialRepository;
+        this.userRepository = userRepository;
         this.officialService = officialService;
     }
 
@@ -86,19 +86,19 @@ public class AssignmentService {
             UpdateAssignmentRequestDTO body,
             Authentication authentication
     ) {
-        OfficialContextDTO context = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
+        AffiliatedUserContextDTO context = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
 
         Department department = this.departmentRepository.findById(departmentId).orElseThrow(
                 () -> new NotFoundException("Department not found.")
         );
 
         Assignment assignment = this.assignmentRepository
-                .findByDepartmentIdAndOfficialId(departmentId, body.officialId())
+                .findByDepartmentIdAndUserId(departmentId, body.officialId())
                 .orElseGet(() -> {
                     Assignment newAssignment = new Assignment();
                     newAssignment.setDepartment(department);
-                    newAssignment.setOfficial(context.loggedInOfficial());
-                    newAssignment.setCreatedBy(context.loggedInOfficial());
+                    newAssignment.setUser(context.loggedInUser());
+                    newAssignment.setAssignor(context.loggedInUser());
 
                     return newAssignment;
                 });
@@ -120,24 +120,24 @@ public class AssignmentService {
             BatchUpdateAssignmentRequestDTO body,
             Authentication authentication
     ) {
-        OfficialContextDTO context = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
+        AffiliatedUserContextDTO context = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
 
         Department department = this.getDepartment(departmentId);
 
         List<Assignment> assignments = new ArrayList<>();
 
         for (UUID id : body.ids()) {
-            Official official = this.officialRepository.findById(id).orElseThrow(
+            User user = this.userRepository.findById(id).orElseThrow(
                     () -> new NotFoundException("Official not found.")
             );
 
             Assignment assignment = this.assignmentRepository
-                    .findByDepartmentIdAndOfficialId(departmentId, id)
+                    .findByDepartmentIdAndUserId(departmentId, id)
                     .orElseGet(() -> {
                         Assignment newAssignment = new Assignment();
                         newAssignment.setDepartment(department);
-                        newAssignment.setOfficial(official);
-                        newAssignment.setCreatedBy(context.loggedInOfficial());
+                        newAssignment.setUser(user);
+                        newAssignment.setAssignor(context.loggedInUser());
                         newAssignment.setRoleInDepartment(DepartmentRole.COMMON);
                         newAssignment.setCanViewReports(true);
                         newAssignment.setCanUpdateStatus(true);

@@ -1,8 +1,8 @@
 package br.app.vizo.controller;
 
 import br.app.vizo.controller.request.CreateDepartmentRequestDTO;
-import br.app.vizo.controller.response.DepartmentDTO;
-import br.app.vizo.controller.response.PageResponse;
+import br.app.vizo.dto.DepartmentDTO;
+import br.app.vizo.dto.PageResponse;
 import br.app.vizo.service.DepartmentService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

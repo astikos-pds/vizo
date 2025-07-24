@@ -15,14 +15,14 @@ public interface ReportRepository extends JpaRepository<Report, UUID> {
 
     Page<Report> findByProblemId(UUID problemId, Pageable pageable);
 
-    Boolean existsByProblemIdAndCitizenId(UUID problemId, UUID citizenId);
+    Boolean existsByProblemIdAndUserId(UUID problemId, UUID userId);
 
-    Page<Report> findAllByCitizenId(UUID citizenId, Pageable pageable);
+    Page<Report> findAllByUserId(UUID userId, Pageable pageable);
 
     @Query(
             value = """
                 SELECT * FROM reports r
-                WHERE r.citizen_id = :citizen_id
+                WHERE r.user_id = :user_id
                 AND ST_DWithin(
                     r.coordinates::geography,
                     ST_SetSRID(ST_MakePoint(:lat, :lon), 4326)::geography,
@@ -32,7 +32,7 @@ public interface ReportRepository extends JpaRepository<Report, UUID> {
             """,
             countQuery = """
                 SELECT COUNT(*) FROM reports r
-                WHERE r.citizen_id = :citizen_id
+                WHERE r.user_id = :user_id
                 AND ST_DWithin(
                     r.coordinates::geography,
                     ST_SetSRID(ST_MakePoint(:lat, :lon), 4326)::geography,
@@ -41,8 +41,8 @@ public interface ReportRepository extends JpaRepository<Report, UUID> {
             """,
             nativeQuery = true
     )
-    Page<Report> findAllByCitizenIdWithinDistance(
-            @Param("citizen_id") UUID citizenId,
+    Page<Report> findAllByUserIdWithinDistance(
+            @Param("user_id") UUID userId,
             @Param("lat") Double latitude,
             @Param("lon") Double longitude,
             @Param("distance") Double distance,

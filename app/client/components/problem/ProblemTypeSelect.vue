@@ -1,31 +1,22 @@
 <script lang="ts" setup>
-import { problemRepository } from "~/repositories/problem-repository";
+import type { ProblemType } from "~/types/domain";
 
-const props = defineProps<{
-  modelValue: string | string[];
+defineProps<{
   multiple?: boolean;
 }>();
 
-const emit = defineEmits<{
-  (e: "update:modelValue", value: string | string[]): void;
-}>();
+const model = defineModel<ProblemType | ProblemType[]>();
 
-const value = computed({
-  get: () => props.modelValue,
-  set: (val: string | string[]) => emit("update:modelValue", val),
-});
+const { getProblemTypes } = useProblems();
 
-const { data: problemTypes, pending } =
-  await problemRepository.getAllProblemTypes({
-    key: "problem-types",
-  });
+const { data: problemTypes, pending } = await getProblemTypes();
 
 const items = ref(problemTypes.value ?? []);
 </script>
 
 <template>
   <USelectMenu
-    v-model="value"
+    v-model="model"
     :loading="pending"
     :multiple="multiple"
     :items="items"

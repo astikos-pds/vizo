@@ -23,7 +23,9 @@ const form = reactive<EmailSchema>({
 const municipalityCardOpen = ref(false);
 const municipality = ref<Municipality>();
 
-const { loading, getMunicipalityByDomain } = useMunicipalities();
+const { getMunicipalityByDomain } = useMunicipalities();
+const { loading, handle } = useApiHandler();
+
 const toast = useToast();
 
 const onSubmit = async (event: FormSubmitEvent<EmailSchema>) => {
@@ -32,7 +34,8 @@ const onSubmit = async (event: FormSubmitEvent<EmailSchema>) => {
   const domain = event.data.email.split("@")[1];
   if (!domain) return;
 
-  const response = await getMunicipalityByDomain({ domain });
+  const response = await handle(() => getMunicipalityByDomain({ domain }));
+
   if (!response) {
     toast.add({
       title: t("registerOfficial.emailStep.toast.title"),

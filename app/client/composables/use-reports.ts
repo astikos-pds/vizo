@@ -39,7 +39,7 @@ export const useReports = () => {
 
   function getReportsByProblemId(
     problemId: Problem["id"],
-    params: GetReportsByProblemIdParams
+    params?: GetReportsByProblemIdParams
   ) {
     return useAsyncData(`problems-${problemId}-reports`, () =>
       reportRepository.findAllByProblemId(problemId, params)

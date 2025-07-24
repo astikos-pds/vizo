@@ -1,14 +1,19 @@
 import { defineStore } from "pinia";
 import type { Department } from "~/types/domain";
 
-export const useDepartmentStore = defineStore("municipality", () => {
-  const currentDepartment = computed<Department | undefined>({
-    get: () => JSON.parse(localStorage.getItem("current_department") ?? ""),
-    set: (value: Department | undefined) =>
-      localStorage.setItem("current_department", JSON.stringify(value ?? {})),
+export const useDepartmentStore = defineStore("department", () => {
+  const currentDepartment = computed<Department | null>({
+    get: () => {
+      const item = localStorage.getItem("currentDepartment");
+      if (!item) return null;
+      return JSON.parse(item);
+    },
+    set: (value) => {
+      localStorage.setItem("currentDepartment", JSON.stringify(value));
+    },
   });
 
-  const setCurrentDepartment = (value: Department | undefined) => {
+  const setCurrentDepartment = (value: Department | null) => {
     currentDepartment.value = value;
   };
 

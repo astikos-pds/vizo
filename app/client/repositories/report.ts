@@ -36,7 +36,7 @@ export const createReportRepository = (api: Api) => ({
 
   findAllByProblemId: (
     problemId: Problem["id"],
-    params: GetReportsByProblemIdParams
+    params?: GetReportsByProblemIdParams
   ) => {
     return api<GetReportsResponse>(`/problems/${problemId}/reports`, {
       method: "GET",

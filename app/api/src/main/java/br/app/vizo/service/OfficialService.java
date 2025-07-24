@@ -1,14 +1,14 @@
 package br.app.vizo.service;
 
-import br.app.vizo.domain.affiliation.AffiliationRequestStatus;
+import br.app.vizo.domain.affiliation.AffiliationStatus;
 import br.app.vizo.domain.municipality.Municipality;
-import br.app.vizo.domain.user.Official;
-import br.app.vizo.dto.OfficialContextDTO;
-import br.app.vizo.exception.http.ForbiddenException;
-import br.app.vizo.exception.http.NotFoundException;
-import br.app.vizo.repository.AffiliationRequestRepository;
+import br.app.vizo.domain.user.User;
+import br.app.vizo.dto.AffiliatedUserContextDTO;
+import br.app.vizo.exception.ForbiddenException;
+import br.app.vizo.exception.NotFoundException;
+import br.app.vizo.repository.AffiliationRepository;
 import br.app.vizo.repository.MunicipalityRepository;
-import br.app.vizo.repository.OfficialRepository;
+import br.app.vizo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -19,19 +19,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OfficialService {
 
-    private final OfficialRepository officialRepository;
+    private final UserRepository userRepository;
     private final MunicipalityRepository municipalityRepository;
-    private final AffiliationRequestRepository affiliationRequestRepository;
+    private final AffiliationRepository affiliationRepository;
 
-    public OfficialContextDTO getAuthorizedCommonContext(UUID municipalityId, Authentication authentication) {
+    public AffiliatedUserContextDTO getAuthorizedCommonContext(UUID municipalityId, Authentication authentication) {
         return getAuthorizedOfficialContext(municipalityId, authentication, false);
     }
 
-    public OfficialContextDTO getAuthorizedAdminContext(UUID municipalityId, Authentication authentication) {
+    public AffiliatedUserContextDTO getAuthorizedAdminContext(UUID municipalityId, Authentication authentication) {
         return getAuthorizedOfficialContext(municipalityId, authentication, true);
     }
 
-    private OfficialContextDTO getAuthorizedOfficialContext(
+    private AffiliatedUserContextDTO getAuthorizedOfficialContext(
             UUID municipalityId,
             Authentication authentication,
             boolean isForAdmins
@@ -40,31 +40,42 @@ public class OfficialService {
                 () -> new NotFoundException("Municipality not found.")
         );
 
-        Official loggedInOfficial = this.officialRepository.findByDocument(authentication.getName()).orElseThrow(
-                () -> new NotFoundException("Official not found.")
+        User loggedInUser = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
+                () -> new NotFoundException("User not found.")
         );
 
-        validateOfficialAccess(municipality, loggedInOfficial, isForAdmins);
+        validateOfficialAccess(municipality, loggedInUser, isForAdmins);
 
-        return new OfficialContextDTO(municipality, loggedInOfficial);
+        return new AffiliatedUserContextDTO(municipality, loggedInUser);
     }
 
-    public void validateOfficialAccess(Municipality municipality, Official official, boolean isForAdmins) {
-        if (!official.isAdmin()) {
-            boolean officialBelongsToMunicipality = this.affiliationRequestRepository
-                    .existsByMunicipalityIdAndOfficialIdAndStatus(
-                            municipality.getId(),
-                            official.getId(),
-                            AffiliationRequestStatus.APPROVED
-                    );
+    public void validateOfficialAccess(Municipality municipality, User user, boolean isForAdmins) {
+//        if (!official.isAdmin()) {
+//            boolean officialBelongsToMunicipality = this.affiliationRequestRepository
+//                    .existsByMunicipalityIdAndOfficialIdAndStatus(
+//                            municipality.getId(),
+//                            user.getId(),
+//                            AffiliationRequestStatus.APPROVED
+//                    );
+//
+//            if (!officialBelongsToMunicipality) {
+//                throw new ForbiddenException("Official does not belong to this municipality.");
+//            }
+//        }
+//
+//        if (isForAdmins && !official.isAdmin()) {
+//            throw new ForbiddenException("Only admins are allowed to perform this action.");
+//        }
 
-            if (!officialBelongsToMunicipality) {
-                throw new ForbiddenException("Official does not belong to this municipality.");
-            }
-        }
+        boolean officialBelongsToMunicipality = this.affiliationRepository
+                .existsByMunicipalityIdAndUserIdAndStatus(
+                        municipality.getId(),
+                        user.getId(),
+                        AffiliationStatus.APPROVED
+                );
 
-        if (isForAdmins && !official.isAdmin()) {
-            throw new ForbiddenException("Only admins are allowed to perform this action.");
+        if (!officialBelongsToMunicipality) {
+            throw new ForbiddenException("Official does not belong to this municipality.");
         }
     }
 }

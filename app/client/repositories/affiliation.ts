@@ -1,11 +1,10 @@
 import type {
   AffiliationRequest,
   AffiliationRequestStatus,
-  Municipality,
 } from "~/types/domain";
 import type { Api, Page, Pageable } from "~/types/http";
+import type { MunicipalityId } from "./municipality";
 
-export type MunicipalityId = Municipality["id"];
 export type AffiliationId = AffiliationRequest["id"];
 
 export type GetAllAffiliationsByMunicipalityIdParams = Pageable & {

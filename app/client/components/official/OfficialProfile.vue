@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { DropdownMenuItem } from "@nuxt/ui";
 import { useDepartments } from "~/composables/use-departments";
-import { municipalityRepository } from "~/repositories/municipality-repository";
 import type { Official } from "~/types/domain";
 import type { Pageable } from "~/types/http";
 

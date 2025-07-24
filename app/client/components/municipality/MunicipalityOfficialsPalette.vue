@@ -1,5 +1,4 @@
 <script lang="ts" setup generic="T">
-import { municipalityRepository } from "~/repositories/municipality-repository";
 import type { Pageable } from "~/types/http";
 
 const props = defineProps<{
@@ -23,12 +22,11 @@ const pageable = reactive<Pageable>({
   size: 100,
 });
 
-const { data: page, pending } = municipalityRepository.getAllAffiliations(
+const { getAffiliationsByMunicipalityId } = useAffiliations();
+
+const { data: page, pending } = await getAffiliationsByMunicipalityId(
   municipalityId,
-  pageable,
-  {
-    key: `municipality-${municipalityId}-affiliations`,
-  }
+  pageable
 );
 
 const affiliations = computed(() => page.value?.content);

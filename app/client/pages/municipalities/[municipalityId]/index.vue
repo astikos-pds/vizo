@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { municipalityRepository } from "~/repositories/municipality-repository";
+import { useMunicipalities } from "~/composables/use-municipalities";
 
 definePageMeta({
   layout: "official",
@@ -12,13 +12,13 @@ const municipalityId = route.params.municipalityId as string;
 const { isAdmin } = useUserStore();
 const { t } = useI18n();
 
+const { getMunicipalityById } = useMunicipalities();
+
 const {
   data: municipality,
   error,
   pending,
-} = await municipalityRepository.getById(municipalityId, {
-  key: `municipality-${municipalityId}`,
-});
+} = await getMunicipalityById(municipalityId);
 
 useHead({
   title: `Vizo | ${municipality.value?.name}`,
@@ -84,7 +84,7 @@ const options = computed(() => {
     <div class="size-full grid grid-cols-1 sm:grid-cols-2 gap-2 lg:gap-3">
       <MunicipalityOption
         v-for="option in options"
-        :key="option.to"
+        :key="option.title"
         :to="option.to"
         :icon="option.icon"
         :title="option.title"

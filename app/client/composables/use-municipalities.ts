@@ -1,22 +1,25 @@
 import {
-  getMunicipalityByDomainUseCase,
-  type GetMunicipalityByDomainFilter,
-} from "~/services/municipality";
-import type { Municipality } from "~/types/domain";
+  createMunicipalityRepository,
+  type GetMunicipalityByDomainParams,
+  type MunicipalityId,
+} from "~/repositories/municipality";
 
 export const useMunicipalities = () => {
-  const { loading, handle } = useApiHandler();
+  const { $api } = useNuxtApp();
+  const municipalityRepository = createMunicipalityRepository($api);
 
-  async function getMunicipalityByDomain(
-    filter: GetMunicipalityByDomainFilter
-  ) {
-    return await handle<Municipality>(() =>
-      getMunicipalityByDomainUseCase(filter)
+  function getMunicipalityById(id: MunicipalityId) {
+    return useAsyncData(`municipality-${id}`, () =>
+      municipalityRepository.findById(id)
     );
   }
 
+  function getMunicipalityByDomain(params: GetMunicipalityByDomainParams) {
+    return municipalityRepository.findByDomain(params);
+  }
+
   return {
-    loading,
+    getMunicipalityById,
     getMunicipalityByDomain,
   };
 };

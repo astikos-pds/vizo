@@ -1,6 +1,6 @@
 import type { Api, Page, Pageable } from "~/types/http";
-import type { MunicipalityId } from "./affiliation";
 import type { Department, ProblemType } from "~/types/domain";
+import type { MunicipalityId } from "./municipality";
 
 export type DepartmentId = Department["id"];
 

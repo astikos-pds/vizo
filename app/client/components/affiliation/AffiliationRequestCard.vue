@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { ChipProps } from "@nuxt/ui";
 import { useAffiliations } from "~/composables/use-affiliations";
-import { municipalityRepository } from "~/repositories/municipality-repository";
 import type {
   AffiliationRequest,
   AffiliationRequestStatus,

@@ -1,10 +1,7 @@
 package br.app.vizo.config.security;
 
-import br.app.vizo.domain.user.Citizen;
-import br.app.vizo.domain.user.Official;
 import br.app.vizo.domain.user.User;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -20,10 +17,6 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.user instanceof Citizen)
-            return List.of(new SimpleGrantedAuthority("ROLE_CITIZEN"));
-        else if (this.user instanceof Official)
-            return List.of(new SimpleGrantedAuthority("ROLE_MUNICIPALITY"));
         return List.of();
     }
 

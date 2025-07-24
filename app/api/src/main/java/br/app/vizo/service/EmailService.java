@@ -1,6 +1,6 @@
 package br.app.vizo.service;
 
-import br.app.vizo.exception.http.InternalServerErrorException;
+import br.app.vizo.exception.InternalServerErrorException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;

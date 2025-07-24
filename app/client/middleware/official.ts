@@ -2,8 +2,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
   const { user } = useUserStore();
   const toast = useToast();
 
-  console.log(user);
-
   if (!user || user.userType !== "OFFICIAL") {
     toast.add({
       title: "Forbidden",

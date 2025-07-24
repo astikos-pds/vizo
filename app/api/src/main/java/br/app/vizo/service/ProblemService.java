@@ -1,13 +1,13 @@
 package br.app.vizo.service;
 
 import br.app.vizo.controller.request.UpdateProblemRequestDTO;
-import br.app.vizo.controller.response.ProblemDTO;
-import br.app.vizo.controller.response.ReportDTO;
+import br.app.vizo.dto.ProblemDTO;
+import br.app.vizo.dto.ReportDTO;
 import br.app.vizo.domain.problem.Problem;
 import br.app.vizo.domain.problem.ProblemType;
 import br.app.vizo.domain.user.User;
-import br.app.vizo.exception.http.ForbiddenException;
-import br.app.vizo.exception.http.NotFoundException;
+import br.app.vizo.exception.ForbiddenException;
+import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.mapper.ProblemMapper;
 import br.app.vizo.mapper.ReportMapper;
 import br.app.vizo.repository.*;
@@ -80,10 +80,6 @@ public class ProblemService {
         User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
-
-        if (!user.isOfficial()) {
-            throw new ForbiddenException("You don't have permission to access this resource.");
-        }
 
         Problem problem = this.problemRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Problem not found.")

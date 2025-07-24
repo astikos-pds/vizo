@@ -1,11 +1,12 @@
 package br.app.vizo.domain.report;
 
 import br.app.vizo.domain.problem.Problem;
-import br.app.vizo.domain.user.Citizen;
+import br.app.vizo.domain.user.User;
 import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.locationtech.jts.geom.Point;
 
 import java.time.Instant;
@@ -15,7 +16,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "reports")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class Report {
 
@@ -31,8 +33,8 @@ public class Report {
     private Point coordinates;
 
     @ManyToOne
-    @JoinColumn(name = "citizen_id")
-    private Citizen citizen;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "problem_id")
@@ -49,10 +51,10 @@ public class Report {
             String description,
             List<ReportImage> images,
             Point coordinates,
-            Citizen citizen,
+            User user,
             Problem problem,
             Instant createdAt
     ) {
-        this(UUID.randomUUID(), description, images, coordinates, citizen, problem, createdAt);
+        this(UUID.randomUUID(), description, images, coordinates, user, problem, createdAt);
     }
 }
