@@ -5,10 +5,13 @@ import br.app.vizo.core.shared.Credibility;
 import br.app.vizo.core.shared.MutationTimestamps;
 import br.app.vizo.domain.problem.ProblemStatus;
 import br.app.vizo.domain.problem.ProblemType;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.UUID;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Problem {
 
     @Getter
@@ -26,22 +29,6 @@ public class Problem {
     private Credibility accumulatedCredibility;
 
     private final MutationTimestamps timestamps;
-
-    private Problem(
-            UUID id,
-            Coordinates coordinates,
-            ProblemType type,
-            ProblemStatus status,
-            Credibility accumulatedCredibility,
-            MutationTimestamps timestamps
-    ) {
-        this.id = id;
-        this.coordinates = coordinates;
-        this.type = type;
-        this.status = status;
-        this.accumulatedCredibility = accumulatedCredibility;
-        this.timestamps = timestamps;
-    }
 
     public static Problem create(Coordinates coordinates, ProblemType problemType) {
         return new Problem(

@@ -1,10 +1,10 @@
 package br.app.vizo.core.shared;
 
-public record Media(
+public record Image(
         String url
 ) {
 
-    public Media() {
+    public Image() {
         this("");
     }
 }

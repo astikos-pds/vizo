@@ -1,11 +1,17 @@
 package br.app.vizo.core.user;
 
+import br.app.vizo.core.problem.Problem;
+import br.app.vizo.core.report.Report;
 import br.app.vizo.core.shared.*;
 import br.app.vizo.core.user.password.HashedPassword;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import java.util.Set;
 import java.util.UUID;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
 
     @Getter private final UUID id;
@@ -13,32 +19,16 @@ public class User {
     private final Document document;
     private Email email;
     @Getter private HashedPassword password;
-    private Media avatar;
+    private Image avatar;
     private Credibility credibility;
     private final MutationTimestamps timestamps;
 
-    private User(
-            UUID id,
-            String name,
-            Document document,
-            Email email,
-            HashedPassword password,
-            Media avatar,
-            Credibility credibility,
-            MutationTimestamps timestamps
-    ) {
-        this.id = id;
-        this.name = name;
-        this.document = document;
-        this.email = email;
-        this.password = password;
-        this.avatar = avatar;
-        this.credibility = credibility;
-        this.timestamps = timestamps;
+    public User(String name, Document document, Email email, HashedPassword password) {
+        this(UUID.randomUUID(), name, document, email, password, new Image(), new Credibility(), MutationTimestamps.create());
     }
 
-    public User(String name, Document document, Email email, HashedPassword password) {
-        this(UUID.randomUUID(), name, document, email, password, new Media(), new Credibility(), MutationTimestamps.create());
+    public Report report(Problem problem, String description, Double latitude, Double longitude, Set<String> imageUrls) {
+        return new Report(this, problem, description, latitude, longitude, imageUrls);
     }
 
     public void changePassword(HashedPassword password) {
@@ -51,7 +41,7 @@ public class User {
         this.timestamps.update();
     }
 
-    public void updateAvatar(Media avatar) {
+    public void updateAvatar(Image avatar) {
         this.avatar = avatar;
         this.timestamps.update();
     }
