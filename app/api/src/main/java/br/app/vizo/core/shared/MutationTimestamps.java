@@ -1,5 +1,7 @@
 package br.app.vizo.core.shared;
 
+import br.app.vizo.core.shared.exception.InvalidTimestampException;
+
 import java.time.Instant;
 
 public class MutationTimestamps {
@@ -12,7 +14,14 @@ public class MutationTimestamps {
     }
 
     public MutationTimestamps(Instant createdAt, Instant updatedAt) {
+        if (createdAt == null || createdAt.isBefore(Instant.now())) {
+            throw new InvalidTimestampException();
+        }
         this.createdAt = createdAt;
+
+        if (updatedAt == null || updatedAt.isBefore(Instant.now())) {
+            throw new InvalidTimestampException();
+        }
         this.updatedAt = updatedAt;
     }
 
