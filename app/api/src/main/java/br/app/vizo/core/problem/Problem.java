@@ -32,7 +32,7 @@ public class Problem {
         this.timestamps = timestamps;
     }
 
-    public static Problem create(Coordinates coordinates, ProblemType problemType) {
+    public static Problem report(Coordinates coordinates, ProblemType problemType) {
         return new Problem(
                 UUID.randomUUID(),
                 coordinates,
