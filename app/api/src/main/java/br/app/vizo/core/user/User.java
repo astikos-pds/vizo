@@ -1,18 +1,20 @@
 package br.app.vizo.core.user;
 
 import br.app.vizo.core.shared.*;
+import br.app.vizo.core.user.password.HashedPassword;
+import lombok.Getter;
 
 import java.util.UUID;
 
 public class User {
 
-    private final UUID id;
-    private final String name;
+    @Getter private final UUID id;
+    @Getter private final String name;
     private final Document document;
     private Email email;
-    private HashedPassword password;
+    @Getter private HashedPassword password;
     private Media avatar;
-    private final Credibility credibility;
+    private Credibility credibility;
     private final MutationTimestamps timestamps;
 
     private User(
@@ -39,14 +41,8 @@ public class User {
         this(UUID.randomUUID(), name, document, email, password, new Media(), new Credibility(), MutationTimestamps.create());
     }
 
-    public static User register(String name, String document, String email, String password, PasswordHasher passwordHasher) {
-        HashedPassword hashedPassword = new Password(password).hash(passwordHasher);
-
-        return new User(name, new Document(document), new Email(email), hashedPassword);
-    }
-
-    public void changePassword(String newPassword, PasswordHasher passwordHasher) {
-        this.password = new Password(newPassword).hash(passwordHasher);
+    public void changePassword(HashedPassword password) {
+        this.password = password;
         this.timestamps.update();
     }
 
@@ -61,19 +57,11 @@ public class User {
     }
 
     public void increaseCredibility(Double delta) {
-        this.credibility.increase(delta);
+        this.credibility = this.credibility.increase(delta);
     }
 
     public void decreaseCredibility(Double delta) {
-        this.credibility.decrease(delta);
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return this.name;
+        this.credibility = this.credibility.decrease(delta);
     }
 
     public String getDocument() {
@@ -85,7 +73,7 @@ public class User {
     }
 
     public String getAvatarUrl() {
-        return this.avatar.getUrl();
+        return this.avatar.url();
     }
 
 }

@@ -1,4 +1,4 @@
-package br.app.vizo.core.user;
+package br.app.vizo.core.user.password;
 
 public interface PasswordHasher {
 

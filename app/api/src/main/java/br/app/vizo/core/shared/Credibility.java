@@ -4,21 +4,13 @@ import br.app.vizo.core.shared.exception.InvalidCredibilityException;
 
 public class Credibility {
 
-    private Double points;
+    private final Double points;
 
     public Credibility() {
         this(1.0);
     }
 
     public Credibility(Double points) {
-        setPoints(points);
-    }
-
-    public Double getPoints() {
-        return points;
-    }
-
-    public void setPoints(Double points) {
         if (points <= 0.0) {
             throw new InvalidCredibilityException();
         }

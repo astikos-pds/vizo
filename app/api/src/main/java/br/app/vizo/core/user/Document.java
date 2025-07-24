@@ -1,7 +1,9 @@
 package br.app.vizo.core.user;
 
 import br.app.vizo.core.shared.exception.InvalidDocumentException;
+import lombok.Getter;
 
+@Getter
 public class Document {
 
     private String value;
@@ -42,7 +44,4 @@ public class Document {
         return (remainder < 2) ? 0 : 11 - remainder;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

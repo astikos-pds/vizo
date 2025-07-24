@@ -5,18 +5,29 @@ import br.app.vizo.core.shared.Credibility;
 import br.app.vizo.core.shared.MutationTimestamps;
 import br.app.vizo.domain.problem.ProblemStatus;
 import br.app.vizo.domain.problem.ProblemType;
+import lombok.Getter;
+
 import java.util.UUID;
 
 public class Problem {
 
+    @Getter
     private final UUID id;
+
+    @Getter
     private final Coordinates coordinates;
+
+    @Getter
     private final ProblemType type;
+
+    @Getter
     private ProblemStatus status;
-    private final Credibility accumulatedCredibility;
+
+    private Credibility accumulatedCredibility;
+
     private final MutationTimestamps timestamps;
 
-    public Problem(
+    private Problem(
             UUID id,
             Coordinates coordinates,
             ProblemType type,
@@ -53,28 +64,8 @@ public class Problem {
     }
 
     public void increaseCredibility(Double points) {
-        this.accumulatedCredibility.increase(points);
+        this.accumulatedCredibility = this.accumulatedCredibility.increase(points);
         this.timestamps.update();
     }
 
-    public void increaseCredibility(Credibility credibility) {
-        this.accumulatedCredibility.increase(credibility.getPoints());
-        this.timestamps.update();
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public Coordinates getCoordinates() {
-        return coordinates;
-    }
-
-    public ProblemType getType() {
-        return type;
-    }
-
-    public ProblemStatus getStatus() {
-        return status;
-    }
 }
