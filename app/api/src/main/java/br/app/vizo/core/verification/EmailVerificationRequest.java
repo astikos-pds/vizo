@@ -41,6 +41,10 @@ public class EmailVerificationRequest {
         return this.expiresAt.isExpired();
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
+
     public void retry() {
         this.code = Code.generate();
         this.expiresAt = ExpirationTimestamp.fromNowPlusMinutes(15);

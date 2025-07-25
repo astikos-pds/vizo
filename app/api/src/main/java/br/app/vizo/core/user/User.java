@@ -1,5 +1,7 @@
 package br.app.vizo.core.user;
 
+import br.app.vizo.core.affiliation.AffiliationIntent;
+import br.app.vizo.core.municipality.Municipality;
 import br.app.vizo.core.problem.Problem;
 import br.app.vizo.core.report.Report;
 import br.app.vizo.core.shared.*;
@@ -29,6 +31,10 @@ public class User {
 
     public Report report(Problem problem, String description, Double latitude, Double longitude, Set<String> imageUrls) {
         return new Report(this, problem, description, latitude, longitude, imageUrls);
+    }
+
+    public AffiliationIntent requestAffiliationTo(Municipality municipality) {
+        return new AffiliationIntent(this, municipality);
     }
 
     public void changePassword(HashedPassword password) {

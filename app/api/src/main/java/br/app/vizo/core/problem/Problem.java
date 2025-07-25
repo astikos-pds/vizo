@@ -41,7 +41,7 @@ public class Problem {
         );
     }
 
-    public void changeStatusTo(ProblemStatus status) {
+    public void updateStatusTo(ProblemStatus status) {
         setStatus(status);
     }
 

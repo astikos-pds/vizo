@@ -2,19 +2,17 @@ package br.app.vizo.core.shared;
 
 import br.app.vizo.core.shared.exception.InvalidCredibilityException;
 
-public class Credibility {
-
-    private final Double points;
-
-    public Credibility() {
-        this(1.0);
-    }
-
-    public Credibility(Double points) {
+public record Credibility(
+        Double points
+) {
+    public Credibility {
         if (points <= 0.0) {
             throw new InvalidCredibilityException();
         }
-        this.points = points;
+    }
+
+    public Credibility() {
+        this(1.0);
     }
 
     public Credibility increase(Double delta) {
