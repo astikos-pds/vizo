@@ -1,9 +1,11 @@
 package br.app.vizo.core.shared;
 
 import br.app.vizo.core.shared.exception.InvalidTimestampException;
+import lombok.Getter;
 
 import java.time.Instant;
 
+@Getter
 public class MutationTimestamps {
 
     private final Instant createdAt;
@@ -23,14 +25,6 @@ public class MutationTimestamps {
             throw new InvalidTimestampException();
         }
         this.updatedAt = updatedAt;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
     }
 
     public static MutationTimestamps create() {

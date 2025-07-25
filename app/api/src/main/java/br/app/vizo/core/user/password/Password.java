@@ -1,4 +1,4 @@
-package br.app.vizo.core.user;
+package br.app.vizo.core.user.password;
 
 import br.app.vizo.core.user.exception.WeakPasswordException;
 
@@ -8,26 +8,26 @@ public class Password {
 
     public Password(String value) {
         if (value == null || value.length() < 8) {
-            throw new WeakPasswordException("Password must have at leat 8 characters.");
+            throw new WeakPasswordException("Password must have at least 8 characters.");
         }
 
         if (!value.matches(".*\\d.*")) {
-            throw new WeakPasswordException("Password must have at leat one number.");
+            throw new WeakPasswordException("Password must have at least one number.");
         }
 
         if (!value.matches(".*[a-z].*")) {
-            throw new WeakPasswordException("Password must have at leat one lower case character.");
+            throw new WeakPasswordException("Password must have at least one lower case character.");
 
         }
 
         if (!value.matches(".*[A-Z].*")) {
-            throw new WeakPasswordException("Password must have at leat one upper case character.");
+            throw new WeakPasswordException("Password must have at least one upper case character.");
         }
 
         this.value = value;
     }
 
-    public HashedPassword hash(PasswordHasher passwordHasher) {
+    public HashedPassword hashWith(PasswordHasher passwordHasher) {
         return new HashedPassword(passwordHasher.hash(this.value));
     }
 }

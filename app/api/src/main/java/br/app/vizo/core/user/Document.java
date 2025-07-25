@@ -2,19 +2,14 @@ package br.app.vizo.core.user;
 
 import br.app.vizo.core.shared.exception.InvalidDocumentException;
 
-public class Document {
+public record Document(
+        String value
+) {
 
-    private String value;
-
-    public Document(String value) {
-        setValue(value);
-    }
-
-    public void setValue(String value) {
+    public Document {
         if (value == null || !isCPFValid(value)) {
             throw new InvalidDocumentException();
         }
-        this.value = value;
     }
 
     private boolean isCPFValid(String cpf) {
@@ -42,7 +37,4 @@ public class Document {
         return (remainder < 2) ? 0 : 11 - remainder;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

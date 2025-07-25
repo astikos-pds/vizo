@@ -1,52 +1,38 @@
 package br.app.vizo.core.user;
 
+import br.app.vizo.core.problem.Problem;
+import br.app.vizo.core.report.Report;
 import br.app.vizo.core.shared.*;
+import br.app.vizo.core.user.password.HashedPassword;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+import java.util.Set;
 import java.util.UUID;
 
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
 
-    private final UUID id;
-    private final String name;
+    @Getter private final UUID id;
+    @Getter private final String name;
     private final Document document;
     private Email email;
-    private HashedPassword password;
-    private Media avatar;
-    private final Credibility credibility;
+    @Getter private HashedPassword password;
+    private Image avatar;
+    private Credibility credibility;
     private final MutationTimestamps timestamps;
 
-    private User(
-            UUID id,
-            String name,
-            Document document,
-            Email email,
-            HashedPassword password,
-            Media avatar,
-            Credibility credibility,
-            MutationTimestamps timestamps
-    ) {
-        this.id = id;
-        this.name = name;
-        this.document = document;
-        this.email = email;
-        this.password = password;
-        this.avatar = avatar;
-        this.credibility = credibility;
-        this.timestamps = timestamps;
-    }
-
     public User(String name, Document document, Email email, HashedPassword password) {
-        this(UUID.randomUUID(), name, document, email, password, new Media(), new Credibility(), MutationTimestamps.create());
+        this(UUID.randomUUID(), name, document, email, password, null, new Credibility(), MutationTimestamps.create());
     }
 
-    public static User register(String name, String document, String email, String password, PasswordHasher passwordHasher) {
-        HashedPassword hashedPassword = new Password(password).hash(passwordHasher);
-
-        return new User(name, new Document(document), new Email(email), hashedPassword);
+    public Report report(Problem problem, String description, Double latitude, Double longitude, Set<String> imageUrls) {
+        return new Report(this, problem, description, latitude, longitude, imageUrls);
     }
 
-    public void changePassword(String newPassword, PasswordHasher passwordHasher) {
-        this.password = new Password(newPassword).hash(passwordHasher);
+    public void changePassword(HashedPassword password) {
+        this.password = password;
         this.timestamps.update();
     }
 
@@ -55,37 +41,29 @@ public class User {
         this.timestamps.update();
     }
 
-    public void updateAvatar(Media avatar) {
+    public void updateAvatar(Image avatar) {
         this.avatar = avatar;
         this.timestamps.update();
     }
 
     public void increaseCredibility(Double delta) {
-        this.credibility.increase(delta);
+        this.credibility = this.credibility.increase(delta);
     }
 
     public void decreaseCredibility(Double delta) {
-        this.credibility.decrease(delta);
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getName() {
-        return this.name;
+        this.credibility = this.credibility.decrease(delta);
     }
 
     public String getDocument() {
-        return this.document.getValue();
+        return this.document.value();
     }
 
     public String getEmail() {
-        return this.email.getValue();
+        return this.email.value();
     }
 
     public String getAvatarUrl() {
-        return this.avatar.getUrl();
+        return this.avatar.url();
     }
 
 }
