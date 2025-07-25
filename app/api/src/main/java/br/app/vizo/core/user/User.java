@@ -66,4 +66,7 @@ public class User {
         return this.avatar.url();
     }
 
+    public boolean isSameAs(User other) {
+        return id.equals(other.getId());
+    }
 }
