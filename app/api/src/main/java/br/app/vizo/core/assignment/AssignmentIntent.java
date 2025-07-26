@@ -9,6 +9,6 @@ public record AssignmentIntent(
 ) {
 
     public AssignedUser to(Department department) {
-        return new AssignedUser(this.user, department, permission);
+        return new AssignedUser(user, department).withCustomPermission(permission);
     }
 }

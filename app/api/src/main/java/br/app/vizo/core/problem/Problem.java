@@ -1,10 +1,9 @@
 package br.app.vizo.core.problem;
 
+import br.app.vizo.core.department.Department;
 import br.app.vizo.core.shared.Coordinates;
 import br.app.vizo.core.shared.Credibility;
 import br.app.vizo.core.shared.MutationTimestamps;
-import br.app.vizo.domain.problem.ProblemStatus;
-import br.app.vizo.domain.problem.ProblemType;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -55,4 +54,7 @@ public class Problem {
         return coordinates.getLongitude();
     }
 
+    public boolean isSameAS(Problem other) {
+        return id.equals(other.getId());
+    }
 }

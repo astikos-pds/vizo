@@ -26,4 +26,8 @@ public record ProblemScope(Set<ProblemType> problemTypes) {
         updated.addAll(types);
         return new ProblemScope(updated);
     }
+
+    public boolean embrace(ProblemType problemType) {
+        return problemTypes.contains(problemType);
+    }
 }
