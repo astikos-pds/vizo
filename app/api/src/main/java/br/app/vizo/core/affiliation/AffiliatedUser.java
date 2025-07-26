@@ -3,7 +3,9 @@ package br.app.vizo.core.affiliation;
 import br.app.vizo.core.affiliation.exception.ForbiddenActionException;
 import br.app.vizo.core.affiliation.exception.InvalidPromotionException;
 import br.app.vizo.core.affiliation.exception.SelfActionNotAllowedException;
+import br.app.vizo.core.department.Department;
 import br.app.vizo.core.municipality.Municipality;
+import br.app.vizo.core.problem.ProblemType;
 import br.app.vizo.core.shared.Email;
 import br.app.vizo.core.user.User;
 import lombok.AccessLevel;
@@ -11,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.time.Instant;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -62,6 +65,12 @@ public class AffiliatedUser {
             target.approvedAt = Instant.now();
         }
         target.status = newStatus;
+    }
+
+    public Department createDepartment(String name, String colorHex, String iconUrl, Set<ProblemType> problemTypes) {
+        this.throwIfNotAdmin();
+
+        return new Department(this.municipality, this, name, colorHex, iconUrl, problemTypes);
     }
 
     public boolean isApproved() {

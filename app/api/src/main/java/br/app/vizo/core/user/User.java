@@ -17,7 +17,7 @@ import java.util.UUID;
 public class User {
 
     @Getter private final UUID id;
-    @Getter private final String name;
+    private final Name name;
     private final Document document;
     private Email email;
     @Getter private HashedPassword password;
@@ -26,7 +26,16 @@ public class User {
     private final MutationTimestamps timestamps;
 
     public User(String name, Document document, Email email, HashedPassword password) {
-        this(UUID.randomUUID(), name, document, email, password, null, new Credibility(), MutationTimestamps.create());
+        this(
+                UUID.randomUUID(),
+                new Name(name),
+                document,
+                email,
+                password,
+                null,
+                new Credibility(),
+                MutationTimestamps.create()
+        );
     }
 
     public Report report(Problem problem, String description, Double latitude, Double longitude, Set<String> imageUrls) {
@@ -37,12 +46,12 @@ public class User {
         return new AffiliationIntent(this, municipality);
     }
 
-    public void changePassword(HashedPassword password) {
+    public void updatePassword(HashedPassword password) {
         this.password = password;
         this.timestamps.update();
     }
 
-    public void changeEmail(String newEmail) {
+    public void updateEmail(String newEmail) {
         this.email = new Email(newEmail);
         this.timestamps.update();
     }
@@ -58,6 +67,10 @@ public class User {
 
     public void decreaseCredibility(Double delta) {
         this.credibility = this.credibility.decrease(delta);
+    }
+
+    public String getName() {
+        return this.name.value();
     }
 
     public String getDocument() {

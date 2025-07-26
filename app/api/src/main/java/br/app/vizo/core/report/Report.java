@@ -14,24 +14,13 @@ import java.util.UUID;
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Report {
 
-    @Getter
-    private final UUID id;
-
-    @Getter
-    private final User user;
-
-    @Getter
-    private final Problem problem;
-
+    @Getter private final UUID id;
+    @Getter private final User user;
+    @Getter private final Problem problem;
     private final Description description;
-
-    @Getter
     private final Coordinates coordinates;
-
     private final EvidenceImages images;
-
-    @Getter
-    private final Instant createdAt;
+    @Getter private final Instant createdAt;
 
     public Report(User user, Problem problem, String description, Double latitude, Double longitude, Set<String> imagesUrls) {
         this(
@@ -51,5 +40,13 @@ public class Report {
 
     public Set<String> getImagesUrls() {
         return images.getUrls();
+    }
+
+    public Double getLatitude() {
+        return coordinates.getLatitude();
+    }
+
+    public Double getLongitude() {
+        return coordinates.getLongitude();
     }
 }

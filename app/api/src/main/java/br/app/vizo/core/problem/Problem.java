@@ -14,18 +14,10 @@ import java.util.UUID;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Problem {
 
-    @Getter
-    private final UUID id;
-
-    @Getter
+    @Getter private final UUID id;
     private final Coordinates coordinates;
-
-    @Getter
-    private final ProblemType type;
-
-    @Getter
-    private ProblemStatus status;
-
+    @Getter private final ProblemType type;
+    @Getter private ProblemStatus status;
     private Credibility accumulatedCredibility;
 
     private final MutationTimestamps timestamps;
@@ -53,6 +45,14 @@ public class Problem {
     public void increaseCredibility(Double points) {
         this.accumulatedCredibility = this.accumulatedCredibility.increase(points);
         this.timestamps.update();
+    }
+
+    public Double getLatitude() {
+        return coordinates.getLatitude();
+    }
+
+    public Double getLongitude() {
+        return coordinates.getLongitude();
     }
 
 }

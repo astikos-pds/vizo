@@ -11,17 +11,17 @@ public class MutationTimestamps {
     private final Instant createdAt;
     private Instant updatedAt;
 
-    public MutationTimestamps() {
+    private MutationTimestamps() {
         this(Instant.now(), Instant.now());
     }
 
-    public MutationTimestamps(Instant createdAt, Instant updatedAt) {
+    private MutationTimestamps(Instant createdAt, Instant updatedAt) {
         if (createdAt == null || createdAt.isBefore(Instant.now())) {
             throw new InvalidTimestampException();
         }
         this.createdAt = createdAt;
 
-        if (updatedAt == null || updatedAt.isBefore(Instant.now())) {
+        if (updatedAt == null || updatedAt.isBefore(Instant.now()) || updatedAt.isBefore(createdAt)) {
             throw new InvalidTimestampException();
         }
         this.updatedAt = updatedAt;
