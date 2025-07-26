@@ -6,7 +6,11 @@ public record Permission(
         boolean canManageUsers
 ) {
 
-    public Permission() {
-        this(true, false, false);
+    public static Permission common() {
+        return new Permission(true, false, false);
+    }
+
+    public static Permission admin() {
+        return new Permission(true, true, true);
     }
 }

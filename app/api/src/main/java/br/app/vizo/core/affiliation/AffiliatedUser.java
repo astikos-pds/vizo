@@ -3,14 +3,11 @@ package br.app.vizo.core.affiliation;
 import br.app.vizo.core.affiliation.exception.ForbiddenActionException;
 import br.app.vizo.core.affiliation.exception.InvalidPromotionException;
 import br.app.vizo.core.affiliation.exception.SelfActionNotAllowedException;
-import br.app.vizo.core.assignment.AssignmentIntent;
-import br.app.vizo.core.assignment.Permission;
-import br.app.vizo.core.assignment.PermissionPreset;
+import br.app.vizo.core.assignment.*;
 import br.app.vizo.core.department.Department;
 import br.app.vizo.core.municipality.Municipality;
 import br.app.vizo.core.problem.ProblemType;
 import br.app.vizo.core.shared.Email;
-import br.app.vizo.core.shared.Name;
 import br.app.vizo.core.user.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -48,8 +45,8 @@ public class AffiliatedUser {
     }
 
     public void promote(AffiliatedUser target) {
-        this.throwIfSameAs(target);
-        this.throwIfNotAdmin();
+        throwIfSameAs(target);
+        throwIfNotAdmin();
 
         if (!target.isApproved()) {
             throw new InvalidPromotionException();
@@ -59,8 +56,8 @@ public class AffiliatedUser {
     }
 
     public void updateStatusOf(AffiliatedUser target, AffiliationStatus newStatus) {
-        this.throwIfSameAs(target);
-        this.throwIfNotAdmin();
+        throwIfSameAs(target);
+        throwIfNotAdmin();
 
         if (target.status == newStatus) return;
 
@@ -77,8 +74,17 @@ public class AffiliatedUser {
         return new Department(this.municipality, this, name, colorHex, iconUrl, problemTypes);
     }
 
-    public AssignmentIntent assign(AffiliatedUser user) {
-        return new AssignmentIntent(user);
+    public AssignmentIntent assign(AffiliatedUser target) {
+        throwIfSameAs(target);
+        throwIfNotAdmin();
+
+        return new AssignmentIntent(target, Permission.common());
+    }
+
+    public AssignmentIntent assignSelf() {
+        throwIfNotAdmin();
+
+        return new AssignmentIntent(this, Permission.admin());
     }
 
     public PermissionPreset createPermissionPreset(String name, Permission permission) {
@@ -101,7 +107,7 @@ public class AffiliatedUser {
 
     private void throwIfNotAdmin() {
         if (!this.isAdmin) {
-            throw new ForbiddenActionException();
+            throw new ForbiddenActionException("You need to be an admin to execute this action.");
         }
     }
 }
