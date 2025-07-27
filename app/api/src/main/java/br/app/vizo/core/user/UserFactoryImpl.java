@@ -1,9 +1,6 @@
-package br.app.vizo.application.factory;
+package br.app.vizo.core.user;
 
 import br.app.vizo.core.shared.Email;
-import br.app.vizo.core.user.Document;
-import br.app.vizo.core.user.User;
-import br.app.vizo.core.user.UserFactory;
 import br.app.vizo.core.user.password.HashedPassword;
 import br.app.vizo.core.user.password.HashedPasswordFactory;
 import lombok.RequiredArgsConstructor;
