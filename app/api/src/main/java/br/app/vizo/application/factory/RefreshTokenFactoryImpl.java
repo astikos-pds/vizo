@@ -1,10 +1,11 @@
-package br.app.vizo.core.user.token;
+package br.app.vizo.application.factory;
 
 import br.app.vizo.core.shared.ExpirationTimestamp;
 import br.app.vizo.core.user.User;
-import org.springframework.stereotype.Component;
+import br.app.vizo.core.user.token.RefreshToken;
+import br.app.vizo.core.user.token.RefreshTokenFactory;
 
-@Component
+@Factory
 public class RefreshTokenFactoryImpl implements RefreshTokenFactory {
 
     @Override
