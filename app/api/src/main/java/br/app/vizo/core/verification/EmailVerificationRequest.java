@@ -53,7 +53,7 @@ public class EmailVerificationRequest {
         this.expiresAt = ExpirationTimestamp.fromNowPlusMinutes(15);
     }
 
-    public void verify(String rawCode) {
+    public void verifyWith(String rawCode) {
         if (this.isExpired()) {
             throw new EmailVerificationRequestExpiredException();
         }
