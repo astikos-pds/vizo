@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "municipalities")
+@Table(name = "old_municipalities")
 @Getter
 @Setter
 @AllArgsConstructor

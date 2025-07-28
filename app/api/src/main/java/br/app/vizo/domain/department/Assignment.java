@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "assignments")
+@Table(name = "old_assignments")
 @Getter
 @Setter
 @AllArgsConstructor

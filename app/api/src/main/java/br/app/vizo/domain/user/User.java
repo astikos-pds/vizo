@@ -10,7 +10,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity(name = "OldUser")
-@Table(name = "users")
+@Table(name = "old_users")
 @Getter
 @Setter
 @AllArgsConstructor

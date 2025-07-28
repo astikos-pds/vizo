@@ -7,7 +7,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity(name = "OldRefreshToken")
-@Table(name = "refresh_tokens")
+@Table(name = "old_refresh_tokens")
 @Getter
 @Setter
 @AllArgsConstructor

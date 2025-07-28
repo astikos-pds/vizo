@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "reports")
+@Table(name = "old_reports")
 @Getter
 @Setter
 @AllArgsConstructor
