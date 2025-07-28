@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.Instant;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "OldRefreshToken")
 @Table(name = "refresh_tokens")
 @Getter
 @Setter

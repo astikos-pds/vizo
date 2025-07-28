@@ -19,42 +19,42 @@ import java.util.UUID;
 public class MunicipalityService {
 
     private final OfficialService officialService;
-    private final MunicipalityRepository municipalityRepository;
-    private final DepartmentRepository departmentRepository;
-    private final ProblemRepository problemRepository;
-    private final MunicipalityMapper municipalityMapper;
-    private final ProblemMapper problemMapper;
+    private final OldMunicipalityRepository oldMunicipalityRepository;
+    private final OldDepartmentRepository oldDepartmentRepository;
+    private final OldProblemRepository oldProblemRepository;
+    private final OldMunicipalityMapper oldMunicipalityMapper;
+    private final OldProblemMapper oldProblemMapper;
 
     public MunicipalityService(
             OfficialService officialService,
-            MunicipalityRepository municipalityRepository,
-            DepartmentRepository departmentRepository,
-            ProblemRepository problemRepository,
-            MunicipalityMapper municipalityMapper,
-            ProblemMapper problemMapper
+            OldMunicipalityRepository oldMunicipalityRepository,
+            OldDepartmentRepository oldDepartmentRepository,
+            OldProblemRepository oldProblemRepository,
+            OldMunicipalityMapper oldMunicipalityMapper,
+            OldProblemMapper oldProblemMapper
     ) {
         this.officialService = officialService;
-        this.municipalityRepository = municipalityRepository;
-        this.departmentRepository = departmentRepository;
-        this.problemRepository = problemRepository;
-        this.municipalityMapper = municipalityMapper;
-        this.problemMapper = problemMapper;
+        this.oldMunicipalityRepository = oldMunicipalityRepository;
+        this.oldDepartmentRepository = oldDepartmentRepository;
+        this.oldProblemRepository = oldProblemRepository;
+        this.oldMunicipalityMapper = oldMunicipalityMapper;
+        this.oldProblemMapper = oldProblemMapper;
     }
 
     public MunicipalityDTO getMunicipalityById(UUID id) {
-        Municipality municipality = this.municipalityRepository.findById(id).orElseThrow(
+        Municipality municipality = this.oldMunicipalityRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Municipality not found.")
         );
 
-        return this.municipalityMapper.toDto(municipality);
+        return this.oldMunicipalityMapper.toDto(municipality);
     }
 
     public MunicipalityDTO getMunicipalityByEmailDomain(String domain) {
-        Municipality municipality = this.municipalityRepository.findByEmailDomain(domain).orElseThrow(
+        Municipality municipality = this.oldMunicipalityRepository.findByEmailDomain(domain).orElseThrow(
                 () -> new NotFoundException("Municipality not found.")
         );
 
-        return this.municipalityMapper.toDto(municipality);
+        return this.oldMunicipalityMapper.toDto(municipality);
     }
 
     public Page<ProblemDTO> getDepartmentVisibleProblems(
@@ -65,12 +65,12 @@ public class MunicipalityService {
     ) {
         this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
 
-        Department department = this.departmentRepository.findById(departmentId).orElseThrow(
+        Department department = this.oldDepartmentRepository.findById(departmentId).orElseThrow(
                 () -> new NotFoundException("Department not found.")
         );
 
-        return this.problemRepository.findAllByTypeIn(department.getProblemTypes(), pageable)
-                .map(this.problemMapper::toDto);
+        return this.oldProblemRepository.findAllByTypeIn(department.getProblemTypes(), pageable)
+                .map(this.oldProblemMapper::toDto);
     }
 
     public ProblemDTO getDepartmentProblemById(
@@ -81,14 +81,14 @@ public class MunicipalityService {
     ) {
         this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
 
-        this.departmentRepository.findById(departmentId).orElseThrow(
+        this.oldDepartmentRepository.findById(departmentId).orElseThrow(
                 () -> new NotFoundException("Department not found.")
         );
 
-        Problem problem = this.problemRepository.findById(problemId).orElseThrow(
+        Problem problem = this.oldProblemRepository.findById(problemId).orElseThrow(
                 () -> new NotFoundException("Problem not found.")
         );
 
-        return this.problemMapper.toDto(problem);
+        return this.oldProblemMapper.toDto(problem);
     }
 }

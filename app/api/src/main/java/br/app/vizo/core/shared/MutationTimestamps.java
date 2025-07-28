@@ -1,21 +1,25 @@
 package br.app.vizo.core.shared;
 
 import br.app.vizo.core.shared.exception.InvalidTimestampException;
-import lombok.Getter;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 import java.time.Instant;
 
-@Getter
+@Embeddable
 public class MutationTimestamps {
 
+    @Column(name = "created_at", nullable = false)
     private final Instant createdAt;
+
+    @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
     private MutationTimestamps() {
         this(Instant.now(), Instant.now());
     }
 
-    private MutationTimestamps(Instant createdAt, Instant updatedAt) {
+    public MutationTimestamps(Instant createdAt, Instant updatedAt) {
         if (createdAt == null || createdAt.isBefore(Instant.now())) {
             throw new InvalidTimestampException();
         }
@@ -33,5 +37,13 @@ public class MutationTimestamps {
 
     public void update() {
         this.updatedAt = Instant.now();
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
     }
 }

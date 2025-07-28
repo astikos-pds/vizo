@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface MunicipalityRepository extends JpaRepository<Municipality, UUID> {
+public interface OldMunicipalityRepository extends JpaRepository<Municipality, UUID> {
 
     Optional<Municipality> findByEmailDomain(String emailDomain);
 }

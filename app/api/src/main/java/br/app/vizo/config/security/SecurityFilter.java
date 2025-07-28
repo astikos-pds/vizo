@@ -1,7 +1,7 @@
 package br.app.vizo.config.security;
 
 import br.app.vizo.domain.user.User;
-import br.app.vizo.repository.UserRepository;
+import br.app.vizo.repository.OldUserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,12 +33,12 @@ public class SecurityFilter extends OncePerRequestFilter {
             "auth"
     };
 
-    private final UserRepository userRepository;
+    private final OldUserRepository oldUserRepository;
 
     private final JwtService jwtService;
 
-    public SecurityFilter(UserRepository userRepository, JwtService jwtService) {
-        this.userRepository = userRepository;
+    public SecurityFilter(OldUserRepository oldUserRepository, JwtService jwtService) {
+        this.oldUserRepository = oldUserRepository;
         this.jwtService = jwtService;
     }
 
@@ -54,7 +54,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             if (token != null && this.jwtService.isAccessTokenValid(token)) {
                 String subject = this.jwtService.getSubjectFromToken(token);
-                Optional<User> user = this.userRepository.findByDocument(subject);
+                Optional<User> user = this.oldUserRepository.findByDocument(subject);
 
                 if (user.isEmpty()) {
                     this.sendError(response, 404, "User not found.");

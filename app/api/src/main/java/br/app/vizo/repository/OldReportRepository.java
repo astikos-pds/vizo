@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface ReportRepository extends JpaRepository<Report, UUID> {
+public interface OldReportRepository extends JpaRepository<Report, UUID> {
 
     Page<Report> findByProblemId(UUID problemId, Pageable pageable);
 

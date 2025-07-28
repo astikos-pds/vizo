@@ -10,8 +10,8 @@ import br.app.vizo.dto.AffiliationDTO;
 import br.app.vizo.domain.affiliation.Affiliation;
 import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.exception.UnprocessableEntityException;
-import br.app.vizo.mapper.AffiliationMapper;
-import br.app.vizo.repository.AffiliationRepository;
+import br.app.vizo.mapper.OldAffiliationMapper;
+import br.app.vizo.repository.OldAffiliationRepository;
 import br.app.vizo.util.DateUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,18 +23,18 @@ import java.util.UUID;
 @Service
 public class AffiliationService {
 
-    private final AffiliationRepository affiliationRepository;
-    private final AffiliationMapper affiliationMapper;
+    private final OldAffiliationRepository oldAffiliationRepository;
+    private final OldAffiliationMapper oldAffiliationMapper;
 
     private final OfficialService officialService;
 
     public AffiliationService(
-            AffiliationRepository affiliationRepository,
-            AffiliationMapper affiliationMapper,
+            OldAffiliationRepository oldAffiliationRepository,
+            OldAffiliationMapper oldAffiliationMapper,
             OfficialService officialService
     ) {
-        this.affiliationRepository = affiliationRepository;
-        this.affiliationMapper = affiliationMapper;
+        this.oldAffiliationRepository = oldAffiliationRepository;
+        this.oldAffiliationMapper = oldAffiliationMapper;
         this.officialService = officialService;
     }
 
@@ -47,14 +47,14 @@ public class AffiliationService {
         this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
 
         if (filter.status().isEmpty()) {
-            return this.affiliationRepository
+            return this.oldAffiliationRepository
                     .findAllByMunicipalityId(municipalityId, pageable)
-                    .map(this.affiliationMapper::toDto);
+                    .map(this.oldAffiliationMapper::toDto);
         }
 
-        return this.affiliationRepository
+        return this.oldAffiliationRepository
                 .findAllByMunicipalityIdAndStatus(municipalityId, filter.status().get(), pageable)
-                .map(this.affiliationMapper::toDto);
+                .map(this.oldAffiliationMapper::toDto);
     }
 
     public AffiliationDTO createAffiliation(
@@ -76,9 +76,9 @@ public class AffiliationService {
         affiliation.setInstitutionalEmail(body.institutionalEmail());
         affiliation.setStatus(AffiliationStatus.PENDING);
 
-        Affiliation saved = this.affiliationRepository.save(affiliation);
+        Affiliation saved = this.oldAffiliationRepository.save(affiliation);
 
-        return this.affiliationMapper.toDto(saved);
+        return this.oldAffiliationMapper.toDto(saved);
     }
 
     public AffiliationDTO updateAffiliation(
@@ -91,7 +91,7 @@ public class AffiliationService {
                 .getAuthorizedAdminContext(municipalityId, authentication)
                 .loggedInUser();
 
-        Affiliation affiliation = this.affiliationRepository
+        Affiliation affiliation = this.oldAffiliationRepository
                 .findById(affiliationId)
                 .orElseThrow(() -> new NotFoundException("Affiliation request not found."));
 
@@ -99,9 +99,9 @@ public class AffiliationService {
         affiliation.setApprover(loggedInUser);
         affiliation.setApprovedAt(DateUtil.now());
 
-        Affiliation saved = this.affiliationRepository.save(affiliation);
+        Affiliation saved = this.oldAffiliationRepository.save(affiliation);
 
-        return this.affiliationMapper.toDto(saved);
+        return this.oldAffiliationMapper.toDto(saved);
     }
 
     public void deleteAffiliation(
@@ -111,6 +111,6 @@ public class AffiliationService {
     ) {
         this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
 
-        this.affiliationRepository.deleteById(affiliationId);
+        this.oldAffiliationRepository.deleteById(affiliationId);
     }
 }

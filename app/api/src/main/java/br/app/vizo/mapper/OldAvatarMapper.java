@@ -5,5 +5,5 @@ import br.app.vizo.domain.user.Avatar;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface AvatarMapper extends DtoMapper<Avatar, AvatarDTO> {
+public interface OldAvatarMapper extends DtoMapper<Avatar, AvatarDTO> {
 }

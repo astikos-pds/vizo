@@ -9,10 +9,10 @@ import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.department.DepartmentRole;
 import br.app.vizo.dto.AffiliatedUserContextDTO;
 import br.app.vizo.exception.NotFoundException;
-import br.app.vizo.mapper.AssignmentMapper;
-import br.app.vizo.repository.AssignmentRepository;
-import br.app.vizo.repository.DepartmentRepository;
-import br.app.vizo.repository.UserRepository;
+import br.app.vizo.mapper.OldAssignmentMapper;
+import br.app.vizo.repository.OldAssignmentRepository;
+import br.app.vizo.repository.OldDepartmentRepository;
+import br.app.vizo.repository.OldUserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -26,26 +26,26 @@ import java.util.UUID;
 @Service
 public class AssignmentService {
 
-    private final AssignmentRepository assignmentRepository;
-    private final AssignmentMapper assignmentMapper;
+    private final OldAssignmentRepository oldAssignmentRepository;
+    private final OldAssignmentMapper oldAssignmentMapper;
 
-    private final DepartmentRepository departmentRepository;
+    private final OldDepartmentRepository oldDepartmentRepository;
 
-    private final UserRepository userRepository;
+    private final OldUserRepository oldUserRepository;
 
     private final OfficialService officialService;
 
     public AssignmentService(
-            AssignmentRepository assignmentRepository,
-            AssignmentMapper assignmentMapper,
-            DepartmentRepository departmentRepository,
-            UserRepository userRepository,
+            OldAssignmentRepository oldAssignmentRepository,
+            OldAssignmentMapper oldAssignmentMapper,
+            OldDepartmentRepository oldDepartmentRepository,
+            OldUserRepository oldUserRepository,
             OfficialService officialService
     ) {
-        this.assignmentRepository = assignmentRepository;
-        this.assignmentMapper = assignmentMapper;
-        this.departmentRepository = departmentRepository;
-        this.userRepository = userRepository;
+        this.oldAssignmentRepository = oldAssignmentRepository;
+        this.oldAssignmentMapper = oldAssignmentMapper;
+        this.oldDepartmentRepository = oldDepartmentRepository;
+        this.oldUserRepository = oldUserRepository;
         this.officialService = officialService;
     }
 
@@ -59,8 +59,8 @@ public class AssignmentService {
 
         this.getDepartment(departmentId);
 
-        return this.assignmentRepository.findAllByDepartmentId(departmentId, pageable)
-                .map(this.assignmentMapper::toDto);
+        return this.oldAssignmentRepository.findAllByDepartmentId(departmentId, pageable)
+                .map(this.oldAssignmentMapper::toDto);
     }
 
     public AssignmentDTO getAssignment(
@@ -73,11 +73,11 @@ public class AssignmentService {
 
         this.getDepartment(departmentId);
 
-        Assignment assignment = this.assignmentRepository.findById(assignmentId).orElseThrow(
+        Assignment assignment = this.oldAssignmentRepository.findById(assignmentId).orElseThrow(
                 () -> new NotFoundException("Assignment not found.")
         );
 
-        return this.assignmentMapper.toDto(assignment);
+        return this.oldAssignmentMapper.toDto(assignment);
     }
 
     public AssignmentDTO createOrUpdateAssignment(
@@ -88,11 +88,11 @@ public class AssignmentService {
     ) {
         AffiliatedUserContextDTO context = this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
 
-        Department department = this.departmentRepository.findById(departmentId).orElseThrow(
+        Department department = this.oldDepartmentRepository.findById(departmentId).orElseThrow(
                 () -> new NotFoundException("Department not found.")
         );
 
-        Assignment assignment = this.assignmentRepository
+        Assignment assignment = this.oldAssignmentRepository
                 .findByDepartmentIdAndUserId(departmentId, body.officialId())
                 .orElseGet(() -> {
                     Assignment newAssignment = new Assignment();
@@ -108,9 +108,9 @@ public class AssignmentService {
         assignment.setCanUpdateStatus(body.canUpdateStatus());
         assignment.setCanApproveOfficials(body.canApproveOfficials());
 
-        Assignment saved = this.assignmentRepository.save(assignment);
+        Assignment saved = this.oldAssignmentRepository.save(assignment);
 
-        return this.assignmentMapper.toDto(saved);
+        return this.oldAssignmentMapper.toDto(saved);
     }
 
     @Transactional
@@ -127,11 +127,11 @@ public class AssignmentService {
         List<Assignment> assignments = new ArrayList<>();
 
         for (UUID id : body.ids()) {
-            User user = this.userRepository.findById(id).orElseThrow(
+            User user = this.oldUserRepository.findById(id).orElseThrow(
                     () -> new NotFoundException("Official not found.")
             );
 
-            Assignment assignment = this.assignmentRepository
+            Assignment assignment = this.oldAssignmentRepository
                     .findByDepartmentIdAndUserId(departmentId, id)
                     .orElseGet(() -> {
                         Assignment newAssignment = new Assignment();
@@ -149,9 +149,9 @@ public class AssignmentService {
             assignments.add(assignment);
         }
 
-        return this.assignmentRepository.saveAll(assignments)
+        return this.oldAssignmentRepository.saveAll(assignments)
                 .stream()
-                .map(this.assignmentMapper::toDto)
+                .map(this.oldAssignmentMapper::toDto)
                 .toList();
     }
 
@@ -165,11 +165,11 @@ public class AssignmentService {
 
         this.getDepartment(departmentId);
 
-        this.assignmentRepository.deleteById(assignmentId);
+        this.oldAssignmentRepository.deleteById(assignmentId);
     }
 
     private Department getDepartment(UUID id) {
-        return this.departmentRepository.findById(id).orElseThrow(
+        return this.oldDepartmentRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Department not found.")
         );
     }

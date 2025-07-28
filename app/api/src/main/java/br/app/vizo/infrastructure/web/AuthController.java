@@ -1,8 +1,11 @@
-package br.app.vizo.controller;
+package br.app.vizo.infrastructure.web;
 
+import br.app.vizo.application.usecase.auth.RegisterUseCase;
+import br.app.vizo.application.usecase.auth.request.RegisterRequestDTO;
 import br.app.vizo.controller.request.*;
 import br.app.vizo.dto.*;
 import br.app.vizo.service.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,17 +14,15 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
-
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+    private final RegisterUseCase registerUseCase;
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> register(@RequestBody RegisterRequestDTO body) {
-        UserDTO response = this.authService.register(body);
+    public ResponseEntity<br.app.vizo.application.dto.UserDTO> register(@RequestBody RegisterRequestDTO body) {
+        br.app.vizo.application.dto.UserDTO response = this.registerUseCase.execute(body);
 
         return ResponseEntity.ok(response);
     }

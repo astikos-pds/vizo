@@ -5,5 +5,5 @@ import br.app.vizo.dto.UserDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper extends DtoMapper<User, UserDTO> {
+public interface OldUserMapper extends DtoMapper<User, UserDTO> {
 }

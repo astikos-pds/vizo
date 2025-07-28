@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.UUID;
 
 @Repository
-public interface ProblemRepository extends JpaRepository<Problem, UUID> {
+public interface OldProblemRepository extends JpaRepository<Problem, UUID> {
 
     @Query(value = """
             SELECT * FROM problems p

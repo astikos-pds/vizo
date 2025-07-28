@@ -9,7 +9,7 @@ import lombok.Setter;
 import java.time.Instant;
 import java.util.UUID;
 
-@Entity
+@Entity(name = "OldUser")
 @Table(name = "users")
 @Getter
 @Setter

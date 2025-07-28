@@ -9,7 +9,7 @@ import br.app.vizo.domain.user.User;
 import br.app.vizo.dto.ReportDTO;
 import br.app.vizo.domain.report.ReportImage;
 import br.app.vizo.exception.NotFoundException;
-import br.app.vizo.mapper.ReportMapper;
+import br.app.vizo.mapper.OldReportMapper;
 import br.app.vizo.repository.*;
 import br.app.vizo.util.DateUtil;
 import org.locationtech.jts.geom.Coordinate;
@@ -27,32 +27,32 @@ import java.util.stream.Collectors;
 @Service
 public class ReportService {
 
-    private final ReportRepository reportRepository;
-    private final ReportImageRepository reportImageRepository;
-    private final ProblemRepository problemRepository;
-    private final UserRepository userRepository;
-    private final ReportMapper reportMapper;
+    private final OldReportRepository oldReportRepository;
+    private final OldReportImageRepository oldReportImageRepository;
+    private final OldProblemRepository oldProblemRepository;
+    private final OldUserRepository oldUserRepository;
+    private final OldReportMapper oldReportMapper;
     private final GeometryFactory geometryFactory;
 
     public ReportService(
-            ReportRepository reportRepository,
-            ReportImageRepository reportImageRepository,
-            ProblemRepository problemRepository,
-            UserRepository userRepository,
-            ReportMapper reportMapper,
+            OldReportRepository oldReportRepository,
+            OldReportImageRepository oldReportImageRepository,
+            OldProblemRepository oldProblemRepository,
+            OldUserRepository oldUserRepository,
+            OldReportMapper oldReportMapper,
             GeometryFactory geometryFactory
     ) {
-        this.reportRepository = reportRepository;
-        this.reportImageRepository = reportImageRepository;
-        this.problemRepository = problemRepository;
-        this.userRepository = userRepository;
-        this.reportMapper = reportMapper;
+        this.oldReportRepository = oldReportRepository;
+        this.oldReportImageRepository = oldReportImageRepository;
+        this.oldProblemRepository = oldProblemRepository;
+        this.oldUserRepository = oldUserRepository;
+        this.oldReportMapper = oldReportMapper;
         this.geometryFactory = geometryFactory;
     }
 
     @Transactional
     public ReportDTO createReport(CreateReportRequestDTO body, Authentication authentication) {
-        User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
+        User user = this.oldUserRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
 
@@ -84,14 +84,14 @@ public class ReportService {
             problem.setValidated(true);
         }
 
-        problem = this.problemRepository.save(problem);
+        problem = this.oldProblemRepository.save(problem);
 
         Report report = new Report();
         report.setDescription(body.description());
         report.setCoordinates(coordinates);
         report.setUser(user);
         report.setProblem(problem);
-        report = this.reportRepository.save(report);
+        report = this.oldReportRepository.save(report);
 
         final Report finalReport = report;
         List<ReportImage> images = body.imagesUrls().stream().map((imageUrl) -> {
@@ -102,9 +102,9 @@ public class ReportService {
             return image;
         }).collect(Collectors.toList());
 
-        report.setImages(this.reportImageRepository.saveAll(images));
+        report.setImages(this.oldReportImageRepository.saveAll(images));
 
-        return this.reportMapper.toDto(report);
+        return this.oldReportMapper.toDto(report);
     }
 
     public Page<ReportDTO> getReports(
@@ -112,32 +112,32 @@ public class ReportService {
             Pageable pageable,
             Authentication authentication
     ) {
-        User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
+        User user = this.oldUserRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
 
         if (filter.latitude() == null || filter.longitude() == null) {
-            return this.reportRepository
+            return this.oldReportRepository
                     .findAllByUserId(user.getId(), pageable)
-                    .map(this.reportMapper::toDto);
+                    .map(this.oldReportMapper::toDto);
         }
 
-        return this.reportRepository
+        return this.oldReportRepository
                 .findAllByUserIdWithinDistance(
                         user.getId(),
                         filter.latitude(),
                         filter.longitude(),
                         Objects.requireNonNullElse(filter.radius(), 1.0),
                         pageable
-                ).map(this.reportMapper::toDto);
+                ).map(this.oldReportMapper::toDto);
     }
 
     private Optional<Problem> findRelatedProblem(Double latitude, Double longitude, Double radius) {
-        return this.problemRepository.findNearestWithinDistance(latitude, longitude, radius);
+        return this.oldProblemRepository.findNearestWithinDistance(latitude, longitude, radius);
     }
 
     private Boolean isProblemAlreadyReportedByUser(UUID problemId, UUID userId) {
-        return this.reportRepository.existsByProblemIdAndUserId(problemId, userId);
+        return this.oldReportRepository.existsByProblemIdAndUserId(problemId, userId);
     }
 
     private static final double REPUTATION_WEIGHT = 3;

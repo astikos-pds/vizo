@@ -1,16 +1,16 @@
 package br.app.vizo.core.user.password;
 
 import br.app.vizo.core.user.exception.InvalidHashedPasswordException;
+import jakarta.persistence.Column;
 
-public class HashedPassword {
+public record HashedPassword(
+        @Column(name = "password", nullable = false) String value
+) {
 
-    private final String value;
-
-    public HashedPassword(String value) {
+    public HashedPassword {
         if (value == null || value.isBlank()) {
             throw new InvalidHashedPasswordException();
         }
-        this.value = value;
     }
 
     public boolean matches(String rawPassword, PasswordHasher passwordHasher) {

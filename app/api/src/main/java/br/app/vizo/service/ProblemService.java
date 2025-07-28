@@ -6,10 +6,9 @@ import br.app.vizo.dto.ReportDTO;
 import br.app.vizo.domain.problem.Problem;
 import br.app.vizo.domain.problem.ProblemType;
 import br.app.vizo.domain.user.User;
-import br.app.vizo.exception.ForbiddenException;
 import br.app.vizo.exception.NotFoundException;
-import br.app.vizo.mapper.ProblemMapper;
-import br.app.vizo.mapper.ReportMapper;
+import br.app.vizo.mapper.OldProblemMapper;
+import br.app.vizo.mapper.OldReportMapper;
 import br.app.vizo.repository.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,53 +22,53 @@ import java.util.UUID;
 @Service
 public class ProblemService {
 
-    private final UserRepository userRepository;
-    private final ProblemRepository problemRepository;
-    private final ReportRepository reportRepository;
-    private final ProblemMapper problemMapper;
-    private final ReportMapper reportMapper;
+    private final OldUserRepository oldUserRepository;
+    private final OldProblemRepository oldProblemRepository;
+    private final OldReportRepository oldReportRepository;
+    private final OldProblemMapper oldProblemMapper;
+    private final OldReportMapper oldReportMapper;
 
     public ProblemService(
-            UserRepository userRepository,
-            ProblemRepository problemRepository,
-            ReportRepository reportRepository,
-            ProblemMapper problemMapper,
-            ReportMapper reportMapper
+            OldUserRepository oldUserRepository,
+            OldProblemRepository oldProblemRepository,
+            OldReportRepository oldReportRepository,
+            OldProblemMapper oldProblemMapper,
+            OldReportMapper oldReportMapper
     ) {
-        this.userRepository = userRepository;
-        this.problemRepository = problemRepository;
-        this.reportRepository = reportRepository;
-        this.problemMapper = problemMapper;
-        this.reportMapper = reportMapper;
+        this.oldUserRepository = oldUserRepository;
+        this.oldProblemRepository = oldProblemRepository;
+        this.oldReportRepository = oldReportRepository;
+        this.oldProblemMapper = oldProblemMapper;
+        this.oldReportMapper = oldReportMapper;
     }
 
     public List<ProblemDTO> getProblems() {
-        return this.problemRepository.findAll()
+        return this.oldProblemRepository.findAll()
                 .stream()
-                .map(this.problemMapper::toDto)
+                .map(this.oldProblemMapper::toDto)
                 .toList();
     }
 
     public List<ProblemDTO> getValidatedProblems() {
-        return this.problemRepository.findAllByValidated(true)
+        return this.oldProblemRepository.findAllByValidated(true)
                 .stream()
-                .map(this.problemMapper::toDto)
+                .map(this.oldProblemMapper::toDto)
                 .toList();
     }
 
     public Page<ReportDTO> getProblemReports(UUID id, Pageable pageable) {
 
-        if (!this.problemRepository.existsById(id)) {
+        if (!this.oldProblemRepository.existsById(id)) {
             throw new NotFoundException("Problem not found.");
         }
 
-        return this.reportRepository
+        return this.oldReportRepository
                 .findByProblemId(id, pageable)
-                .map(this.reportMapper::toDto);
+                .map(this.oldReportMapper::toDto);
     }
 
     public List<ProblemType> getProblemTypes(Authentication authentication) {
-        this.userRepository.findByDocument(authentication.getName()).orElseThrow(
+        this.oldUserRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
 
@@ -77,18 +76,18 @@ public class ProblemService {
     }
 
     public ProblemDTO updateProblem(UUID id, UpdateProblemRequestDTO body, Authentication authentication) {
-        User user = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
+        User user = this.oldUserRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
 
-        Problem problem = this.problemRepository.findById(id).orElseThrow(
+        Problem problem = this.oldProblemRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Problem not found.")
         );
 
         problem.setStatus(body.status());
 
-        return this.problemMapper.toDto(
-                this.problemRepository.save(problem)
+        return this.oldProblemMapper.toDto(
+                this.oldProblemRepository.save(problem)
         );
     }
 }

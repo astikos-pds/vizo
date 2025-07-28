@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ReportImageRepository extends JpaRepository<ReportImage, Long> {
+public interface OldReportImageRepository extends JpaRepository<ReportImage, Long> {
 }

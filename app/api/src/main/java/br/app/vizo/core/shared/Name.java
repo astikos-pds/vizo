@@ -1,9 +1,10 @@
 package br.app.vizo.core.shared;
 
 import br.app.vizo.core.shared.exception.InvalidNameException;
+import jakarta.persistence.Column;
 
 public record Name(
-        String value
+        @Column(name = "name", nullable = false) String value
 ) {
 
     public Name {

@@ -7,8 +7,6 @@ public record Coordinates(
         Ordinate longitude
 ) {
 
-    private static final int EARTH_RADIUS = 6371000;
-
     public Coordinates {
         if (latitude == null || longitude == null) {
             throw new InvalidCoordinateException();

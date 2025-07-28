@@ -1,9 +1,10 @@
 package br.app.vizo.core.user;
 
 import br.app.vizo.core.shared.exception.InvalidDocumentException;
+import jakarta.persistence.Column;
 
 public record Document(
-        String value
+        @Column(name = "document", nullable = false, unique = true) String value
 ) {
 
     public Document {

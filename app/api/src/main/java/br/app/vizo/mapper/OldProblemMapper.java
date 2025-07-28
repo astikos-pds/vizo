@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface ProblemMapper extends DtoMapper<Problem, ProblemDTO> {
+public interface OldProblemMapper extends DtoMapper<Problem, ProblemDTO> {
 
     @Mapping(source = "coordinates.x", target = "latitude")
     @Mapping(source = "coordinates.y", target = "longitude")

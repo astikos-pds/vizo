@@ -8,8 +8,10 @@ import br.app.vizo.core.user.token.RefreshTokenFactory;
 @Factory
 public class RefreshTokenFactoryImpl implements RefreshTokenFactory {
 
+    private static final int A_MONTH_IN_HOURS = 24 * 30;
+
     @Override
-    public RefreshToken create(User user, String token, int expirationTimeInHours) {
-        return new RefreshToken(user, token, ExpirationTimestamp.fromNowPlusHours(expirationTimeInHours));
+    public RefreshToken create(User user, String token) {
+        return new RefreshToken(user, token, ExpirationTimestamp.fromNowPlusHours(A_MONTH_IN_HOURS));
     }
 }

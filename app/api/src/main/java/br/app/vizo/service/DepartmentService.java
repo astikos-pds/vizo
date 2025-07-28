@@ -7,9 +7,9 @@ import br.app.vizo.domain.department.Department;
 import br.app.vizo.domain.department.DepartmentRole;
 import br.app.vizo.dto.AffiliatedUserContextDTO;
 import br.app.vizo.exception.NotFoundException;
-import br.app.vizo.mapper.DepartmentMapper;
-import br.app.vizo.repository.AssignmentRepository;
-import br.app.vizo.repository.DepartmentRepository;
+import br.app.vizo.mapper.OldDepartmentMapper;
+import br.app.vizo.repository.OldAssignmentRepository;
+import br.app.vizo.repository.OldDepartmentRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
@@ -21,40 +21,40 @@ import java.util.UUID;
 @Service
 public class DepartmentService {
 
-    private final DepartmentRepository departmentRepository;
-    private final DepartmentMapper departmentMapper;
+    private final OldDepartmentRepository oldDepartmentRepository;
+    private final OldDepartmentMapper oldDepartmentMapper;
 
-    private final AssignmentRepository assignmentRepository;
+    private final OldAssignmentRepository oldAssignmentRepository;
 
     private final OfficialService officialService;
 
     public DepartmentService(
-            DepartmentRepository departmentRepository,
-            DepartmentMapper departmentMapper,
-            AssignmentRepository assignmentRepository,
+            OldDepartmentRepository oldDepartmentRepository,
+            OldDepartmentMapper oldDepartmentMapper,
+            OldAssignmentRepository oldAssignmentRepository,
             OfficialService officialService
     ) {
-        this.departmentRepository = departmentRepository;
-        this.departmentMapper = departmentMapper;
-        this.assignmentRepository = assignmentRepository;
+        this.oldDepartmentRepository = oldDepartmentRepository;
+        this.oldDepartmentMapper = oldDepartmentMapper;
+        this.oldAssignmentRepository = oldAssignmentRepository;
         this.officialService = officialService;
     }
 
     public Page<DepartmentDTO> getDepartments(UUID municipalityId, Pageable pageable, Authentication authentication) {
         this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
 
-        return this.departmentRepository.findAllByMunicipalityId(municipalityId, pageable)
-                .map(this.departmentMapper::toDto);
+        return this.oldDepartmentRepository.findAllByMunicipalityId(municipalityId, pageable)
+                .map(this.oldDepartmentMapper::toDto);
     }
 
     public DepartmentDTO getDepartment(UUID municipalityId, UUID departmentId, Authentication authentication) {
         this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
 
-        Department department = this.departmentRepository.findById(departmentId).orElseThrow(
+        Department department = this.oldDepartmentRepository.findById(departmentId).orElseThrow(
                 () -> new NotFoundException("Department not found.")
         );
 
-        return this.departmentMapper.toDto(department);
+        return this.oldDepartmentMapper.toDto(department);
     }
 
     @Transactional
@@ -73,7 +73,7 @@ public class DepartmentService {
         department.setCreator(context.loggedInUser());
         department.setMunicipality(context.municipality());
 
-        Department saved = this.departmentRepository.save(department);
+        Department saved = this.oldDepartmentRepository.save(department);
 
         Assignment assignment = new Assignment();
         assignment.setDepartment(department);
@@ -84,9 +84,9 @@ public class DepartmentService {
         assignment.setCanUpdateStatus(true);
         assignment.setCanApproveOfficials(true);
 
-        this.assignmentRepository.save(assignment);
+        this.oldAssignmentRepository.save(assignment);
 
-        return this.departmentMapper.toDto(saved);
+        return this.oldDepartmentMapper.toDto(saved);
     }
 
     @Transactional
@@ -94,8 +94,8 @@ public class DepartmentService {
 
         this.officialService.getAuthorizedAdminContext(municipalityId, authentication);
 
-        this.assignmentRepository.deleteAllByDepartmentId(departmentId);
+        this.oldAssignmentRepository.deleteAllByDepartmentId(departmentId);
 
-        this.departmentRepository.deleteById(departmentId);
+        this.oldDepartmentRepository.deleteById(departmentId);
     }
 }

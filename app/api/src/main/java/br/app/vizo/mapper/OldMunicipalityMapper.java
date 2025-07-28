@@ -5,5 +5,5 @@ import br.app.vizo.domain.municipality.Municipality;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface MunicipalityMapper extends DtoMapper<Municipality, MunicipalityDTO> {
+public interface OldMunicipalityMapper extends DtoMapper<Municipality, MunicipalityDTO> {
 }

@@ -6,9 +6,9 @@ import br.app.vizo.domain.user.User;
 import br.app.vizo.dto.AffiliatedUserContextDTO;
 import br.app.vizo.exception.ForbiddenException;
 import br.app.vizo.exception.NotFoundException;
-import br.app.vizo.repository.AffiliationRepository;
-import br.app.vizo.repository.MunicipalityRepository;
-import br.app.vizo.repository.UserRepository;
+import br.app.vizo.repository.OldAffiliationRepository;
+import br.app.vizo.repository.OldMunicipalityRepository;
+import br.app.vizo.repository.OldUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -19,9 +19,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OfficialService {
 
-    private final UserRepository userRepository;
-    private final MunicipalityRepository municipalityRepository;
-    private final AffiliationRepository affiliationRepository;
+    private final OldUserRepository oldUserRepository;
+    private final OldMunicipalityRepository oldMunicipalityRepository;
+    private final OldAffiliationRepository oldAffiliationRepository;
 
     public AffiliatedUserContextDTO getAuthorizedCommonContext(UUID municipalityId, Authentication authentication) {
         return getAuthorizedOfficialContext(municipalityId, authentication, false);
@@ -36,11 +36,11 @@ public class OfficialService {
             Authentication authentication,
             boolean isForAdmins
     ) {
-        Municipality municipality = this.municipalityRepository.findById(municipalityId).orElseThrow(
+        Municipality municipality = this.oldMunicipalityRepository.findById(municipalityId).orElseThrow(
                 () -> new NotFoundException("Municipality not found.")
         );
 
-        User loggedInUser = this.userRepository.findByDocument(authentication.getName()).orElseThrow(
+        User loggedInUser = this.oldUserRepository.findByDocument(authentication.getName()).orElseThrow(
                 () -> new NotFoundException("User not found.")
         );
 
@@ -67,7 +67,7 @@ public class OfficialService {
 //            throw new ForbiddenException("Only admins are allowed to perform this action.");
 //        }
 
-        boolean officialBelongsToMunicipality = this.affiliationRepository
+        boolean officialBelongsToMunicipality = this.oldAffiliationRepository
                 .existsByMunicipalityIdAndUserIdAndStatus(
                         municipality.getId(),
                         user.getId(),

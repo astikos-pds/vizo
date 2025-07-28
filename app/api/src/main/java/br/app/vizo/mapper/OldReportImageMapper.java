@@ -5,5 +5,5 @@ import br.app.vizo.domain.report.ReportImage;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface ReportImageMapper extends DtoMapper<ReportImage, ReportImageDTO> {
+public interface OldReportImageMapper extends DtoMapper<ReportImage, ReportImageDTO> {
 }

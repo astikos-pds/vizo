@@ -15,7 +15,7 @@ import br.app.vizo.exception.ConflictException;
 import br.app.vizo.exception.NotFoundException;
 import br.app.vizo.exception.UnauthorizedException;
 import br.app.vizo.exception.UnprocessableEntityException;
-import br.app.vizo.mapper.UserMapper;
+import br.app.vizo.mapper.OldUserMapper;
 import br.app.vizo.repository.*;
 import br.app.vizo.util.CodeGenerator;
 import br.app.vizo.util.DateUtil;
@@ -36,30 +36,30 @@ import java.util.UUID;
 @Service
 public class AuthService {
 
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final OldUserRepository oldUserRepository;
+    private final OldUserMapper oldUserMapper;
 
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final EmailVerificationRequestRepository emailVerificationRequestRepository;
+    private final OldRefreshTokenRepository oldRefreshTokenRepository;
+    private final OldEmailVerificationRequestRepository oldEmailVerificationRequestRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final EmailService emailService;
 
     public AuthService(
-            UserRepository userRepository,
-            UserMapper userMapper,
-            RefreshTokenRepository refreshTokenRepository,
-            EmailVerificationRequestRepository emailVerificationRequestRepository,
+            OldUserRepository oldUserRepository,
+            OldUserMapper oldUserMapper,
+            OldRefreshTokenRepository oldRefreshTokenRepository,
+            OldEmailVerificationRequestRepository oldEmailVerificationRequestRepository,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
             JwtService jwtService,
             EmailService emailService
     ) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.refreshTokenRepository = refreshTokenRepository;
-        this.emailVerificationRequestRepository = emailVerificationRequestRepository;
+        this.oldUserRepository = oldUserRepository;
+        this.oldUserMapper = oldUserMapper;
+        this.oldRefreshTokenRepository = oldRefreshTokenRepository;
+        this.oldEmailVerificationRequestRepository = oldEmailVerificationRequestRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
@@ -67,7 +67,7 @@ public class AuthService {
     }
 
     public UserDTO register(RegisterRequestDTO body) {
-        boolean credentialsAlreadyInUse = this.userRepository.existsByDocumentOrEmail(body.document(), body.email());
+        boolean credentialsAlreadyInUse = this.oldUserRepository.existsByDocumentOrEmail(body.document(), body.email());
         if (credentialsAlreadyInUse) {
             throw new UnauthorizedException("Invalid credentials.");
         }
@@ -81,11 +81,11 @@ public class AuthService {
         String hashedPassword = this.passwordEncoder.encode(body.password());
         user.setPassword(hashedPassword);
 
-        return this.userMapper.toDto(user);
+        return this.oldUserMapper.toDto(user);
     }
 
     public TokenPairDTO login(String document, String password) {
-        User user = this.userRepository.findByDocument(document).orElseThrow(
+        User user = this.oldUserRepository.findByDocument(document).orElseThrow(
                 () -> new UnauthorizedException("Invalid credentials.")
         );
 
@@ -111,17 +111,17 @@ public class AuthService {
         }
 
         String document = this.jwtService.getSubjectFromToken(refreshToken);
-        User user = this.userRepository.findByDocument(document).orElseThrow(
+        User user = this.oldUserRepository.findByDocument(document).orElseThrow(
                 () -> new UnauthorizedException("Invalid refresh token.")
         );
 
         String hashedToken = this.hashToken(refreshToken);
 
-        this.refreshTokenRepository.findByTokenAndUserId(hashedToken, user.getId()).orElseThrow(
+        this.oldRefreshTokenRepository.findByTokenAndUserId(hashedToken, user.getId()).orElseThrow(
                 () -> new UnauthorizedException("Refresh token not recognized, maybe used or expired.")
         );
 
-        this.refreshTokenRepository.deleteByTokenAndUserId(hashedToken, user.getId());
+        this.oldRefreshTokenRepository.deleteByTokenAndUserId(hashedToken, user.getId());
 
         String newAccessToken = this.jwtService.generateAccessToken(document);
         String newRefreshToken = this.jwtService.generateRefreshToken(document);
@@ -132,7 +132,7 @@ public class AuthService {
     }
 
     private void saveRefreshToken(String token, UUID userId) {
-        this.refreshTokenRepository.save(
+        this.oldRefreshTokenRepository.save(
                 RefreshToken.builder()
                         .token(this.hashToken(token))
                         .userId(userId)
@@ -156,7 +156,7 @@ public class AuthService {
     public static int VERIFICATION_CODE_EXPIRATION_IN_MINUTES = 10;
 
     public EmailVerificationDTO createVerificationRequest(EmailRequestDTO body) {
-        EmailVerificationRequest emailVerificationRequest = this.emailVerificationRequestRepository
+        EmailVerificationRequest emailVerificationRequest = this.oldEmailVerificationRequestRepository
                 .findByEmail(body.email())
                 .orElseGet(EmailVerificationRequest::new);
 
@@ -178,12 +178,12 @@ public class AuthService {
         );
 
         return EmailVerificationDTO.of(
-                this.emailVerificationRequestRepository.save(emailVerificationRequest)
+                this.oldEmailVerificationRequestRepository.save(emailVerificationRequest)
         );
     }
 
     public void verifyEmail(UUID verificationRequestId, VerifyCodeRequestDTO body) {
-        EmailVerificationRequest emailVerificationRequest = this.emailVerificationRequestRepository
+        EmailVerificationRequest emailVerificationRequest = this.oldEmailVerificationRequestRepository
                 .findById(verificationRequestId)
                 .orElseThrow(() -> new NotFoundException("Verification request not found."));
 
@@ -197,6 +197,6 @@ public class AuthService {
 
         emailVerificationRequest.setVerified(true);
 
-        this.emailVerificationRequestRepository.save(emailVerificationRequest);
+        this.oldEmailVerificationRequestRepository.save(emailVerificationRequest);
     }
 }

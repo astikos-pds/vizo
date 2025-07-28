@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface AssignmentRepository extends JpaRepository<Assignment, UUID> {
+public interface OldAssignmentRepository extends JpaRepository<Assignment, UUID> {
 
     Optional<Assignment> findByDepartmentIdAndUserId(UUID departmentId, UUID userId);
 

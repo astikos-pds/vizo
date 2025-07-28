@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.UUID;
 
-public interface AffiliationRepository extends JpaRepository<Affiliation, UUID> {
+public interface OldAffiliationRepository extends JpaRepository<Affiliation, UUID> {
 
     Page<Affiliation> findAllByMunicipalityId(UUID municipalityId, Pageable pageable);
 
