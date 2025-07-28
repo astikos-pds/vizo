@@ -3,11 +3,13 @@ package br.app.vizo.application.usecase.auth;
 import br.app.vizo.application.dto.TokenPairDTO;
 import br.app.vizo.application.mapper.RefreshTokenMapper;
 import br.app.vizo.application.mapper.UserMapper;
+import br.app.vizo.application.service.HashService;
 import br.app.vizo.application.usecase.UseCase;
 import br.app.vizo.application.usecase.auth.request.LoginRequestDTO;
 import br.app.vizo.config.security.JwtService;
 import br.app.vizo.config.security.UserDetailsImpl;
 import br.app.vizo.core.user.User;
+import br.app.vizo.core.user.UserId;
 import br.app.vizo.core.user.password.PasswordHasher;
 import br.app.vizo.core.user.token.RefreshToken;
 import br.app.vizo.core.user.token.RefreshTokenFactory;
@@ -38,6 +40,7 @@ public class LoginUseCase {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserMapper userMapper;
     private final RefreshTokenMapper refreshTokenMapper;
+    private final HashService hashService;
 
     public TokenPairDTO execute(LoginRequestDTO body) {
         UserEntity userEntity = this.userRepository.findByDocument(body.document()).orElseThrow(
@@ -56,21 +59,10 @@ public class LoginUseCase {
         String accessToken = this.jwtService.generateAccessToken(userDetails.getUsername());
         String refreshToken = this.jwtService.generateRefreshToken(userDetails.getUsername());
 
-        RefreshToken created = this.refreshTokenFactory.create(user, this.hashToken(refreshToken));
+        RefreshToken created = this.refreshTokenFactory.create(new UserId(user.getId()), this.hashService.hashToken(refreshToken));
         RefreshTokenEntity refreshTokenEntity = this.refreshTokenMapper.toEntity(created);
         this.refreshTokenRepository.save(refreshTokenEntity);
 
         return new TokenPairDTO(accessToken, refreshToken);
-    }
-
-    private String hashToken(String token) {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch(NoSuchAlgorithmException e) {
-            return null;
-        }
-        var bytes = digest.digest(token.getBytes());
-        return Base64.getEncoder().encodeToString(bytes);
     }
 }

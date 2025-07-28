@@ -2,6 +2,7 @@ package br.app.vizo.core.user.token;
 
 import br.app.vizo.core.shared.ExpirationTimestamp;
 import br.app.vizo.core.user.User;
+import br.app.vizo.core.user.UserId;
 import br.app.vizo.infrastructure.persistence.RefreshTokenRepository;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,14 +15,14 @@ import java.util.UUID;
 public class RefreshToken {
 
     private final Long id;
-    private final User user;
+    private final UserId userId;
     private final String token;
     private final ExpirationTimestamp expiresAt;
     private final Instant createdAt;
 
-    public RefreshToken(User user, String token, ExpirationTimestamp expiresAt) {
+    public RefreshToken(UserId userId, String token, ExpirationTimestamp expiresAt) {
         this.id = 1L;
-        this.user = user;
+        this.userId = userId;
         this.token = token;
         this.expiresAt = expiresAt;
         this.createdAt = Instant.now();
@@ -36,7 +37,7 @@ public class RefreshToken {
     }
 
     public UUID getUserId() {
-        return user.getId();
+        return userId.value();
     }
 
     public String getToken() {

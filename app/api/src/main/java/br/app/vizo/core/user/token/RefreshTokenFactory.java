@@ -1,8 +1,8 @@
 package br.app.vizo.core.user.token;
 
-import br.app.vizo.core.user.User;
+import br.app.vizo.core.user.UserId;
 
 public interface RefreshTokenFactory {
 
-    RefreshToken create(User user, String token);
+    RefreshToken create(UserId userId, String token);
 }

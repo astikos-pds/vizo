@@ -8,14 +8,13 @@ import br.app.vizo.core.shared.*;
 import br.app.vizo.core.user.password.HashedPassword;
 import br.app.vizo.core.user.password.PasswordHasher;
 
-import javax.print.Doc;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
 public class User {
 
-    private final UUID id;
+    private final UserId id;
     private final Name name;
     private final Document document;
     private Email email;
@@ -24,7 +23,7 @@ public class User {
     private Credibility credibility;
     private final MutationTimestamps timestamps;
 
-    public User(UUID id, String name, String document, String email, String password, String avatarUrl, Double credibilityPoints, Instant createdAt, Instant updatedAt) {
+    public User(UserId id, String name, String document, String email, String password, String avatarUrl, Double credibilityPoints, Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.name = new Name(name);
         this.document = new Document(document);
@@ -36,7 +35,7 @@ public class User {
     }
 
     public User(Name name, Document document, Email email, HashedPassword password) {
-        this.id = UUID.randomUUID();
+        this.id = new UserId();
         this.name = name;
         this.document = document;
         this.email = email;
@@ -82,7 +81,7 @@ public class User {
     }
 
     public UUID getId() {
-        return id;
+        return id.value();
     }
 
     public String getName() {
