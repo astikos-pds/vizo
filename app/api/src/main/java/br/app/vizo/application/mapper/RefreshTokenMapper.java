@@ -1,7 +1,7 @@
 package br.app.vizo.application.mapper;
 
 import br.app.vizo.application.mapper.base.EntityMapper;
-import br.app.vizo.application.mapper.base.Mapper;
+import br.app.vizo.application.Mapper;
 import br.app.vizo.core.user.token.RefreshToken;
 import br.app.vizo.infrastructure.persistence.entity.RefreshTokenEntity;
 

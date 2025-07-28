@@ -1,11 +1,11 @@
-package br.app.vizo.application;
+package br.app.vizo.application.service;
 
 import br.app.vizo.core.user.password.PasswordHasher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class PasswordHasherImpl implements PasswordHasher {
 

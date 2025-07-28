@@ -1,4 +1,4 @@
-package br.app.vizo.application.mapper.base;
+package br.app.vizo.application;
 
 import org.springframework.stereotype.Component;
 
@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Component
-public @interface Mapper {
+public @interface Factory {
 }

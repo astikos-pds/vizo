@@ -1,5 +1,6 @@
 package br.app.vizo.application.factory;
 
+import br.app.vizo.application.Factory;
 import br.app.vizo.core.shared.ExpirationTimestamp;
 import br.app.vizo.core.user.UserId;
 import br.app.vizo.core.user.token.RefreshToken;

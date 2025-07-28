@@ -4,7 +4,7 @@ import br.app.vizo.application.dto.TokenPairDTO;
 import br.app.vizo.application.mapper.RefreshTokenMapper;
 import br.app.vizo.application.mapper.UserMapper;
 import br.app.vizo.application.service.HashService;
-import br.app.vizo.application.usecase.UseCase;
+import br.app.vizo.application.UseCase;
 import br.app.vizo.application.usecase.auth.request.LoginRequestDTO;
 import br.app.vizo.config.security.JwtService;
 import br.app.vizo.config.security.UserDetailsImpl;
@@ -23,10 +23,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 @UseCase
 @RequiredArgsConstructor

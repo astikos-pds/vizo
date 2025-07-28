@@ -1,6 +1,6 @@
-package br.app.vizo.application.factory;
+package br.app.vizo.application;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Component
-public @interface Factory {
+@Service
+public @interface UseCase {
 }

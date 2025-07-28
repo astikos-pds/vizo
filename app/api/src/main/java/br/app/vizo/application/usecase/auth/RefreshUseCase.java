@@ -3,7 +3,7 @@ package br.app.vizo.application.usecase.auth;
 import br.app.vizo.application.dto.TokenPairDTO;
 import br.app.vizo.application.mapper.RefreshTokenMapper;
 import br.app.vizo.application.service.HashService;
-import br.app.vizo.application.usecase.UseCase;
+import br.app.vizo.application.UseCase;
 import br.app.vizo.application.usecase.auth.request.RefreshRequestDTO;
 import br.app.vizo.config.security.JwtService;
 import br.app.vizo.core.user.UserId;

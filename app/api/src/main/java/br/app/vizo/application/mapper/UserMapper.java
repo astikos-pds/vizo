@@ -3,7 +3,7 @@ package br.app.vizo.application.mapper;
 import br.app.vizo.application.dto.UserDTO;
 import br.app.vizo.application.mapper.base.DtoMapper;
 import br.app.vizo.application.mapper.base.EntityMapper;
-import br.app.vizo.application.mapper.base.Mapper;
+import br.app.vizo.application.Mapper;
 import br.app.vizo.application.mapper.base.ModelMapper;
 import br.app.vizo.core.user.User;
 import br.app.vizo.infrastructure.persistence.entity.UserEntity;
