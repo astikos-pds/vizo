@@ -23,8 +23,8 @@ public class User {
     private Credibility credibility;
     private final MutationTimestamps timestamps;
 
-    public User(UserId id, String name, String document, String email, String password, String avatarUrl, Double credibilityPoints, Instant createdAt, Instant updatedAt) {
-        this.id = id;
+    public User(UUID id, String name, String document, String email, String password, String avatarUrl, Double credibilityPoints, Instant createdAt, Instant updatedAt) {
+        this.id = new UserId(id);
         this.name = new Name(name);
         this.document = new Document(document);
         this.email = new Email(email);
