@@ -4,18 +4,16 @@ import br.app.vizo.core.verification.exception.InvalidCodeException;
 
 import java.util.Random;
 
-public class Code {
+public record Code(
+        String value
+) {
 
     private static final int LENGTH = 6;
 
-    private final String value;
-
-    public Code(String value) {
+    public Code {
         if (value == null || !value.matches("\\d{" + LENGTH + "}")) {
             throw new InvalidCodeException("Code must be a " + LENGTH + "-digit numeric string.");
         }
-
-        this.value = value;
     }
 
     public static Code generate() {
@@ -31,5 +29,9 @@ public class Code {
 
     public boolean matches(String rawCode) {
         return this.value.equals(rawCode);
+    }
+
+    public int getLength() {
+        return LENGTH;
     }
 }

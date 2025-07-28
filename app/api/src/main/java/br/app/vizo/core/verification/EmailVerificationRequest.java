@@ -5,6 +5,7 @@ import br.app.vizo.core.shared.ExpirationTimestamp;
 import br.app.vizo.core.verification.exception.CodesDoNotMatchException;
 import br.app.vizo.core.verification.exception.EmailVerificationRequestExpiredException;
 
+import java.time.Instant;
 import java.util.UUID;
 
 public class EmailVerificationRequest {
@@ -14,6 +15,16 @@ public class EmailVerificationRequest {
     private Code code;
     private boolean verified;
     private ExpirationTimestamp expiresAt;
+    private final Instant createdAt;
+
+    public EmailVerificationRequest(UUID id, String email, String code, boolean verified, Instant expiresAt, Instant createdAt) {
+        this.id = id;
+        this.email = new Email(email);
+        this.code = new Code(code);
+        this.verified = verified;
+        this.expiresAt = new ExpirationTimestamp(expiresAt);
+        this.createdAt = createdAt;
+    }
 
     public EmailVerificationRequest(
             Email email,
@@ -26,15 +37,7 @@ public class EmailVerificationRequest {
         this.code = code;
         this.verified = verified;
         this.expiresAt = expiresAt;
-    }
-
-    public static EmailVerificationRequest create(String rawEmail) {
-        Email email = new Email(rawEmail);
-        Code code = Code.generate();
-
-        ExpirationTimestamp expiresAt = ExpirationTimestamp.fromNowPlusMinutes(15);
-
-        return new EmailVerificationRequest(email, code, false, expiresAt);
+        this.createdAt = Instant.now();
     }
 
     public boolean isExpired() {
@@ -66,7 +69,23 @@ public class EmailVerificationRequest {
         return id;
     }
 
-    public Email getEmail() {
-        return email;
+    public String getEmail() {
+        return email.value();
+    }
+
+    public String getCode() {
+        return code.value();
+    }
+
+    public int getCodeLength() {
+        return code.getLength();
+    }
+
+    public Instant getExpiresAt() {
+        return expiresAt.value();
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 }
