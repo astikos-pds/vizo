@@ -2,35 +2,22 @@ package br.app.vizo.core.user.token;
 
 import br.app.vizo.core.shared.ExpirationTimestamp;
 import br.app.vizo.core.user.User;
+import br.app.vizo.infrastructure.persistence.RefreshTokenRepository;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
+import java.sql.Ref;
 import java.time.Instant;
+import java.util.UUID;
 
-@Entity
-@Table(name = "refresh_tokens")
 public class RefreshToken {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @Column(nullable = false)
-    private String token;
-
-    @Embedded
-    private ExpirationTimestamp expiresAt;
-
-    @Column(name = "created_at", nullable = false)
-    private  Instant createdAt;
-
-    RefreshToken() {
-    }
+    private final Long id;
+    private final User user;
+    private final String token;
+    private final ExpirationTimestamp expiresAt;
+    private final Instant createdAt;
 
     public RefreshToken(User user, String token, ExpirationTimestamp expiresAt) {
         this.id = 1L;
@@ -48,8 +35,8 @@ public class RefreshToken {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public UUID getUserId() {
+        return user.getId();
     }
 
     public String getToken() {

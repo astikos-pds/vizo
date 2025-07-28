@@ -1,11 +1,9 @@
 package br.app.vizo.core.shared;
 
-import jakarta.persistence.Column;
-
 import java.time.Instant;
 
 public record ExpirationTimestamp(
-        @Column(name = "expires_at", nullable = false) Instant value
+        Instant value
 ) {
 
     public static ExpirationTimestamp fromNowPlusMinutes(int minutes) {

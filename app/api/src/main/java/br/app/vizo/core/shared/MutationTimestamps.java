@@ -6,13 +6,9 @@ import jakarta.persistence.Embeddable;
 
 import java.time.Instant;
 
-@Embeddable
 public class MutationTimestamps {
 
-    @Column(name = "created_at", nullable = false)
     private final Instant createdAt;
-
-    @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
     private MutationTimestamps() {

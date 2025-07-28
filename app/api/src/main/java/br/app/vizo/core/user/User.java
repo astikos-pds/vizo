@@ -7,27 +7,32 @@ import br.app.vizo.core.report.Report;
 import br.app.vizo.core.shared.*;
 import br.app.vizo.core.user.password.HashedPassword;
 import br.app.vizo.core.user.password.PasswordHasher;
-import jakarta.persistence.*;
 
+import javax.print.Doc;
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
-@Table(name = "users")
 public class User {
 
-    @Id private UUID id;
-    @Embedded private Name name;
-    @Embedded private Document document;
-    @Embedded private Email email;
-    @Embedded private HashedPassword password;
-    @AttributeOverride(name = "url", column = @Column(name = "avatar_url"))
-    @Embedded private Image avatar;
-    @Embedded private Credibility credibility;
-    @Embedded private MutationTimestamps timestamps;
+    private final UUID id;
+    private final Name name;
+    private final Document document;
+    private Email email;
+    private HashedPassword password;
+    private Image avatar;
+    private Credibility credibility;
+    private final MutationTimestamps timestamps;
 
-    public User() {
+    public User(UUID id, String name, String document, String email, String password, String avatarUrl, Double credibilityPoints, Instant createdAt, Instant updatedAt) {
+        this.id = id;
+        this.name = new Name(name);
+        this.document = new Document(document);
+        this.email = new Email(email);
+        this.password = new HashedPassword(password);
+        this.avatar = avatarUrl == null ? null : new Image(avatarUrl);
+        this.credibility = new Credibility(credibilityPoints);
+        this.timestamps = new MutationTimestamps(createdAt, updatedAt);
     }
 
     public User(Name name, Document document, Email email, HashedPassword password) {
