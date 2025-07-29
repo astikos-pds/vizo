@@ -45,8 +45,12 @@ public class User {
         this.timestamps = MutationTimestamps.create();
     }
 
-    public Report report(Problem problem, String description, Double latitude, Double longitude, Set<String> imageUrls) {
-        return new Report(this, problem, description, latitude, longitude, imageUrls);
+    public Report report(Problem problem, String description, Double latitude, Double longitude, Set<String> imageUrls, Double credibility) {
+        Report report = new Report(this, problem, description, latitude, longitude, imageUrls, credibility);
+
+        problem.increaseCredibility(report.getCredibility());
+
+        return report;
     }
 
     public AffiliationIntent requestAffiliationTo(Municipality municipality) {
@@ -69,11 +73,7 @@ public class User {
     }
 
     public void increaseCredibility(Double delta) {
-        this.credibility = this.credibility.increase(delta);
-    }
-
-    public void decreaseCredibility(Double delta) {
-        this.credibility = this.credibility.decrease(delta);
+        this.credibility = this.credibility.accumulate(delta);
     }
 
     public boolean passwordMatchesWith(String password, PasswordHasher passwordHasher) {

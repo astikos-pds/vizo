@@ -39,13 +39,13 @@ public class Problem {
         this.timestamps.update();
     }
 
-    public void validate() {
-        this.validated = true;
-        this.timestamps.update();
-    }
+    public void increaseCredibility(Double reportCredibility) {
+        this.accumulatedCredibility = this.accumulatedCredibility.accumulate(reportCredibility);
 
-    public void report(Double reportCredibility) {
-        this.accumulatedCredibility = this.accumulatedCredibility.increase(reportCredibility);
+        if (accumulatedCredibility.points() > 120) {
+            this.validated = true;
+        }
+
         this.timestamps.update();
         this.reportingTimeline.update();
     }

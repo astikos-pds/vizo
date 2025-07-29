@@ -8,8 +8,6 @@ import br.app.vizo.core.problem.ProblemRepository;
 import br.app.vizo.core.problem.ProblemType;
 import br.app.vizo.infrastructure.persistence.jpa.entity.ProblemEntity;
 import br.app.vizo.infrastructure.persistence.jpa.repository.ProblemJpaRepository;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;

@@ -2,6 +2,7 @@ package br.app.vizo.core.report;
 
 import br.app.vizo.core.problem.Problem;
 import br.app.vizo.core.shared.Coordinates;
+import br.app.vizo.core.shared.Credibility;
 import br.app.vizo.core.user.User;
 
 import java.time.Instant;
@@ -16,15 +17,17 @@ public class Report {
     private final Description description;
     private final Coordinates coordinates;
     private final EvidenceImages images;
+    private final Credibility credibility;
     private final Instant createdAt;
 
-    public Report(User user, Problem problem, String description, Double latitude, Double longitude, Set<String> imagesUrls) {
+    public Report(User user, Problem problem, String description, Double latitude, Double longitude, Set<String> imagesUrls, Double credibility) {
         this.id = UUID.randomUUID();
         this.user = user;
         this.problem = problem;
         this.description = new Description(description);
         this.coordinates = Coordinates.of(latitude, longitude);
         this.images = EvidenceImages.of(imagesUrls);
+        this.credibility = new Credibility(credibility);
         this.createdAt = Instant.now();
     }
 
@@ -54,6 +57,10 @@ public class Report {
 
     public Double getLongitude() {
         return coordinates.getLongitude();
+    }
+
+    public Double getCredibility() {
+        return credibility.points();
     }
 
     public Instant getCreatedAt() {

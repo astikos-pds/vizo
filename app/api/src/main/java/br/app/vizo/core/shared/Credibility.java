@@ -15,12 +15,8 @@ public record Credibility(
         this(1.0);
     }
 
-    public Credibility increase(Double delta) {
+    public Credibility accumulate(Double delta) {
         return new Credibility(this.points + delta);
-    }
-
-    public Credibility decrease(Double delta) {
-        return new Credibility(Math.max(this.points - delta, 0));
     }
 
     public static Credibility of(Double points) {

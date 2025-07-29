@@ -1,9 +1,6 @@
 package br.app.vizo.core.shared;
 
 import br.app.vizo.core.shared.exception.InvalidTimestampException;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
-
 import java.time.Instant;
 
 public class MutationTimestamps {
