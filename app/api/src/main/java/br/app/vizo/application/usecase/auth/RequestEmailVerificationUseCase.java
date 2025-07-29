@@ -7,11 +7,8 @@ import br.app.vizo.application.service.EmailService;
 import br.app.vizo.application.usecase.auth.request.EmailRequestDTO;
 import br.app.vizo.core.verification.EmailVerificationRequest;
 import br.app.vizo.core.verification.EmailVerificationRequestFactory;
-import br.app.vizo.infrastructure.persistence.EmailVerificationRequestRepository;
-import br.app.vizo.infrastructure.persistence.entity.EmailVerificationRequestEntity;
+import br.app.vizo.core.verification.EmailVerificationRequestRepository;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
 
 @UseCase
 @RequiredArgsConstructor
@@ -23,10 +20,9 @@ public class RequestEmailVerificationUseCase {
     private final EmailService emailService;
 
     public EmailVerificationDTO execute(EmailRequestDTO body) {
-        Optional<EmailVerificationRequestEntity> entity = this.emailVerificationRequestRepository.findByEmail(body.email());
 
-        EmailVerificationRequest emailVerificationRequest = entity
-                .map(emailVerificationRequestMapper::toModel)
+        EmailVerificationRequest emailVerificationRequest = this.emailVerificationRequestRepository
+                .findByEmail(body.email())
                 .map(request -> {
                     request.retry();
                     return request;
@@ -39,8 +35,7 @@ public class RequestEmailVerificationUseCase {
                 emailVerificationRequest.getExpiresAt()
         );
 
-        EmailVerificationRequestEntity newEntity = this.emailVerificationRequestMapper.toEntity(emailVerificationRequest);
-        this.emailVerificationRequestRepository.save(newEntity);
+        this.emailVerificationRequestRepository.save(emailVerificationRequest);
 
         return this.emailVerificationRequestMapper.toDto(emailVerificationRequest);
     }

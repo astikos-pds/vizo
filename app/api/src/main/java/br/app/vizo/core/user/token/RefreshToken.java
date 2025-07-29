@@ -1,14 +1,8 @@
 package br.app.vizo.core.user.token;
 
 import br.app.vizo.core.shared.ExpirationTimestamp;
-import br.app.vizo.core.user.User;
 import br.app.vizo.core.user.UserId;
-import br.app.vizo.infrastructure.persistence.RefreshTokenRepository;
-import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 
-import java.sql.Ref;
 import java.time.Instant;
 import java.util.UUID;
 

@@ -3,7 +3,7 @@ package br.app.vizo.application.mapper;
 import br.app.vizo.application.mapper.base.EntityMapper;
 import br.app.vizo.application.Mapper;
 import br.app.vizo.core.user.token.RefreshToken;
-import br.app.vizo.infrastructure.persistence.entity.RefreshTokenEntity;
+import br.app.vizo.infrastructure.persistence.jpa.entity.RefreshTokenEntity;
 
 @Mapper
 public class RefreshTokenMapper implements EntityMapper<RefreshToken, RefreshTokenEntity> {

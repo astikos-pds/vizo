@@ -5,7 +5,7 @@ import br.app.vizo.application.dto.EmailVerificationDTO;
 import br.app.vizo.application.mapper.base.EntityMapper;
 import br.app.vizo.application.mapper.base.ModelMapper;
 import br.app.vizo.core.verification.EmailVerificationRequest;
-import br.app.vizo.infrastructure.persistence.entity.EmailVerificationRequestEntity;
+import br.app.vizo.infrastructure.persistence.jpa.entity.EmailVerificationRequestEntity;
 import br.app.vizo.mapper.DtoMapper;
 
 @Mapper

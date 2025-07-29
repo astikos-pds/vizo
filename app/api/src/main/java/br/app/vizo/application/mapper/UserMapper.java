@@ -6,7 +6,7 @@ import br.app.vizo.application.mapper.base.EntityMapper;
 import br.app.vizo.application.Mapper;
 import br.app.vizo.application.mapper.base.ModelMapper;
 import br.app.vizo.core.user.User;
-import br.app.vizo.infrastructure.persistence.entity.UserEntity;
+import br.app.vizo.infrastructure.persistence.jpa.entity.UserEntity;
 
 @Mapper
 public class UserMapper implements DtoMapper<User, UserDTO>, EntityMapper<User, UserEntity>, ModelMapper<UserEntity, User> {

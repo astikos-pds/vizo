@@ -6,9 +6,8 @@ import br.app.vizo.application.UseCase;
 import br.app.vizo.application.usecase.auth.request.RegisterRequestDTO;
 import br.app.vizo.core.user.User;
 import br.app.vizo.core.user.UserFactory;
+import br.app.vizo.core.user.UserRepository;
 import br.app.vizo.exception.UnauthorizedException;
-import br.app.vizo.infrastructure.persistence.UserRepository;
-import br.app.vizo.infrastructure.persistence.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
@@ -26,10 +25,8 @@ public class RegisterUseCase {
         }
 
         User user = this.userFactory.create(body.name(), body.document(), body.email(), body.password());
+        User saved = this.userRepository.save(user);
 
-        UserEntity userEntity = this.userMapper.toEntity(user);
-        this.userRepository.save(userEntity);
-
-        return this.userMapper.toDto(user);
+        return this.userMapper.toDto(saved);
     }
 }

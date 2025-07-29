@@ -1,4 +1,4 @@
-package br.app.vizo.infrastructure.persistence.entity;
+package br.app.vizo.infrastructure.persistence.jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,8 +1,6 @@
 package br.app.vizo.application.usecase.auth;
 
 import br.app.vizo.application.dto.TokenPairDTO;
-import br.app.vizo.application.mapper.RefreshTokenMapper;
-import br.app.vizo.application.mapper.UserMapper;
 import br.app.vizo.application.service.HashService;
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.usecase.auth.request.LoginRequestDTO;
@@ -10,14 +8,12 @@ import br.app.vizo.config.security.JwtService;
 import br.app.vizo.config.security.UserDetailsImpl;
 import br.app.vizo.core.user.User;
 import br.app.vizo.core.user.UserId;
+import br.app.vizo.core.user.UserRepository;
 import br.app.vizo.core.user.password.PasswordHasher;
 import br.app.vizo.core.user.token.RefreshToken;
 import br.app.vizo.core.user.token.RefreshTokenFactory;
+import br.app.vizo.core.user.token.RefreshTokenRepository;
 import br.app.vizo.exception.UnauthorizedException;
-import br.app.vizo.infrastructure.persistence.RefreshTokenRepository;
-import br.app.vizo.infrastructure.persistence.UserRepository;
-import br.app.vizo.infrastructure.persistence.entity.RefreshTokenEntity;
-import br.app.vizo.infrastructure.persistence.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,16 +30,12 @@ public class LoginUseCase {
     private final JwtService jwtService;
     private final RefreshTokenFactory refreshTokenFactory;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final UserMapper userMapper;
-    private final RefreshTokenMapper refreshTokenMapper;
     private final HashService hashService;
 
     public TokenPairDTO execute(LoginRequestDTO body) {
-        UserEntity userEntity = this.userRepository.findByDocument(body.document()).orElseThrow(
+        User user = this.userRepository.findByDocument(body.document()).orElseThrow(
                 () -> new UnauthorizedException("Invalid credentials.")
         );
-
-        User user = this.userMapper.toModel(userEntity);
 
         boolean passwordsMatch = user.passwordMatchesWith(body.password(), passwordHasher);
         if (!passwordsMatch) throw new UnauthorizedException("Invalid credentials.");
@@ -56,8 +48,7 @@ public class LoginUseCase {
         String refreshToken = this.jwtService.generateRefreshToken(userDetails.getUsername());
 
         RefreshToken created = this.refreshTokenFactory.create(new UserId(user.getId()), this.hashService.hashToken(refreshToken));
-        RefreshTokenEntity refreshTokenEntity = this.refreshTokenMapper.toEntity(created);
-        this.refreshTokenRepository.save(refreshTokenEntity);
+        this.refreshTokenRepository.save(created);
 
         return new TokenPairDTO(accessToken, refreshToken);
     }
