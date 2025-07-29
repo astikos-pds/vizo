@@ -38,7 +38,9 @@ public class ProblemMapper implements RepresentationMapper<Problem, ProblemEntit
 
     @Override
     public ProblemEntity toEntity(Problem problem) {
-        Point point = this.geometryFactory.createPoint(new Coordinate(problem.getLatitude(), problem.getLongitude()));
+        Point point = this.geometryFactory.createPoint(
+                new Coordinate(problem.getLongitude(), problem.getLatitude())
+        );
 
         return new ProblemEntity(
                 problem.getId(),

@@ -20,6 +20,17 @@ public class Report {
     private final Credibility credibility;
     private final Instant createdAt;
 
+    public Report(UUID id, User user, Problem problem, Description description, Coordinates coordinates, EvidenceImages images, Credibility credibility, Instant createdAt) {
+        this.id = id;
+        this.user = user;
+        this.problem = problem;
+        this.description = description;
+        this.coordinates = coordinates;
+        this.images = images;
+        this.credibility = credibility;
+        this.createdAt = createdAt;
+    }
+
     public Report(User user, Problem problem, String description, Double latitude, Double longitude, Set<String> imagesUrls, Double credibility) {
         this.id = UUID.randomUUID();
         this.user = user;
