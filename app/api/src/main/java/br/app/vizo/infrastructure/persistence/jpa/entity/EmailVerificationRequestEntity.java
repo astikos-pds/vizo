@@ -1,6 +1,5 @@
 package br.app.vizo.infrastructure.persistence.jpa.entity;
 
-import br.app.vizo.util.DateUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
