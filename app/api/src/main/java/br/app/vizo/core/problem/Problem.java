@@ -1,49 +1,57 @@
 package br.app.vizo.core.problem;
 
-import br.app.vizo.core.department.Department;
 import br.app.vizo.core.shared.Coordinates;
 import br.app.vizo.core.shared.Credibility;
 import br.app.vizo.core.shared.MutationTimestamps;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
+import java.time.Instant;
 import java.util.UUID;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Problem {
 
-    @Getter private final UUID id;
+    private final UUID id;
     private final Coordinates coordinates;
-    @Getter private final ProblemType type;
-    @Getter private ProblemStatus status;
+    private final ProblemType type;
+    private ProblemStatus status;
     private Credibility accumulatedCredibility;
-
+    private boolean validated;
     private final MutationTimestamps timestamps;
+    private final ReportingTimeline reportingTimeline;
+    private Instant resolvedAt;
 
-    public static Problem report(Coordinates coordinates, ProblemType problemType) {
-        return new Problem(
-                UUID.randomUUID(),
-                coordinates,
-                problemType,
-                ProblemStatus.ANALYSIS,
-                Credibility.of(0.0),
-                MutationTimestamps.create()
-        );
+    public Problem(UUID id, Coordinates coordinates, ProblemType type, ProblemStatus status, Credibility accumulatedCredibility, boolean validated, MutationTimestamps timestamps, ReportingTimeline reportingTimeline, Instant resolvedAt) {
+        this.id = id;
+        this.coordinates = coordinates;
+        this.type = type;
+        this.status = status;
+        this.accumulatedCredibility = accumulatedCredibility;
+        this.validated = validated;
+        this.timestamps = timestamps;
+        this.reportingTimeline = reportingTimeline;
+        this.resolvedAt = resolvedAt;
     }
 
     public void updateStatusTo(ProblemStatus status) {
-        setStatus(status);
-    }
-
-    private void setStatus(ProblemStatus status) {
         this.status = status;
+        if (status == ProblemStatus.SOLVED) {
+            resolvedAt = Instant.now();
+        }
         this.timestamps.update();
     }
 
-    public void increaseCredibility(Double points) {
-        this.accumulatedCredibility = this.accumulatedCredibility.increase(points);
+    public void validate() {
+        this.validated = true;
         this.timestamps.update();
+    }
+
+    public void report(Double reportCredibility) {
+        this.accumulatedCredibility = this.accumulatedCredibility.increase(reportCredibility);
+        this.timestamps.update();
+        this.reportingTimeline.update();
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public Double getLatitude() {
@@ -52,6 +60,42 @@ public class Problem {
 
     public Double getLongitude() {
         return coordinates.getLongitude();
+    }
+
+    public ProblemType getType() {
+        return type;
+    }
+
+    public ProblemStatus getStatus() {
+        return status;
+    }
+
+    public Double getAccumulatedCredibility() {
+        return accumulatedCredibility.points();
+    }
+
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public Instant getCreatedAt() {
+        return timestamps.getCreatedAt();
+    }
+
+    public Instant getUpdatedAt() {
+        return timestamps.getUpdatedAt();
+    }
+
+    public Instant getFirstReportedAt() {
+        return reportingTimeline.getFirstReportedAt();
+    }
+
+    public Instant getLastReportedAt() {
+        return reportingTimeline.getLastReportedAt();
+    }
+
+    public Instant getResolvedAt() {
+        return resolvedAt;
     }
 
     public boolean isSameAS(Problem other) {

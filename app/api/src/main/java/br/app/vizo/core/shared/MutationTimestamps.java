@@ -11,7 +11,7 @@ public class MutationTimestamps {
     private final Instant createdAt;
     private Instant updatedAt;
 
-    private MutationTimestamps() {
+    public MutationTimestamps() {
         this(Instant.now(), Instant.now());
     }
 
