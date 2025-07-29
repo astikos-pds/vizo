@@ -1,8 +1,8 @@
 package br.app.vizo.application.usecase.auth;
 
+import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.TokenPairDTO;
 import br.app.vizo.application.service.HashService;
-import br.app.vizo.application.UseCase;
 import br.app.vizo.application.usecase.auth.request.LoginRequestDTO;
 import br.app.vizo.config.security.JwtService;
 import br.app.vizo.config.security.UserDetailsImpl;
@@ -47,7 +47,10 @@ public class LoginUseCase {
         String accessToken = this.jwtService.generateAccessToken(userDetails.getUsername());
         String refreshToken = this.jwtService.generateRefreshToken(userDetails.getUsername());
 
-        RefreshToken created = this.refreshTokenFactory.create(new UserId(user.getId()), this.hashService.hashToken(refreshToken));
+        RefreshToken created = this.refreshTokenFactory.create(
+                new UserId(user.getId()),
+                this.hashService.hashToken(refreshToken)
+        );
         this.refreshTokenRepository.save(created);
 
         return new TokenPairDTO(accessToken, refreshToken);

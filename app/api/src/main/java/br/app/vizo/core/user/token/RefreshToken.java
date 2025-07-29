@@ -14,6 +14,14 @@ public class RefreshToken {
     private final ExpirationTimestamp expiresAt;
     private final Instant createdAt;
 
+    public RefreshToken(Long id, UserId userId, String token, ExpirationTimestamp expiresAt, Instant createdAt) {
+        this.id = id;
+        this.userId = userId;
+        this.token = token;
+        this.expiresAt = expiresAt;
+        this.createdAt = createdAt;
+    }
+
     public RefreshToken(UserId userId, String token, ExpirationTimestamp expiresAt) {
         this.id = 1L;
         this.userId = userId;

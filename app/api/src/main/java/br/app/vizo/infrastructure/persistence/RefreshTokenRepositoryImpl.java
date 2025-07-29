@@ -7,6 +7,7 @@ import br.app.vizo.infrastructure.persistence.jpa.entity.RefreshTokenEntity;
 import br.app.vizo.infrastructure.persistence.jpa.repository.RefreshTokenJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -27,8 +28,8 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
     }
 
     @Override
-    public boolean existsByTokenAndUserId(String token, UUID userId) {
-        return this.jpaRepository.existsByTokenAndUserId(token, userId);
+    public Optional<RefreshToken> findByTokenAndUserId(String token, UUID userId) {
+        return this.jpaRepository.findByTokenAndUserId(token, userId).map(this.mapper::toModel);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package br.app.vizo.application.usecase.auth;
 
+import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.UserDTO;
 import br.app.vizo.application.mapper.UserMapper;
-import br.app.vizo.application.UseCase;
 import br.app.vizo.application.usecase.auth.request.RegisterRequestDTO;
 import br.app.vizo.core.user.User;
 import br.app.vizo.core.user.UserFactory;

@@ -1,8 +1,8 @@
 package br.app.vizo.application.usecase.auth;
 
+import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.TokenPairDTO;
 import br.app.vizo.application.service.HashService;
-import br.app.vizo.application.UseCase;
 import br.app.vizo.application.usecase.auth.request.RefreshRequestDTO;
 import br.app.vizo.config.security.JwtService;
 import br.app.vizo.core.user.User;
@@ -13,6 +13,8 @@ import br.app.vizo.core.user.token.RefreshTokenFactory;
 import br.app.vizo.core.user.token.RefreshTokenRepository;
 import br.app.vizo.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
 
 @UseCase
 @RequiredArgsConstructor
@@ -36,10 +38,10 @@ public class RefreshUseCase {
 
         String hashedToken = this.hashService.hashToken(body.token());
 
-        boolean existsByUser = this.refreshTokenRepository
-                .existsByTokenAndUserId(hashedToken, user.getId());
+        Optional<RefreshToken> refreshToken = this.refreshTokenRepository
+                .findByTokenAndUserId(hashedToken, user.getId());
 
-        if (!existsByUser) {
+        if (refreshToken.isEmpty() || refreshToken.get().isExpired()) {
             throw new UnauthorizedException("Refresh token not recognized, maybe used or expired.");
         }
 
