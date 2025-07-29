@@ -9,39 +9,45 @@ import br.app.vizo.core.municipality.Municipality;
 import br.app.vizo.core.problem.ProblemType;
 import br.app.vizo.core.shared.Email;
 import br.app.vizo.core.user.User;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.time.Instant;
 import java.util.Set;
 import java.util.UUID;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class AffiliatedUser {
 
-    @Getter private final UUID id;
-    @Getter private final User user;
-    @Getter private final Municipality municipality;
-    @Getter private final Email institutionalEmail;
+    private final UUID id;
+    private final User user;
+    private final Municipality municipality;
+    private final Email institutionalEmail;
     private boolean isAdmin;
     private AffiliationStatus status;
-    @Getter private final Instant affiliatedAt;
-    @Getter private AffiliatedUser approver;
-    @Getter private Instant approvedAt;
+    private final Instant affiliatedAt;
+    private AffiliatedUser approver;
+    private Instant approvedAt;
+
+    public AffiliatedUser(UUID id, User user, Municipality municipality, String institutionalEmail, boolean isAdmin, AffiliationStatus status, Instant affiliatedAt, AffiliatedUser approver, Instant approvedAt) {
+        this.id = id;
+        this.user = user;
+        this.municipality = municipality;
+        this.institutionalEmail = new Email(institutionalEmail);
+        this.isAdmin = isAdmin;
+        this.status = status;
+        this.affiliatedAt = affiliatedAt;
+        this.approver = approver;
+        this.approvedAt = approvedAt;
+    }
 
     public AffiliatedUser(User user, Municipality municipality, Email institutionalEmail) {
-        this(
-                UUID.randomUUID(),
-                user,
-                municipality,
-                institutionalEmail,
-                false,
-                AffiliationStatus.PENDING,
-                Instant.now(),
-                null,
-                null
-        );
+        this.id = UUID.randomUUID();
+        this.user = user;
+        this.municipality = municipality;
+        this.institutionalEmail = institutionalEmail;
+        this.isAdmin = false;
+        this.status = AffiliationStatus.PENDING;
+        this.affiliatedAt = Instant.now();
+        this.approver = null;
+        this.approvedAt = null;
     }
 
     public void promote(AffiliatedUser target) {
@@ -93,6 +99,42 @@ public class AffiliatedUser {
 
     public boolean isApproved() {
         return status == AffiliationStatus.APPROVED;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Municipality getMunicipality() {
+        return municipality;
+    }
+
+    public String getInstitutionalEmail() {
+        return institutionalEmail.value();
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public AffiliationStatus getStatus() {
+        return status;
+    }
+
+    public Instant getAffiliatedAt() {
+        return affiliatedAt;
+    }
+
+    public AffiliatedUser getApprover() {
+        return approver;
+    }
+
+    public Instant getApprovedAt() {
+        return approvedAt;
     }
 
     private boolean isSameAs(AffiliatedUser other) {

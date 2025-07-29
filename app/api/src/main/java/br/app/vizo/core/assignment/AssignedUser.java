@@ -9,15 +9,10 @@ import br.app.vizo.core.department.Department;
 import br.app.vizo.core.problem.Problem;
 import br.app.vizo.core.problem.StatusUpdate;
 import br.app.vizo.core.problem.ProblemStatus;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.time.Instant;
 import java.util.UUID;
 
-@Getter
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class AssignedUser {
 
     private final UUID id;
@@ -28,10 +23,17 @@ public class AssignedUser {
     private Permission customPermission;
     private final Instant assignedAt;
 
-    AssignedUser(
-            AffiliatedUser user,
-            Department department
-    ) {
+    public AssignedUser(UUID id, AffiliatedUser user, Department department, PermissionMode permissionMode, PermissionPreset permissionPreset, Permission customPermission, Instant assignedAt) {
+        this.id = id;
+        this.user = user;
+        this.department = department;
+        this.permissionMode = permissionMode;
+        this.permissionPreset = permissionPreset;
+        this.customPermission = customPermission;
+        this.assignedAt = assignedAt;
+    }
+
+    AssignedUser(AffiliatedUser user, Department department) {
         if (user == null || department == null) {
             throw new InvalidAssignedUserException();
         }
@@ -92,7 +94,35 @@ public class AssignedUser {
         return this.getEffectivePermission().canManageUsers();
     }
 
-    public void throwIfSameAs(AssignedUser other) {
+    public UUID getId() {
+        return id;
+    }
+
+    public AffiliatedUser getUser() {
+        return user;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public PermissionMode getPermissionMode() {
+        return permissionMode;
+    }
+
+    public PermissionPreset getPermissionPreset() {
+        return permissionPreset;
+    }
+
+    public Permission getCustomPermission() {
+        return customPermission;
+    }
+
+    public Instant getAssignedAt() {
+        return assignedAt;
+    }
+
+    private void throwIfSameAs(AssignedUser other) {
         if (this.id.equals(other.getId())) {
             throw new SelfActionNotAllowedException();
         }
