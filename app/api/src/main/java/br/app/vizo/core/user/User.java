@@ -23,15 +23,15 @@ public class User {
     private Credibility credibility;
     private final MutationTimestamps timestamps;
 
-    public User(UUID id, String name, String document, String email, String password, String avatarUrl, Double credibilityPoints, Instant createdAt, Instant updatedAt) {
-        this.id = new UserId(id);
-        this.name = new Name(name);
-        this.document = new Document(document);
-        this.email = new Email(email);
-        this.password = new HashedPassword(password);
-        this.avatar = avatarUrl == null ? null : new Image(avatarUrl);
-        this.credibility = new Credibility(credibilityPoints);
-        this.timestamps = new MutationTimestamps(createdAt, updatedAt);
+    public User(UserId id, Name name, Document document, Email email, HashedPassword password, Image avatar, Credibility credibility, MutationTimestamps timestamps) {
+        this.id = id;
+        this.name = name;
+        this.document = document;
+        this.email = email;
+        this.password = password;
+        this.avatar = avatar;
+        this.credibility = credibility;
+        this.timestamps = timestamps;
     }
 
     public User(Name name, Document document, Email email, HashedPassword password) {

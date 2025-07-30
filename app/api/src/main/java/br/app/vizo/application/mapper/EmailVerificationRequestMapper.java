@@ -3,6 +3,9 @@ package br.app.vizo.application.mapper;
 import br.app.vizo.application.Mapper;
 import br.app.vizo.application.dto.EmailVerificationDTO;
 import br.app.vizo.application.mapper.base.RepresentationMapper;
+import br.app.vizo.core.shared.Email;
+import br.app.vizo.core.shared.ExpirationTimestamp;
+import br.app.vizo.core.verification.Code;
 import br.app.vizo.core.verification.EmailVerificationRequest;
 import br.app.vizo.infrastructure.persistence.jpa.entity.EmailVerificationRequestEntity;
 
@@ -36,10 +39,10 @@ public class EmailVerificationRequestMapper implements
     public EmailVerificationRequest toModel(EmailVerificationRequestEntity entity) {
         return new EmailVerificationRequest(
                 entity.getId(),
-                entity.getEmail(),
-                entity.getCode(),
+                new Email(entity.getEmail()),
+                new Code(entity.getCode()),
                 entity.getVerified(),
-                entity.getExpiresAt(),
+                new ExpirationTimestamp(entity.getExpiresAt()),
                 entity.getCreatedAt()
         );
     }

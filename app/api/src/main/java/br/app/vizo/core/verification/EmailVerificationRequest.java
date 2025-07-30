@@ -17,12 +17,12 @@ public class EmailVerificationRequest {
     private ExpirationTimestamp expiresAt;
     private final Instant createdAt;
 
-    public EmailVerificationRequest(UUID id, String email, String code, boolean verified, Instant expiresAt, Instant createdAt) {
+    public EmailVerificationRequest(UUID id, Email email, Code code, boolean verified, ExpirationTimestamp expiresAt, Instant createdAt) {
         this.id = id;
-        this.email = new Email(email);
-        this.code = new Code(code);
+        this.email = email;
+        this.code = code;
         this.verified = verified;
-        this.expiresAt = new ExpirationTimestamp(expiresAt);
+        this.expiresAt = expiresAt;
         this.createdAt = createdAt;
     }
 
