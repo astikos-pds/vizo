@@ -4,30 +4,24 @@ import br.app.vizo.core.shared.Email;
 import br.app.vizo.core.shared.Image;
 import br.app.vizo.core.shared.MutationTimestamps;
 import br.app.vizo.core.shared.Name;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 import java.time.Instant;
 import java.util.UUID;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Municipality {
 
-    @Getter private final UUID id;
+    private final UUID id;
     private Name name;
     private EmailDomain emailDomain;
     private Image icon;
     private final MutationTimestamps timestamps;
 
-    public Municipality(String name, String emailDomain, String iconUrl) {
-        this(
-                UUID.randomUUID(),
-                new Name(name),
-                new EmailDomain(emailDomain),
-                new Image(iconUrl),
-                MutationTimestamps.create()
-        );
+    public Municipality(UUID id, Name name, EmailDomain emailDomain, Image icon, MutationTimestamps timestamps) {
+        this.id = id;
+        this.name = name;
+        this.emailDomain = emailDomain;
+        this.icon = icon;
+        this.timestamps = timestamps;
     }
 
     public void updateName(String name) {
@@ -45,12 +39,20 @@ public class Municipality {
         this.timestamps.update();
     }
 
-    public boolean canAcceptEmail(Email email) {
-        return this.emailDomain.matches(email);
+    public boolean acceptsEmail(String email) {
+        return this.emailDomain.matches(new Email(email));
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     public String getName() {
         return name.value();
+    }
+
+    public String getEmailDomain() {
+        return emailDomain.value();
     }
 
     public String getIconUrl() {
@@ -61,4 +63,7 @@ public class Municipality {
         return timestamps.getCreatedAt();
     }
 
+    public Instant getUpdatedAt() {
+        return timestamps.getUpdatedAt();
+    }
 }
