@@ -24,6 +24,10 @@ public class AssignedUser {
     private final Instant assignedAt;
 
     public AssignedUser(UUID id, AffiliatedUser user, Department department, PermissionMode permissionMode, PermissionPreset permissionPreset, Permission customPermission, Instant assignedAt) {
+        if (user == null || department == null) {
+            throw new InvalidAssignedUserException();
+        }
+
         this.id = id;
         this.user = user;
         this.department = department;
@@ -33,15 +37,16 @@ public class AssignedUser {
         this.assignedAt = assignedAt;
     }
 
-    AssignedUser(AffiliatedUser user, Department department) {
-        if (user == null || department == null) {
-            throw new InvalidAssignedUserException();
-        }
-
-        this.id = UUID.randomUUID();
-        this.user = user;
-        this.department = department;
-        this.assignedAt = Instant.now();
+    public AssignedUser(AffiliatedUser user, Department department) {
+        this(
+                UUID.randomUUID(),
+                user,
+                department,
+                null,
+                null,
+                null,
+                Instant.now()
+        );
     }
 
     public AssignedUser withCustomPermission(Permission permission) {
