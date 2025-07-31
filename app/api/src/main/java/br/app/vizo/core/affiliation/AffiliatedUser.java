@@ -26,11 +26,11 @@ public class AffiliatedUser {
     private AffiliatedUser approver;
     private Instant approvedAt;
 
-    public AffiliatedUser(UUID id, User user, Municipality municipality, String institutionalEmail, boolean isAdmin, AffiliationStatus status, Instant affiliatedAt, AffiliatedUser approver, Instant approvedAt) {
+    public AffiliatedUser(UUID id, User user, Municipality municipality, Email institutionalEmail, boolean isAdmin, AffiliationStatus status, Instant affiliatedAt, AffiliatedUser approver, Instant approvedAt) {
         this.id = id;
         this.user = user;
         this.municipality = municipality;
-        this.institutionalEmail = new Email(institutionalEmail);
+        this.institutionalEmail = institutionalEmail;
         this.isAdmin = isAdmin;
         this.status = status;
         this.affiliatedAt = affiliatedAt;

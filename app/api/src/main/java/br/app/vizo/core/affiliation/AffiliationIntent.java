@@ -12,7 +12,7 @@ public record AffiliationIntent(
     public AffiliatedUser with(String rawInstitutionalEmail) {
         Email institutionalEmail = new Email(rawInstitutionalEmail);
 
-        if (!municipality.canAcceptEmail(institutionalEmail)) {
+        if (!municipality.acceptsEmail(institutionalEmail.value())) {
             throw new InvalidAffiliationException();
         }
 
