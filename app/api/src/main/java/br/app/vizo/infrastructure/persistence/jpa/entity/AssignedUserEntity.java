@@ -1,6 +1,6 @@
 package br.app.vizo.infrastructure.persistence.jpa.entity;
 
-import br.app.vizo.core.assignment.PermissionMode;
+import br.app.vizo.core.assignment.permission.PermissionMode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

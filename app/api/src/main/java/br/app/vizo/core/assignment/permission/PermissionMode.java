@@ -1,4 +1,4 @@
-package br.app.vizo.core.assignment;
+package br.app.vizo.core.assignment.permission;
 
 public enum PermissionMode {
     PRESET,

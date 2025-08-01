@@ -1,4 +1,4 @@
-package br.app.vizo.core.assignment;
+package br.app.vizo.core.assignment.permission;
 
 import br.app.vizo.core.municipality.Municipality;
 import br.app.vizo.core.shared.Name;

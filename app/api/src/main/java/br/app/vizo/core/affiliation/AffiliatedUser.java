@@ -4,6 +4,8 @@ import br.app.vizo.core.affiliation.exception.ForbiddenActionException;
 import br.app.vizo.core.affiliation.exception.InvalidPromotionException;
 import br.app.vizo.core.affiliation.exception.SelfActionNotAllowedException;
 import br.app.vizo.core.assignment.*;
+import br.app.vizo.core.assignment.permission.Permission;
+import br.app.vizo.core.assignment.permission.PermissionPreset;
 import br.app.vizo.core.department.Department;
 import br.app.vizo.core.municipality.Municipality;
 import br.app.vizo.core.problem.ProblemType;
