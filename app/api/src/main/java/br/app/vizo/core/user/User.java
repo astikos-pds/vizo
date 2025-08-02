@@ -46,11 +46,7 @@ public class User {
     }
 
     public Report report(Problem problem, String description, Double latitude, Double longitude, Set<String> imageUrls, Double credibility) {
-        Report report = new Report(this, problem, description, latitude, longitude, imageUrls, credibility);
-
-        problem.increaseCredibility(report.getCredibility());
-
-        return report;
+        return new Report(this, problem, description, latitude, longitude, imageUrls, credibility);
     }
 
     public AffiliationIntent requestAffiliationTo(Municipality municipality) {
