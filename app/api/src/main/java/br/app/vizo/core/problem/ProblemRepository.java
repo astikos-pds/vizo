@@ -3,6 +3,7 @@ package br.app.vizo.core.problem;
 import br.app.vizo.application.dto.page.PageDTO;
 import br.app.vizo.application.dto.page.PaginationDTO;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -15,7 +16,7 @@ public interface ProblemRepository {
 
     Optional<Problem> findById(UUID id);
 
-    Iterable<Problem> findAll();
+    List<Problem> findAll();
 
     PageDTO<Problem> findAllByTypeIn(Set<ProblemType> types, PaginationDTO pagination);
 

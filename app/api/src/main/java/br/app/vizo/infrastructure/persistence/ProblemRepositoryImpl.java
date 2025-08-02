@@ -10,6 +10,7 @@ import br.app.vizo.infrastructure.persistence.jpa.entity.ProblemEntity;
 import br.app.vizo.infrastructure.persistence.jpa.repository.ProblemJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -43,7 +44,7 @@ public class ProblemRepositoryImpl implements ProblemRepository {
     }
 
     @Override
-    public Iterable<Problem> findAll() {
+    public List<Problem> findAll() {
         return this.jpaRepository.findAll().stream().map(this.mapper::toModel).toList();
     }
 
