@@ -2,6 +2,7 @@ package br.app.vizo.application.usecase.auth;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.TokenPairDTO;
+import br.app.vizo.application.exception.auth.BadCredentialsException;
 import br.app.vizo.application.service.HashService;
 import br.app.vizo.application.usecase.auth.request.LoginRequestDTO;
 import br.app.vizo.config.security.JwtService;
@@ -13,7 +14,6 @@ import br.app.vizo.core.user.password.PasswordHasher;
 import br.app.vizo.core.user.token.RefreshToken;
 import br.app.vizo.core.user.token.RefreshTokenFactory;
 import br.app.vizo.core.user.token.RefreshTokenRepository;
-import br.app.vizo.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,12 +33,12 @@ public class LoginUseCase {
     private final HashService hashService;
 
     public TokenPairDTO execute(LoginRequestDTO body) {
-        User user = this.userRepository.findByDocument(body.document()).orElseThrow(
-                () -> new UnauthorizedException("Invalid credentials.")
-        );
+        User user = this.userRepository.findByDocument(body.document()).orElseThrow(BadCredentialsException::new);
 
         boolean passwordsMatch = user.passwordMatchesWith(body.password(), passwordHasher);
-        if (!passwordsMatch) throw new UnauthorizedException("Invalid credentials.");
+        if (!passwordsMatch) {
+            throw new BadCredentialsException();
+        }
 
         var authConfig = new UsernamePasswordAuthenticationToken(body.document(), body.password());
         Authentication authentication = this.authenticationManager.authenticate(authConfig);

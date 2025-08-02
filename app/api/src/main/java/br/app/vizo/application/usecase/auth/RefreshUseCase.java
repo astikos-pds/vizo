@@ -2,6 +2,8 @@ package br.app.vizo.application.usecase.auth;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.TokenPairDTO;
+import br.app.vizo.application.exception.auth.InvalidRefreshTokenException;
+import br.app.vizo.application.exception.auth.RefreshTokenNotRecognizedException;
 import br.app.vizo.application.service.HashService;
 import br.app.vizo.application.usecase.auth.request.RefreshRequestDTO;
 import br.app.vizo.config.security.JwtService;
@@ -32,9 +34,7 @@ public class RefreshUseCase {
         }
 
         String document = this.jwtService.getSubjectFromToken(body.token());
-        User user = this.userRepository.findByDocument(document).orElseThrow(
-                () -> new UnauthorizedException("Invalid refresh token.")
-        );
+        User user = this.userRepository.findByDocument(document).orElseThrow(InvalidRefreshTokenException::new);
 
         String hashedToken = this.hashService.hashToken(body.token());
 
@@ -42,7 +42,7 @@ public class RefreshUseCase {
                 .findByTokenAndUserId(hashedToken, user.getId());
 
         if (refreshToken.isEmpty() || refreshToken.get().isExpired()) {
-            throw new UnauthorizedException("Refresh token not recognized, maybe used or expired.");
+            throw new RefreshTokenNotRecognizedException();
         }
 
         this.refreshTokenRepository.deleteByTokenAndUserId(hashedToken, user.getId());
