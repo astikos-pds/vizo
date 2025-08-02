@@ -82,6 +82,14 @@ public class AffiliatedUser {
         return new Department(this.municipality, this, name, colorHex, iconUrl, problemTypes);
     }
 
+    public Department updateDepartment(Department department, String name, String colorHex, String iconUrl, Set<ProblemType> problemTypes) {
+        this.throwIfNotAdmin();
+
+        department.update(name, colorHex, iconUrl, problemTypes);
+
+        return department;
+    }
+
     public AssignmentIntent assign(AffiliatedUser target) {
         throwIfSameAs(target);
         throwIfNotAdmin();
