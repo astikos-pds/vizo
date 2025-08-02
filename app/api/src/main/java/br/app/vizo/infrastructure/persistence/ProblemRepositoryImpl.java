@@ -56,9 +56,14 @@ public class ProblemRepositoryImpl implements ProblemRepository {
     }
 
     @Override
-    public Optional<Problem> findNearestWithinDistance(Double latitude, Double longitude, Double distance) {
+    public Optional<Problem> findClosestByTypeWithinRadiusInMeters(
+            ProblemType problemType,
+            Double latitude,
+            Double longitude,
+            Double radiusInMeters
+    ) {
         return this.jpaRepository
-                .findNearestWithinDistance(latitude, longitude, distance)
+                .findClosestByTypeWithinRadiusInMeters(problemType, latitude, longitude, radiusInMeters)
                 .map(this.mapper::toModel);
     }
 }

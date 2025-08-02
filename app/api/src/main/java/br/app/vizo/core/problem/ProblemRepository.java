@@ -19,5 +19,10 @@ public interface ProblemRepository {
 
     PageDTO<Problem> findAllByTypeIn(Set<ProblemType> types, PaginationDTO pagination);
 
-    Optional<Problem> findNearestWithinDistance(Double latitude, Double longitude, Double distance);
+    Optional<Problem> findClosestByTypeWithinRadiusInMeters(
+            ProblemType problemType,
+            Double latitude,
+            Double longitude,
+            Double radiusInMeters
+    );
 }
