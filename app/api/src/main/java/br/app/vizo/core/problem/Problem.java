@@ -1,6 +1,6 @@
 package br.app.vizo.core.problem;
 
-import br.app.vizo.core.shared.Coordinates;
+import br.app.vizo.core.shared.coordinates.Coordinates;
 import br.app.vizo.core.shared.Credibility;
 import br.app.vizo.core.shared.MutationTimestamps;
 

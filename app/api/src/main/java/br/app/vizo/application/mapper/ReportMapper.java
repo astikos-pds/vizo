@@ -6,7 +6,7 @@ import br.app.vizo.application.mapper.base.RepresentationMapper;
 import br.app.vizo.core.report.Description;
 import br.app.vizo.core.report.EvidenceImages;
 import br.app.vizo.core.report.Report;
-import br.app.vizo.core.shared.Coordinates;
+import br.app.vizo.core.shared.coordinates.Coordinates;
 import br.app.vizo.core.shared.Credibility;
 import br.app.vizo.infrastructure.persistence.jpa.entity.ReportEntity;
 import org.locationtech.jts.geom.Coordinate;

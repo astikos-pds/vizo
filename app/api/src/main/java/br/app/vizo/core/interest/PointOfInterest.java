@@ -1,7 +1,7 @@
 package br.app.vizo.core.interest;
 
 import br.app.vizo.core.interest.exception.MustHaveAnOwnerException;
-import br.app.vizo.core.shared.Coordinates;
+import br.app.vizo.core.shared.coordinates.Coordinates;
 import br.app.vizo.core.shared.MutationTimestamps;
 import br.app.vizo.core.user.User;
 import lombok.AccessLevel;

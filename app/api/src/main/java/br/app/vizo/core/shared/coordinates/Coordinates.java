@@ -1,21 +1,21 @@
-package br.app.vizo.core.shared;
+package br.app.vizo.core.shared.coordinates;
 
-import br.app.vizo.core.shared.exception.InvalidCoordinateException;
+import br.app.vizo.core.shared.exception.InvalidCoordinatesException;
 
 public record Coordinates(
-        Ordinate latitude,
-        Ordinate longitude
+        Latitude latitude,
+        Longitude longitude
 ) {
 
     public Coordinates {
         if (latitude == null || longitude == null) {
-            throw new InvalidCoordinateException();
+            throw new InvalidCoordinatesException();
         }
     }
 
     public static Coordinates of(Double latitude, Double longitude) {
         return new Coordinates(
-                new Ordinate(latitude), new Ordinate(longitude)
+                new Latitude(latitude), new Longitude(longitude)
         );
     }
 

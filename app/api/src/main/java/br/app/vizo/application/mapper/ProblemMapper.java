@@ -5,7 +5,7 @@ import br.app.vizo.application.dto.ProblemDTO;
 import br.app.vizo.application.mapper.base.RepresentationMapper;
 import br.app.vizo.core.problem.Problem;
 import br.app.vizo.core.problem.ReportingTimeline;
-import br.app.vizo.core.shared.Coordinates;
+import br.app.vizo.core.shared.coordinates.Coordinates;
 import br.app.vizo.core.shared.Credibility;
 import br.app.vizo.core.shared.MutationTimestamps;
 import br.app.vizo.infrastructure.persistence.jpa.entity.ProblemEntity;
