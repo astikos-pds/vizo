@@ -6,6 +6,8 @@ import br.app.vizo.application.mapper.DepartmentMapper;
 import br.app.vizo.application.service.AuthorizationService;
 import br.app.vizo.application.usecase.department.request.CreateDepartmentRequestDTO;
 import br.app.vizo.core.affiliation.AffiliatedUser;
+import br.app.vizo.core.assignment.AssignedUser;
+import br.app.vizo.core.assignment.AssignedUserRepository;
 import br.app.vizo.core.department.Department;
 import br.app.vizo.core.department.DepartmentRepository;
 import br.app.vizo.core.user.User;
@@ -20,6 +22,7 @@ public class CreateDepartmentUseCase {
     private final AuthorizationService authorizationService;
     private final DepartmentRepository departmentRepository;
     private final DepartmentMapper departmentMapper;
+    private final AssignedUserRepository assignedUserRepository;
 
     public DepartmentDTO execute(User loggedInUser, UUID municipalityId, CreateDepartmentRequestDTO request) {
         AffiliatedUser affiliatedUser =  this.authorizationService.ensureUserIsAffiliatedTo(loggedInUser, municipalityId);
@@ -32,6 +35,10 @@ public class CreateDepartmentUseCase {
         );
 
         Department saved = this.departmentRepository.save(department);
+
+        AssignedUser assignedUser = affiliatedUser.assignSelf().to(department);
+        this.assignedUserRepository.save(assignedUser);
+
         return this.departmentMapper.toDto(saved);
     }
 }
