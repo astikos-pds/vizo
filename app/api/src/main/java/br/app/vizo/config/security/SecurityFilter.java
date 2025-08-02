@@ -1,7 +1,5 @@
 package br.app.vizo.config.security;
 
-import br.app.vizo.domain.user.User;
-import br.app.vizo.repository.OldUserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,12 +8,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Optional;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
@@ -33,12 +31,11 @@ public class SecurityFilter extends OncePerRequestFilter {
             "auth"
     };
 
-    private final OldUserRepository oldUserRepository;
-
+    private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
 
-    public SecurityFilter(OldUserRepository oldUserRepository, JwtService jwtService) {
-        this.oldUserRepository = oldUserRepository;
+    public SecurityFilter(UserDetailsService userDetailsService, JwtService jwtService) {
+        this.userDetailsService = userDetailsService;
         this.jwtService = jwtService;
     }
 
@@ -49,40 +46,37 @@ public class SecurityFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        if (this.shouldFilter(request)) {
-            String token = this.retrieveToken(request);
-
-            if (token != null && this.jwtService.isAccessTokenValid(token)) {
-                String subject = this.jwtService.getSubjectFromToken(token);
-                Optional<User> user = this.oldUserRepository.findByDocument(subject);
-
-                if (user.isEmpty()) {
-                    this.sendError(response, 404, "User not found.");
-                    return;
-                }
-
-                UserDetails userDetails = new UserDetailsImpl(user.get());
-
-                Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails.getUsername(),
-                        userDetails.getPassword(),
-                        userDetails.getAuthorities()
-                );
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            } else {
-                this.sendError(response, 401, "Missing token.");
-                return;
-            }
+        if (!this.shouldFilter(request)) {
+            filterChain.doFilter(request, response);
+            return;
         }
+
+        String token = this.retrieveToken(request);
+
+        if (token == null || !this.jwtService.isAccessTokenValid(token)) {
+            this.sendError(response);
+            return;
+        }
+
+        String subject = this.jwtService.getSubjectFromToken(token);
+
+        UserDetails userDetails = this.userDetailsService.loadUserByUsername(subject);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails.getUsername(),
+                userDetails.getPassword(),
+                userDetails.getAuthorities()
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
     }
 
-    private void sendError(HttpServletResponse response, int status, String message) throws IOException {
-        response.setStatus(status);
+    private void sendError(HttpServletResponse response) throws IOException {
+        response.setStatus(401);
         response.setContentType("application/json");
-        response.getWriter().write("{ \"message\": \"%s\" }".formatted(message));
+        response.getWriter().write("{ \"message\": \"%s\" }".formatted("Missing token."));
     }
 
     private String retrieveToken(HttpServletRequest request) {
