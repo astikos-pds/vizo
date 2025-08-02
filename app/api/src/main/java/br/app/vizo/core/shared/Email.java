@@ -12,4 +12,7 @@ public record Email(
         }
     }
 
+    public String getDomain() {
+        return value.split("@")[1];
+    }
 }
