@@ -17,7 +17,8 @@ public interface ProblemJpaRepository extends JpaRepository<ProblemEntity, UUID>
 
     @Query(value = """
             SELECT * FROM problems p
-            WHERE p.type = :type
+            WHERE p.status != 'RESOLVED'
+            AND p.type = :type
             AND ST_DWithin(
                 p.coordinates::geography,
                 ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
@@ -29,7 +30,7 @@ public interface ProblemJpaRepository extends JpaRepository<ProblemEntity, UUID>
             )
             LIMIT 1
     """, nativeQuery = true)
-    Optional<ProblemEntity> findClosestByTypeWithinRadiusInMeters(
+    Optional<ProblemEntity> findClosestUnresolvedByTypeWithinRadiusInMeters(
             @Param("type") ProblemType problemType,
             @Param("lat") Double latitude,
             @Param("lon") Double longitude,

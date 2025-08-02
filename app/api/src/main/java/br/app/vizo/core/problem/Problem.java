@@ -33,7 +33,7 @@ public class Problem {
 
     public void updateStatusTo(ProblemStatus status) {
         this.status = status;
-        if (status == ProblemStatus.SOLVED) {
+        if (status == ProblemStatus.RESOLVED) {
             resolvedAt = Instant.now();
         }
         this.timestamps.update();

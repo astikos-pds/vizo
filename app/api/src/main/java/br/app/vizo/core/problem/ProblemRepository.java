@@ -19,7 +19,7 @@ public interface ProblemRepository {
 
     PageDTO<Problem> findAllByTypeIn(Set<ProblemType> types, PaginationDTO pagination);
 
-    Optional<Problem> findClosestByTypeWithinRadiusInMeters(
+    Optional<Problem> findClosestUnresolvedByTypeWithinRadiusInMeters(
             ProblemType problemType,
             Double latitude,
             Double longitude,
