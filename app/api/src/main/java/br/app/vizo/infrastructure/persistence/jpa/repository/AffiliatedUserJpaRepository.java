@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -21,7 +22,7 @@ public interface AffiliatedUserJpaRepository extends JpaRepository<AffiliatedUse
             Pageable pageable
     );
 
-    boolean existsByUserIdAndMunicipalityIdAndStatus(UUID municipalityId, UUID userId, AffiliationStatus status);
+    Optional<AffiliatedUserEntity> findByUserIdAndMunicipalityIdAndStatus(UUID municipalityId, UUID userId, AffiliationStatus status);
 
     List<AffiliatedUserEntity> findAllByUserId(UUID userId);
 }

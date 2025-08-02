@@ -2,6 +2,7 @@ package br.app.vizo.application.service;
 
 import br.app.vizo.application.exception.AffiliationRequiredException;
 import br.app.vizo.application.exception.MunicipalityNotFoundException;
+import br.app.vizo.core.affiliation.AffiliatedUser;
 import br.app.vizo.core.affiliation.AffiliatedUserRepository;
 import br.app.vizo.core.affiliation.AffiliationStatus;
 import br.app.vizo.core.municipality.Municipality;
@@ -22,17 +23,14 @@ public class AuthorizationService {
         this.municipalityRepository = municipalityRepository;
     }
 
-    public void ensureUserIsAffiliatedTo(User user, UUID municipalityId) {
+    public AffiliatedUser ensureUserIsAffiliatedTo(User user, UUID municipalityId) {
         boolean municipalityExists = this.municipalityRepository.existsById(municipalityId);
         if (!municipalityExists) {
             throw new MunicipalityNotFoundException();
         }
 
-        boolean userHasAnApprovedAffiliationInMunicipality = this.affiliatedUserRepository
-                .existsByUserIdAndMunicipalityIdAndStatus(user.getId(), municipalityId, AffiliationStatus.APPROVED);
-
-        if (!userHasAnApprovedAffiliationInMunicipality) {
-            throw new AffiliationRequiredException();
-        }
+        return this.affiliatedUserRepository
+                .findByUserIdAndMunicipalityIdAndStatus(user.getId(), municipalityId, AffiliationStatus.APPROVED)
+                .orElseThrow(AffiliationRequiredException::new);
     }
 }

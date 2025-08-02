@@ -56,8 +56,9 @@ public class AffiliatedUserRepositoryImpl implements AffiliatedUserRepository {
     }
 
     @Override
-    public boolean existsByUserIdAndMunicipalityIdAndStatus(UUID userId, UUID municipalityId, AffiliationStatus status) {
-        return this.jpaRepository.existsByUserIdAndMunicipalityIdAndStatus(userId, municipalityId, status);
+    public Optional<AffiliatedUser> findByUserIdAndMunicipalityIdAndStatus(UUID userId, UUID municipalityId, AffiliationStatus status) {
+        return this.jpaRepository.findByUserIdAndMunicipalityIdAndStatus(userId, municipalityId, status)
+                .map(this.mapper::toModel);
     }
 
     @Override

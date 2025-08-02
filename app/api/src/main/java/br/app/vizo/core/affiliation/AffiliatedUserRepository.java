@@ -18,7 +18,7 @@ public interface AffiliatedUserRepository {
 
     PageDTO<AffiliatedUser> findAllByMunicipalityIdAndStatus(UUID id, AffiliationStatus status, PaginationDTO pagination);
 
-    boolean existsByUserIdAndMunicipalityIdAndStatus(UUID userId, UUID municipalityId, AffiliationStatus status);
+    Optional<AffiliatedUser> findByUserIdAndMunicipalityIdAndStatus(UUID userId, UUID municipalityId, AffiliationStatus status);
 
     Iterable<AffiliatedUser> findAllByUserId(UUID id);
 }
