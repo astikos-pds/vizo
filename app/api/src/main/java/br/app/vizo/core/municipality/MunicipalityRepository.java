@@ -8,4 +8,6 @@ public interface MunicipalityRepository {
     Optional<Municipality> findById(UUID id);
 
     Optional<Municipality> findByEmailDomain(String emailDomain);
+
+    boolean existsById(UUID id);
 }
