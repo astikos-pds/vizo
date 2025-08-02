@@ -13,4 +13,6 @@ public interface DepartmentRepository {
     Optional<Department> findById(UUID id);
 
     PageDTO<Department> findAllByMunicipalityId(UUID id, PaginationDTO pagination);
+
+    void deleteById(UUID id);
 }

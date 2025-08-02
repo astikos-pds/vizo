@@ -41,4 +41,9 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
                 .map(this.mapper::toModel);
         return PageDTO.of(page);
     }
+
+    @Override
+    public void deleteById(UUID id) {
+        this.jpaRepository.deleteById(id);
+    }
 }
