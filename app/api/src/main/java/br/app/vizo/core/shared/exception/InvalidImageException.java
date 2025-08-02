@@ -1,7 +1,7 @@
 package br.app.vizo.core.shared.exception;
 
-public class InvalidImage extends RuntimeException {
-    public InvalidImage() {
+public class InvalidImageException extends RuntimeException {
+    public InvalidImageException() {
         super("Image URL must not be null or blank.");
     }
 }

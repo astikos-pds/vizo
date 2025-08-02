@@ -1,6 +1,6 @@
 package br.app.vizo.core.shared;
 
-import br.app.vizo.core.shared.exception.InvalidImage;
+import br.app.vizo.core.shared.exception.InvalidImageException;
 
 public record Image(
         String url
@@ -8,7 +8,7 @@ public record Image(
 
     public Image {
         if (url == null || url.isBlank()) {
-            throw new InvalidImage();
+            throw new InvalidImageException();
         }
     }
 }
