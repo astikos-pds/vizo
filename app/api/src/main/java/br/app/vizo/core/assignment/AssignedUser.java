@@ -131,7 +131,7 @@ public class AssignedUser {
     }
 
     private void throwIfSameAs(AssignedUser other) {
-        if (this.id.equals(other.getId())) {
+        if (this.isSameAs(other)) {
             throw new SelfActionNotAllowedException();
         }
     }
@@ -160,5 +160,9 @@ public class AssignedUser {
         return this.permissionMode == PermissionMode.PRESET
                 ? permissionPreset.getPermission()
                 : customPermission;
+    }
+
+    public boolean isSameAs(AssignedUser other) {
+        return this.id.equals(other.getId());
     }
 }
