@@ -67,8 +67,10 @@ public class AffiliatedUserRepositoryImpl implements AffiliatedUserRepository {
     }
 
     @Override
-    public Iterable<AffiliatedUser> findAllByUserId(UUID id) {
-        return this.jpaRepository.findAllByUserId(id).stream().map(this.mapper::toModel).toList();
+    public PageDTO<AffiliatedUser> findAllByUserId(UUID id, PaginationDTO pagination) {
+        var page = this.jpaRepository.findAllByUserId(id, PaginationDTO.resolve(pagination))
+                .map(this.mapper::toModel);
+        return PageDTO.of(page);
     }
 
     @Override

@@ -22,7 +22,7 @@ public interface AffiliatedUserRepository {
 
     Optional<AffiliatedUser> findByUserIdAndMunicipalityIdAndStatus(UUID userId, UUID municipalityId, AffiliationStatus status);
 
-    Iterable<AffiliatedUser> findAllByUserId(UUID id);
+    PageDTO<AffiliatedUser> findAllByUserId(UUID id, PaginationDTO pagination);
 
     long countByMunicipalityIdAndIsAdmin(UUID municipalityId, boolean isAdmin);
 

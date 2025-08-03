@@ -27,7 +27,7 @@ public interface AffiliatedUserJpaRepository extends JpaRepository<AffiliatedUse
 
     Optional<AffiliatedUserEntity> findByUserIdAndMunicipalityIdAndStatus(UUID municipalityId, UUID userId, AffiliationStatus status);
 
-    List<AffiliatedUserEntity> findAllByUserId(UUID userId);
+    Page<AffiliatedUserEntity> findAllByUserId(UUID userId, Pageable pageable);
 
     long countByMunicipalityIdAndIsAdmin(UUID municipalityId, boolean isAdmin);
 
