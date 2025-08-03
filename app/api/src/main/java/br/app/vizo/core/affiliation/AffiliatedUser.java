@@ -63,7 +63,7 @@ public class AffiliatedUser {
         target.isAdmin = true;
     }
 
-    public void updateStatusOf(AffiliatedUser target, AffiliationStatus newStatus) {
+    public void changeStatusOf(AffiliatedUser target, AffiliationStatus newStatus) {
         throwIfSameAs(target);
         throwIfNotAdmin();
 
