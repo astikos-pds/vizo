@@ -9,6 +9,7 @@ import br.app.vizo.infrastructure.persistence.jpa.entity.AssignedUserEntity;
 import br.app.vizo.infrastructure.persistence.jpa.repository.AssignedUserJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -28,6 +29,13 @@ public class AssignedUserRepositoryImpl implements AssignedUserRepository {
         AssignedUserEntity entity = this.mapper.toEntity(assignedUser);
         AssignedUserEntity saved = this.jpaRepository.save(entity);
         return this.mapper.toModel(saved);
+    }
+
+    @Override
+    public List<AssignedUser> saveAll(List<AssignedUser> assignedUsers) {
+        List<AssignedUserEntity> entities = assignedUsers.stream().map(this.mapper::toEntity).toList();
+        List<AssignedUserEntity> saved = this.jpaRepository.saveAll(entities);
+        return saved.stream().map(this.mapper::toModel).toList();
     }
 
     @Override
