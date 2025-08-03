@@ -104,6 +104,8 @@ public class AffiliatedUser {
     }
 
     public PermissionPreset createPermissionPreset(String name, Permission permission) {
+        this.throwIfNotAdmin();
+
         return new PermissionPreset(this.municipality, name, permission);
     }
 
