@@ -7,6 +7,7 @@ import br.app.vizo.infrastructure.persistence.jpa.entity.PermissionPresetEntity;
 import br.app.vizo.infrastructure.persistence.jpa.repository.PermissionPresetJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -28,7 +29,7 @@ public class PermissionPresetImpl implements PermissionPresetRepository {
     }
 
     @Override
-    public Iterable<PermissionPreset> findAllByMunicipalityId(UUID municipalityId) {
+    public List<PermissionPreset> findAllByMunicipalityId(UUID municipalityId) {
         return this.jpaRepository.findAllByMunicipalityId(municipalityId).stream().map(this.mapper::toModel).toList();
     }
 
