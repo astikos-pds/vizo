@@ -147,7 +147,7 @@ public class AffiliatedUser {
         return approvedAt;
     }
 
-    private boolean isSameAs(AffiliatedUser other) {
+    public boolean isSameAs(AffiliatedUser other) {
         return this.id.equals(other.getId());
     }
 
