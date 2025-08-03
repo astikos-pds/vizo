@@ -3,6 +3,7 @@ package br.app.vizo.application.usecase.assignment;
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.AssignedUserDTO;
 import br.app.vizo.application.exception.DepartmentNotFoundException;
+import br.app.vizo.application.exception.MustBeAdminException;
 import br.app.vizo.application.mapper.AssignedUserMapper;
 import br.app.vizo.application.service.AuthorizationService;
 import br.app.vizo.application.usecase.assignment.request.AssignUserToDepartmentRequestDTO;
@@ -27,6 +28,10 @@ public class AssignUserToDepartmentUseCase {
 
     public AssignedUserDTO execute(User loggedInUser, UUID municipalityId, UUID departmentId, AssignUserToDepartmentRequestDTO request) {
         AffiliatedUser affiliatedUser = this.authorizationService.ensureUserIsAffiliatedTo(loggedInUser, municipalityId);
+
+        if (!affiliatedUser.isAdmin()) {
+            throw new MustBeAdminException();
+        }
 
         Department department = this.departmentRepository.findById(departmentId)
                 .orElseThrow(DepartmentNotFoundException::new);
