@@ -35,4 +35,12 @@ public class PermissionMapper implements RepresentationMapper<Permission, Permis
                 entity.canManageUsers()
         );
     }
+
+    public Permission toModel(PermissionDTO permission) {
+        return new Permission(
+                permission.canViewReports(),
+                permission.canUpdateStatus(),
+                permission.canManageUsers()
+        );
+    }
 }
