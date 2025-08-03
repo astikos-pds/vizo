@@ -42,6 +42,11 @@ public class AffiliatedUserRepositoryImpl implements AffiliatedUserRepository {
     }
 
     @Override
+    public void deleteByUserIdAndMunicipalityId(UUID userId, UUID municipalityId) {
+        this.jpaRepository.deleteByUserIdAndMunicipalityId(userId, municipalityId);
+    }
+
+    @Override
     public PageDTO<AffiliatedUser> findAllByMunicipalityId(UUID id, PaginationDTO pagination) {
         var page = this.jpaRepository.findAllByMunicipalityId(id, PaginationDTO.resolve(pagination))
                 .map(this.mapper::toModel);
@@ -64,5 +69,16 @@ public class AffiliatedUserRepositoryImpl implements AffiliatedUserRepository {
     @Override
     public Iterable<AffiliatedUser> findAllByUserId(UUID id) {
         return this.jpaRepository.findAllByUserId(id).stream().map(this.mapper::toModel).toList();
+    }
+
+    @Override
+    public long countByMunicipalityIdAndIsAdmin(UUID municipalityId, boolean isAdmin) {
+        return this.jpaRepository.countByMunicipalityIdAndIsAdmin(municipalityId, isAdmin);
+    }
+
+    @Override
+    public Optional<AffiliatedUser> findFirstApprovedNonAdminByMunicipalityId(UUID municipalityId) {
+        return this.jpaRepository.findFirstApprovedNonAdminByMunicipalityId(municipalityId)
+                .map(this.mapper::toModel);
     }
 }

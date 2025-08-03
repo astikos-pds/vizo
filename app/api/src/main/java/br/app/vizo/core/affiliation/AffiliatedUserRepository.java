@@ -14,6 +14,8 @@ public interface AffiliatedUserRepository {
 
     void deleteById(UUID id);
 
+    void deleteByUserIdAndMunicipalityId(UUID userId, UUID municipalityId);
+
     PageDTO<AffiliatedUser> findAllByMunicipalityId(UUID id, PaginationDTO pagination);
 
     PageDTO<AffiliatedUser> findAllByMunicipalityIdAndStatus(UUID id, AffiliationStatus status, PaginationDTO pagination);
@@ -21,4 +23,8 @@ public interface AffiliatedUserRepository {
     Optional<AffiliatedUser> findByUserIdAndMunicipalityIdAndStatus(UUID userId, UUID municipalityId, AffiliationStatus status);
 
     Iterable<AffiliatedUser> findAllByUserId(UUID id);
+
+    long countByMunicipalityIdAndIsAdmin(UUID municipalityId, boolean isAdmin);
+
+    Optional<AffiliatedUser> findFirstApprovedNonAdminByMunicipalityId(UUID municipalityId);
 }
