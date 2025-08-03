@@ -9,7 +9,6 @@ import br.app.vizo.core.affiliation.AffiliatedUser;
 import br.app.vizo.core.affiliation.AffiliatedUserRepository;
 import br.app.vizo.core.municipality.Municipality;
 import br.app.vizo.core.municipality.MunicipalityRepository;
-import br.app.vizo.core.shared.Email;
 import br.app.vizo.core.user.User;
 import lombok.RequiredArgsConstructor;
 
@@ -17,7 +16,7 @@ import java.util.UUID;
 
 @UseCase
 @RequiredArgsConstructor
-public class AffiliateToMunicipalityUseCase {
+public class RequestAffiliationToMunicipalityUseCase {
 
     private final AffiliatedUserRepository affiliatedUserRepository;
     private final AffiliatedUserMapper affiliatedUserMapper;
