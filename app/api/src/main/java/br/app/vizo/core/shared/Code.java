@@ -1,4 +1,4 @@
-package br.app.vizo.core.verification;
+package br.app.vizo.core.shared;
 
 import br.app.vizo.core.verification.exception.InvalidCodeException;
 

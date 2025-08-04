@@ -3,7 +3,7 @@ package br.app.vizo.application.factory;
 import br.app.vizo.application.Factory;
 import br.app.vizo.core.shared.Email;
 import br.app.vizo.core.shared.ExpirationTimestamp;
-import br.app.vizo.core.verification.Code;
+import br.app.vizo.core.shared.Code;
 import br.app.vizo.core.verification.EmailVerificationRequest;
 import br.app.vizo.core.verification.EmailVerificationRequestFactory;
 

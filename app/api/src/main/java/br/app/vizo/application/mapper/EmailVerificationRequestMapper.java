@@ -5,7 +5,7 @@ import br.app.vizo.application.dto.EmailVerificationDTO;
 import br.app.vizo.application.mapper.base.RepresentationMapper;
 import br.app.vizo.core.shared.Email;
 import br.app.vizo.core.shared.ExpirationTimestamp;
-import br.app.vizo.core.verification.Code;
+import br.app.vizo.core.shared.Code;
 import br.app.vizo.core.verification.EmailVerificationRequest;
 import br.app.vizo.infrastructure.persistence.jpa.entity.EmailVerificationRequestEntity;
 

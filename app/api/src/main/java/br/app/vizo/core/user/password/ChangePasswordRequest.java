@@ -1,52 +1,41 @@
-package br.app.vizo.core.verification;
+package br.app.vizo.core.user.password;
 
 import br.app.vizo.core.shared.Code;
-import br.app.vizo.core.shared.Email;
 import br.app.vizo.core.shared.ExpirationTimestamp;
+import br.app.vizo.core.user.User;
+import br.app.vizo.core.user.exception.ChangePasswordRequestExpiredException;
 import br.app.vizo.core.verification.exception.CodesDoNotMatchException;
-import br.app.vizo.core.verification.exception.EmailVerificationRequestExpiredException;
 
 import java.time.Instant;
 import java.util.UUID;
 
-public class EmailVerificationRequest {
+public class ChangePasswordRequest {
 
     private final UUID id;
-    private final Email email;
+    private final User user;
     private Code code;
     private boolean verified;
     private ExpirationTimestamp expiresAt;
     private final Instant createdAt;
 
-    public EmailVerificationRequest(UUID id, Email email, Code code, boolean verified, ExpirationTimestamp expiresAt, Instant createdAt) {
+    public ChangePasswordRequest(UUID id, User user, Code code, boolean verified, ExpirationTimestamp expiresAt, Instant createdAt) {
         this.id = id;
-        this.email = email;
+        this.user = user;
         this.code = code;
         this.verified = verified;
         this.expiresAt = expiresAt;
         this.createdAt = createdAt;
     }
 
-    public EmailVerificationRequest(
-            Email email,
-            Code code,
-            boolean verified,
-            ExpirationTimestamp expiresAt
-    ) {
-        this.id = UUID.randomUUID();
-        this.email = email;
-        this.code = code;
-        this.verified = verified;
-        this.expiresAt = expiresAt;
-        this.createdAt = Instant.now();
-    }
-
-    public boolean isExpired() {
-        return this.expiresAt.isExpired();
-    }
-
-    public boolean isVerified() {
-        return verified;
+    public ChangePasswordRequest(User user, Code code, boolean verified, ExpirationTimestamp expiresAt) {
+        this(
+                UUID.randomUUID(),
+                user,
+                code,
+                verified,
+                expiresAt,
+                Instant.now()
+        );
     }
 
     public void retry() {
@@ -56,7 +45,7 @@ public class EmailVerificationRequest {
 
     public void verifyWith(String rawCode) {
         if (this.isExpired()) {
-            throw new EmailVerificationRequestExpiredException();
+            throw new ChangePasswordRequestExpiredException();
         }
 
         if (!this.code.matches(rawCode)) {
@@ -66,12 +55,16 @@ public class EmailVerificationRequest {
         this.verified = true;
     }
 
+    public boolean isExpired() {
+        return this.expiresAt.isExpired();
+    }
+
     public UUID getId() {
         return id;
     }
 
-    public String getEmail() {
-        return email.value();
+    public User getUser() {
+        return user;
     }
 
     public String getCode() {
@@ -80,6 +73,10 @@ public class EmailVerificationRequest {
 
     public int getCodeLength() {
         return code.getLength();
+    }
+
+    public boolean isVerified() {
+        return verified;
     }
 
     public Instant getExpiresAt() {
