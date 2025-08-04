@@ -61,17 +61,8 @@ public class AssignedUserRepositoryImpl implements AssignedUserRepository {
     }
 
     @Override
-    public PageDTO<AssignedUser> findAllByMunicipalityIdAndAffiliatedUserId(
-            UUID municipalityId,
-            UUID userId,
-            PaginationDTO pagination
-    ) {
-        var page = this.jpaRepository
-                .findAllByDepartmentMunicipalityIdAndAffiliatedUserId(
-                        municipalityId,
-                        userId,
-                        PaginationDTO.resolve(pagination)
-                )
+    public PageDTO<AssignedUser> findAllByAffiliatedUserId(UUID userId, PaginationDTO pagination) {
+        var page = this.jpaRepository.findAllByAffiliatedUserId(userId, PaginationDTO.resolve(pagination))
                 .map(this.mapper::toModel);
         return PageDTO.of(page);
     }

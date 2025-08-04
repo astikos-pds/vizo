@@ -16,11 +16,7 @@ public interface AssignedUserJpaRepository extends JpaRepository<AssignedUserEnt
 
     Page<AssignedUserEntity> findAllByDepartmentId(UUID departmentId, Pageable pageable);
 
-    Page<AssignedUserEntity> findAllByDepartmentMunicipalityIdAndAffiliatedUserId(
-            UUID municipalityId,
-            UUID userId,
-            Pageable pageable
-    );
+    Page<AssignedUserEntity> findAllByAffiliatedUserId(UUID userId, Pageable pageable);
 
     void deleteAllByDepartmentId(UUID departmentId);
 

@@ -21,7 +21,7 @@ public interface AssignedUserRepository {
 
     PageDTO<AssignedUser> findAllByDepartmentId(UUID id, PaginationDTO pagination);
 
-    PageDTO<AssignedUser> findAllByMunicipalityIdAndAffiliatedUserId(UUID municipalityId, UUID userId, PaginationDTO pagination);
+    PageDTO<AssignedUser> findAllByAffiliatedUserId(UUID userId, PaginationDTO pagination);
 
     void deleteAllByDepartmentId(UUID id);
 
