@@ -22,7 +22,7 @@ public class RequestEmailVerificationUseCase {
     public EmailVerificationDTO execute(EmailRequestDTO body) {
 
         EmailVerificationRequest emailVerificationRequest = this.emailVerificationRequestRepository
-                .findByEmail(body.email())
+                .findByEmailAndPurpose(body.email(), body.purpose())
                 .map(request -> {
                     request.retry();
                     return request;

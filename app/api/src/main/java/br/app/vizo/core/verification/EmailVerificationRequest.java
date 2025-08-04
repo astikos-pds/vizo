@@ -15,14 +15,16 @@ public class EmailVerificationRequest {
     private final Email email;
     private Code code;
     private boolean verified;
+    private VerificationPurpose purpose;
     private ExpirationTimestamp expiresAt;
     private final Instant createdAt;
 
-    public EmailVerificationRequest(UUID id, Email email, Code code, boolean verified, ExpirationTimestamp expiresAt, Instant createdAt) {
+    public EmailVerificationRequest(UUID id, Email email, Code code, boolean verified, VerificationPurpose purpose, ExpirationTimestamp expiresAt, Instant createdAt) {
         this.id = id;
         this.email = email;
         this.code = code;
         this.verified = verified;
+        this.purpose = purpose;
         this.expiresAt = expiresAt;
         this.createdAt = createdAt;
     }
@@ -31,14 +33,18 @@ public class EmailVerificationRequest {
             Email email,
             Code code,
             boolean verified,
+            VerificationPurpose purpose,
             ExpirationTimestamp expiresAt
     ) {
-        this.id = UUID.randomUUID();
-        this.email = email;
-        this.code = code;
-        this.verified = verified;
-        this.expiresAt = expiresAt;
-        this.createdAt = Instant.now();
+        this(
+                UUID.randomUUID(),
+                email,
+                code,
+                verified,
+                purpose,
+                expiresAt,
+                Instant.now()
+        );
     }
 
     public boolean isExpired() {
@@ -80,6 +86,10 @@ public class EmailVerificationRequest {
 
     public int getCodeLength() {
         return code.getLength();
+    }
+
+    public VerificationPurpose getPurpose() {
+        return purpose;
     }
 
     public Instant getExpiresAt() {

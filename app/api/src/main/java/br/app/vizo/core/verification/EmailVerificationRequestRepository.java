@@ -9,5 +9,5 @@ public interface EmailVerificationRequestRepository {
 
     Optional<EmailVerificationRequest> findById(UUID id);
 
-    Optional<EmailVerificationRequest> findByEmail(String email);
+    Optional<EmailVerificationRequest> findByEmailAndPurpose(String email, VerificationPurpose purpose);
 }
