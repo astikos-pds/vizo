@@ -30,6 +30,7 @@ public class EmailVerificationRequestMapper implements
                 model.getEmail(),
                 model.getCode(),
                 model.isVerified(),
+                model.getPurpose(),
                 model.getExpiresAt(),
                 model.getCreatedAt()
         );
@@ -42,6 +43,7 @@ public class EmailVerificationRequestMapper implements
                 new Email(entity.getEmail()),
                 new Code(entity.getCode()),
                 entity.getVerified(),
+                entity.getPurpose(),
                 new ExpirationTimestamp(entity.getExpiresAt()),
                 entity.getCreatedAt()
         );
