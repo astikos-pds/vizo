@@ -2,18 +2,22 @@ package br.app.vizo.application.usecase.auth;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.EmailVerificationDTO;
+import br.app.vizo.application.exception.auth.UserNotFoundException;
 import br.app.vizo.application.mapper.EmailVerificationRequestMapper;
 import br.app.vizo.application.service.EmailService;
 import br.app.vizo.application.usecase.auth.request.EmailRequestDTO;
+import br.app.vizo.core.user.UserRepository;
 import br.app.vizo.core.verification.EmailVerificationRequest;
 import br.app.vizo.core.verification.EmailVerificationRequestFactory;
 import br.app.vizo.core.verification.EmailVerificationRequestRepository;
+import br.app.vizo.core.verification.VerificationPurpose;
 import lombok.RequiredArgsConstructor;
 
 @UseCase
 @RequiredArgsConstructor
 public class RequestEmailVerificationUseCase {
 
+    private final UserRepository userRepository;
     private final EmailVerificationRequestRepository emailVerificationRequestRepository;
     private final EmailVerificationRequestFactory emailVerificationRequestFactory;
     private final EmailVerificationRequestMapper emailVerificationRequestMapper;
@@ -21,13 +25,17 @@ public class RequestEmailVerificationUseCase {
 
     public EmailVerificationDTO execute(EmailRequestDTO body) {
 
+        if (body.purpose() == VerificationPurpose.PASSWORD_CHANGE) {
+            this.userRepository.findByEmail(body.email()).orElseThrow(UserNotFoundException::new);
+        }
+
         EmailVerificationRequest emailVerificationRequest = this.emailVerificationRequestRepository
                 .findByEmailAndPurpose(body.email(), body.purpose())
                 .map(request -> {
                     request.retry();
                     return request;
                 })
-                .orElseGet(() -> this.emailVerificationRequestFactory.create(body.email()));
+                .orElseGet(() -> this.emailVerificationRequestFactory.create(body.email(), body.purpose()));
 
         this.emailService.sendVerificationCode(
                 emailVerificationRequest.getEmail(),

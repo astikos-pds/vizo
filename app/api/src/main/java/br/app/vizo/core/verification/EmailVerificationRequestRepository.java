@@ -10,4 +10,6 @@ public interface EmailVerificationRequestRepository {
     Optional<EmailVerificationRequest> findById(UUID id);
 
     Optional<EmailVerificationRequest> findByEmailAndPurpose(String email, VerificationPurpose purpose);
+
+    void deleteById(UUID id);
 }

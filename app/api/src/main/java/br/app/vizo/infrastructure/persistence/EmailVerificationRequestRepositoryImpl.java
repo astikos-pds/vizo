@@ -39,4 +39,9 @@ public class EmailVerificationRequestRepositoryImpl implements EmailVerification
     public Optional<EmailVerificationRequest> findByEmailAndPurpose(String email, VerificationPurpose purpose) {
         return this.jpaRepository.findByEmailAndPurpose(email, purpose).map(this.mapper::toModel);
     }
+
+    @Override
+    public void deleteById(UUID id) {
+        this.jpaRepository.deleteById(id);
+    }
 }

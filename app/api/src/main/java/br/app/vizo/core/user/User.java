@@ -53,17 +53,17 @@ public class User {
         return new AffiliationIntent(this, municipality);
     }
 
-    public void updatePassword(HashedPassword password) {
+    public void changePassword(HashedPassword password) {
         this.password = password;
         this.timestamps.update();
     }
 
-    public void updateEmail(String newEmail) {
+    public void changeEmail(String newEmail) {
         this.email = new Email(newEmail);
         this.timestamps.update();
     }
 
-    public void updateAvatar(Image avatar) {
+    public void changeAvatar(Image avatar) {
         this.avatar = avatar;
         this.timestamps.update();
     }

@@ -34,6 +34,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByEmail(String email) {
+        return this.jpaRepository.findByEmail(email)
+                .map(this.mapper::toModel);
+    }
+
+    @Override
     public boolean existsByDocumentOrEmail(String document, String email) {
         return this.jpaRepository.existsByDocumentOrEmail(document, email);
     }
