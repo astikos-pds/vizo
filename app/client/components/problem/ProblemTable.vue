@@ -44,7 +44,7 @@ const columns: TableColumn<Problem>[] = [
   },
   {
     accessorKey: "reportedAt",
-    header: "First reported at",
+    header: t("problems.firstReportedAt"),
     cell: ({ row }) => {
       return new Date(Date.parse(row.original.firstReportedAt)).toLocaleString(
         locale.value,
@@ -60,12 +60,12 @@ const columns: TableColumn<Problem>[] = [
   },
   {
     accessorKey: "type",
-    header: "Type",
+    header: t("problems.type"),
     cell: ({ row }) => row.original.type,
   },
   {
     accessorKey: "status",
-    header: t("lastProblems.status"),
+    header: t("problems.status"),
     cell: ({ row }) => {
       const status = row.getValue("status") as Problem["status"];
       const label = status;
@@ -82,7 +82,7 @@ const columns: TableColumn<Problem>[] = [
   },
   {
     accessorKey: "validated",
-    header: "Validated",
+    header: t("problems.validated"),
     cell: ({ row }) => {
       const validated = row.original.validated;
       const color = validated ? "success" : "error";
@@ -169,7 +169,7 @@ const filteredData = computed(() => {
   >
     <div class="flex flex-col gap-3 px-4 py-3.5">
       <h3 class="text-lg font-semibold">
-        Problems ({{ problems?.totalElements }})
+        {{ t('problems.problem') }} ({{ problems?.totalElements }})
       </h3>
       <UInput
         v-model="search"

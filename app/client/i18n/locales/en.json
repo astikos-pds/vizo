@@ -377,6 +377,9 @@
     "status": "Status",
     "actions": "Actions",
     "viewDetails": "View Details",
+    "firstReportedAt": "First Reported At",
+    "type": "Type",
+    "validated": "Validated",
     "statusLabel": {
       "completed": "Completed",
       "in_progress": "In Progress",
