@@ -1,6 +1,8 @@
 package br.app.vizo.application.exception.auth;
 
-public class EmailNeedsToBeVerifiedException extends RuntimeException {
+import br.app.vizo.application.exception.base.UnauthorizedException;
+
+public class EmailNeedsToBeVerifiedException extends UnauthorizedException {
     public EmailNeedsToBeVerifiedException() {
         super("E-mail needs to be verified in order to execute this action.");
     }

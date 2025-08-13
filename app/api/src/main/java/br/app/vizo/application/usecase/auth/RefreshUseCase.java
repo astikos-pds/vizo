@@ -15,6 +15,7 @@ import br.app.vizo.core.user.token.RefreshTokenFactory;
 import br.app.vizo.core.user.token.RefreshTokenRepository;
 import br.app.vizo.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -28,6 +29,7 @@ public class RefreshUseCase {
     private final RefreshTokenFactory refreshTokenFactory;
     private final HashService hashService;
 
+    @Transactional
     public TokenPairDTO execute(RefreshRequestDTO body) {
         if (!this.jwtService.isRefreshTokenValid(body.token())) {
             throw new UnauthorizedException("Invalid refresh token.");
