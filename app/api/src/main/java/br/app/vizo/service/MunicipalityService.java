@@ -57,22 +57,6 @@ public class MunicipalityService {
         return this.oldMunicipalityMapper.toDto(municipality);
     }
 
-    public Page<ProblemDTO> getDepartmentVisibleProblems(
-            UUID municipalityId,
-            UUID departmentId,
-            Pageable pageable,
-            Authentication authentication
-    ) {
-        this.officialService.getAuthorizedCommonContext(municipalityId, authentication);
-
-        Department department = this.oldDepartmentRepository.findById(departmentId).orElseThrow(
-                () -> new NotFoundException("Department not found.")
-        );
-
-        return this.oldProblemRepository.findAllByTypeIn(department.getProblemTypes(), pageable)
-                .map(this.oldProblemMapper::toDto);
-    }
-
     public ProblemDTO getDepartmentProblemById(
             UUID municipalityId,
             UUID departmentId,

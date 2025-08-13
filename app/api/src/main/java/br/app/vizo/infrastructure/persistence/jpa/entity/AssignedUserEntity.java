@@ -22,8 +22,8 @@ public class AssignedUserEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private AffiliatedUserEntity user;
+    @JoinColumn(name = "affiliated_user_id")
+    private AffiliatedUserEntity affiliatedUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")

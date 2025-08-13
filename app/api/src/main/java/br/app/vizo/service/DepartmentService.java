@@ -69,7 +69,6 @@ public class DepartmentService {
         department.setName(body.name());
         department.setIconUrl(body.iconUrl());
         department.setColorHex(body.colorHex());
-        department.setProblemTypes(body.problemTypes());
         department.setCreator(context.loggedInUser());
         department.setMunicipality(context.municipality());
 

@@ -1,7 +1,6 @@
 package br.app.vizo.domain.department;
 
 import br.app.vizo.domain.municipality.Municipality;
-import br.app.vizo.domain.problem.ProblemType;
 import br.app.vizo.domain.user.User;
 import br.app.vizo.util.DateUtil;
 import jakarta.persistence.*;
@@ -10,7 +9,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -34,12 +32,6 @@ public class Department {
     @Column(name = "color_hex")
     private String colorHex;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "department_problem_type_permission", joinColumns = @JoinColumn(name = "department_id"))
-    @Column(name = "type")
-    private Set<ProblemType> problemTypes;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
     private User creator;
@@ -51,7 +43,7 @@ public class Department {
     protected Instant updatedAt;
 
     public Department() {
-        this(null, "", "", "", null, null);
+        this(null, "", "", "", null);
     }
 
     public Department(
@@ -59,9 +51,8 @@ public class Department {
             String name,
             String iconUrl,
             String colorHex,
-            Set<ProblemType> problemTypes,
             User creator
     ) {
-        this(UUID.randomUUID(), municipality, name, iconUrl, colorHex, problemTypes, creator, DateUtil.now(), DateUtil.now());
+        this(UUID.randomUUID(), municipality, name, iconUrl, colorHex, creator, DateUtil.now(), DateUtil.now());
     }
 }

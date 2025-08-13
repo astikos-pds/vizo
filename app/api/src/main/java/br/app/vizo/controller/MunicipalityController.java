@@ -1,11 +1,8 @@
 package br.app.vizo.controller;
 
 import br.app.vizo.dto.MunicipalityDTO;
-import br.app.vizo.dto.PageResponse;
 import br.app.vizo.dto.ProblemDTO;
 import br.app.vizo.service.MunicipalityService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -36,23 +33,6 @@ public class MunicipalityController {
         MunicipalityDTO response = this.municipalityService.getMunicipalityByEmailDomain(emailDomain);
 
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/{municipalityId}/departments/{departmentId}/problems")
-    public ResponseEntity<PageResponse<ProblemDTO>> getAllDepartmentProblems(
-            @PathVariable UUID municipalityId,
-            @PathVariable UUID departmentId,
-            Pageable pageable,
-            Authentication authentication
-    ) {
-        Page<ProblemDTO> response = this.municipalityService.getDepartmentVisibleProblems(
-                municipalityId,
-                departmentId,
-                pageable,
-                authentication
-        );
-
-        return ResponseEntity.ok(PageResponse.of(response));
     }
 
     @GetMapping("/{municipalityId}/departments/{departmentId}/problems/{problemId}")

@@ -54,7 +54,7 @@ public class AssignedUserMapper implements
     public AssignedUser toModel(AssignedUserEntity entity) {
         return new AssignedUser(
                 entity.getId(),
-                this.affiliatedUserMapper.toModel(entity.getUser()),
+                this.affiliatedUserMapper.toModel(entity.getAffiliatedUser()),
                 this.departmentMapper.toModel(entity.getDepartment()),
                 entity.getPermissionMode(),
                 this.permissionPresetMapper.toModel(entity.getPermissionPreset()),
