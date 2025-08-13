@@ -13,12 +13,12 @@ public class MutationTimestamps {
     }
 
     public MutationTimestamps(Instant createdAt, Instant updatedAt) {
-        if (createdAt == null || createdAt.isBefore(Instant.now())) {
+        if (createdAt == null) {
             throw new InvalidTimestampException();
         }
         this.createdAt = createdAt;
 
-        if (updatedAt == null || updatedAt.isBefore(Instant.now()) || updatedAt.isBefore(createdAt)) {
+        if (updatedAt == null || updatedAt.isBefore(createdAt)) {
             throw new InvalidTimestampException();
         }
         this.updatedAt = updatedAt;

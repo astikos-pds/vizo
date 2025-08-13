@@ -1,6 +1,8 @@
 package br.app.vizo.core.verification.exception;
 
-public class EmailVerificationRequestExpiredException extends RuntimeException {
+import br.app.vizo.core.DomainException;
+
+public class EmailVerificationRequestExpiredException extends DomainException {
     public EmailVerificationRequestExpiredException() {
         super("Verification request expired. Try again.");
     }

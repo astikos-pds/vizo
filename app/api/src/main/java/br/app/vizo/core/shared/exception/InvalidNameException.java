@@ -1,6 +1,8 @@
 package br.app.vizo.core.shared.exception;
 
-public class InvalidNameException extends RuntimeException {
+import br.app.vizo.core.DomainException;
+
+public class InvalidNameException extends DomainException {
     public InvalidNameException() {
         super("Name is required.");
     }
