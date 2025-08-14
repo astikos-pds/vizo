@@ -1,8 +1,7 @@
-package br.app.vizo.application.usecase.assignment;
+package br.app.vizo.application.usecase.me;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.service.AuthorizationService;
-import br.app.vizo.core.affiliation.AffiliatedUser;
 import br.app.vizo.core.assignment.AssignedUser;
 import br.app.vizo.core.assignment.AssignedUserRepository;
 import br.app.vizo.core.user.User;

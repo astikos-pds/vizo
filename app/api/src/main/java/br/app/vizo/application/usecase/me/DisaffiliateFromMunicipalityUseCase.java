@@ -1,4 +1,4 @@
-package br.app.vizo.application.usecase.affiliation;
+package br.app.vizo.application.usecase.me;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.exception.CannotLeaveAsOnlyMemberException;

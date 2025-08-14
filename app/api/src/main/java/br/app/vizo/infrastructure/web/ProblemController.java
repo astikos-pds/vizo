@@ -36,10 +36,7 @@ public class ProblemController {
     }
 
     @GetMapping("/{id}/reports")
-    public ResponseEntity<PageDTO<ReportDTO>> getReportsForProblem(
-            @PathVariable UUID id,
-            @ModelAttribute PaginationDTO pagination
-    ) {
+    public ResponseEntity<PageDTO<ReportDTO>> getReportsForProblem(@PathVariable UUID id, PaginationDTO pagination) {
         return ResponseEntity.ok(this.getReportsForProblemUseCase.execute(id, pagination));
     }
 }
