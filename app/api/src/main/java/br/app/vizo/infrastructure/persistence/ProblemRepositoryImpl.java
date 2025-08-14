@@ -64,7 +64,7 @@ public class ProblemRepositoryImpl implements ProblemRepository {
             Double radiusInMeters
     ) {
         return this.jpaRepository
-                .findClosestUnresolvedByTypeWithinRadiusInMeters(problemType, latitude, longitude, radiusInMeters)
+                .findClosestUnresolvedByTypeWithinRadiusInMeters(problemType.name(), latitude, longitude, radiusInMeters)
                 .map(this.mapper::toModel);
     }
 }

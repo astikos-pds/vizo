@@ -31,7 +31,7 @@ public interface ProblemJpaRepository extends JpaRepository<ProblemEntity, UUID>
             LIMIT 1
     """, nativeQuery = true)
     Optional<ProblemEntity> findClosestUnresolvedByTypeWithinRadiusInMeters(
-            @Param("type") ProblemType problemType,
+            @Param("type") String problemType,
             @Param("lat") Double latitude,
             @Param("lon") Double longitude,
             @Param("distance") Double radiusInMeters

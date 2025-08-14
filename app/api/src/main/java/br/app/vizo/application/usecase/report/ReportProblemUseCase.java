@@ -41,6 +41,8 @@ public class ReportProblemUseCase {
                 userAlreadyReportedProblem
         );
 
+        System.out.println(reportCredibility);
+
         Report report = loggedInUser.report(
                 problem,
                 request.description(),

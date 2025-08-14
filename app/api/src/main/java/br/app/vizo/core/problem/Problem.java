@@ -21,7 +21,7 @@ public class Problem {
     private Instant resolvedAt;
 
     public Problem(UUID id, Coordinates coordinates, ProblemType type, ProblemStatus status, Credibility accumulatedCredibility, boolean validated, MutationTimestamps timestamps, ReportingTimeline reportingTimeline, Instant resolvedAt) {
-        if (id == null || coordinates == null || type == null || status == null | accumulatedCredibility == null || timestamps == null || reportingTimeline == null || resolvedAt == null) {
+        if (id == null || coordinates == null || type == null || status == null | accumulatedCredibility == null || timestamps == null || reportingTimeline == null) {
             throw new InvalidProblemException();
         }
 

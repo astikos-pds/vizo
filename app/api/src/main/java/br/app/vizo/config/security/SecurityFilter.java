@@ -58,8 +58,8 @@ public class SecurityFilter extends OncePerRequestFilter {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(subject);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                userDetails.getUsername(),
-                userDetails.getPassword(),
+                userDetails,
+                null,
                 userDetails.getAuthorities()
         );
 

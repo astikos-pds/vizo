@@ -18,7 +18,7 @@ public class ProblemFactoryImpl implements ProblemFactory {
                 coordinates,
                 problemType,
                 ProblemStatus.ANALYSIS,
-                Credibility.of(0.0),
+                new Credibility(),
                 false,
                 new MutationTimestamps(),
                 new ReportingTimeline(),
