@@ -56,7 +56,7 @@ public class Municipality {
     }
 
     public String getIconUrl() {
-        return icon.url();
+        return icon == null ? null : icon.url();
     }
 
     public Instant getCreatedAt() {

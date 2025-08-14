@@ -19,11 +19,6 @@ import java.util.Arrays;
 public class SecurityFilter extends OncePerRequestFilter {
 
     public final String[] PUBLIC_ROUTES = {
-            "/auth/citizen/register",
-            "/auth/official/register",
-            "/auth/login",
-            "/auth/refresh",
-            "/auth/verification-requests",
             "/municipalities"
     };
 
