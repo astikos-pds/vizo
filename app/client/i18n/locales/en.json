@@ -169,11 +169,7 @@
     "cpfPlaceholder": "Enter your document",
     "password": "Password",
     "passwordPlaceholder": "Enter your password",
-    "dontHaveAccount": "Don't have an account? Sign up { citizen } or { official }.",
-    "as": {
-      "citizen": "as citizen",
-      "official": "as official"
-    },
+    "dontHaveAccount": "Don't have an account?",
     "signUpHere": "Sign up here.",
     "signInButton": "Sign In",
     "verification": {
@@ -182,6 +178,7 @@
       "passwordRequired": "Password required"
     }
   },
+
   "reportProblem": {
     "title": "Report a problem",
     "description": "Description",

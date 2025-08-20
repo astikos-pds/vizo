@@ -1,12 +1,13 @@
+export type Color = "error"
+| "primary"
+| "secondary"
+| "success"
+| "info"
+| "warning"
+| "neutral"
+| undefined;
+
 export interface Badge {
-  color:
-    | "error"
-    | "primary"
-    | "secondary"
-    | "success"
-    | "info"
-    | "warning"
-    | "neutral"
-    | undefined;
+  color: Color;
   text: string;
 }

@@ -4,6 +4,7 @@ import * as z from "zod";
 import { validateDocument } from "~/utils/document-validation";
 import { MIN_AGE } from "~/utils/constants";
 import { useAuth } from "~/composables/use-auth";
+import type { PasswordRequirements } from "~/types/domain";
 
 const { t } = useI18n();
 
@@ -18,7 +19,7 @@ definePageMeta({
   layout: "guest",
 });
 
-const passwordRequirements = computed(() => {
+const passwordRequirements = computed<PasswordRequirements>(() => {
   return {
     minLength: {
       regex: /.{8,}/,
@@ -102,30 +103,6 @@ const form = reactive<RegisterSchema>({
 const showPassword = ref<boolean>(false);
 const showConfimedPassword = ref<boolean>(false);
 
-function checkStrength(password: string) {
-  return Object.values(passwordRequirements.value).map((req) => ({
-    met: req.regex.test(password),
-    text: req.text,
-  }));
-}
-const strength = computed(() => checkStrength(form.password ?? ""));
-const score = computed(() => strength.value.filter((req) => req.met).length);
-
-const color = computed(() => {
-  if (score.value === 0) return "neutral";
-  if (score.value <= 1) return "error";
-  if (score.value <= 2) return "warning";
-  if (score.value === 3) return "warning";
-  return "success";
-});
-
-const text = computed(() => {
-  if (score.value === 0) return t("register.passwordStrength.enterPassword");
-  if (score.value <= 2) return t("register.passwordStrength.weak");
-  if (score.value === 3) return t("register.passwordStrength.medium");
-  return t("register.passwordStrength.strong");
-});
-
 const { loading, registerAsCitizen } = useAuth();
 
 const toast = useToast();
@@ -137,15 +114,15 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
     password: event.data.password,
   });
 
-  if (ok) {
-    toast.add({
-      title: t("toast.success.title"),
-      description: t("toast.success.description.signedUp"),
-      color: "success",
-    });
+  if (ok!) return;
+  
+  toast.add({
+    title: t("toast.success.title"),
+    description: t("toast.success.description.signedUp"),
+    color: "success",
+  });
 
-    await navigateTo("/login");
-  }
+  await navigateTo("/login");
 };
 </script>
 
@@ -232,7 +209,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
 
           <PasswordInput
             v-model="form.password"
-            :color="color"
+            color="neutral"
             :show="showPassword"
             :label="t('register.password')"
             name="password"
@@ -240,47 +217,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
             required
             @click="showPassword = !showPassword"
           >
-            <div>
-              <UProgress
-                :color="color"
-                :indicator="text"
-                :model-value="score"
-                :max="4"
-                size="sm"
-                class="w-full h-1 my-2"
-              />
-
-              <p id="password-strength" class="text-sm font-medium text-left">
-                {{ text }}. {{ t("register.passwordStrengthIndicator") }}
-              </p>
-
-              <ul class="space-y-1 text-xl" aria-label="Password requirements">
-                <li
-                  v-for="(req, index) in strength"
-                  :key="index"
-                  class="flex items-center gap-1 text-neutral-600 m-1"
-                  :class="req.met ? 'text-success' : 'text-muted'"
-                >
-                  <UIcon
-                    :name="
-                      req.met ? 'i-lucide-circle-check' : 'i-lucide-circle-x'
-                    "
-                    class="size-4 shrink-0"
-                  />
-
-                  <span class="text-sm font-light">
-                    {{ req.text }}
-                    <span class="sr-only">
-                      {{
-                        req.met
-                          ? t("register.requirementMet")
-                          : t("register.requirementNotMet")
-                      }}
-                    </span>
-                  </span>
-                </li>
-              </ul>
-            </div>
+            <RegisterPasswordStrength :password="form.password" :password-requirements="passwordRequirements" />
           </PasswordInput>
 
           <PasswordInput
@@ -297,7 +234,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
           <div class="text-center text-sm">
             <span
               >{{ t("register.alreadyHaveAccount") }}
-              <NuxtLink to="/login" class="text-primary dark:text-blue-500">{{
+              <NuxtLink to="/login" class="text-primary">{{
                 t("register.logInHere")
               }}</NuxtLink></span
             >

@@ -169,11 +169,7 @@
     "cpfPlaceholder": "Digite seu documento",
     "password": "Senha",
     "passwordPlaceholder": "Digite sua senha",
-    "dontHaveAccount": "Ainda não possui uma conta? Cadastre-se { citizen } ou { official }.",
-    "as": {
-      "citizen": "como cidadão",
-      "official": "como autoridade municipal"
-    },
+    "dontHaveAccount": "Ainda não possui uma conta?",
     "signUpHere": "Cadastre-se aqui.",
     "signInButton": "Entrar",
     "verification": {

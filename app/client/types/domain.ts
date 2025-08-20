@@ -108,3 +108,15 @@ export interface UserProfile {
   userType: UserType;
   profile: Profile;
 }
+
+interface PasswordRequirement {
+  regex: RegExp;
+  text: string;
+}
+
+export interface PasswordRequirements {
+  minLength: PasswordRequirement;
+  hasNumber: PasswordRequirement;
+  hasLowercase: PasswordRequirement;
+  hasUppercase: PasswordRequirement;
+}

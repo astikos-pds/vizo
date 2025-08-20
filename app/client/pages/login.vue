@@ -108,18 +108,9 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         />
 
         <div class="text-center text-sm flex flex-col">
-          <i18n-t keypath="login.dontHaveAccount" tag="span">
-            <template #citizen>
-              <NuxtLink to="/citizen/register" class="text-primary">{{
-                t("login.as.citizen")
-              }}</NuxtLink>
-            </template>
-            <template #official>
-              <NuxtLink to="/official/register" class="text-primary">{{
-                t("login.as.official")
-              }}</NuxtLink>
-            </template>
-          </i18n-t>
+          <span>
+            {{ t("login.dontHaveAccount") }} <NuxtLink to="/register" class="text-primary">{{ t("login.signUpHere") }}</NuxtLink>
+          </span>
         </div>
 
         <UButton type="submit" :loading="loading">{{
