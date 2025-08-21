@@ -20,6 +20,6 @@ const items = ref(problemTypes.value ?? []);
     :loading="pending"
     :multiple="multiple"
     :items="items"
-    placeholder="Select problem type(s)..."
+    placeholder="AAAAAAAAAAAAAAAAA"
   />
 </template>

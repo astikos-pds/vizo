@@ -22,9 +22,11 @@ useHead({
   meta: [{ name: "description", content: t("head.report.description") }],
 });
 
+/*
 definePageMeta({
   middleware: ["auth"],
 });
+*/
 
 const reportSchema = z.object({
   description: z
@@ -282,65 +284,14 @@ function resolveCoordinates(data: ReportSchema) {
         :hint="t('reportProblem.optional')"
         :description="t('reportProblem.uploadImages')"
       >
-        <UButton
-          color="neutral"
-          variant="outline"
-          class="w-full p-0"
-          :disabled="geolocationError !== null"
-          :class="
-            formRef?.getErrors('images').length ? 'border border-error' : ''
-          "
-        >
-          <label
-            for="images"
-            class="w-full text-start text-neutral-500 cursor-pointer mx-3 my-2"
-            :class="
-              geolocationError !== null && 'disabled hover:cursor-not-allowed'
-            "
-            >{{ t("reportProblem.chooseFile") }}
-            <span class="text-neutral-900 font-normal">
-              {{
-                form.images.length === 0
-                  ? t("reportProblem.selectedFile")
-                  : `${form.images.length} ${t("reportProblem.files")}`
-              }}</span
-            ></label
-          >
-        </UButton>
-        <UInput
-          :key="form.images.length"
-          id="images"
-          type="file"
+        <UFileUpload 
+          class="w-full" 
+          v-model="form.images" 
+          accept="image/*" 
           multiple
-          accept="image/*"
-          @change="handleFileChange"
-          class="sr-only"
+          label="Drop your image here"
+          description="SVG, PNG, JPG or GIF (max. 5MB)"
         />
-
-        <div
-          v-if="previewUrls.length"
-          class="mt-3 gap-3 flex flex-row flex-wrap"
-        >
-          <div
-            v-for="(url, index) in previewUrls"
-            :key="index"
-            class="relative rounded-md size-[5rem] border border-default"
-          >
-            <UButton
-              icon="i-lucide-trash-2"
-              variant="solid"
-              size="md"
-              color="info"
-              class="absolute top-1 right-1"
-              @click="handleFileRemove(index)"
-            />
-            <img
-              :src="url"
-              :alt="`Preview ${index}`"
-              class="w-full h-full object-cover rounded-md"
-            />
-          </div>
-        </div>
       </UFormField>
 
       <UFormField
@@ -348,12 +299,9 @@ function resolveCoordinates(data: ReportSchema) {
         required
         class="w-full"
         :help="
-          !isLocationPrecise && !geolocationError
+          !isLocationPrecise && !geolocationError && coords.accuracy > 0
             ? t('reportProblem.geolocationAccuracyWarning', {
-                accuracy:
-                  coords.accuracy > 0
-                    ? coords.accuracy.toFixed(0)
-                    : 'inacessible',
+                accuracy: coords.accuracy.toFixed(0)
               })
             : ''
         "
