@@ -247,7 +247,5 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
       </section>
     </section>
   </section>
-  <section
-    class="lg:min-w-[45%] xl:min-w-[50%] h-full bg-linear-to-tr from-primary to-neutral-200 dark:to-neutral-500"
-  ></section>
+  <LogoGradient />
 </template>

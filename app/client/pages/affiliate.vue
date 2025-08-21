@@ -30,12 +30,6 @@ const steps = computed(
         icon: "i-lucide-badge-check",
       },
       {
-        slot: "details" as const,
-        title: t("registerOfficial.steps.details"),
-        description: "",
-        icon: "i-lucide-book-open-text",
-      },
-      {
         slot: "approval" as const,
         title: t("registerOfficial.steps.approval"),
         description: "",
@@ -69,16 +63,10 @@ stepper.setTotalSteps(steps.value.length);
         <RegisterAsOfficialVerificationStep />
       </template>
 
-      <template #details>
-        <RegisterAsOfficialDetailsStep />
-      </template>
-
       <template #approval>
         <RegisterAsOfficialApprovalStep />
       </template>
     </UStepper>
   </section>
-  <section
-    class="lg:min-w-[45%] xl:min-w-[50%] h-full bg-linear-to-tr from-primary to-neutral-200 dark:to-neutral-500"
-  ></section>
+  <LogoGradient />
 </template>

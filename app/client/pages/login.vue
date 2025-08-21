@@ -63,9 +63,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 </script>
 
 <template>
-  <section
-    class="lg:min-w-[45%] xl:min-w-[50%] h-full bg-linear-to-tr from-primary to-neutral-200 dark:to-neutral-500"
-  ></section>
+  <LogoGradient />
   <section class="relative size-full flex flex-col items-center">
     <ConfigHeader class="w-full" />
     <section class="w-[70%] md:w-[50%] lg:w-[55%] 2xl:w-[45%] my-auto">
