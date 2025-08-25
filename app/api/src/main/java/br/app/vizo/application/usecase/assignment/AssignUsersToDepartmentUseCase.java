@@ -2,12 +2,14 @@ package br.app.vizo.application.usecase.assignment;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.AssignedUserDTO;
+import br.app.vizo.application.exception.AffiliationNotFoundException;
 import br.app.vizo.application.exception.DepartmentNotFoundException;
 import br.app.vizo.application.exception.MustBeAdminException;
 import br.app.vizo.application.mapper.AssignedUserMapper;
 import br.app.vizo.application.service.AuthorizationService;
 import br.app.vizo.application.usecase.assignment.request.AssignUsersToDepartmentRequestDTO;
 import br.app.vizo.core.affiliation.AffiliatedUser;
+import br.app.vizo.core.affiliation.AffiliatedUserRepository;
 import br.app.vizo.core.assignment.AssignedUser;
 import br.app.vizo.core.assignment.AssignedUserRepository;
 import br.app.vizo.core.department.Department;
@@ -27,6 +29,7 @@ public class AssignUsersToDepartmentUseCase {
     private final DepartmentRepository departmentRepository;
     private final AssignedUserRepository assignedUserRepository;
     private final AssignedUserMapper assignedUserMapper;
+    private final AffiliatedUserRepository affiliatedUserRepository;
 
     public List<AssignedUserDTO> execute(
             User loggedInUser,
@@ -45,9 +48,9 @@ public class AssignUsersToDepartmentUseCase {
 
         List<AssignedUser> assignedUsers = new LinkedList<>();
 
-        for (UUID id : request.ids()) {
-            AffiliatedUser targetAffiliatedUser = this.authorizationService
-                    .ensureUserIsAffiliatedTo(id, municipalityId);
+        for (UUID id : request.affiliationsIds()) {
+            AffiliatedUser targetAffiliatedUser = this.affiliatedUserRepository.findById(id)
+                    .orElseThrow(() -> new AffiliationNotFoundException("Affiliation not found with id %s".formatted(id)));
 
             AssignedUser assignedUser = this.assignedUserRepository
                     .findByDepartmentIdAndAffiliatedUserId(departmentId, targetAffiliatedUser.getId())

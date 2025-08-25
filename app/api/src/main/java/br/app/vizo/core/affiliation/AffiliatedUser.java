@@ -1,5 +1,6 @@
 package br.app.vizo.core.affiliation;
 
+import br.app.vizo.core.affiliation.exception.CannotAssignAnUnapprovedAffiliateException;
 import br.app.vizo.core.affiliation.exception.ForbiddenActionException;
 import br.app.vizo.core.affiliation.exception.InvalidPromotionException;
 import br.app.vizo.core.affiliation.exception.SelfActionNotAllowedException;
@@ -91,16 +92,17 @@ public class AffiliatedUser {
     }
 
     public AssignmentIntent assign(AffiliatedUser target) {
-        throwIfSameAs(target);
         throwIfNotAdmin();
+
+        if (!target.isApproved()) {
+            throw new CannotAssignAnUnapprovedAffiliateException();
+        }
 
         return new AssignmentIntent(target, Permission.common());
     }
 
     public AssignmentIntent assignSelf() {
-        throwIfNotAdmin();
-
-        return new AssignmentIntent(this, Permission.admin());
+        return assign(this);
     }
 
     public PermissionPreset createPermissionPreset(String name, Permission permission) {
