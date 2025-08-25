@@ -55,7 +55,7 @@ public class Department {
     public void update(String name, String colorHex, String iconUrl, Set<ProblemType> problemTypes) {
         this.name = new Name(name);
         this.colorHex = new ColorHex(colorHex);
-        this.icon = new Image(iconUrl);
+        this.icon = iconUrl == null ? null : new Image(iconUrl);
         addToScope(problemTypes);
     }
 
@@ -92,7 +92,7 @@ public class Department {
     }
 
     public String getIconUrl() {
-        return icon.url();
+        return icon == null ? null : icon.url();
     }
 
     public Set<ProblemType> getScope() {

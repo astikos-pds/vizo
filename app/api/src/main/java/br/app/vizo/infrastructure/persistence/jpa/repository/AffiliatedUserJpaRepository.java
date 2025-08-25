@@ -15,6 +15,8 @@ import java.util.UUID;
 @Repository
 public interface AffiliatedUserJpaRepository extends JpaRepository<AffiliatedUserEntity, UUID> {
 
+    boolean existsByInstitutionalEmail(String institutionalEmail);
+
     void deleteByUserIdAndMunicipalityId(UUID userId, UUID municipalityId);
 
     Page<AffiliatedUserEntity> findAllByMunicipalityId(UUID municipalityId, Pageable pageable);

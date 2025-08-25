@@ -7,7 +7,7 @@ public record ColorHex(
 ) {
 
     public ColorHex {
-        if (value == null || value.isBlank() || !value.matches("/^#?([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/")) {
+        if (value == null || value.isBlank() || !value.matches("^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$")) {
             throw new InvalidColorHexException();
         }
     }

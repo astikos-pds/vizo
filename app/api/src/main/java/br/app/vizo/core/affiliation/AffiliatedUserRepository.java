@@ -12,6 +12,8 @@ public interface AffiliatedUserRepository {
 
     Optional<AffiliatedUser> findById(UUID id);
 
+    boolean existsByInstitutionalEmail(String institutionalEmail);
+
     void deleteById(UUID id);
 
     void deleteByUserIdAndMunicipalityId(UUID userId, UUID municipalityId);

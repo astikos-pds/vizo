@@ -37,6 +37,11 @@ public class AffiliatedUserRepositoryImpl implements AffiliatedUserRepository {
     }
 
     @Override
+    public boolean existsByInstitutionalEmail(String institutionalEmail) {
+        return this.jpaRepository.existsByInstitutionalEmail(institutionalEmail);
+    }
+
+    @Override
     public void deleteById(UUID id) {
         this.jpaRepository.deleteById(id);
     }

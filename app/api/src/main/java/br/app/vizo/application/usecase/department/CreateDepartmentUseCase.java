@@ -12,6 +12,7 @@ import br.app.vizo.core.department.Department;
 import br.app.vizo.core.department.DepartmentRepository;
 import br.app.vizo.core.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -24,6 +25,7 @@ public class CreateDepartmentUseCase {
     private final DepartmentMapper departmentMapper;
     private final AssignedUserRepository assignedUserRepository;
 
+    @Transactional
     public DepartmentDTO execute(User loggedInUser, UUID municipalityId, MutateDepartmentRequestDTO request) {
         AffiliatedUser affiliatedUser =  this.authorizationService.ensureUserIsAffiliatedTo(loggedInUser, municipalityId);
 

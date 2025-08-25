@@ -15,14 +15,12 @@ public class AssignedUserMapper implements
     private final PermissionPresetMapper permissionPresetMapper;
     private final PermissionMapper permissionMapper;
 
-
     public AssignedUserMapper(AffiliatedUserMapper affiliatedUserMapper, DepartmentMapper departmentMapper, PermissionPresetMapper permissionPresetMapper, PermissionMapper permissionMapper) {
         this.affiliatedUserMapper = affiliatedUserMapper;
         this.departmentMapper = departmentMapper;
         this.permissionPresetMapper = permissionPresetMapper;
         this.permissionMapper = permissionMapper;
     }
-
 
     @Override
     public AssignedUserDTO toDto(AssignedUser assignedUser) {
@@ -31,7 +29,9 @@ public class AssignedUserMapper implements
                 this.affiliatedUserMapper.toDto(assignedUser.getUser()),
                 this.departmentMapper.toDto(assignedUser.getDepartment()),
                 assignedUser.getPermissionMode(),
-                this.permissionPresetMapper.toDto(assignedUser.getPermissionPreset()),
+                assignedUser.getPermissionPreset() == null
+                        ? null
+                        : this.permissionPresetMapper.toDto(assignedUser.getPermissionPreset()),
                 this.permissionMapper.toDto(assignedUser.getCustomPermission()),
                 assignedUser.getAssignedAt()
         );
@@ -44,7 +44,9 @@ public class AssignedUserMapper implements
                 this.affiliatedUserMapper.toEntity(assignedUser.getUser()),
                 this.departmentMapper.toEntity(assignedUser.getDepartment()),
                 assignedUser.getPermissionMode(),
-                this.permissionPresetMapper.toEntity(assignedUser.getPermissionPreset()),
+                assignedUser.getPermissionPreset() == null
+                        ? null
+                        : this.permissionPresetMapper.toEntity(assignedUser.getPermissionPreset()),
                 this.permissionMapper.toEntity(assignedUser.getCustomPermission()),
                 assignedUser.getAssignedAt()
         );
@@ -57,7 +59,9 @@ public class AssignedUserMapper implements
                 this.affiliatedUserMapper.toModel(entity.getAffiliatedUser()),
                 this.departmentMapper.toModel(entity.getDepartment()),
                 entity.getPermissionMode(),
-                this.permissionPresetMapper.toModel(entity.getPermissionPreset()),
+                entity.getPermissionPreset() == null
+                        ? null
+                        : this.permissionPresetMapper.toModel(entity.getPermissionPreset()),
                 this.permissionMapper.toModel(entity.getCustomPermission()),
                 entity.getAssignedAt()
         );
