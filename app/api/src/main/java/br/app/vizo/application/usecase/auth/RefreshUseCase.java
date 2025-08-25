@@ -4,6 +4,7 @@ import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.TokenPairDTO;
 import br.app.vizo.application.exception.auth.InvalidRefreshTokenException;
 import br.app.vizo.application.exception.auth.RefreshTokenNotRecognizedException;
+import br.app.vizo.application.exception.base.UnauthorizedException;
 import br.app.vizo.application.service.HashService;
 import br.app.vizo.application.usecase.auth.request.RefreshRequestDTO;
 import br.app.vizo.config.security.JwtService;
@@ -13,7 +14,6 @@ import br.app.vizo.core.user.UserRepository;
 import br.app.vizo.core.user.token.RefreshToken;
 import br.app.vizo.core.user.token.RefreshTokenFactory;
 import br.app.vizo.core.user.token.RefreshTokenRepository;
-import br.app.vizo.exception.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
