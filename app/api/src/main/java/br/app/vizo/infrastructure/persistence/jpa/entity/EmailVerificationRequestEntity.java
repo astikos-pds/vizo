@@ -21,7 +21,7 @@ public class EmailVerificationRequestEntity {
     @Id
     private UUID id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
@@ -31,6 +31,7 @@ public class EmailVerificationRequestEntity {
     private Boolean verified;
 
     @Enumerated(value = EnumType.STRING)
+    @Column(nullable = false)
     private VerificationPurpose purpose;
 
     @Column(name = "expires_at", nullable = false)

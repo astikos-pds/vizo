@@ -11,5 +11,7 @@ public interface EmailVerificationRequestRepository {
 
     Optional<EmailVerificationRequest> findByEmailAndPurpose(String email, VerificationPurpose purpose);
 
+    boolean existsByEmailAndPurpose(String email, VerificationPurpose purpose);
+
     void deleteById(UUID id);
 }

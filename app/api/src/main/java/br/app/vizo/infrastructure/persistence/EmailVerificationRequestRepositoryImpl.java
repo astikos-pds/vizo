@@ -41,6 +41,11 @@ public class EmailVerificationRequestRepositoryImpl implements EmailVerification
     }
 
     @Override
+    public boolean existsByEmailAndPurpose(String email, VerificationPurpose purpose) {
+        return this.jpaRepository.existsByEmailAndPurpose(email, purpose);
+    }
+
+    @Override
     public void deleteById(UUID id) {
         this.jpaRepository.deleteById(id);
     }

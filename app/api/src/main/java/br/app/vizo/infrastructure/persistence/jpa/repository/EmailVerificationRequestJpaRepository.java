@@ -12,4 +12,6 @@ import java.util.UUID;
 public interface EmailVerificationRequestJpaRepository extends JpaRepository<EmailVerificationRequestEntity, UUID> {
 
     Optional<EmailVerificationRequestEntity> findByEmailAndPurpose(String email, VerificationPurpose purpose);
+
+    boolean existsByEmailAndPurpose(String email, VerificationPurpose purpose);
 }
