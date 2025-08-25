@@ -6,6 +6,7 @@ import br.app.vizo.core.assignment.AssignedUser;
 import br.app.vizo.core.assignment.AssignedUserRepository;
 import br.app.vizo.core.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class LeaveDepartmentUseCase {
     private final AuthorizationService authorizationService;
     private final AssignedUserRepository assignedUserRepository;
 
+    @Transactional
     public void execute(User loggedInUser, UUID municipalityId, UUID departmentId) {
         AssignedUser assignedUser = this.authorizationService.ensureUserIsAssignedTo(loggedInUser, municipalityId, departmentId);
 

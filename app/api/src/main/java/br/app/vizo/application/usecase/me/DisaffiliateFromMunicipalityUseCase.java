@@ -7,6 +7,7 @@ import br.app.vizo.core.affiliation.AffiliatedUser;
 import br.app.vizo.core.affiliation.AffiliatedUserRepository;
 import br.app.vizo.core.user.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ public class DisaffiliateFromMunicipalityUseCase {
     private final AuthorizationService authorizationService;
     private final AffiliatedUserRepository affiliatedUserRepository;
 
+    @Transactional
     public void execute(User loggedInUser, UUID municipalityId) {
         AffiliatedUser affiliatedUser = this.authorizationService.ensureUserIsAffiliatedTo(loggedInUser, municipalityId);
 
