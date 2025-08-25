@@ -111,6 +111,14 @@ public class AffiliatedUser {
         return new PermissionPreset(this.municipality, name, permission);
     }
 
+    public PermissionPreset updatePermissionPreset(PermissionPreset preset, String name, Permission permission) {
+        this.throwIfNotAdmin();
+
+        preset.update(name, permission);
+
+        return preset;
+    }
+
     public boolean isApproved() {
         return status == AffiliationStatus.APPROVED;
     }

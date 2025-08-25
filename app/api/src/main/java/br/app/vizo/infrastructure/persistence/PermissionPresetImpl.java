@@ -8,6 +8,7 @@ import br.app.vizo.infrastructure.persistence.jpa.repository.PermissionPresetJpa
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -26,6 +27,11 @@ public class PermissionPresetImpl implements PermissionPresetRepository {
         PermissionPresetEntity entity = this.mapper.toEntity(permissionPreset);
         PermissionPresetEntity saved = this.jpaRepository.save(entity);
         return this.mapper.toModel(saved);
+    }
+
+    @Override
+    public Optional<PermissionPreset> findById(UUID id) {
+        return this.jpaRepository.findById(id).map(this.mapper::toModel);
     }
 
     @Override

@@ -15,7 +15,7 @@ import java.util.UUID;
 
 @UseCase
 @RequiredArgsConstructor
-public class GetPermissionPresetsUseCase {
+public class GetPermissionPresetsInMunicipalityUseCase {
 
     private final AuthorizationService authorizationService;
     private final PermissionPresetRepository permissionPresetRepository;

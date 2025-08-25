@@ -23,11 +23,8 @@ public class PermissionPreset {
         this(UUID.randomUUID(), municipality, new Name(name), permission);
     }
 
-    public void updateName(String name) {
+    public void update(String name, Permission permission) {
         this.name = new Name(name);
-    }
-
-    public void updatePermission(Permission permission) {
         this.permission = permission;
     }
 

@@ -2,6 +2,7 @@ package br.app.vizo.application.usecase.permission;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.PermissionPresetDTO;
+import br.app.vizo.application.exception.PermissionPresetNotFoundException;
 import br.app.vizo.application.mapper.PermissionMapper;
 import br.app.vizo.application.mapper.PermissionPresetMapper;
 import br.app.vizo.application.service.AuthorizationService;
@@ -16,22 +17,31 @@ import java.util.UUID;
 
 @UseCase
 @RequiredArgsConstructor
-public class CreatePermissionPresetUseCase {
+public class UpdatePermissionPresetUseCase {
 
     private final AuthorizationService authorizationService;
     private final PermissionMapper permissionMapper;
     private final PermissionPresetRepository permissionPresetRepository;
     private final PermissionPresetMapper permissionPresetMapper;
 
-    public PermissionPresetDTO execute(User loggedInUser, UUID municipalityId, MutatePermissionPresetRequestDTO request) {
+    public PermissionPresetDTO execute(
+            User loggedInUser,
+            UUID municipalityId,
+            UUID permissionPresetId,
+            MutatePermissionPresetRequestDTO request
+    ) {
         AffiliatedUser affiliatedUser = this.authorizationService.ensureUserIsAffiliatedTo(loggedInUser, municipalityId);
 
-        PermissionPreset permissionPreset = affiliatedUser.createPermissionPreset(
+        PermissionPreset permissionPreset = this.permissionPresetRepository.findById(permissionPresetId)
+                .orElseThrow(PermissionPresetNotFoundException::new);
+
+        PermissionPreset updated = affiliatedUser.updatePermissionPreset(
+                permissionPreset,
                 request.name(),
                 this.permissionMapper.toModel(request.permission())
         );
 
-        PermissionPreset saved = this.permissionPresetRepository.save(permissionPreset);
+        PermissionPreset saved = this.permissionPresetRepository.save(updated);
         return this.permissionPresetMapper.toDto(saved);
     }
 }
