@@ -67,27 +67,15 @@ public class AssignedUser {
         return new StatusUpdate(problem, text, status);
     }
 
-    public void updatePermissionOf(AssignedUser target, PermissionMode mode) {
+    public AssignedUser changePermissionOf(AssignedUser target, PermissionMode mode, Permission customPermission, PermissionPreset permissionPreset) {
         throwIfSameAs(target);
         throwIfCannotManageUsers();
 
         target.permissionMode = mode;
-    }
+        target.customPermission = customPermission;
+        target.permissionPreset = permissionPreset;
 
-    public void updatePermissionOf(AssignedUser target, PermissionPreset preset) {
-        throwIfSameAs(target);
-        throwIfCannotManageUsers();
-
-        target.permissionMode = PermissionMode.PRESET;
-        target.permissionPreset = preset;
-    }
-
-    public void updatePermissionOf(AssignedUser target, Permission permission) {
-        throwIfSameAs(target);
-        throwIfCannotManageUsers();
-
-        target.permissionMode = PermissionMode.CUSTOM;
-        target.customPermission = permission;
+        return target;
     }
 
     public boolean canViewReports() {

@@ -6,6 +6,7 @@ import br.app.vizo.application.dto.page.PaginationDTO;
 import br.app.vizo.application.usecase.assignment.*;
 import br.app.vizo.application.usecase.assignment.request.AssignUserToDepartmentRequestDTO;
 import br.app.vizo.application.usecase.assignment.request.AssignUsersToDepartmentRequestDTO;
+import br.app.vizo.application.usecase.assignment.request.ChangeAssigneePermissionRequestDTO;
 import br.app.vizo.config.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ public class AssignmentController {
     private final GetUserAssignedToDepartmentUseCase getUserAssignedToDepartmentUseCase;
     private final AssignUserToDepartmentUseCase assignUserToDepartmentUseCase;
     private final AssignUsersToDepartmentUseCase assignUsersToDepartmentUseCase;
+    private final ChangeAssigneePermissionUseCase changeAssigneePermissionUseCase;
     private final RemoveAssigneeFromDepartmentUseCase removeAssigneeFromDepartmentUseCase;
 
     @GetMapping
@@ -88,6 +90,25 @@ public class AssignmentController {
                 userDetails.getUser(),
                 municipalityId,
                 departmentId,
+                body
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<AssignedUserDTO> changeAssigneePermission(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable UUID municipalityId,
+            @PathVariable UUID departmentId,
+            @PathVariable(name = "id") UUID assignmentId,
+            @RequestBody ChangeAssigneePermissionRequestDTO body
+    ) {
+        AssignedUserDTO response = this.changeAssigneePermissionUseCase.execute(
+                userDetails.getUser(),
+                municipalityId,
+                departmentId,
+                assignmentId,
                 body
         );
 
