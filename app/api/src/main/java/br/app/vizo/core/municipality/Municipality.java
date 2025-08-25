@@ -66,4 +66,8 @@ public class Municipality {
     public Instant getUpdatedAt() {
         return timestamps.getUpdatedAt();
     }
+
+    public boolean isSameAs(Municipality other) {
+        return this.id.equals(other.getId());
+    }
 }

@@ -43,4 +43,8 @@ public class PermissionPreset {
     public Permission getPermission() {
         return permission;
     }
+
+    public boolean belongsTo(Municipality municipality) {
+        return this.municipality.isSameAs(municipality);
+    }
 }
