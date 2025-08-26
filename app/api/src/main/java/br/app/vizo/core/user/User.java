@@ -1,10 +1,14 @@
 package br.app.vizo.core.user;
 
+import br.app.vizo.core.IllegalException;
 import br.app.vizo.core.affiliation.AffiliationIntent;
 import br.app.vizo.core.municipality.Municipality;
+import br.app.vizo.core.poi.PointOfInterest;
+import br.app.vizo.core.poi.Radius;
 import br.app.vizo.core.problem.Problem;
 import br.app.vizo.core.report.Report;
 import br.app.vizo.core.shared.*;
+import br.app.vizo.core.shared.coordinates.Coordinates;
 import br.app.vizo.core.user.password.HashedPassword;
 import br.app.vizo.core.user.password.PasswordHasher;
 
@@ -53,6 +57,20 @@ public class User {
         return new AffiliationIntent(this, municipality);
     }
 
+    public PointOfInterest createPointOfInterest(String name, Double latitude, Double longitude, Double radius) {
+        return new PointOfInterest(this, new Name(name), Coordinates.of(latitude, longitude), new Radius(radius));
+    }
+
+    public PointOfInterest updatePointOfInterest(PointOfInterest poi, String name, Double latitude, Double longitude, Double radius) {
+        if (!this.owns(poi)) {
+            throw new IllegalException("You cannot update a point of interest of another user.");
+        }
+
+        poi.update(new Name(name), Coordinates.of(latitude, longitude), new Radius(radius));
+
+        return poi;
+    }
+
     public void changePassword(HashedPassword password) {
         this.password = password;
         this.timestamps.update();
@@ -74,6 +92,10 @@ public class User {
 
     public boolean passwordMatchesWith(String password, PasswordHasher passwordHasher) {
         return this.password.matches(password, passwordHasher);
+    }
+
+    public boolean owns(PointOfInterest poi) {
+        return poi.isOwnedBy(this);
     }
 
     public UUID getId() {

@@ -5,7 +5,7 @@ import br.app.vizo.core.poi.exception.InvalidRadiusException;
 public record Radius(
         Double value
 ) {
-    private static final int MAX_VALUE_IN_METERS = 2000;
+    private static final int MAX_VALUE_IN_METERS = 10000;
 
     public Radius {
         if (value == null || value.isNaN() || value.isInfinite() || value <= 1) {
@@ -13,7 +13,7 @@ public record Radius(
         }
 
         if (value > MAX_VALUE_IN_METERS) {
-            throw new InvalidRadiusException("Radius must be smaller than %s meters".formatted(MAX_VALUE_IN_METERS));
+            throw new InvalidRadiusException("Radius must be smaller or equal to %s meters.".formatted(MAX_VALUE_IN_METERS));
         }
     }
 

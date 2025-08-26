@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "problems")
+@Table(name = "points_of_interest")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,7 +34,7 @@ public class PointOfInterestEntity {
     @Column(nullable = false)
     private Double radius;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
     @Column(name = "updated_at", nullable = false)

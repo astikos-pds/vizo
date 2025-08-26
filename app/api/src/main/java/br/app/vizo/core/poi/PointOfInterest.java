@@ -31,6 +31,17 @@ public class PointOfInterest {
         this.timestamps = timestamps;
     }
 
+    public PointOfInterest(User user, Name name, Coordinates coordinates, Radius radius) {
+        this(
+                UUID.randomUUID(),
+                user,
+                name,
+                coordinates,
+                radius,
+                new MutationTimestamps()
+        );
+    }
+
     public void update(Name name, Coordinates coordinates, Radius radius) {
         this.name = name;
         this.coordinates = coordinates;
