@@ -2,6 +2,7 @@ package br.app.vizo.infrastructure.web;
 
 import br.app.vizo.application.dto.AffiliatedUserDTO;
 import br.app.vizo.application.dto.AssignedUserDTO;
+import br.app.vizo.application.dto.PointOfInterestDTO;
 import br.app.vizo.application.dto.ReportDTO;
 import br.app.vizo.application.dto.page.PageDTO;
 import br.app.vizo.application.dto.page.PaginationDTO;
@@ -20,11 +21,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class MeController {
 
+    private final GetMyPointsOfInterestUseCase getMyPointsOfInterestUseCase;
     private final GetMyAffiliationsUseCase getMyAffiliationsUseCase;
     private final GetMyAssignmentsInMunicipalityUseCase getMyAssignmentsInMunicipalityUseCase;
     private final GetMyReportsUseCase getMyReportsUseCase;
     private final DisaffiliateFromMunicipalityUseCase disaffiliateFromMunicipalityUseCase;
     private final LeaveDepartmentUseCase leaveDepartmentUseCase;
+
+    @GetMapping(value = {"/points-of-interest", "/poi"})
+    public ResponseEntity<PageDTO<PointOfInterestDTO>> getMyPointsOfInterest(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            PaginationDTO pagination
+    ) {
+        return ResponseEntity.ok(this.getMyPointsOfInterestUseCase.execute(userDetails.getUser(), pagination));
+    }
 
     @GetMapping("/affiliations")
     public ResponseEntity<PageDTO<AffiliatedUserDTO>> getMyAffiliations(
