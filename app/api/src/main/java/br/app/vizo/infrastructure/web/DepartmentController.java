@@ -5,6 +5,7 @@ import br.app.vizo.application.dto.ProblemDTO;
 import br.app.vizo.application.dto.page.PageDTO;
 import br.app.vizo.application.dto.page.PaginationDTO;
 import br.app.vizo.application.usecase.department.*;
+import br.app.vizo.application.usecase.department.request.ChangeProblemStatusRequestDTO;
 import br.app.vizo.application.usecase.department.request.MutateDepartmentRequestDTO;
 import br.app.vizo.config.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class DepartmentController {
     private final DeleteDepartmentUseCase deleteDepartmentUseCase;
     private final GetProblemsInScopeUseCase getProblemsInScopeUseCase;
     private final GetProblemInScopeUseCase getProblemInScopeUseCase;
+    private final ChangeProblemInScopeStatusUseCase changeProblemInScopeStatusUseCase;
 
     @GetMapping("/{id}")
     public ResponseEntity<DepartmentDTO> getDepartmentById(
@@ -82,20 +84,36 @@ public class DepartmentController {
             @PathVariable(name = "id") UUID departmentId,
             PaginationDTO pagination
     ) {
-        return ResponseEntity.ok(
-                this.getProblemsInScopeUseCase.execute(userDetails.getUser(), municipalityId, departmentId, pagination)
-        );
+        PageDTO<ProblemDTO> response = this.getProblemsInScopeUseCase
+                .execute(userDetails.getUser(), municipalityId, departmentId, pagination);
+
+        return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}/problems/{problemId}")
+    @GetMapping("/{departmentId}/problems/{id}")
     public ResponseEntity<ProblemDTO> getProblemInScope(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable UUID municipalityId,
-            @PathVariable(name = "id") UUID departmentId,
-            @PathVariable UUID problemId
+            @PathVariable UUID departmentId,
+            @PathVariable(name = "id") UUID problemId
     ) {
-        return ResponseEntity.ok(
-                this.getProblemInScopeUseCase.execute(userDetails.getUser(), municipalityId, departmentId, problemId)
-        );
+        ProblemDTO response = this.getProblemInScopeUseCase
+                .execute(userDetails.getUser(), municipalityId, departmentId, problemId);
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PatchMapping("/{departmentId}/problems/{id}")
+    public ResponseEntity<ProblemDTO> changeProblemInScopeStatus(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable UUID municipalityId,
+            @PathVariable UUID departmentId,
+            @PathVariable(name = "id") UUID problemId,
+            @RequestBody ChangeProblemStatusRequestDTO body
+    ) {
+        ProblemDTO response = this.changeProblemInScopeStatusUseCase
+                .execute(userDetails.getUser(), municipalityId, departmentId, problemId, body);
+
+        return ResponseEntity.ok().body(response);
     }
 }

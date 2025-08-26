@@ -59,12 +59,12 @@ public class AssignedUser {
         return this;
     }
 
-    public StatusUpdate updateProblemStatus(Problem problem, ProblemStatus status, String text) {
+    public Problem changeProblemStatus(Problem problem, ProblemStatus status) {
         throwIfProblemIsOutOfScope(problem);
         throwIfCannotUpdateStatus();
 
         problem.updateStatusTo(status);
-        return new StatusUpdate(problem, text, status);
+        return problem;
     }
 
     public AssignedUser changePermissionOf(AssignedUser target, PermissionMode mode, Permission customPermission, PermissionPreset permissionPreset) {
