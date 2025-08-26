@@ -25,7 +25,7 @@ public interface ReportJpaRepository extends JpaRepository<ReportEntity, UUID> {
                 WHERE r.user_id = :user_id
                 AND ST_DWithin(
                     r.coordinates::geography,
-                    ST_SetSRID(ST_MakePoint(:lat, :lon), 4326)::geography,
+                    ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
                     :distance
                 )
                 ORDER BY r.created_at DESC
@@ -35,7 +35,7 @@ public interface ReportJpaRepository extends JpaRepository<ReportEntity, UUID> {
                 WHERE r.user_id = :user_id
                 AND ST_DWithin(
                     r.coordinates::geography,
-                    ST_SetSRID(ST_MakePoint(:lat, :lon), 4326)::geography,
+                    ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
                     :distance
                 )
             """,

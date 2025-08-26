@@ -113,6 +113,6 @@ public class User {
     }
 
     public boolean isSameAs(User other) {
-        return id.equals(other.getId());
+        return id.value().equals(other.getId());
     }
 }

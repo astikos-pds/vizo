@@ -1,4 +1,4 @@
-package br.app.vizo.core.interest.exception;
+package br.app.vizo.core.poi.exception;
 
 import br.app.vizo.core.DomainException;
 

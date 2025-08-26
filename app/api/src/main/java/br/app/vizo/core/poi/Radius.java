@@ -1,6 +1,6 @@
-package br.app.vizo.core.interest;
+package br.app.vizo.core.poi;
 
-import br.app.vizo.core.interest.exception.InvalidRadiusException;
+import br.app.vizo.core.poi.exception.InvalidRadiusException;
 
 public record Radius(
         Double value
@@ -8,7 +8,7 @@ public record Radius(
     private static final int MAX_VALUE_IN_METERS = 2000;
 
     public Radius {
-        if (value == null || value.isNaN() || value.isInfinite() || value <= 0) {
+        if (value == null || value.isNaN() || value.isInfinite() || value <= 1) {
             throw new InvalidRadiusException("Radius must be a non null, float point, positive number.");
         }
 
