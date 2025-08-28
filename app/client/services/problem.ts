@@ -1,4 +1,4 @@
-import type { Page } from "~/types/domain/pagination";
+import type { Page, Pagination } from "~/types/domain/pagination";
 import type {
   ProblemDTO,
   ProblemMapper,
@@ -24,9 +24,10 @@ export class ProblemService {
     return await this.httpClient.get<ProblemType[]>("/problems/types");
   }
 
-  public async getReportsForProblem(problemId: string) {
+  public async getReportsForProblem(problemId: string, pagination: Pagination) {
     const response = await this.httpClient.get<Page<ReportDTO>>(
-      `/problems/${problemId}/reports`
+      `/problems/${problemId}/reports`,
+      pagination
     );
 
     return response.map(this.reportMapper.toModel);

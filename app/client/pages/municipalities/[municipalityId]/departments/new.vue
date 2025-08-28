@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
-import { useAssignments } from "~/composables/use-assignments";
+import { useAssignments } from "~/composables/use-assigned-users";
 import { useDepartments } from "~/composables/use-departments";
 import type { Municipality, Official, ProblemType } from "~/types/domain";
 

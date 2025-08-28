@@ -1,17 +1,11 @@
-import type { Problem, ProblemType, Report } from "~/types/domain";
 import { useImage } from "~/composables/use-image";
-import {
-  createReportRepository,
-  type GetReportsByProblemIdParams,
-  type GetReportsParams,
-} from "~/repositories/report";
+import type { ProblemType } from "~/types/domain/problem";
 
 export const useReports = () => {
   const { loading, handle } = useApiHandler();
   const { uploadImage } = useImage();
 
-  const { $api } = useNuxtApp();
-  const reportRepository = createReportRepository($api);
+  const { $reportService } = useNuxtApp();
 
   interface RawReportRequest {
     description: string;
@@ -26,25 +20,12 @@ export const useReports = () => {
     );
 
     return await handle(() =>
-      reportRepository.create({
+      $reportService.reportProblem({
         imagesUrls: imagesUrls.filter((imageUrl) => imageUrl !== ""),
         ...request,
       })
     );
   }
 
-  function getReports(params: GetReportsParams) {
-    return useAsyncData("reports", () => reportRepository.findAll(params));
-  }
-
-  function getReportsByProblemId(
-    problemId: Problem["id"],
-    params?: GetReportsByProblemIdParams
-  ) {
-    return useAsyncData(`problems-${problemId}-reports`, () =>
-      reportRepository.findAllByProblemId(problemId, params)
-    );
-  }
-
-  return { loading, report, getReports, getReportsByProblemId };
+  return { loading, report };
 };

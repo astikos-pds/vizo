@@ -51,7 +51,7 @@ export class AffiliatedUserService {
   public async changeAffiliationStatus(
     municipalityId: string,
     affiliationId: string,
-    request: AffiliateToMunicipalityRequest
+    request: ChangeAffiliationStatusRequest
   ) {
     const response = await this.httpClient.patch<AffiliatedUserDTO>(
       `/municipalities/${municipalityId}/affiliations/${affiliationId}`,

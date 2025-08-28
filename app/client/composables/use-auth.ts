@@ -1,15 +1,12 @@
-import {
-  createAuthRepository,
-  type EmailVerificationRequest,
-  type EmailVerificationResponse,
-  type LoginRequest,
-  type RefreshRequest,
-  type RegisterRequest,
-  type TokenPairResponse,
-  type VerificationCodeRequest,
-  type VerificationCodeResponse,
-} from "~/repositories/auth";
-import type { Citizen, Official } from "~/types/domain";
+import type {
+  ChangePasswordRequest,
+  CodeRequest,
+  EmailVerificationRequest,
+  LoginRequest,
+  RefreshRequest,
+  RegisterRequest,
+} from "~/services/auth";
+import type { TokenPairDTO } from "~/types/domain/user";
 
 export const useAuth = () => {
   const accessToken = useCookie("access_token");
@@ -17,31 +14,20 @@ export const useAuth = () => {
 
   const { loading, handle } = useApiHandler();
 
-  const { $api } = useNuxtApp();
-  const authRepository = createAuthRepository($api);
+  const { $authService } = useNuxtApp();
 
   async function login(request: LoginRequest) {
-    const response = await handle<TokenPairResponse>(() =>
-      authRepository.login(request)
+    const response = await handle<TokenPairDTO>(() =>
+      $authService.login(request)
     );
 
-    if (response) {
-      updateTokenPair(response);
-    }
+    updateTokenPair(response);
 
     return response;
   }
 
-  async function registerAsCitizen(request: RegisterRequest) {
-    return await handle<Citizen>(() =>
-      authRepository.registerAsCitizen(request)
-    );
-  }
-
-  async function registerAsOfficial(request: RegisterRequest) {
-    return await handle<Official>(() =>
-      authRepository.registerAsOfficial(request)
-    );
+  async function register(request: RegisterRequest) {
+    return await handle(() => $authService.register(request));
   }
 
   async function logout() {
@@ -49,38 +35,36 @@ export const useAuth = () => {
     useUserStore().setUser(null);
   }
 
-  async function refresh(
-    request: RefreshRequest
-  ): Promise<TokenPairResponse | null> {
-    const response = await handle<TokenPairResponse>(() =>
-      authRepository.refresh(request)
-    );
+  async function refresh(request: RefreshRequest) {
+    const response = await handle(() => $authService.refresh(request));
 
-    if (response) {
-      updateTokenPair(response);
-    }
+    updateTokenPair(response);
 
     return response;
   }
 
-  function updateTokenPair(tokens: TokenPairResponse) {
+  function updateTokenPair(tokens: TokenPairDTO | null) {
+    if (!tokens) return;
+
     accessToken.value = tokens.accessToken;
     refreshToken.value = tokens.refreshToken;
   }
 
-  async function createVerificationRequest(request: EmailVerificationRequest) {
-    return await handle<EmailVerificationResponse>(() =>
-      authRepository.createVerificationRequest(request)
+  async function requestEmailVerification(request: EmailVerificationRequest) {
+    return await handle(() => $authService.requestEmailVerification(request));
+  }
+
+  async function verifyEmail(
+    emailVerificationRequestId: string,
+    request: CodeRequest
+  ) {
+    return await handle(() =>
+      $authService.verifyEmail(emailVerificationRequestId, request)
     );
   }
 
-  async function verifyCode(
-    requestId: string,
-    request: VerificationCodeRequest
-  ) {
-    return await handle<VerificationCodeResponse>(() =>
-      authRepository.verifyCode(requestId, request)
-    );
+  async function changePassword(request: ChangePasswordRequest) {
+    return await handle(() => $authService.changePassword(request));
   }
 
   return {
@@ -88,11 +72,10 @@ export const useAuth = () => {
     accessToken,
     refreshToken,
     login,
-    registerAsCitizen,
-    registerAsOfficial,
-    logout,
+    register,
     refresh,
-    createVerificationRequest,
-    verifyCode,
+    requestEmailVerification,
+    verifyEmail,
+    changePassword,
   };
 };

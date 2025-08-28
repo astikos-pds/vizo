@@ -1,61 +1,31 @@
-import type { DepartmentId } from "~/repositories/department";
-import type { MunicipalityId } from "~/repositories/municipality";
-import {
-  createProblemRepository,
-  type GetProblemsParams,
-  type ProblemId,
-} from "~/repositories/problem";
+import type { Pagination } from "~/types/domain/pagination";
+import type { Problem } from "~/types/domain/problem";
 
 export const useProblems = () => {
-  const { $api } = useNuxtApp();
-  const problemRepository = createProblemRepository($api);
+  const { $problemService } = useNuxtApp();
 
   function getProblems() {
-    return useAsyncData("problems", () => problemRepository.findAll());
+    return useAsyncData("problems", () => $problemService.getProblems());
   }
 
   function getProblemTypes() {
     return useAsyncData("problems-types", () =>
-      problemRepository.findAllTypes()
+      $problemService.getProblemTypes()
     );
   }
 
-  function getProblemsByDepartmentId(
-    municipalityId: MunicipalityId,
-    departmentId: DepartmentId,
-    params?: GetProblemsParams
+  function getReportsForProblem(
+    problemId: Problem["id"],
+    pagination: Pagination
   ) {
-    return useAsyncData(
-      `municipalities-${municipalityId}-departments-${departmentId}-problems`,
-      () =>
-        problemRepository.findAllVisibleByDepartmentId(
-          municipalityId,
-          departmentId,
-          params
-        )
-    );
-  }
-
-  function getProblemInDepartmentContext(
-    municipalityId: MunicipalityId,
-    departmentId: DepartmentId,
-    problemId: ProblemId
-  ) {
-    return useAsyncData(
-      `municipalities-${municipalityId}-departments-${departmentId}-problems-${problemId}`,
-      () =>
-        problemRepository.findByIdInDepartmentContext(
-          municipalityId,
-          departmentId,
-          problemId
-        )
+    return useAsyncData(`problems-${problemId}-reports`, () =>
+      $problemService.getReportsForProblem(problemId, pagination)
     );
   }
 
   return {
     getProblems,
     getProblemTypes,
-    getProblemsByDepartmentId,
-    getProblemInDepartmentContext,
+    getReportsForProblem,
   };
 };
