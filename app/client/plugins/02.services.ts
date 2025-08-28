@@ -17,7 +17,6 @@ import { PointOfInterestMapper } from "~/types/domain/point-of-interest";
 import { ProblemMapper } from "~/types/domain/problem";
 import { ReportMapper } from "~/types/domain/report";
 import { UserMapper } from "~/types/domain/user";
-import { HttpClientImpl } from "~/utils/http";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const api = nuxtApp.vueApp.$nuxt.$api;
@@ -43,47 +42,55 @@ export default defineNuxtPlugin((nuxtApp) => {
     permissionPresetMapper
   );
 
-  const services = {
-    authService: new AuthService(httpClient, userMapper),
-    meService: new MeService(
-      httpClient,
-      pointOfInterestMapper,
-      reportMapper,
-      affiliatedUserMapper,
-      assignedUserMapper
-    ),
-    reportService: new ReportService(httpClient, reportMapper),
-    problemSerivce: new ProblemService(httpClient, problemMapper, reportMapper),
-    pointOfInterestService: new PointOfInterestService(
-      httpClient,
-      pointOfInterestMapper
-    ),
-    municipalityService: new MunicipalityService(
-      httpClient,
-      municipalityMapper
-    ),
-    departmentService: new DepartmentService(
-      httpClient,
-      departmentMapper,
-      problemMapper
-    ),
-    affiliatedUserService: new AffiliatedUserService(
-      httpClient,
-      affiliatedUserMapper
-    ),
-    assignedUserService: new AssignedUserService(
-      httpClient,
-      assignedUserMapper
-    ),
-    permissionPresetService: new PermissionPresetService(
-      httpClient,
-      permissionPresetMapper
-    ),
-  };
+  const authService: AuthService = new AuthService(httpClient, userMapper);
+  const meService: MeService = new MeService(
+    httpClient,
+    pointOfInterestMapper,
+    reportMapper,
+    affiliatedUserMapper,
+    assignedUserMapper
+  );
+  const reportService: ReportService = new ReportService(
+    httpClient,
+    reportMapper
+  );
+  const problemService: ProblemService = new ProblemService(
+    httpClient,
+    problemMapper,
+    reportMapper
+  );
+  const pointOfInterestService: PointOfInterestService =
+    new PointOfInterestService(httpClient, pointOfInterestMapper);
+  const municipalityService: MunicipalityService = new MunicipalityService(
+    httpClient,
+    municipalityMapper
+  );
+  const departmentService: DepartmentService = new DepartmentService(
+    httpClient,
+    departmentMapper,
+    problemMapper
+  );
+  const affiliatedUserService: AffiliatedUserService =
+    new AffiliatedUserService(httpClient, affiliatedUserMapper);
+  const assignedUserService: AssignedUserService = new AssignedUserService(
+    httpClient,
+    assignedUserMapper
+  );
+  const permissionPresetService: PermissionPresetService =
+    new PermissionPresetService(httpClient, permissionPresetMapper);
 
   return {
     provide: {
-      services,
+      authService,
+      meService,
+      reportService,
+      problemService,
+      pointOfInterestService,
+      municipalityService,
+      departmentService,
+      affiliatedUserService,
+      assignedUserService,
+      permissionPresetService,
     },
   };
 });
