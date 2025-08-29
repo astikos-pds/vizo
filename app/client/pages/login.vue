@@ -2,7 +2,6 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 import { useAuth } from "~/composables/use-auth";
-import { useUser } from "~/composables/use-user";
 import { useI18n } from "vue-i18n";
 
 const { t } = useI18n();
@@ -30,7 +29,6 @@ const form = reactive<LoginSchema>({
 const showPassword = ref<boolean>(false);
 
 const { loading, login } = useAuth();
-const { getProfile } = useUser();
 
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
@@ -46,17 +44,6 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
     description: t("toast.success.description.loggedIn"),
     color: "success",
   });
-
-  const user = await getProfile();
-
-  if (!user) return;
-
-  useUserStore().setUser(user);
-
-  if (user.userType === "OFFICIAL") {
-    await navigateTo("/municipalities");
-    return;
-  }
 
   await navigateTo("/");
 };
@@ -107,7 +94,10 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
 
         <div class="text-center text-sm flex flex-col">
           <span>
-            {{ t("login.dontHaveAccount") }} <NuxtLink to="/register" class="text-primary">{{ t("login.signUpHere") }}</NuxtLink>
+            {{ t("login.dontHaveAccount") }}
+            <NuxtLink to="/register" class="text-primary">{{
+              t("login.signUpHere")
+            }}</NuxtLink>
           </span>
         </div>
 

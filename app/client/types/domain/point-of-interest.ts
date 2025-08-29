@@ -7,6 +7,8 @@ export interface PointOfInterestDTO {
   latitude: number;
   longitude: number;
   radius: number;
+  colorHex: string;
+  active: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -18,6 +20,8 @@ export interface PointOfInterest {
   latitude: number;
   longitude: number;
   radius: number;
+  colorHex: string;
+  active: boolean;
   createdAt: Date;
   updatedAt: Date;
 }

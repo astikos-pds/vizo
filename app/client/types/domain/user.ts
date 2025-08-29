@@ -1,8 +1,3 @@
-export interface TokenPairDTO {
-  accessToken: string;
-  refreshToken: string;
-}
-
 export interface EmailVerificationDTO {
   id: string;
   codeLength: number;
@@ -40,6 +35,29 @@ export class UserMapper {
       credibilityPoints: dto.credibilityPoints,
       createdAt: new Date(dto.createdAt),
       updatedAt: new Date(dto.updatedAt),
+    };
+  }
+}
+
+export interface AuthenticationDTO {
+  accessToken: string;
+  refreshToken: string;
+  user: UserDTO;
+}
+
+export interface Authentication {
+  accessToken: string;
+  refreshToken: string;
+  user: User;
+}
+
+export class AuthenticationMapper {
+  constructor(private readonly userMapper: UserMapper) {}
+
+  public toModel(dto: AuthenticationDTO): Authentication {
+    return {
+      ...dto,
+      user: this.userMapper.toModel(dto.user),
     };
   }
 }

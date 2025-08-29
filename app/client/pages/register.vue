@@ -103,11 +103,11 @@ const form = reactive<RegisterSchema>({
 const showPassword = ref<boolean>(false);
 const showConfimedPassword = ref<boolean>(false);
 
-const { loading, registerAsCitizen } = useAuth();
+const { loading, register } = useAuth();
 
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
-  const ok = await registerAsCitizen({
+  const ok = await register({
     name: `${event.data.firstName} ${event.data.lastName}`.trim(),
     document: event.data.cpf,
     email: event.data.email,
@@ -115,7 +115,7 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
   });
 
   if (ok!) return;
-  
+
   toast.add({
     title: t("toast.success.title"),
     description: t("toast.success.description.signedUp"),
@@ -217,7 +217,10 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
             required
             @click="showPassword = !showPassword"
           >
-            <RegisterPasswordStrength :password="form.password" :password-requirements="passwordRequirements" />
+            <RegisterPasswordStrength
+              :password="form.password"
+              :password-requirements="passwordRequirements"
+            />
           </PasswordInput>
 
           <PasswordInput

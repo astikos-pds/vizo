@@ -6,22 +6,22 @@ import type {
   RefreshRequest,
   RegisterRequest,
 } from "~/services/auth";
-import type { TokenPairDTO } from "~/types/domain/user";
+import { useLoggedInUserStore } from "~/stores/user";
+import type { Authentication } from "~/types/domain/user";
 
 export const useAuth = () => {
   const accessToken = useCookie("access_token");
   const refreshToken = useCookie("refresh_token");
+  const userStore = useLoggedInUserStore();
 
   const { loading, handle } = useApiHandler();
 
   const { $authService } = useNuxtApp();
 
   async function login(request: LoginRequest) {
-    const response = await handle<TokenPairDTO>(() =>
-      $authService.login(request)
-    );
+    const response = await handle(() => $authService.login(request));
 
-    updateTokenPair(response);
+    authenticate(response);
 
     return response;
   }
@@ -31,23 +31,21 @@ export const useAuth = () => {
   }
 
   async function logout() {
-    updateTokenPair({ accessToken: "", refreshToken: "" });
-    useUserStore().setUser(null);
+    authenticate(null);
   }
 
   async function refresh(request: RefreshRequest) {
     const response = await handle(() => $authService.refresh(request));
 
-    updateTokenPair(response);
+    authenticate(response);
 
     return response;
   }
 
-  function updateTokenPair(tokens: TokenPairDTO | null) {
-    if (!tokens) return;
-
-    accessToken.value = tokens.accessToken;
-    refreshToken.value = tokens.refreshToken;
+  function authenticate(authentication: Authentication | null) {
+    accessToken.value = authentication ? authentication.accessToken : null;
+    refreshToken.value = authentication ? authentication.refreshToken : null;
+    userStore.setUser(authentication ? authentication.user : null);
   }
 
   async function requestEmailVerification(request: EmailVerificationRequest) {
@@ -74,6 +72,7 @@ export const useAuth = () => {
     login,
     register,
     refresh,
+    logout,
     requestEmailVerification,
     verifyEmail,
     changePassword,

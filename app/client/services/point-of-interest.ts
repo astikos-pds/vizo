@@ -9,6 +9,8 @@ export interface MutatePointOfInterestRequest {
   latitude: number;
   longitude: number;
   radius: number;
+  colorHex: string;
+  active: boolean;
 }
 
 export class PointOfInterestService {

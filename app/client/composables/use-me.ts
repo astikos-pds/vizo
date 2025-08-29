@@ -7,6 +7,10 @@ export const useMe = () => {
   const { $meService } = useNuxtApp();
   const { handle, loading } = useApiHandler();
 
+  function getMe() {
+    return useAsyncData("me", () => $meService.getMe());
+  }
+
   function getMyReports(params?: Pagination & ReportFilter) {
     return useAsyncData("my-reports", () => $meService.getMyReports(params));
   }
@@ -43,6 +47,7 @@ export const useMe = () => {
 
   return {
     loading,
+    getMe,
     getMyReports,
     getMyAffiliations,
     getMyAssignmentsInMunicipality,

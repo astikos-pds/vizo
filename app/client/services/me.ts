@@ -12,6 +12,7 @@ import type {
   PointOfInterestMapper,
 } from "~/types/domain/point-of-interest";
 import type { ReportDTO, ReportMapper } from "~/types/domain/report";
+import type { UserDTO, UserMapper } from "~/types/domain/user";
 import type { HttpClient } from "~/utils/http";
 
 export type ReportFilter = {
@@ -23,11 +24,18 @@ export type ReportFilter = {
 export class MeService {
   constructor(
     private readonly httpClient: HttpClient,
+    private readonly userMapper: UserMapper,
     private readonly pointOfInterestMapper: PointOfInterestMapper,
     private readonly reportMapper: ReportMapper,
     private readonly affiliatedUserMapper: AffiliatedUserMapper,
     private readonly assignedUserMapper: AssignedUserMapper
   ) {}
+
+  public async getMe() {
+    const response = await this.httpClient.get<UserDTO>("/me");
+
+    return this.userMapper.toModel(response);
+  }
 
   public async getMyPointsOfInterest(pagination?: Pagination) {
     const response = await this.httpClient.get<Page<PointOfInterestDTO>>(

@@ -1,8 +1,9 @@
 import type {
   EmailVerificationDTO,
-  TokenPairDTO,
+  AuthenticationDTO,
   UserDTO,
   UserMapper,
+  AuthenticationMapper,
 } from "~/types/domain/user";
 import type { HttpClient } from "~/utils/http";
 
@@ -38,7 +39,8 @@ export interface ChangePasswordRequest {
 export class AuthService {
   constructor(
     private readonly httpClient: HttpClient,
-    private readonly userMapper: UserMapper
+    private readonly userMapper: UserMapper,
+    private readonly authenticationMapper: AuthenticationMapper
   ) {}
 
   public async register(request: RegisterRequest) {
@@ -51,11 +53,21 @@ export class AuthService {
   }
 
   public async login(request: LoginRequest) {
-    return await this.httpClient.post<TokenPairDTO>("/auth/login", request);
+    const response = await this.httpClient.post<AuthenticationDTO>(
+      "/auth/login",
+      request
+    );
+
+    return this.authenticationMapper.toModel(response);
   }
 
   public async refresh(request: RefreshRequest) {
-    return await this.httpClient.post<TokenPairDTO>("/auth/refresh", request);
+    const response = await this.httpClient.post<AuthenticationDTO>(
+      "/auth/refresh",
+      request
+    );
+
+    return this.authenticationMapper.toModel(response);
   }
 
   public async requestEmailVerification(request: EmailVerificationRequest) {
