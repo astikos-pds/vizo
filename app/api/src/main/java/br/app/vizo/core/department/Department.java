@@ -5,6 +5,7 @@ import br.app.vizo.core.department.exception.InvalidDepartmentException;
 import br.app.vizo.core.municipality.Municipality;
 import br.app.vizo.core.problem.Problem;
 import br.app.vizo.core.problem.ProblemType;
+import br.app.vizo.core.shared.ColorHex;
 import br.app.vizo.core.shared.Image;
 import br.app.vizo.core.shared.MutationTimestamps;
 import br.app.vizo.core.shared.Name;

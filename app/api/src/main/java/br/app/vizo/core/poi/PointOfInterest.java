@@ -1,5 +1,6 @@
 package br.app.vizo.core.poi;
 
+import br.app.vizo.core.shared.ColorHex;
 import br.app.vizo.core.poi.exception.InvalidPointOfInterestException;
 import br.app.vizo.core.shared.Name;
 import br.app.vizo.core.shared.coordinates.Coordinates;
@@ -16,10 +17,12 @@ public class PointOfInterest {
     private Name name;
     private Coordinates coordinates;
     private Radius radius;
+    private ColorHex colorHex;
+    private boolean active;
     private final MutationTimestamps timestamps;
 
-    public PointOfInterest(UUID id, User user, Name name, Coordinates coordinates, Radius radius, MutationTimestamps timestamps) {
-        if (id == null || user == null || name == null || coordinates == null || radius == null || timestamps == null) {
+    public PointOfInterest(UUID id, User user, Name name, Coordinates coordinates, Radius radius, ColorHex colorHex, boolean active, MutationTimestamps timestamps) {
+        if (id == null || user == null || name == null || coordinates == null || radius == null || colorHex == null || timestamps == null) {
             throw new InvalidPointOfInterestException();
         }
 
@@ -28,24 +31,30 @@ public class PointOfInterest {
         this.name = name;
         this.coordinates = coordinates;
         this.radius = radius;
+        this.colorHex = colorHex;
+        this.active = active;
         this.timestamps = timestamps;
     }
 
-    public PointOfInterest(User user, Name name, Coordinates coordinates, Radius radius) {
+    public PointOfInterest(User user, Name name, Coordinates coordinates, Radius radius, ColorHex colorHex, boolean active) {
         this(
                 UUID.randomUUID(),
                 user,
                 name,
                 coordinates,
                 radius,
+                colorHex,
+                active,
                 new MutationTimestamps()
         );
     }
 
-    public void update(Name name, Coordinates coordinates, Radius radius) {
+    public void update(Name name, Coordinates coordinates, Radius radius, ColorHex colorHex, boolean active) {
         this.name = name;
         this.coordinates = coordinates;
         this.radius = radius;
+        this.colorHex = colorHex;
+        this.active = active;
 
         this.timestamps.update();
     }
@@ -72,6 +81,14 @@ public class PointOfInterest {
 
     public Double getRadius() {
         return radius.value();
+    }
+
+    public String getColorHex() {
+        return colorHex.value();
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public Instant getCreatedAt() {

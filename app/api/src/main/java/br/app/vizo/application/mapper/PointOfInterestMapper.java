@@ -5,6 +5,7 @@ import br.app.vizo.application.dto.PointOfInterestDTO;
 import br.app.vizo.application.mapper.base.RepresentationMapper;
 import br.app.vizo.core.poi.PointOfInterest;
 import br.app.vizo.core.poi.Radius;
+import br.app.vizo.core.shared.ColorHex;
 import br.app.vizo.core.shared.MutationTimestamps;
 import br.app.vizo.core.shared.Name;
 import br.app.vizo.core.shared.coordinates.Coordinates;
@@ -34,6 +35,8 @@ public class PointOfInterestMapper implements
                 pointOfInterest.getLatitude(),
                 pointOfInterest.getLongitude(),
                 pointOfInterest.getRadius(),
+                pointOfInterest.getColorHex(),
+                pointOfInterest.isActive(),
                 pointOfInterest.getCreatedAt(),
                 pointOfInterest.getUpdatedAt()
         );
@@ -51,6 +54,8 @@ public class PointOfInterestMapper implements
                 pointOfInterest.getName(),
                 coordinates,
                 pointOfInterest.getRadius(),
+                pointOfInterest.getColorHex(),
+                pointOfInterest.isActive(),
                 pointOfInterest.getCreatedAt(),
                 pointOfInterest.getUpdatedAt()
         );
@@ -69,6 +74,8 @@ public class PointOfInterestMapper implements
                 new Name(entity.getName()),
                 coordinates,
                 new Radius(entity.getRadius()),
+                new ColorHex(entity.getColorHex()),
+                entity.isActive(),
                 new MutationTimestamps(entity.getCreatedAt(), entity.getUpdatedAt())
         );
     }

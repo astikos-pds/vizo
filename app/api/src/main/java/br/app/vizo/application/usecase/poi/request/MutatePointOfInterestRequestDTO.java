@@ -4,6 +4,8 @@ public record MutatePointOfInterestRequestDTO(
         String name,
         Double latitude,
         Double longitude,
-        Double radius
+        Double radius,
+        String colorHex,
+        boolean active
 ) {
 }

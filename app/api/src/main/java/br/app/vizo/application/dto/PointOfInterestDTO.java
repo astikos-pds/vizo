@@ -10,6 +10,8 @@ public record PointOfInterestDTO(
         Double latitude,
         Double longitude,
         Double radius,
+        String colorHex,
+        boolean active,
         Instant createdAt,
         Instant updatedAt
 ) {

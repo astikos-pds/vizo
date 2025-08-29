@@ -34,6 +34,12 @@ public class PointOfInterestEntity {
     @Column(nullable = false)
     private Double radius;
 
+    @Column(name = "color_hex", nullable = false)
+    private String colorHex;
+
+    @Column(nullable = false)
+    private boolean active;
+
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 

@@ -1,6 +1,6 @@
-package br.app.vizo.core.department;
+package br.app.vizo.core.shared;
 
-import br.app.vizo.core.department.exception.InvalidColorHexException;
+import br.app.vizo.core.shared.exception.InvalidColorHexException;
 
 public record ColorHex(
         String value

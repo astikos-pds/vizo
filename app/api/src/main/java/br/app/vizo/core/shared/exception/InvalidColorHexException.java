@@ -1,4 +1,4 @@
-package br.app.vizo.core.department.exception;
+package br.app.vizo.core.shared.exception;
 
 import br.app.vizo.core.DomainException;
 

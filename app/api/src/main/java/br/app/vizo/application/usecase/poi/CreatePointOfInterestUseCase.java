@@ -21,7 +21,9 @@ public class CreatePointOfInterestUseCase {
                 request.name(),
                 request.latitude(),
                 request.longitude(),
-                request.radius()
+                request.radius(),
+                request.colorHex(),
+                request.active()
         );
 
         PointOfInterest saved = this.pointOfInterestRepository.save(poi);

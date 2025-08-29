@@ -57,16 +57,16 @@ public class User {
         return new AffiliationIntent(this, municipality);
     }
 
-    public PointOfInterest createPointOfInterest(String name, Double latitude, Double longitude, Double radius) {
-        return new PointOfInterest(this, new Name(name), Coordinates.of(latitude, longitude), new Radius(radius));
+    public PointOfInterest createPointOfInterest(String name, Double latitude, Double longitude, Double radius, String colorHex, boolean active) {
+        return new PointOfInterest(this, new Name(name), Coordinates.of(latitude, longitude), new Radius(radius), new ColorHex(colorHex), active);
     }
 
-    public PointOfInterest updatePointOfInterest(PointOfInterest poi, String name, Double latitude, Double longitude, Double radius) {
+    public PointOfInterest updatePointOfInterest(PointOfInterest poi, String name, Double latitude, Double longitude, Double radius, String colorHex, boolean active) {
         if (!this.owns(poi)) {
             throw new IllegalException("You cannot update a point of interest of another user.");
         }
 
-        poi.update(new Name(name), Coordinates.of(latitude, longitude), new Radius(radius));
+        poi.update(new Name(name), Coordinates.of(latitude, longitude), new Radius(radius), new ColorHex(colorHex), active);
 
         return poi;
     }
