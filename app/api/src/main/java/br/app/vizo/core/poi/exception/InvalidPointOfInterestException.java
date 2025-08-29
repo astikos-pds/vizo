@@ -4,6 +4,6 @@ import br.app.vizo.core.DomainException;
 
 public class InvalidPointOfInterestException extends DomainException {
     public InvalidPointOfInterestException() {
-        super("Point of interest must have an id, an owner, coordinates, a radius and timestamps.");
+        super("Point of interest must have an id, an owner, coordinates, a radius, a color hex, timestamps and be either active or inactive.");
     }
 }
