@@ -1,8 +1,9 @@
 package br.app.vizo.application.usecase.auth;
 
 import br.app.vizo.application.UseCase;
-import br.app.vizo.application.dto.TokenPairDTO;
+import br.app.vizo.application.dto.AuthenticationDTO;
 import br.app.vizo.application.exception.auth.BadCredentialsException;
+import br.app.vizo.application.mapper.UserMapper;
 import br.app.vizo.application.service.HashService;
 import br.app.vizo.application.usecase.auth.request.LoginRequestDTO;
 import br.app.vizo.config.security.JwtService;
@@ -25,6 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class LoginUseCase {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final PasswordHasher passwordHasher;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
@@ -32,7 +34,7 @@ public class LoginUseCase {
     private final RefreshTokenRepository refreshTokenRepository;
     private final HashService hashService;
 
-    public TokenPairDTO execute(LoginRequestDTO body) {
+    public AuthenticationDTO execute(LoginRequestDTO body) {
         User user = this.userRepository.findByDocument(body.document()).orElseThrow(BadCredentialsException::new);
 
         boolean passwordsMatch = user.passwordMatchesWith(body.password(), passwordHasher);
@@ -53,6 +55,10 @@ public class LoginUseCase {
         );
         this.refreshTokenRepository.save(created);
 
-        return new TokenPairDTO(accessToken, refreshToken);
+        return new AuthenticationDTO(
+                accessToken,
+                refreshToken,
+                this.userMapper.toDto(user)
+        );
     }
 }

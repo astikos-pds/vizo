@@ -1,10 +1,11 @@
 package br.app.vizo.application.usecase.auth;
 
 import br.app.vizo.application.UseCase;
-import br.app.vizo.application.dto.TokenPairDTO;
+import br.app.vizo.application.dto.AuthenticationDTO;
 import br.app.vizo.application.exception.auth.InvalidRefreshTokenException;
 import br.app.vizo.application.exception.auth.RefreshTokenNotRecognizedException;
 import br.app.vizo.application.exception.base.UnauthorizedException;
+import br.app.vizo.application.mapper.UserMapper;
 import br.app.vizo.application.service.HashService;
 import br.app.vizo.application.usecase.auth.request.RefreshRequestDTO;
 import br.app.vizo.config.security.JwtService;
@@ -25,12 +26,13 @@ public class RefreshUseCase {
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final RefreshTokenRepository refreshTokenRepository;
     private final RefreshTokenFactory refreshTokenFactory;
     private final HashService hashService;
 
     @Transactional
-    public TokenPairDTO execute(RefreshRequestDTO body) {
+    public AuthenticationDTO execute(RefreshRequestDTO body) {
         if (!this.jwtService.isRefreshTokenValid(body.token())) {
             throw new UnauthorizedException("Invalid refresh token.");
         }
@@ -55,6 +57,10 @@ public class RefreshUseCase {
         RefreshToken created = this.refreshTokenFactory.create(new UserId(user.getId()), newRefreshToken);
         this.refreshTokenRepository.save(created);
 
-        return new TokenPairDTO(newAccessToken, newRefreshToken);
+        return new AuthenticationDTO(
+                newAccessToken,
+                newRefreshToken,
+                this.userMapper.toDto(user)
+        );
     }
 }

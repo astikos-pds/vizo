@@ -1,7 +1,7 @@
 package br.app.vizo.infrastructure.web;
 
+import br.app.vizo.application.dto.AuthenticationDTO;
 import br.app.vizo.application.dto.EmailVerificationDTO;
-import br.app.vizo.application.dto.TokenPairDTO;
 import br.app.vizo.application.dto.UserDTO;
 import br.app.vizo.application.usecase.auth.*;
 import br.app.vizo.application.usecase.auth.request.*;
@@ -32,15 +32,15 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenPairDTO> login(@RequestBody LoginRequestDTO body) {
-        TokenPairDTO response = this.loginUseCase.execute(body);
+    public ResponseEntity<AuthenticationDTO> login(@RequestBody LoginRequestDTO body) {
+        AuthenticationDTO response = this.loginUseCase.execute(body);
 
         return ResponseEntity.ok(response);
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<TokenPairDTO> refresh(@RequestBody RefreshRequestDTO body) {
-        TokenPairDTO response = this.refreshUseCase.execute(body);
+    public ResponseEntity<AuthenticationDTO> refresh(@RequestBody RefreshRequestDTO body) {
+        AuthenticationDTO response = this.refreshUseCase.execute(body);
 
         return ResponseEntity.ok(response);
     }
