@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type { Problem } from "~/types/domain";
-import type { Pageable } from "~/types/http";
+import type { Pagination } from "~/types/domain/pagination";
+import type { Problem } from "~/types/domain/problem";
 
 interface Props {
   problem: Problem;
@@ -9,7 +9,7 @@ const { problem } = defineProps<Props>();
 
 const { t } = useI18n();
 
-const pagination = reactive<Pageable>({
+const pagination = reactive<Pagination>({
   page: 0,
   size: 15,
 });
@@ -19,13 +19,13 @@ const currentPage = computed({
   set: (val: number) => (pagination.page = val - 1),
 });
 
-const { getReportsByProblemId } = useReports();
+const { getReportsForProblem } = useProblems();
 
 const {
   data: reports,
   pending,
   error,
-} = getReportsByProblemId(problem.id, pagination);
+} = await getReportsForProblem(problem.id, pagination);
 
 const toast = useToast();
 watch(error, (err) => {

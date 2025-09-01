@@ -1,3 +1,12 @@
+<script lang="ts" setup>
+import type { LatLng } from "~/types/geolocation";
+
+interface Props {
+  latLng: LatLng;
+}
+const { latLng } = defineProps<Props>();
+</script>
+
 <template>
   <Marker
     key="user"
@@ -12,12 +21,3 @@
     }"
   />
 </template>
-
-<script lang="ts" setup>
-import type { LatLng } from "~/types/geolocation";
-
-interface Props {
-  latLng: LatLng;
-}
-const { latLng } = defineProps<Props>();
-</script>

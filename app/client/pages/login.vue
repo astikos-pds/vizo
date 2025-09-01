@@ -31,6 +31,7 @@ const showPassword = ref<boolean>(false);
 const { loading, login } = useAuth();
 
 const toast = useToast();
+
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
   const ok = await login({
     document: event.data.document,

@@ -16,13 +16,18 @@ import { PermissionPresetMapper } from "~/types/domain/permission";
 import { PointOfInterestMapper } from "~/types/domain/point-of-interest";
 import { ProblemMapper } from "~/types/domain/problem";
 import { ReportMapper } from "~/types/domain/report";
-import { AuthenticationMapper, UserMapper } from "~/types/domain/user";
+import {
+  AuthenticationMapper,
+  EmailVerificationMapper,
+  UserMapper,
+} from "~/types/domain/user";
 
 export default defineNuxtPlugin((nuxtApp) => {
   const api = nuxtApp.vueApp.$nuxt.$api;
   const httpClient = new HttpClientImpl(api);
 
   const userMapper = new UserMapper();
+  const emailVerificationMapper = new EmailVerificationMapper();
   const authenticationMapper = new AuthenticationMapper(userMapper);
   const pointOfInterestMapper = new PointOfInterestMapper(userMapper);
   const problemMapper = new ProblemMapper();
@@ -46,7 +51,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   const authService: AuthService = new AuthService(
     httpClient,
     userMapper,
-    authenticationMapper
+    authenticationMapper,
+    emailVerificationMapper
   );
   const meService: MeService = new MeService(
     httpClient,

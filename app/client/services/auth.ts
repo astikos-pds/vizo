@@ -1,11 +1,17 @@
-import type {
-  EmailVerificationDTO,
-  AuthenticationDTO,
-  UserDTO,
-  UserMapper,
-  AuthenticationMapper,
+import {
+  type EmailVerificationDTO,
+  type AuthenticationDTO,
+  type UserDTO,
+  type UserMapper,
+  type AuthenticationMapper,
+  EmailVerificationMapper,
 } from "~/types/domain/user";
 import type { HttpClient } from "~/utils/http";
+
+export type VerificationPurpose =
+  | "REGISTRATION"
+  | "PASSWORD_CHANGE"
+  | "AFFILIATION";
 
 export interface RegisterRequest {
   name: string;
@@ -25,6 +31,7 @@ export interface RefreshRequest {
 
 export interface EmailVerificationRequest {
   email: string;
+  purpose: VerificationPurpose;
 }
 
 export interface CodeRequest {
@@ -40,7 +47,8 @@ export class AuthService {
   constructor(
     private readonly httpClient: HttpClient,
     private readonly userMapper: UserMapper,
-    private readonly authenticationMapper: AuthenticationMapper
+    private readonly authenticationMapper: AuthenticationMapper,
+    private readonly emailVerificationMapper: EmailVerificationMapper
   ) {}
 
   public async register(request: RegisterRequest) {
@@ -71,10 +79,12 @@ export class AuthService {
   }
 
   public async requestEmailVerification(request: EmailVerificationRequest) {
-    return await this.httpClient.post<EmailVerificationDTO>(
+    const response = await this.httpClient.post<EmailVerificationDTO>(
       "/auth/email-verification-requests",
       request
     );
+
+    return this.emailVerificationMapper.toModel(response);
   }
 
   public async verifyEmail(

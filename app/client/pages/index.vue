@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { Map as LeafletMap, PointExpression } from "leaflet";
 import { useProblems } from "~/composables/use-problems";
-import type { Problem } from "~/types/domain";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
 import ProblemDetails from "~/components/problem/ProblemDetails.vue";
+import type { Problem } from "~/types/domain/problem";
 
 const { t } = useI18n();
 
@@ -51,13 +51,15 @@ const {
   isLocationPrecise,
 } = useMapGeolocation();
 
-const { problems, loading } = useProblems();
+const { getProblems } = useProblems();
+
+const { data: problems, pending } = await getProblems();
 </script>
 
 <template>
   <section class="relative size-full flex flex-row">
     <div class="size-full flex justify-center items-center lg:p-5">
-      <div v-if="loading">Loading...</div>
+      <div v-if="pending">Loading...</div>
       <Map
         v-else
         ref="map"

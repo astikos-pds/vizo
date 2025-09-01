@@ -1,10 +1,3 @@
-export interface EmailVerificationDTO {
-  id: string;
-  codeLength: number;
-  expiresAt: string;
-  createdAt: string;
-}
-
 export interface UserDTO {
   id: string;
   document: string;
@@ -35,6 +28,30 @@ export class UserMapper {
       credibilityPoints: dto.credibilityPoints,
       createdAt: new Date(dto.createdAt),
       updatedAt: new Date(dto.updatedAt),
+    };
+  }
+}
+
+export interface EmailVerificationDTO {
+  id: string;
+  codeLength: number;
+  expiresAt: string;
+  createdAt: string;
+}
+
+export interface EmailVerification {
+  id: string;
+  codeLength: number;
+  expiresAt: Date;
+  createdAt: Date;
+}
+
+export class EmailVerificationMapper {
+  public toModel(dto: EmailVerificationDTO): EmailVerification {
+    return {
+      ...dto,
+      createdAt: new Date(dto.createdAt),
+      expiresAt: new Date(dto.expiresAt),
     };
   }
 }
