@@ -29,7 +29,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByDocument(String document) {
-        return this.jpaRepository.findByDocument(document)
+        String numericOnlyDocument = document.replaceAll("\\D", "");
+        return this.jpaRepository.findByDocument(numericOnlyDocument)
                 .map(this.mapper::toModel);
     }
 
