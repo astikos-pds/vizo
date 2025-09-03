@@ -3,6 +3,7 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import type { PasswordRequirements } from "~/types/domain";
 import { isDocumentValid } from "~/utils/document-validation";
+import { vMaska } from "maska/vue";
 
 const { t } = useI18n();
 
@@ -97,8 +98,10 @@ const { loading, register } = useAuth();
 const toast = useToast();
 
 const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
+  const name = `${event.data.firstName} ${event.data.lastName}`.trim();
+
   const ok = await register({
-    name: `${event.data.firstName} ${event.data.lastName}`.trim(),
+    name,
     document: event.data.cpf,
     email: event.data.email,
     password: event.data.password,
