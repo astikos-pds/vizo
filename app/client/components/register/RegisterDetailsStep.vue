@@ -2,6 +2,7 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import type { PasswordRequirements } from "~/types/domain";
+import { isDocumentValid } from "~/utils/document-validation";
 
 const { t } = useI18n();
 
@@ -49,10 +50,10 @@ const registerSchema = z
     cpf: z
       .string()
       .min(1, t("register.verification.cpf"))
-      .refine((cpf) => {
-        const result = validateDocument(cpf);
-        return result.isValid && result.type === "cpf";
-      }, t("register.verification.invalidCpf")),
+      .refine(
+        (cpf) => isDocumentValid(cpf),
+        t("register.verification.invalidCpf")
+      ),
     email: z.string().email(t("register.verification.email")),
     birthDate: z
       .string()
@@ -187,6 +188,7 @@ const stepper = useSteps();
             v-model="form.cpf"
             type="text"
             :placeholder="t('register.cpfPlaceholder')"
+            v-maska="CPF_MASK"
             class="w-full text-xl"
           />
         </UFormField>

@@ -3,6 +3,7 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 import { useAuth } from "~/composables/use-auth";
 import { useI18n } from "vue-i18n";
+import { vMaska } from "maska/vue";
 
 const { t } = useI18n();
 
@@ -79,6 +80,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
             v-model="form.document"
             type="text"
             :placeholder="t('login.cpfPlaceholder')"
+            v-maska="CPF_MASK"
             class="w-full text-xl"
           />
         </UFormField>
