@@ -4,6 +4,7 @@ import { useProblems } from "~/composables/use-problems";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
 import ProblemDetails from "~/components/problem/ProblemDetails.vue";
 import type { Problem } from "~/types/domain/problem";
+import type { LatLng } from "~/types/geolocation";
 
 const { t } = useI18n();
 
@@ -51,6 +52,13 @@ const {
   isLocationPrecise,
 } = useMapGeolocation();
 
+const coordinates = computed<LatLng>(() => {
+  return {
+    latitude: coords.value.latitude,
+    longitude: coords.value.longitude,
+  };
+});
+
 const { getProblems } = useProblems();
 
 const { data: problems, pending } = await getProblems();
@@ -79,10 +87,7 @@ const { data: problems, pending } = await getProblems();
 
         <CurrentPositionMarker
           v-if="isLocationPrecise && !geolocationError"
-          :lat-lng="{
-            latitude: coords.latitude,
-            longitude: coords.longitude,
-          }"
+          v-model="coordinates"
         />
       </Map>
     </div>

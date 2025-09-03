@@ -115,6 +115,8 @@ const onSubmit = async (event: FormSubmitEvent<RegisterSchema>) => {
     color: "success",
   });
 
+  store.setEmail(null);
+
   await navigateTo("/login");
 };
 
