@@ -2,6 +2,7 @@ package br.app.vizo.application.usecase.auth;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.EmailVerificationDTO;
+import br.app.vizo.application.exception.EmailAlreadyInUseException;
 import br.app.vizo.application.exception.auth.UserNotFoundException;
 import br.app.vizo.application.mapper.EmailVerificationRequestMapper;
 import br.app.vizo.application.service.EmailService;
@@ -24,6 +25,12 @@ public class RequestEmailVerificationUseCase {
     private final EmailService emailService;
 
     public EmailVerificationDTO execute(EmailRequestDTO body) {
+
+        if (body.purpose() == VerificationPurpose.REGISTRATION) {
+            this.userRepository.findByEmail(body.email()).ifPresent(u -> {
+                throw new EmailAlreadyInUseException();
+            });
+        }
 
         if (body.purpose() == VerificationPurpose.PASSWORD_CHANGE) {
             this.userRepository.findByEmail(body.email()).orElseThrow(UserNotFoundException::new);

@@ -29,7 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByDocument(String document) {
-        String numericOnlyDocument = document.replaceAll("\\D", "");
+        String numericOnlyDocument = this.clearSpecialCharactersFromDocument(document);
         return this.jpaRepository.findByDocument(numericOnlyDocument)
                 .map(this.mapper::toModel);
     }
@@ -41,7 +41,17 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByDocumentAndEmail(String document, String email) {
+        String numericOnlyDocument = this.clearSpecialCharactersFromDocument(document);
+        return this.jpaRepository.findByDocumentAndEmail(numericOnlyDocument, email).map(this.mapper::toModel);
+    }
+
+    @Override
     public boolean existsByDocumentOrEmail(String document, String email) {
         return this.jpaRepository.existsByDocumentOrEmail(document, email);
+    }
+
+    private String clearSpecialCharactersFromDocument(String document) {
+        return document.replaceAll("\\D", "");
     }
 }

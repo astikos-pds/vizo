@@ -10,5 +10,7 @@ public interface UserRepository {
 
     Optional<User> findByEmail(String email);
 
+    Optional<User> findByDocumentAndEmail(String document, String email);
+
     boolean existsByDocumentOrEmail(String document, String email);
 }
