@@ -15,6 +15,12 @@ export const useMe = () => {
     return useAsyncData("my-reports", () => $meService.getMyReports(params));
   }
 
+  function getMyPointsOfInterest(pagination?: Pagination) {
+    return useAsyncData("my-points-of-interest", () =>
+      $meService.getMyPointsOfInterest(pagination)
+    );
+  }
+
   function getMyAffiliations(pagination?: Pagination) {
     return useAsyncData("my-affiliations", () =>
       $meService.getMyAffiliations(pagination)
@@ -49,6 +55,7 @@ export const useMe = () => {
     loading,
     getMe,
     getMyReports,
+    getMyPointsOfInterest,
     getMyAffiliations,
     getMyAssignmentsInMunicipality,
     disaffiliateFromMunicipality,

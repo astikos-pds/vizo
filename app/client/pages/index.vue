@@ -22,9 +22,7 @@ definePageMeta({
   middleware: ["auth"],
 });
 
-const map = ref<LeafletMap | null>(null);
-const zoom = ref<number>(11);
-const center = ref<PointExpression>([-23.5489, -46.6388]);
+const { map, zoom, center } = useMap();
 
 const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
   map.value?.flyTo([problem.latitude, problem.longitude], 18, {

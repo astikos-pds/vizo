@@ -20,6 +20,23 @@ const items = computed<NavigationMenuItem[][]>(() => {
         icon: "i-lucide-message-square-warning",
         to: "/report",
       },
+      {
+        label: "Points of interest",
+        icon: "i-lucide-map-pin",
+        to: "/points-of-interest",
+        children: [
+          {
+            label: "View all",
+            icon: "i-lucide-map",
+            to: "/points-of-interest",
+          },
+          {
+            label: "Create new",
+            icon: "i-lucide-plus",
+            to: "/points-of-interest/new",
+          },
+        ],
+      },
     ],
     [
       {

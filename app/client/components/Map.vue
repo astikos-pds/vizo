@@ -4,10 +4,11 @@ import type {
   LatLngExpression,
   PointExpression,
 } from "leaflet";
+import type { LatLng } from "~/types/geolocation";
 
 interface Props {
   zoom: number;
-  center: PointExpression;
+  center: LatLng;
 }
 const props = defineProps<Props>();
 
@@ -34,7 +35,7 @@ const tileLayerUrl = computed(() =>
 <template>
   <LMap
     :zoom="props.zoom"
-    :center="props.center"
+    :center="[props.center.latitude, props.center.longitude]"
     :use-global-leaflet="false"
     @ready="onReady"
   >
