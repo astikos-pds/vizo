@@ -37,6 +37,7 @@ const tileLayerUrl = computed(() =>
     :zoom="props.zoom"
     :center="[props.center.latitude, props.center.longitude]"
     :use-global-leaflet="false"
+    world-copy-jump
     @ready="onReady"
   >
     <LTileLayer

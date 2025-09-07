@@ -6,6 +6,8 @@ const { locale } = useI18n();
 
 const pointOfInterest = defineProps<PointOfInterest>();
 
+const emit = defineEmits(["zoomIn"]);
+
 const formattedRadius =
   pointOfInterest.radius >= 1000
     ? `${pointOfInterest.radius / 1000} km`
@@ -20,6 +22,11 @@ async function onDelete(id: PointOfInterest["id"]) {
 }
 
 const actions = ref<DropdownMenuItem[]>([
+  {
+    label: "View on map",
+    icon: "i-lucide-eye",
+    onSelect: () => emit("zoomIn"),
+  },
   {
     label: "Edit",
     icon: "i-lucide-pencil",

@@ -69,12 +69,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         :disabled="loading"
         class="flex flex-col items-center gap-5 mt-8"
       >
-        <UFormField
-          :label="t('login.cpf')"
-          name="document"
-          class="w-full"
-          required
-        >
+        <UFormField :label="t('login.cpf')" name="document" class="w-full">
           <UInput
             icon="i-lucide-id-card"
             v-model="form.document"
@@ -91,7 +86,6 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           :label="t('login.password')"
           name="password"
           :placeholder="t('login.passwordPlaceholder')"
-          required
           @click="showPassword = !showPassword"
         />
 

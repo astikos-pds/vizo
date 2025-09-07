@@ -47,11 +47,15 @@ const { map, zoom, center } = useMap();
 
 const { coords, isLocationPrecise } = useMapGeolocation();
 
-const zoomToMarker = (marker: LatLng) => {
-  map.value?.flyTo([marker.latitude, marker.longitude], 18, {
-    animate: true,
-    duration: 1,
-  });
+const zoomToMarker = (marker: LatLng & { radius: number }) => {
+  map.value?.flyTo(
+    [marker.latitude, marker.longitude],
+    17 - marker.radius / 1000,
+    {
+      animate: false,
+      duration: 1,
+    }
+  );
 };
 </script>
 
@@ -76,6 +80,7 @@ const zoomToMarker = (marker: LatLng) => {
             <PointsOfInterestCard
               v-for="pointOfInterest in pointsOfInterest"
               v-bind="pointOfInterest"
+              @zoom-in="zoomToMarker(pointOfInterest)"
             />
           </div>
         </main>
