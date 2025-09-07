@@ -1,4 +1,8 @@
-import type { Page, Pagination } from "~/types/domain/pagination";
+import type {
+  PageDTO,
+  PageMapper,
+  Pagination,
+} from "~/types/domain/pagination";
 import type {
   ProblemDTO,
   ProblemMapper,
@@ -10,6 +14,7 @@ import type { HttpClient } from "~/utils/http";
 export class ProblemService {
   constructor(
     private readonly httpClient: HttpClient,
+    private readonly pageMapper: PageMapper,
     private readonly problemMapper: ProblemMapper,
     private readonly reportMapper: ReportMapper
   ) {}
@@ -25,11 +30,13 @@ export class ProblemService {
   }
 
   public async getReportsForProblem(problemId: string, pagination: Pagination) {
-    const response = await this.httpClient.get<Page<ReportDTO>>(
+    const response = await this.httpClient.get<PageDTO<ReportDTO>>(
       `/problems/${problemId}/reports`,
       pagination
     );
 
-    return response.map(this.reportMapper.toModel);
+    const page = this.pageMapper.toModel(response);
+
+    return page.map((t) => this.reportMapper.toModel(t));
   }
 }

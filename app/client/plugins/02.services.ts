@@ -12,6 +12,7 @@ import { AffiliatedUserMapper } from "~/types/domain/affiliated-user";
 import { AssignedUserMapper } from "~/types/domain/assigned-user";
 import { DepartmentMapper } from "~/types/domain/department";
 import { MunicipalityMapper } from "~/types/domain/municipality";
+import { PageMapper } from "~/types/domain/pagination";
 import { PermissionPresetMapper } from "~/types/domain/permission";
 import { PointOfInterestMapper } from "~/types/domain/point-of-interest";
 import { ProblemMapper } from "~/types/domain/problem";
@@ -25,6 +26,8 @@ import {
 export default defineNuxtPlugin((nuxtApp) => {
   const api = nuxtApp.vueApp.$nuxt.$api;
   const httpClient = new HttpClientImpl(api);
+
+  const pageMapper = new PageMapper();
 
   const userMapper = new UserMapper();
   const emailVerificationMapper = new EmailVerificationMapper();
@@ -56,6 +59,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   );
   const meService: MeService = new MeService(
     httpClient,
+    pageMapper,
     userMapper,
     pointOfInterestMapper,
     reportMapper,
@@ -68,6 +72,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   );
   const problemService: ProblemService = new ProblemService(
     httpClient,
+    pageMapper,
     problemMapper,
     reportMapper
   );
@@ -79,13 +84,15 @@ export default defineNuxtPlugin((nuxtApp) => {
   );
   const departmentService: DepartmentService = new DepartmentService(
     httpClient,
+    pageMapper,
     departmentMapper,
     problemMapper
   );
   const affiliatedUserService: AffiliatedUserService =
-    new AffiliatedUserService(httpClient, affiliatedUserMapper);
+    new AffiliatedUserService(httpClient, pageMapper, affiliatedUserMapper);
   const assignedUserService: AssignedUserService = new AssignedUserService(
     httpClient,
+    pageMapper,
     assignedUserMapper
   );
   const permissionPresetService: PermissionPresetService =

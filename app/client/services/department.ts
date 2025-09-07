@@ -2,7 +2,11 @@ import type {
   DepartmentDTO,
   DepartmentMapper,
 } from "~/types/domain/department";
-import type { Page, Pagination } from "~/types/domain/pagination";
+import type {
+  PageDTO,
+  PageMapper,
+  Pagination,
+} from "~/types/domain/pagination";
 import type {
   ProblemDTO,
   ProblemMapper,
@@ -26,6 +30,7 @@ export interface ChangeProblemStatusInScopeRequest {
 export class DepartmentService {
   constructor(
     private readonly httpClient: HttpClient,
+    private readonly pageMapper: PageMapper,
     private readonly departmentMapper: DepartmentMapper,
     private readonly problemMapper: ProblemMapper
   ) {}
@@ -74,12 +79,14 @@ export class DepartmentService {
     departmentId: string,
     pagination: Pagination
   ) {
-    const response = await this.httpClient.get<Page<ProblemDTO>>(
+    const response = await this.httpClient.get<PageDTO<ProblemDTO>>(
       `municipalities/${municipalityId}/departments/${departmentId}/problems`,
       pagination
     );
 
-    return response.map(this.problemMapper.toModel);
+    const page = this.pageMapper.toModel(response);
+
+    return page.map((t) => this.problemMapper.toModel(t));
   }
 
   public async getProblemInScope(

@@ -6,7 +6,11 @@ import type {
   AssignedUserDTO,
   AssignedUserMapper,
 } from "~/types/domain/assigned-user";
-import type { Page, Pagination } from "~/types/domain/pagination";
+import {
+  PageMapper,
+  type PageDTO,
+  type Pagination,
+} from "~/types/domain/pagination";
 import type {
   PointOfInterestDTO,
   PointOfInterestMapper,
@@ -24,6 +28,7 @@ export type ReportFilter = {
 export class MeService {
   constructor(
     private readonly httpClient: HttpClient,
+    private readonly pageMapper: PageMapper,
     private readonly userMapper: UserMapper,
     private readonly pointOfInterestMapper: PointOfInterestMapper,
     private readonly reportMapper: ReportMapper,
@@ -38,42 +43,50 @@ export class MeService {
   }
 
   public async getMyPointsOfInterest(pagination?: Pagination) {
-    const response = await this.httpClient.get<Page<PointOfInterestDTO>>(
+    const response = await this.httpClient.get<PageDTO<PointOfInterestDTO>>(
       "/me/points-of-interest",
       pagination
     );
 
-    return response.map(this.pointOfInterestMapper.toModel);
+    const page = this.pageMapper.toModel(response);
+
+    return page.map((t) => this.pointOfInterestMapper.toModel(t));
   }
 
   public async getMyReports(params?: Pagination & ReportFilter) {
-    const response = await this.httpClient.get<Page<ReportDTO>>(
+    const response = await this.httpClient.get<PageDTO<ReportDTO>>(
       "/me/reports",
       params
     );
 
-    return response.map(this.reportMapper.toModel);
+    const page = this.pageMapper.toModel(response);
+
+    return page.map((t) => this.reportMapper.toModel(t));
   }
 
   public async getMyAffiliations(pagination?: Pagination) {
-    const response = await this.httpClient.get<Page<AffiliatedUserDTO>>(
+    const response = await this.httpClient.get<PageDTO<AffiliatedUserDTO>>(
       "/me/affiliations",
       pagination
     );
 
-    return response.map(this.affiliatedUserMapper.toModel);
+    const page = this.pageMapper.toModel(response);
+
+    return page.map((t) => this.affiliatedUserMapper.toModel(t));
   }
 
   public async getMyAssignmentsInMunicipality(
     municipalityId: string,
     pagination?: Pagination
   ) {
-    const response = await this.httpClient.get<Page<AssignedUserDTO>>(
+    const response = await this.httpClient.get<PageDTO<AssignedUserDTO>>(
       `me/municipalities/${municipalityId}/assignments`,
       pagination
     );
 
-    return response.map(this.assignedUserMapper.toModel);
+    const page = this.pageMapper.toModel(response);
+
+    return page.map((t) => this.assignedUserMapper.toModel(t));
   }
 
   public async disaffiliateFromMunicipality(municipalityId: string) {

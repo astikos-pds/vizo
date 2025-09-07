@@ -3,7 +3,11 @@ import type {
   AffiliatedUserMapper,
   AffiliationStatus,
 } from "~/types/domain/affiliated-user";
-import type { Page, Pagination } from "~/types/domain/pagination";
+import type {
+  PageDTO,
+  PageMapper,
+  Pagination,
+} from "~/types/domain/pagination";
 import type { HttpClient } from "~/utils/http";
 
 export interface AffiliationFilter {
@@ -21,6 +25,7 @@ export interface ChangeAffiliationStatusRequest {
 export class AffiliatedUserService {
   constructor(
     private readonly httpClient: HttpClient,
+    private readonly pageMapper: PageMapper,
     private readonly affiliatedUserMapper: AffiliatedUserMapper
   ) {}
 
@@ -28,12 +33,14 @@ export class AffiliatedUserService {
     municipalityId: string,
     params?: Pagination & AffiliationFilter
   ) {
-    const response = await this.httpClient.get<Page<AffiliatedUserDTO>>(
+    const response = await this.httpClient.get<PageDTO<AffiliatedUserDTO>>(
       `/municipalities/${municipalityId}/affiliations`,
       params
     );
 
-    return response.map(this.affiliatedUserMapper.toModel);
+    const page = this.pageMapper.toModel(response);
+
+    return page.map((t) => this.affiliatedUserMapper.toModel(t));
   }
 
   public async requestAffiliationToMunicipality(

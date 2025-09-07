@@ -2,7 +2,11 @@ import type {
   AssignedUserDTO,
   AssignedUserMapper,
 } from "~/types/domain/assigned-user";
-import type { Page, Pagination } from "~/types/domain/pagination";
+import type {
+  PageDTO,
+  PageMapper,
+  Pagination,
+} from "~/types/domain/pagination";
 import type { Permission, PermissionMode } from "~/types/domain/permission";
 import type { HttpClient } from "~/utils/http";
 
@@ -23,6 +27,7 @@ export interface ChangeAssigneePermissionRequest {
 export class AssignedUserService {
   constructor(
     private readonly httpClient: HttpClient,
+    private readonly pageMapper: PageMapper,
     private readonly assignedUserMapper: AssignedUserMapper
   ) {}
 
@@ -31,12 +36,14 @@ export class AssignedUserService {
     departmentId: string,
     pagination?: Pagination
   ) {
-    const response = await this.httpClient.get<Page<AssignedUserDTO>>(
+    const response = await this.httpClient.get<PageDTO<AssignedUserDTO>>(
       `/municipalities/${municipalityId}/department/${departmentId}/assignments`,
       pagination
     );
 
-    return response.map(this.assignedUserMapper.toModel);
+    const page = this.pageMapper.toModel(response);
+
+    return page.map((t) => this.assignedUserMapper.toModel(t));
   }
 
   public async getUserAssignedToDepartment(

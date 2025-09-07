@@ -1,6 +1,14 @@
 export interface Pagination {
   page: number;
+  size?: number;
+}
+
+export interface PageDTO<T> {
+  content: T[];
+  page: number;
   size: number;
+  totalPages: number;
+  totalElements: number;
 }
 
 export class Page<T> {
@@ -19,6 +27,18 @@ export class Page<T> {
       this.size,
       this.totalPages,
       this.totalElements
+    );
+  }
+}
+
+export class PageMapper {
+  public toModel<T>(dto: PageDTO<T>): Page<T> {
+    return new Page(
+      dto.content,
+      dto.page,
+      dto.size,
+      dto.totalPages,
+      dto.totalElements
     );
   }
 }
