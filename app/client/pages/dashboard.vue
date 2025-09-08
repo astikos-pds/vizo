@@ -30,8 +30,8 @@ const pagination = ref<Pageable>({
 
 <template>
   <div class="grid grid-cols-4">
-    <InfoCard value="765" label="Problemas Resolvidos" />
-    <InfoCard value="23" label="Problemas a Resolver" />
+    <InfoCard value="765" label="Problemas Resolvidos" desc="nos últimos 30 dias" color="bg-gradient-to-tr from-green-600 to-green-300" />
+    <InfoCard value="23" label="Problemas a Resolver" desc="" color="bg-gradient-to-tr from-yellow-500 to-yellow-300" />
   </div>
 
   <div
