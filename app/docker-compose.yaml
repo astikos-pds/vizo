@@ -1,8 +1,17 @@
 services:
+  analyser:
+    build:
+      context: ./analyser
+      dockerfile: Dockerfile
+    container_name: vizo-analyser
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
   api:
     build:
       context: ./api
       dockerfile: Dockerfile
+    container_name: vizo-api
     ports:
       - "8080:8080"
     env_file:
