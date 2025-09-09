@@ -47,33 +47,7 @@ const items = computed<NavigationMenuItem[][]>(() => {
     ],
   ];
 
-<<<<<<< HEAD
-  if (!isAdmin) {
-    return [
-      [
-        {
-          label: t("navBar.index"),
-          icon: "i-lucide-house",
-          to: "/",
-        },
-        {
-          label: t("navBar.report"),
-          icon: "i-lucide-message-square-warning",
-          to: "/report",
-        },
-        {
-          label: "Dashboard",
-          icon: "i-lucide-layout-dashboard",
-          to: "/dashboard",
-        },
-      ],
-      [...baseItems],
-    ];
-  }
-
-=======
   /*
->>>>>>> origin/main
   return [
     [
       {
