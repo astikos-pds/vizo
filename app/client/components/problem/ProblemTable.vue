@@ -1,4 +1,4 @@
-<script setup lang="ts">
+<!-- <script setup lang="ts">
 import { h, resolveComponent, ref } from "vue";
 import type { BadgeProps, TableColumn } from "@nuxt/ui";
 import { useI18n } from "vue-i18n";
@@ -201,3 +201,4 @@ const filteredData = computed(() => {
     </div>
   </div>
 </template>
+ -->

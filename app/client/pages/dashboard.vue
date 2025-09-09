@@ -39,10 +39,10 @@ const pagination = ref<Pageable>({
   >
     <ProblemRate class="col-span-1 md:col-span-2 xl:col-span-1"/>
     <ProblemPercentage />
-    <ProblemTable
+    <!-- <ProblemTable
       v-model:pagination="pagination"
       class="col-span-1 md:col-span-2 xl:col-span-2"
-    />
+    /> -->
     
   </div>  
 </template>
