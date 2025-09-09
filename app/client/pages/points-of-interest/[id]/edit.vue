@@ -4,8 +4,23 @@ const id = route.params.id as string;
 
 const { loading, getPointOfInterest, updatePointOfInterest } =
   usePointsOfInterest();
-
 const { data: pointOfInterest, pending } = await getPointOfInterest(id);
+
+useHead({
+  title: pointOfInterest.value
+    ? `Vizo | Editing ${pointOfInterest.value.name}`
+    : "Vizo | Editing a point of interest",
+  meta: [
+    {
+      name: "description",
+      content: "Edit a point of interest to keep up with the city.",
+    },
+  ],
+});
+
+definePageMeta({
+  middleware: ["auth"],
+});
 
 const onSubmit = async (data: {
   name: string;

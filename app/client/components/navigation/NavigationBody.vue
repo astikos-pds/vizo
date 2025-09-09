@@ -37,6 +37,23 @@ const items = computed<NavigationMenuItem[][]>(() => {
           },
         ],
       },
+      {
+        label: "Affiliations",
+        icon: "i-lucide-archive",
+        to: "/affiliations",
+        children: [
+          {
+            label: "View all",
+            icon: "i-lucide-building",
+            to: "/affiliations",
+          },
+          {
+            label: "Request new",
+            icon: "i-lucide-git-pull-request",
+            to: "/affiliations/request",
+          },
+        ],
+      },
     ],
     [
       {

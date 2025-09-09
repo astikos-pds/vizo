@@ -1,4 +1,18 @@
 <script lang="ts" setup>
+useHead({
+  title: "Vizo | New point of interest",
+  meta: [
+    {
+      name: "description",
+      content: "Create a new point of interest to keep up with the city.",
+    },
+  ],
+});
+
+definePageMeta({
+  middleware: ["auth"],
+});
+
 const { createPointOfInterest, loading } = usePointsOfInterest();
 
 const onSubmit = async (data: {

@@ -14,6 +14,10 @@ useHead({
   ],
 });
 
+definePageMeta({
+  middleware: ["auth"],
+});
+
 const pagination = reactive<Pagination>({
   page: 0,
   size: 15,

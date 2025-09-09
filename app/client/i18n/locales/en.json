@@ -254,9 +254,7 @@
     "noRequest": "There is no request for affiliation.",
     "status": "Status",
     "createdAt": "Created on {date}",
-    "requestedAt": "Requested on {date}",
-    "pending": "Pending",
-    "rejected": "Rejected"
+    "requestedAt": "Requested on {date}"
   },
 
   "municipalitiesId": {
@@ -444,6 +442,15 @@
       "pending": "Pending"
     }
   },
+
+  "affiliation": {
+    "status": {
+      "approved": "Approved",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    }
+  },
+
   "notifications": {
     "title": "Notifications",
     "searchPlaceholder": "Search by ID, title or status...",

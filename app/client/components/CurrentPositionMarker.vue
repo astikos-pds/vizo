@@ -11,7 +11,7 @@ const model = defineModel<LatLng>({ required: true });
     :z-index-offset="-1000"
     :icon="{
       url: '/current-position-marker.png',
-      size: [25, 25],
+      size: [20, 20],
     }"
   />
 </template>

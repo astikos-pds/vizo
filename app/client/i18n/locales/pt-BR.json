@@ -249,9 +249,7 @@
     "noRequest": "Não há nenhum pedido de afiliação.",
     "status": "Status",
     "createdAt": "Criada em {date}",
-    "requestedAt": "Requisição feita em {date}",
-    "pending": "Pendente",
-    "rejected": "Rejeitado"
+    "requestedAt": "Requisição feita em {date}"
   },
 
   "municipalitiesId": {
@@ -440,6 +438,15 @@
       "pending": "Pendente"
     }
   },
+
+  "affiliation": {
+    "status": {
+      "approved": "Aprovado",
+      "pending": "Pendente",
+      "rejected": "Rejeitado"
+    }
+  },
+
   "notifications": {
     "title": "Notificações",
     "searchPlaceholder": "Buscar por ID, título ou status...",

@@ -6,12 +6,19 @@ from PIL import Image
 import requests
 import torch
 from transformers import CLIPModel, CLIPProcessor
-from analyser.mapping import problem_type_map
 
 app = FastAPI()
 
 model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+
+problem_type_map = {
+    "POTHOLE": "Buraco em via pública",
+    "POOR_LIGHTING": "Iluminação pública precária e postes quebrados",
+    "GARBAGE": "Acúmulo de lixo",
+    "FLOODING": "Alagamento",
+    "OTHER": "Outro tipo de problema"
+}
 
 class ClassifyRequest(BaseModel):
     description: str
