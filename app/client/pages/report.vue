@@ -13,7 +13,7 @@ import type { LatLng } from "~/types/geolocation";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
 import ModalReportImprecision from "~/components/modal/ModalReportImprecision.vue";
 import ModalRecentReport from "~/components/modal/ModalRecentReport.vue";
-import type { ProblemType, Report, ReportImage } from "~/types/domain";
+import type { ProblemType } from "~/types/domain/problem";
 
 const { t } = useI18n();
 
@@ -22,11 +22,9 @@ useHead({
   meta: [{ name: "description", content: t("head.report.description") }],
 });
 
-/*
 definePageMeta({
   middleware: ["auth"],
 });
-*/
 
 const reportSchema = z.object({
   description: z
@@ -56,40 +54,7 @@ const form = reactive<ReportSchema>({
   description: "",
   images: [],
   location: "current",
-  problemType: "",
-});
-
-const formRef = useTemplateRef("formRef");
-const previewUrls = ref<string[]>([]);
-
-const updateImages = (files: File[]) => {
-  const combinedFiles = [...form.images, ...files];
-
-  form.images = combinedFiles;
-
-  previewUrls.value = form.images.map((file) => URL.createObjectURL(file));
-
-  formRef.value?.validate({ name: "images" });
-};
-
-const handleFileChange = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  if (!input.files) return;
-  updateImages(Array.from(input.files));
-  input.value = "";
-};
-
-const handleFileRemove = (index: number) => {
-  if (previewUrls.value[index]) {
-    URL.revokeObjectURL(previewUrls.value[index]);
-  }
-  previewUrls.value.splice(index, 1);
-  form.images.splice(index, 1);
-  formRef.value?.validate({ name: "images" });
-};
-
-onBeforeUnmount(() => {
-  previewUrls.value.forEach((url) => URL.revokeObjectURL(url));
+  problemType: "OTHER",
 });
 
 const locationItems = ref<RadioGroupItem[]>([
@@ -109,11 +74,12 @@ const {
   coords,
   error: geolocationError,
   isLocationPrecise,
-  mapCenter,
   markerPosition,
   isWithinRadius,
   updateMarker,
 } = useMapGeolocation();
+
+const { center } = useMap();
 
 const geolocationErrorMessage = computed(() => {
   if (geolocationError.value?.PERMISSION_DENIED)
@@ -143,7 +109,8 @@ watchEffect(() => {
   size.value = isMobile.value ? "md" : "xl";
 });
 
-const { loading, report, getReports } = useReports();
+const { loading, report } = useReports();
+const { getMyReports } = useMe();
 const toast = useToast();
 
 const overlay = useOverlay();
@@ -159,10 +126,8 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
       latitude,
       longitude,
       description: event.data.description,
-      images: previewUrls.value.map<ReportImage>((p) => {
-        return { url: p };
-      }),
-    } as Report))
+      imagesUrls: event.data.images.map((f) => URL.createObjectURL(f)),
+    }))
   )
     return;
 
@@ -194,7 +159,7 @@ async function shouldSubmitImpreciseLocation(
     const modal = overlay.create(ModalReportImprecision, {
       props: {
         description: data.description,
-        imagesUrls: previewUrls.value,
+        imagesUrls: data.images.map((f) => URL.createObjectURL(f)),
         latLng: coords.value,
       },
     });
@@ -214,13 +179,17 @@ async function shouldSubmitOutOfBounds(data: ReportSchema): Promise<boolean> {
   return true;
 }
 
-async function shouldSubmitIfRecentlyReported(
-  report: Report
-): Promise<boolean> {
-  const { data: nearbyReports } = await getReports({
+async function shouldSubmitIfRecentlyReported(report: {
+  latitude: number;
+  longitude: number;
+  description: string;
+  imagesUrls: string[];
+}): Promise<boolean> {
+  const { data: nearbyReports } = await getMyReports({
     latitude: report.latitude,
     longitude: report.longitude,
     radius: RADIUS_OF_RELATED_REPORTS_IN_METERS,
+    page: 0,
     size: 1,
   });
 
@@ -234,7 +203,13 @@ async function shouldSubmitIfRecentlyReported(
 
   if (diff <= REPORT_CONFLICT_PERIOD_IN_MS) {
     const modal = overlay.create(ModalRecentReport, {
-      props: { lastReport: lastReport, currentReport: report },
+      props: {
+        lastReport: {
+          ...lastReport,
+          imagesUrls: lastReport.imagesUrls.map((url) => url.toString()),
+        },
+        currentReport: report,
+      },
     });
     return await modal.open().result;
   }
@@ -258,7 +233,6 @@ function resolveCoordinates(data: ReportSchema) {
     </h1>
 
     <UForm
-      ref="formRef"
       :schema="reportSchema"
       :state="form"
       @submit="onSubmit"
@@ -284,10 +258,10 @@ function resolveCoordinates(data: ReportSchema) {
         :hint="t('reportProblem.optional')"
         :description="t('reportProblem.uploadImages')"
       >
-        <UFileUpload 
-          class="w-full" 
-          v-model="form.images" 
-          accept="image/*" 
+        <UFileUpload
+          class="w-full"
+          v-model="form.images"
+          accept="image/*"
           multiple
           label="Drop your image here"
           description="SVG, PNG, JPG or GIF (max. 5MB)"
@@ -301,7 +275,7 @@ function resolveCoordinates(data: ReportSchema) {
         :help="
           !isLocationPrecise && !geolocationError && coords.accuracy > 0
             ? t('reportProblem.geolocationAccuracyWarning', {
-                accuracy: coords.accuracy.toFixed(0)
+                accuracy: coords.accuracy.toFixed(0),
               })
             : ''
         "
@@ -317,7 +291,7 @@ function resolveCoordinates(data: ReportSchema) {
           v-if="form.location === 'point'"
           class="rounded-xl border border-default min-w-[15rem] min-h-[25rem] sm:min-w-[30rem] sm:min-h-[25rem] mt-4"
           :zoom="16"
-          :center="[mapCenter.latitude, mapCenter.longitude]"
+          :center="center"
         >
           <Marker
             key="1"
@@ -331,10 +305,7 @@ function resolveCoordinates(data: ReportSchema) {
 
           <CurrentPositionMarker
             v-if="isLocationPrecise && !geolocationError"
-            :lat-lng="{
-              latitude: coords.latitude,
-              longitude: coords.longitude,
-            }"
+            v-model="coords"
           />
 
           <LCircle

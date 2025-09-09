@@ -8,6 +8,7 @@ import { PermissionPresetService } from "~/services/permission-preset";
 import { PointOfInterestService } from "~/services/point-of-interest";
 import { ProblemService } from "~/services/problem";
 import { ReportService } from "~/services/report";
+import { UserService } from "~/services/user";
 import { AffiliatedUserMapper } from "~/types/domain/affiliated-user";
 import { AssignedUserMapper } from "~/types/domain/assigned-user";
 import { DepartmentMapper } from "~/types/domain/department";
@@ -51,6 +52,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     permissionPresetMapper
   );
 
+  const userService: UserService = new UserService(httpClient, userMapper);
   const authService: AuthService = new AuthService(
     httpClient,
     userMapper,
@@ -100,6 +102,7 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   return {
     provide: {
+      userService,
       authService,
       meService,
       reportService,

@@ -1,12 +1,4 @@
 services:
-  analyser:
-    build:
-      context: ./analyser
-      dockerfile: Dockerfile
-    container_name: vizo-analyser
-    ports:
-      - "5000:5000"
-    restart: unless-stopped
   api:
     build:
       context: ./api
@@ -19,6 +11,7 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+      - analyser
   db:
     image: postgis/postgis:15-3.3
     container_name: vizo-db
@@ -30,6 +23,14 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  analyser:
+    build:
+      context: ./analyser
+      dockerfile: Dockerfile
+    container_name: vizo-analyser
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
 
 volumes:
   pgdata:

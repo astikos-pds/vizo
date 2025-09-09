@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
+import { useUsers } from "~/composables/use-users";
 
 const emailSchema = z.object({
   email: z.string().email("Enter a valid e-mail."),
@@ -16,8 +17,29 @@ const form = reactive<EmailSchema>({
 
 const stepper = useSteps();
 
+const { getUserWithFilters } = useUsers();
+const toast = useToast();
+
+const loading = ref<boolean>(false);
+
 const onSubmit = async (event: FormSubmitEvent<EmailSchema>) => {
-  store.setEmail(event.data.email);
+  const email = event.data.email;
+
+  loading.value = true;
+  const { data: existingUser } = await getUserWithFilters({ email });
+  loading.value = false;
+
+  if (existingUser) {
+    toast.add({
+      title: "Error",
+      description: "This e-mail is already in use by another user.",
+      color: "error",
+    });
+
+    return;
+  }
+
+  store.setEmail(email);
   stepper.next();
 };
 </script>
@@ -41,7 +63,7 @@ const onSubmit = async (event: FormSubmitEvent<EmailSchema>) => {
         />
       </UFormField>
 
-      <UButton type="submit">Next</UButton>
+      <UButton type="submit" :loading="loading">Next</UButton>
     </UForm>
   </RegisterStep>
 </template>

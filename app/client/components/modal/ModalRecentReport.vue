@@ -1,13 +1,19 @@
 <script lang="ts" setup>
-import type { Report } from "~/types/domain";
 import {
   REPORT_CONFLICT_PERIOD_IN_DAYS,
   RADIUS_OF_RELATED_REPORTS_IN_METERS,
 } from "~/utils/constants";
 
+interface PartialReport {
+  latitude: number;
+  longitude: number;
+  description: string;
+  imagesUrls: string[];
+}
+
 interface Props {
-  lastReport: Report;
-  currentReport: Report;
+  lastReport: PartialReport;
+  currentReport: PartialReport;
 }
 const { lastReport, currentReport } = defineProps<Props>();
 const emit = defineEmits<{ close: [boolean] }>();
