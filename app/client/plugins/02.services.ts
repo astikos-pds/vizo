@@ -52,7 +52,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     permissionPresetMapper
   );
 
-  const userService: UserService = new UserService(httpClient, userMapper);
+  const userService: UserService = new UserService(httpClient);
   const authService: AuthService = new AuthService(
     httpClient,
     userMapper,

@@ -1,13 +1,13 @@
-import type { GetUserWithFiltersParams } from "~/services/user";
+import type { ExistsUserParams } from "~/services/user";
 
 export const useUsers = () => {
   const { $userService } = useNuxtApp();
 
-  function getUserWithFilters(params: GetUserWithFiltersParams) {
-    return useAsyncData(() => $userService.getUserWithFilters(params));
+  function existsUserByParams(params: ExistsUserParams) {
+    return useAsyncData(() => $userService.existsUserByParams(params));
   }
 
   return {
-    getUserWithFilters,
+    existsUserByParams,
   };
 };

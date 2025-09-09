@@ -17,7 +17,7 @@ const form = reactive<EmailSchema>({
 
 const stepper = useSteps();
 
-const { getUserWithFilters } = useUsers();
+const { existsUserByParams } = useUsers();
 const toast = useToast();
 
 const loading = ref<boolean>(false);
@@ -26,10 +26,10 @@ const onSubmit = async (event: FormSubmitEvent<EmailSchema>) => {
   const email = event.data.email;
 
   loading.value = true;
-  const { data: existingUser } = await getUserWithFilters({ email });
+  const { data: existsUserWithEmail } = await existsUserByParams({ email });
   loading.value = false;
 
-  if (existingUser) {
+  if (existsUserWithEmail) {
     toast.add({
       title: "Error",
       description: "This e-mail is already in use by another user.",
