@@ -1,6 +1,6 @@
 package br.app.vizo.infrastructure.persistence.jpa.entity;
 
-import br.app.vizo.core.assignment.PermissionMode;
+import br.app.vizo.core.assignment.permission.PermissionMode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,8 +22,8 @@ public class AssignedUserEntity {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private AffiliatedUserEntity user;
+    @JoinColumn(name = "affiliated_user_id")
+    private AffiliatedUserEntity affiliatedUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")

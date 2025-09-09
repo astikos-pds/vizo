@@ -2,7 +2,7 @@ package br.app.vizo.application.factory;
 
 import br.app.vizo.application.Factory;
 import br.app.vizo.core.problem.*;
-import br.app.vizo.core.shared.Coordinates;
+import br.app.vizo.core.shared.coordinates.Coordinates;
 import br.app.vizo.core.shared.Credibility;
 import br.app.vizo.core.shared.MutationTimestamps;
 
@@ -18,7 +18,7 @@ public class ProblemFactoryImpl implements ProblemFactory {
                 coordinates,
                 problemType,
                 ProblemStatus.ANALYSIS,
-                Credibility.of(0.0),
+                new Credibility(),
                 false,
                 new MutationTimestamps(),
                 new ReportingTimeline(),

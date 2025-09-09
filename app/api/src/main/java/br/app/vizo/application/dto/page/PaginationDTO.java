@@ -4,13 +4,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 public record PaginationDTO(
-        int page,
-        int size
+        Integer page,
+        Integer size
 ) {
 
     public static Pageable resolve(PaginationDTO paginationDTO) {
-        return paginationDTO == null
-                ? PageRequest.of(0, 20)
-                : PageRequest.of(paginationDTO.page(), paginationDTO.size());
+        if (paginationDTO == null) {
+            return PageRequest.of(0, 20);
+        }
+
+        int page = paginationDTO.page() == null ? 0 : paginationDTO.page();
+        int size = paginationDTO.size() == null ? 20 : paginationDTO.size();
+
+        return PageRequest.of(page, size);
     }
 }

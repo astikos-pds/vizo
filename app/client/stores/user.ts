@@ -1,33 +1,15 @@
 import { defineStore } from "pinia";
-import type { Official, UserProfile } from "~/types/domain";
+import type { User } from "~/types/domain/user";
 
-export const useUserStore = defineStore("user", () => {
-  const user = computed<UserProfile | null>({
-    get: () => {
-      const item = localStorage.getItem("user");
-      if (!item) return null;
-      return JSON.parse(item);
-    },
-    set: (value) => {
-      localStorage.setItem("user", JSON.stringify(value));
-    },
-  });
+export const useLoggedInUserStore = defineStore("user", () => {
+  const user = useLocalStorage<User | null>("user", null);
 
-  const setUser = (value: UserProfile | null) => {
+  const setUser = (value: User | null) => {
     user.value = value;
   };
-
-  const isAdmin = computed(() => {
-    if (!user.value) return false;
-    if (user.value.userType !== "OFFICIAL") return false;
-    const profile = user.value.profile as Official;
-
-    return profile.role === "ADMIN";
-  });
 
   return {
     user,
     setUser,
-    isAdmin,
   };
 });

@@ -1,6 +1,8 @@
 package br.app.vizo.core.user.exception;
 
-public class WeakPasswordException extends RuntimeException {
+import br.app.vizo.core.DomainException;
+
+public class WeakPasswordException extends DomainException {
     public WeakPasswordException(String message) {
         super(message);
     }

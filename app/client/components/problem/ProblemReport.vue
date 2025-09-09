@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { Report } from "~/types/domain";
+import type { Report } from "~/types/domain/report";
 
 interface Props {
   report: Report;
@@ -25,7 +25,7 @@ const { locale, t } = useI18n();
       <img
         v-for="(imageUrl, index) in report.imagesUrls"
         :key="`${report.id}-${index}`"
-        :src="imageUrl"
+        :src="imageUrl.toString()"
         class="w-full h-full object-cover"
         :alt="`Image ${index} of report with id ${report.id}`"
       />
@@ -33,7 +33,7 @@ const { locale, t } = useI18n();
 
     <template #footer
       >{{ t("problemReport.reportedAt") }}
-      {{ new Date(report.createdAt).toLocaleDateString(locale) }}</template
+      {{ report.createdAt.toLocaleDateString(locale) }}</template
     >
   </UCard>
 </template>

@@ -1,25 +1,22 @@
-import {
-  createMunicipalityRepository,
-  type GetMunicipalityByDomainParams,
-  type MunicipalityId,
-} from "~/repositories/municipality";
+import type { Municipality } from "~/types/domain/municipality";
 
 export const useMunicipalities = () => {
-  const { $api } = useNuxtApp();
-  const municipalityRepository = createMunicipalityRepository($api);
+  const { $municipalityService } = useNuxtApp();
 
-  function getMunicipalityById(id: MunicipalityId) {
+  function getMunicipalityById(id: Municipality["id"]) {
     return useAsyncData(`municipality-${id}`, () =>
-      municipalityRepository.findById(id)
+      $municipalityService.getMunicipalityById(id)
     );
   }
 
-  function getMunicipalityByDomain(params: GetMunicipalityByDomainParams) {
-    return municipalityRepository.findByDomain(params);
+  function getMunicipalityByEmailDomain(emailDomain: string) {
+    return useAsyncData(`municipality-${emailDomain}`, () =>
+      $municipalityService.getMunicipalityByEmailDomain(emailDomain)
+    );
   }
 
   return {
     getMunicipalityById,
-    getMunicipalityByDomain,
+    getMunicipalityByEmailDomain,
   };
 };

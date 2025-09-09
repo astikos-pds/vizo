@@ -3,7 +3,7 @@ package br.app.vizo.application.mapper;
 import br.app.vizo.application.Mapper;
 import br.app.vizo.application.dto.DepartmentDTO;
 import br.app.vizo.application.mapper.base.RepresentationMapper;
-import br.app.vizo.core.department.ColorHex;
+import br.app.vizo.core.shared.ColorHex;
 import br.app.vizo.core.department.Department;
 import br.app.vizo.core.department.ProblemScope;
 import br.app.vizo.core.shared.Image;

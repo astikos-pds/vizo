@@ -1,41 +1,111 @@
-import {
-  createDepartmentRepository,
-  type CreateDepartmentRequest,
-  type DepartmentId,
-  type GetAllDepartmentsParams,
-} from "~/repositories/department";
-import type { MunicipalityId } from "~/repositories/municipality";
+import type {
+  ChangeProblemStatusInScopeRequest,
+  MutateDepartmentRequest,
+} from "~/services/department";
+import type { Department } from "~/types/domain/department";
+import type { Municipality } from "~/types/domain/municipality";
+import type { Pagination } from "~/types/domain/pagination";
+import type { Problem } from "~/types/domain/problem";
 
 export const useDepartments = () => {
-  const { $api } = useNuxtApp();
-  const departmentRepository = createDepartmentRepository($api);
+  const { $departmentService } = useNuxtApp();
 
-  function getDepartmentsByMunicipalityId(
-    municipalityId: MunicipalityId,
-    params: GetAllDepartmentsParams
+  const { handle, loading } = useApiHandler();
+
+  function getDepartmentById(
+    municipalityId: Municipality["id"],
+    departmentId: Department["id"]
   ) {
-    return useAsyncData(`/municipalities/${municipalityId}/departments`, () =>
-      departmentRepository.findAllByMunicipalityId(municipalityId, params)
+    return useAsyncData(
+      `municipalities-${municipalityId}-departments-${departmentId}`,
+      () => $departmentService.getDepartmentById(municipalityId, departmentId)
     );
   }
 
   function createDepartment(
-    municipalityId: MunicipalityId,
-    body: CreateDepartmentRequest
+    municipalityId: Municipality["id"],
+    request: MutateDepartmentRequest
   ) {
-    return departmentRepository.create(municipalityId, body);
+    return handle(() =>
+      $departmentService.createDepartment(municipalityId, request)
+    );
+  }
+
+  function updateDepartment(
+    municipalityId: Municipality["id"],
+    departmentId: Department["id"],
+    request: MutateDepartmentRequest
+  ) {
+    return handle(() =>
+      $departmentService.updateDepartment(municipalityId, departmentId, request)
+    );
   }
 
   function deleteDepartment(
-    municipalityId: MunicipalityId,
-    departmentId: DepartmentId
+    municipalityId: Municipality["id"],
+    departmentId: Department["id"]
   ) {
-    return departmentRepository.delete(municipalityId, departmentId);
+    return handle(() =>
+      $departmentService.deleteDepartment(municipalityId, departmentId)
+    );
+  }
+
+  function getProblemsInScope(
+    municipalityId: Municipality["id"],
+    departmentId: Department["id"],
+    pagination: Pagination
+  ) {
+    return useAsyncData(
+      `municipalities-${municipalityId}-departments-${departmentId}-problems`,
+      () =>
+        $departmentService.getProblemsInScope(
+          municipalityId,
+          departmentId,
+          pagination
+        )
+    );
+  }
+
+  function getProblemInScope(
+    municipalityId: Municipality["id"],
+    departmentId: Department["id"],
+    problemId: Problem["id"]
+  ) {
+    return useAsyncData(
+      `municipalities-${municipalityId}-departments-${departmentId}-problems-${problemId}`,
+      () =>
+        $departmentService.getProblemInScope(
+          municipalityId,
+          departmentId,
+          problemId
+        )
+    );
+  }
+
+  function changeProblemStatusInScope(
+    municipalityId: Municipality["id"],
+    departmentId: Department["id"],
+    problemId: Problem["id"],
+    request: ChangeProblemStatusInScopeRequest
+  ) {
+    return handle(() =>
+      $departmentService.changeProblemStatusInScope(
+        municipalityId,
+        departmentId,
+        problemId,
+        request
+      )
+    );
   }
 
   return {
-    getDepartmentsByMunicipalityId,
+    loading,
+    getDepartmentById,
     createDepartment,
+    updateDepartment,
     deleteDepartment,
+    getProblemsInScope,
+    getProblemInScope,
+    changeProblemStatusInScope,
   };
 };

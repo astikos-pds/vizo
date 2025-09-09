@@ -1,9 +1,12 @@
 package br.app.vizo.core.affiliation;
 
+import br.app.vizo.core.affiliation.exception.CannotAssignAnUnapprovedAffiliateException;
 import br.app.vizo.core.affiliation.exception.ForbiddenActionException;
 import br.app.vizo.core.affiliation.exception.InvalidPromotionException;
 import br.app.vizo.core.affiliation.exception.SelfActionNotAllowedException;
 import br.app.vizo.core.assignment.*;
+import br.app.vizo.core.assignment.permission.Permission;
+import br.app.vizo.core.assignment.permission.PermissionPreset;
 import br.app.vizo.core.department.Department;
 import br.app.vizo.core.municipality.Municipality;
 import br.app.vizo.core.problem.ProblemType;
@@ -61,7 +64,7 @@ public class AffiliatedUser {
         target.isAdmin = true;
     }
 
-    public void updateStatusOf(AffiliatedUser target, AffiliationStatus newStatus) {
+    public void changeStatusOf(AffiliatedUser target, AffiliationStatus newStatus) {
         throwIfSameAs(target);
         throwIfNotAdmin();
 
@@ -80,21 +83,40 @@ public class AffiliatedUser {
         return new Department(this.municipality, this, name, colorHex, iconUrl, problemTypes);
     }
 
+    public Department updateDepartment(Department department, String name, String colorHex, String iconUrl, Set<ProblemType> problemTypes) {
+        this.throwIfNotAdmin();
+
+        department.update(name, colorHex, iconUrl, problemTypes);
+
+        return department;
+    }
+
     public AssignmentIntent assign(AffiliatedUser target) {
-        throwIfSameAs(target);
         throwIfNotAdmin();
+
+        if (!target.isApproved()) {
+            throw new CannotAssignAnUnapprovedAffiliateException();
+        }
 
         return new AssignmentIntent(target, Permission.common());
     }
 
     public AssignmentIntent assignSelf() {
-        throwIfNotAdmin();
-
-        return new AssignmentIntent(this, Permission.admin());
+        return assign(this);
     }
 
     public PermissionPreset createPermissionPreset(String name, Permission permission) {
+        this.throwIfNotAdmin();
+
         return new PermissionPreset(this.municipality, name, permission);
+    }
+
+    public PermissionPreset updatePermissionPreset(PermissionPreset preset, String name, Permission permission) {
+        this.throwIfNotAdmin();
+
+        preset.update(name, permission);
+
+        return preset;
     }
 
     public boolean isApproved() {
@@ -137,7 +159,7 @@ public class AffiliatedUser {
         return approvedAt;
     }
 
-    private boolean isSameAs(AffiliatedUser other) {
+    public boolean isSameAs(AffiliatedUser other) {
         return this.id.equals(other.getId());
     }
 

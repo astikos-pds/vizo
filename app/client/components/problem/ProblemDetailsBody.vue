@@ -1,6 +1,7 @@
 <script lang="ts" setup>
-import type { Problem, Report } from "~/types/domain";
-import type { Page } from "~/types/http";
+import type { Page } from "~/types/domain/pagination";
+import type { Problem } from "~/types/domain/problem";
+import type { Report } from "~/types/domain/report";
 import type { Badge } from "~/types/ui";
 
 const { problem, reports } = defineProps<{
@@ -21,7 +22,7 @@ const statusBadge: Badge = (() => {
       color: "info",
       text: t("problemDetails.status.inProgress"),
     };
-  } else if (problem.status === "SOLVED") {
+  } else if (problem.status === "RESOLVED") {
     return {
       color: "warning",
       text: t("problemDetails.status.solved"),

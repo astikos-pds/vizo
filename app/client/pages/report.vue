@@ -13,7 +13,7 @@ import type { LatLng } from "~/types/geolocation";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
 import ModalReportImprecision from "~/components/modal/ModalReportImprecision.vue";
 import ModalRecentReport from "~/components/modal/ModalRecentReport.vue";
-import type { ProblemType, Report, ReportImage } from "~/types/domain";
+import type { ProblemType } from "~/types/domain/problem";
 
 const { t } = useI18n();
 
@@ -54,40 +54,7 @@ const form = reactive<ReportSchema>({
   description: "",
   images: [],
   location: "current",
-  problemType: "",
-});
-
-const formRef = useTemplateRef("formRef");
-const previewUrls = ref<string[]>([]);
-
-const updateImages = (files: File[]) => {
-  const combinedFiles = [...form.images, ...files];
-
-  form.images = combinedFiles;
-
-  previewUrls.value = form.images.map((file) => URL.createObjectURL(file));
-
-  formRef.value?.validate({ name: "images" });
-};
-
-const handleFileChange = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  if (!input.files) return;
-  updateImages(Array.from(input.files));
-  input.value = "";
-};
-
-const handleFileRemove = (index: number) => {
-  if (previewUrls.value[index]) {
-    URL.revokeObjectURL(previewUrls.value[index]);
-  }
-  previewUrls.value.splice(index, 1);
-  form.images.splice(index, 1);
-  formRef.value?.validate({ name: "images" });
-};
-
-onBeforeUnmount(() => {
-  previewUrls.value.forEach((url) => URL.revokeObjectURL(url));
+  problemType: "OTHER",
 });
 
 const locationItems = ref<RadioGroupItem[]>([
@@ -107,11 +74,12 @@ const {
   coords,
   error: geolocationError,
   isLocationPrecise,
-  mapCenter,
   markerPosition,
   isWithinRadius,
   updateMarker,
 } = useMapGeolocation();
+
+const { center } = useMap();
 
 const geolocationErrorMessage = computed(() => {
   if (geolocationError.value?.PERMISSION_DENIED)
@@ -141,7 +109,8 @@ watchEffect(() => {
   size.value = isMobile.value ? "md" : "xl";
 });
 
-const { loading, report, getReports } = useReports();
+const { loading, report } = useReports();
+const { getMyReports } = useMe();
 const toast = useToast();
 
 const overlay = useOverlay();
@@ -157,10 +126,8 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
       latitude,
       longitude,
       description: event.data.description,
-      images: previewUrls.value.map<ReportImage>((p) => {
-        return { url: p };
-      }),
-    } as Report))
+      imagesUrls: event.data.images.map((f) => URL.createObjectURL(f)),
+    }))
   )
     return;
 
@@ -192,7 +159,7 @@ async function shouldSubmitImpreciseLocation(
     const modal = overlay.create(ModalReportImprecision, {
       props: {
         description: data.description,
-        imagesUrls: previewUrls.value,
+        imagesUrls: data.images.map((f) => URL.createObjectURL(f)),
         latLng: coords.value,
       },
     });
@@ -212,13 +179,17 @@ async function shouldSubmitOutOfBounds(data: ReportSchema): Promise<boolean> {
   return true;
 }
 
-async function shouldSubmitIfRecentlyReported(
-  report: Report
-): Promise<boolean> {
-  const { data: nearbyReports } = await getReports({
+async function shouldSubmitIfRecentlyReported(report: {
+  latitude: number;
+  longitude: number;
+  description: string;
+  imagesUrls: string[];
+}): Promise<boolean> {
+  const { data: nearbyReports } = await getMyReports({
     latitude: report.latitude,
     longitude: report.longitude,
     radius: RADIUS_OF_RELATED_REPORTS_IN_METERS,
+    page: 0,
     size: 1,
   });
 
@@ -232,7 +203,13 @@ async function shouldSubmitIfRecentlyReported(
 
   if (diff <= REPORT_CONFLICT_PERIOD_IN_MS) {
     const modal = overlay.create(ModalRecentReport, {
-      props: { lastReport: lastReport, currentReport: report },
+      props: {
+        lastReport: {
+          ...lastReport,
+          imagesUrls: lastReport.imagesUrls.map((url) => url.toString()),
+        },
+        currentReport: report,
+      },
     });
     return await modal.open().result;
   }
@@ -256,7 +233,6 @@ function resolveCoordinates(data: ReportSchema) {
     </h1>
 
     <UForm
-      ref="formRef"
       :schema="reportSchema"
       :state="form"
       @submit="onSubmit"
@@ -282,65 +258,14 @@ function resolveCoordinates(data: ReportSchema) {
         :hint="t('reportProblem.optional')"
         :description="t('reportProblem.uploadImages')"
       >
-        <UButton
-          color="neutral"
-          variant="outline"
-          class="w-full p-0"
-          :disabled="geolocationError !== null"
-          :class="
-            formRef?.getErrors('images').length ? 'border border-error' : ''
-          "
-        >
-          <label
-            for="images"
-            class="w-full text-start text-neutral-500 cursor-pointer mx-3 my-2"
-            :class="
-              geolocationError !== null && 'disabled hover:cursor-not-allowed'
-            "
-            >{{ t("reportProblem.chooseFile") }}
-            <span class="text-neutral-900 font-normal">
-              {{
-                form.images.length === 0
-                  ? t("reportProblem.selectedFile")
-                  : `${form.images.length} ${t("reportProblem.files")}`
-              }}</span
-            ></label
-          >
-        </UButton>
-        <UInput
-          :key="form.images.length"
-          id="images"
-          type="file"
-          multiple
+        <UFileUpload
+          class="w-full"
+          v-model="form.images"
           accept="image/*"
-          @change="handleFileChange"
-          class="sr-only"
+          multiple
+          label="Drop your image here"
+          description="SVG, PNG, JPG or GIF (max. 5MB)"
         />
-
-        <div
-          v-if="previewUrls.length"
-          class="mt-3 gap-3 flex flex-row flex-wrap"
-        >
-          <div
-            v-for="(url, index) in previewUrls"
-            :key="index"
-            class="relative rounded-md size-[5rem] border border-default"
-          >
-            <UButton
-              icon="i-lucide-trash-2"
-              variant="solid"
-              size="md"
-              color="info"
-              class="absolute top-1 right-1"
-              @click="handleFileRemove(index)"
-            />
-            <img
-              :src="url"
-              :alt="`Preview ${index}`"
-              class="w-full h-full object-cover rounded-md"
-            />
-          </div>
-        </div>
       </UFormField>
 
       <UFormField
@@ -348,12 +273,9 @@ function resolveCoordinates(data: ReportSchema) {
         required
         class="w-full"
         :help="
-          !isLocationPrecise && !geolocationError
+          !isLocationPrecise && !geolocationError && coords.accuracy > 0
             ? t('reportProblem.geolocationAccuracyWarning', {
-                accuracy:
-                  coords.accuracy > 0
-                    ? coords.accuracy.toFixed(0)
-                    : 'inacessible',
+                accuracy: coords.accuracy.toFixed(0),
               })
             : ''
         "
@@ -369,7 +291,7 @@ function resolveCoordinates(data: ReportSchema) {
           v-if="form.location === 'point'"
           class="rounded-xl border border-default min-w-[15rem] min-h-[25rem] sm:min-w-[30rem] sm:min-h-[25rem] mt-4"
           :zoom="16"
-          :center="[mapCenter.latitude, mapCenter.longitude]"
+          :center="center"
         >
           <Marker
             key="1"
@@ -383,10 +305,7 @@ function resolveCoordinates(data: ReportSchema) {
 
           <CurrentPositionMarker
             v-if="isLocationPrecise && !geolocationError"
-            :lat-lng="{
-              latitude: coords.latitude,
-              longitude: coords.longitude,
-            }"
+            v-model="coords"
           />
 
           <LCircle

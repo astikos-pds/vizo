@@ -1,86 +1,68 @@
-import {
-  createAuthRepository,
-  type EmailVerificationRequest,
-  type EmailVerificationResponse,
-  type LoginRequest,
-  type RefreshRequest,
-  type RegisterRequest,
-  type TokenPairResponse,
-  type VerificationCodeRequest,
-  type VerificationCodeResponse,
-} from "~/repositories/auth";
-import type { Citizen, Official } from "~/types/domain";
+import type {
+  ChangePasswordRequest,
+  CodeRequest,
+  EmailVerificationRequest,
+  LoginRequest,
+  RefreshRequest,
+  RegisterRequest,
+} from "~/services/auth";
+import { useLoggedInUserStore } from "~/stores/user";
+import type { Authentication } from "~/types/domain/user";
 
 export const useAuth = () => {
   const accessToken = useCookie("access_token");
   const refreshToken = useCookie("refresh_token");
+  const userStore = useLoggedInUserStore();
 
   const { loading, handle } = useApiHandler();
 
-  const { $api } = useNuxtApp();
-  const authRepository = createAuthRepository($api);
+  const { $authService } = useNuxtApp();
 
   async function login(request: LoginRequest) {
-    const response = await handle<TokenPairResponse>(() =>
-      authRepository.login(request)
-    );
+    const response = await handle(() => $authService.login(request));
 
-    if (response) {
-      updateTokenPair(response);
-    }
+    authenticate(response);
 
     return response;
   }
 
-  async function registerAsCitizen(request: RegisterRequest) {
-    return await handle<Citizen>(() =>
-      authRepository.registerAsCitizen(request)
-    );
-  }
-
-  async function registerAsOfficial(request: RegisterRequest) {
-    return await handle<Official>(() =>
-      authRepository.registerAsOfficial(request)
-    );
+  async function register(request: RegisterRequest) {
+    return await handle(() => $authService.register(request));
   }
 
   async function logout() {
-    updateTokenPair({ accessToken: "", refreshToken: "" });
-    useUserStore().setUser(null);
+    authenticate(null);
   }
 
-  async function refresh(
-    request: RefreshRequest
-  ): Promise<TokenPairResponse | null> {
-    const response = await handle<TokenPairResponse>(() =>
-      authRepository.refresh(request)
-    );
+  async function refresh(request: RefreshRequest) {
+    const response = await handle(() => $authService.refresh(request));
 
-    if (response) {
-      updateTokenPair(response);
-    }
+    authenticate(response);
 
     return response;
   }
 
-  function updateTokenPair(tokens: TokenPairResponse) {
-    accessToken.value = tokens.accessToken;
-    refreshToken.value = tokens.refreshToken;
+  function authenticate(authentication: Authentication | null) {
+    accessToken.value = authentication ? authentication.accessToken : null;
+    refreshToken.value = authentication ? authentication.refreshToken : null;
+    userStore.setUser(authentication ? authentication.user : null);
   }
 
-  async function createVerificationRequest(request: EmailVerificationRequest) {
-    return await handle<EmailVerificationResponse>(() =>
-      authRepository.createVerificationRequest(request)
-    );
+  async function requestEmailVerification(request: EmailVerificationRequest) {
+    return await handle(() => $authService.requestEmailVerification(request));
   }
 
-  async function verifyCode(
-    requestId: string,
-    request: VerificationCodeRequest
+  async function verifyEmail(
+    emailVerificationRequestId: string,
+    request: CodeRequest
   ) {
-    return await handle<VerificationCodeResponse>(() =>
-      authRepository.verifyCode(requestId, request)
+    return await handle(() =>
+      $authService.verifyEmail(emailVerificationRequestId, request)
     );
+  }
+
+  async function changePassword(request: ChangePasswordRequest) {
+    return await handle(() => $authService.changePassword(request));
   }
 
   return {
@@ -88,11 +70,11 @@ export const useAuth = () => {
     accessToken,
     refreshToken,
     login,
-    registerAsCitizen,
-    registerAsOfficial,
-    logout,
+    register,
     refresh,
-    createVerificationRequest,
-    verifyCode,
+    logout,
+    requestEmailVerification,
+    verifyEmail,
+    changePassword,
   };
 };

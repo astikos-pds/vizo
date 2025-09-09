@@ -2,8 +2,8 @@
 import type { FormSubmitEvent } from "@nuxt/ui";
 import * as z from "zod";
 import { useAuth } from "~/composables/use-auth";
-import { useUser } from "~/composables/use-user";
 import { useI18n } from "vue-i18n";
+import { vMaska } from "maska/vue";
 
 const { t } = useI18n();
 
@@ -30,9 +30,9 @@ const form = reactive<LoginSchema>({
 const showPassword = ref<boolean>(false);
 
 const { loading, login } = useAuth();
-const { getProfile } = useUser();
 
 const toast = useToast();
+
 const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
   const ok = await login({
     document: event.data.document,
@@ -47,25 +47,12 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
     color: "success",
   });
 
-  const user = await getProfile();
-
-  if (!user) return;
-
-  useUserStore().setUser(user);
-
-  if (user.userType === "OFFICIAL") {
-    await navigateTo("/municipalities");
-    return;
-  }
-
   await navigateTo("/");
 };
 </script>
 
 <template>
-  <section
-    class="lg:min-w-[45%] xl:min-w-[50%] h-full bg-linear-to-tr from-primary to-neutral-200 dark:to-neutral-500"
-  ></section>
+  <LogoGradient />
   <section class="relative size-full flex flex-col items-center">
     <ConfigHeader class="w-full" />
     <section class="w-[70%] md:w-[50%] lg:w-[55%] 2xl:w-[45%] my-auto">
@@ -82,17 +69,13 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         :disabled="loading"
         class="flex flex-col items-center gap-5 mt-8"
       >
-        <UFormField
-          :label="t('login.cpf')"
-          name="document"
-          class="w-full"
-          required
-        >
+        <UFormField :label="t('login.cpf')" name="document" class="w-full">
           <UInput
             icon="i-lucide-id-card"
             v-model="form.document"
             type="text"
             :placeholder="t('login.cpfPlaceholder')"
+            v-maska="CPF_MASK"
             class="w-full text-xl"
           />
         </UFormField>
@@ -103,23 +86,16 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           :label="t('login.password')"
           name="password"
           :placeholder="t('login.passwordPlaceholder')"
-          required
           @click="showPassword = !showPassword"
         />
 
         <div class="text-center text-sm flex flex-col">
-          <i18n-t keypath="login.dontHaveAccount" tag="span">
-            <template #citizen>
-              <NuxtLink to="/citizen/register" class="text-primary">{{
-                t("login.as.citizen")
-              }}</NuxtLink>
-            </template>
-            <template #official>
-              <NuxtLink to="/official/register" class="text-primary">{{
-                t("login.as.official")
-              }}</NuxtLink>
-            </template>
-          </i18n-t>
+          <span>
+            {{ t("login.dontHaveAccount") }}
+            <NuxtLink to="/register" class="text-primary">{{
+              t("login.signUpHere")
+            }}</NuxtLink>
+          </span>
         </div>
 
         <UButton type="submit" :loading="loading">{{

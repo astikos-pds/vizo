@@ -36,9 +36,19 @@ public class DepartmentRepositoryImpl implements DepartmentRepository {
     }
 
     @Override
+    public boolean existsById(UUID id) {
+        return this.jpaRepository.existsById(id);
+    }
+
+    @Override
     public PageDTO<Department> findAllByMunicipalityId(UUID id, PaginationDTO pagination) {
         var page = this.jpaRepository.findAllByMunicipalityId(id, PaginationDTO.resolve(pagination))
                 .map(this.mapper::toModel);
         return PageDTO.of(page);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        this.jpaRepository.deleteById(id);
     }
 }

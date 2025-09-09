@@ -1,6 +1,6 @@
 package br.app.vizo.application.service;
 
-import br.app.vizo.exception.InternalServerErrorException;
+import br.app.vizo.application.exception.base.InternalServerErrorException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,8 +41,8 @@ public class EmailService {
         try {
             this.sendHtmlEmail(to, subject, html);
         } catch(MessagingException e) {
-            System.out.printf("Error sending email to %s: %s\n", to, e.getMessage());
-            throw new InternalServerErrorException("Internal Server Error");
+            System.out.printf("Error sending e-mail to %s: %s\n", to, e.getMessage());
+            throw new InternalServerErrorException("Error sending e-mail.");
         }
     }
 

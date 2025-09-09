@@ -1,8 +1,11 @@
 <script lang="ts" setup>
-import type { Report } from "~/types/domain";
-
 interface Props {
-  report: Report;
+  report: {
+    latitude: number;
+    longitude: number;
+    description: string;
+    imagesUrls: string[];
+  };
   variant?: "outline" | "solid" | "soft" | "subtle";
 }
 const { report } = defineProps<Props>();
@@ -29,7 +32,7 @@ const { report } = defineProps<Props>();
         <div class="size-[5rem]" v-for="(imageUrl, index) in report.imagesUrls">
           <img
             class="w-full h-full object-cover"
-            :src="imageUrl"
+            :src="imageUrl.toString()"
             :alt="`Image ${index}`"
             :key="index"
           />

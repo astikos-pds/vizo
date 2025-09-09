@@ -1,6 +1,6 @@
 package br.app.vizo.config.security;
 
-import br.app.vizo.domain.user.User;
+import br.app.vizo.core.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -28,5 +28,9 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public String getPassword() {
         return user.getPassword();
+    }
+
+    public User getUser() {
+        return user;
     }
 }

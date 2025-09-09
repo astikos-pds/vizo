@@ -12,5 +12,11 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, UUID> {
 
     Optional<UserEntity> findByDocument(String document);
 
+    Optional<UserEntity> findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByDocumentAndEmail(String document, String email);
+
     boolean existsByDocumentOrEmail(String document, String email);
 }

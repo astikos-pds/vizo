@@ -56,7 +56,7 @@ public class Municipality {
     }
 
     public String getIconUrl() {
-        return icon.url();
+        return icon == null ? null : icon.url();
     }
 
     public Instant getCreatedAt() {
@@ -65,5 +65,9 @@ public class Municipality {
 
     public Instant getUpdatedAt() {
         return timestamps.getUpdatedAt();
+    }
+
+    public boolean isSameAs(Municipality other) {
+        return this.id.equals(other.getId());
     }
 }

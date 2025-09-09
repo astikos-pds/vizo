@@ -34,11 +34,11 @@ public class DepartmentEntity {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "icon_url")
-    private String iconUrl;
-
     @Column(name = "color_hex", nullable = false)
     private String colorHex;
+
+    @Column(name = "icon_url")
+    private String iconUrl;
 
     @ElementCollection(fetch = FetchType.LAZY)
     @Enumerated(EnumType.STRING)

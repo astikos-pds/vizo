@@ -21,12 +21,12 @@ const items = ref<DropdownMenuItem[][]>([
   ],
 ]);
 
-const { user } = useUserStore();
+const { user } = useLoggedInUserStore();
 </script>
 
 <template>
   <UDropdownMenu
-    v-if="user && user.profile"
+    v-if="user"
     :items="items"
     :content="{
       align: 'start',
@@ -42,8 +42,8 @@ const { user } = useUserStore();
         color="neutral"
         variant="ghost"
         :avatar="{
-          src: user.profile.avatar?.url,
-          alt: user.profile.name,
+          src: user.avatarUrl?.toString(),
+          alt: user.name,
           size: 'md',
         }"
         class="w-full"
@@ -51,7 +51,7 @@ const { user } = useUserStore();
           base: 'p-[5px]',
         }"
       >
-        {{ !collapsed ? user.profile.name : "" }}
+        {{ !collapsed ? user.name : "" }}
       </UButton>
     </div>
   </UDropdownMenu>

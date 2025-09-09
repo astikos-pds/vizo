@@ -1,9 +1,9 @@
 package br.app.vizo.application.usecase.auth;
 
 import br.app.vizo.application.UseCase;
+import br.app.vizo.application.exception.auth.EmailVerificationRequestNotFound;
 import br.app.vizo.application.usecase.auth.request.CodeRequestDTO;
 import br.app.vizo.core.verification.EmailVerificationRequestRepository;
-import br.app.vizo.exception.NotFoundException;
 
 import java.util.UUID;
 
@@ -18,7 +18,7 @@ public class VerifyEmailUseCase {
 
     public void execute(UUID id, CodeRequestDTO body) {
         var emailVerificationRequest = this.emailVerificationRequestRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Email verification request not found.")
+                EmailVerificationRequestNotFound::new
         );
 
         emailVerificationRequest.verifyWith(body.code());

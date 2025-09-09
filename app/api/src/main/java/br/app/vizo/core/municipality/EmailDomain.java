@@ -8,7 +8,7 @@ public record EmailDomain(
 ) {
 
     public EmailDomain {
-        if (!value.matches("^@[a-zA-Z0-9.-]+$")) {
+        if (!value.matches("^[a-zA-Z0-9.-]+$")) {
             throw new InvalidEmailDomainException();
         }
     }

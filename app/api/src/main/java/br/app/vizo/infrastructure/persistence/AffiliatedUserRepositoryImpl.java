@@ -37,8 +37,18 @@ public class AffiliatedUserRepositoryImpl implements AffiliatedUserRepository {
     }
 
     @Override
+    public boolean existsByInstitutionalEmail(String institutionalEmail) {
+        return this.jpaRepository.existsByInstitutionalEmail(institutionalEmail);
+    }
+
+    @Override
     public void deleteById(UUID id) {
         this.jpaRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByUserIdAndMunicipalityId(UUID userId, UUID municipalityId) {
+        this.jpaRepository.deleteByUserIdAndMunicipalityId(userId, municipalityId);
     }
 
     @Override
@@ -56,12 +66,26 @@ public class AffiliatedUserRepositoryImpl implements AffiliatedUserRepository {
     }
 
     @Override
-    public boolean existsByUserIdAndMunicipalityIdAndStatus(UUID userId, UUID municipalityId, AffiliationStatus status) {
-        return this.jpaRepository.existsByUserIdAndMunicipalityIdAndStatus(userId, municipalityId, status);
+    public Optional<AffiliatedUser> findByUserIdAndMunicipalityIdAndStatus(UUID userId, UUID municipalityId, AffiliationStatus status) {
+        return this.jpaRepository.findByUserIdAndMunicipalityIdAndStatus(userId, municipalityId, status)
+                .map(this.mapper::toModel);
     }
 
     @Override
-    public Iterable<AffiliatedUser> findAllByUserId(UUID id) {
-        return this.jpaRepository.findAllByUserId(id).stream().map(this.mapper::toModel).toList();
+    public PageDTO<AffiliatedUser> findAllByUserId(UUID id, PaginationDTO pagination) {
+        var page = this.jpaRepository.findAllByUserId(id, PaginationDTO.resolve(pagination))
+                .map(this.mapper::toModel);
+        return PageDTO.of(page);
+    }
+
+    @Override
+    public long countByMunicipalityIdAndIsAdmin(UUID municipalityId, boolean isAdmin) {
+        return this.jpaRepository.countByMunicipalityIdAndIsAdmin(municipalityId, isAdmin);
+    }
+
+    @Override
+    public Optional<AffiliatedUser> findFirstApprovedNonAdminByMunicipalityId(UUID municipalityId) {
+        return this.jpaRepository.findFirstApprovedNonAdminByMunicipalityId(municipalityId)
+                .map(this.mapper::toModel);
     }
 }

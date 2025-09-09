@@ -10,6 +10,7 @@ import br.app.vizo.infrastructure.persistence.jpa.entity.ProblemEntity;
 import br.app.vizo.infrastructure.persistence.jpa.repository.ProblemJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -43,7 +44,7 @@ public class ProblemRepositoryImpl implements ProblemRepository {
     }
 
     @Override
-    public Iterable<Problem> findAll() {
+    public List<Problem> findAll() {
         return this.jpaRepository.findAll().stream().map(this.mapper::toModel).toList();
     }
 
@@ -56,9 +57,14 @@ public class ProblemRepositoryImpl implements ProblemRepository {
     }
 
     @Override
-    public Optional<Problem> findNearestWithinDistance(Double latitude, Double longitude, Double distance) {
+    public Optional<Problem> findClosestUnresolvedByTypeWithinRadiusInMeters(
+            ProblemType problemType,
+            Double latitude,
+            Double longitude,
+            Double radiusInMeters
+    ) {
         return this.jpaRepository
-                .findNearestWithinDistance(latitude, longitude, distance)
+                .findClosestUnresolvedByTypeWithinRadiusInMeters(problemType.name(), latitude, longitude, radiusInMeters)
                 .map(this.mapper::toModel);
     }
 }

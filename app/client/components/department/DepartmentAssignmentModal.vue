@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useAssignments } from "~/composables/use-assignments";
+import { useAssignments } from "~/composables/use-assigned-users";
 import type { Department, Official } from "~/types/domain";
 import type { Pageable } from "~/types/http";
 

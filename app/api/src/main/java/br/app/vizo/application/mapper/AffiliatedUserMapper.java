@@ -30,7 +30,9 @@ public class AffiliatedUserMapper implements
                 affiliatedUser.isAdmin(),
                 affiliatedUser.getStatus(),
                 affiliatedUser.getAffiliatedAt(),
-                this.toDto(affiliatedUser.getApprover()),
+                affiliatedUser.getApprover() == null
+                        ? null
+                        : this.toDto(affiliatedUser.getApprover()),
                 affiliatedUser.getApprovedAt()
         );
     }
@@ -45,7 +47,9 @@ public class AffiliatedUserMapper implements
                 affiliatedUser.isAdmin(),
                 affiliatedUser.getStatus(),
                 affiliatedUser.getAffiliatedAt(),
-                this.toEntity(affiliatedUser.getApprover()),
+                affiliatedUser.getApprover() == null
+                        ? null
+                        : this.toEntity(affiliatedUser.getApprover()),
                 affiliatedUser.getApprovedAt()
         );
     }
@@ -60,7 +64,9 @@ public class AffiliatedUserMapper implements
                 entity.isAdmin(),
                 entity.getStatus(),
                 entity.getAffiliatedAt(),
-                this.toModel(entity.getApprover()),
+                entity.getApprover() == null
+                        ? null
+                        : this.toModel(entity.getApprover()),
                 entity.getApprovedAt()
         );
     }

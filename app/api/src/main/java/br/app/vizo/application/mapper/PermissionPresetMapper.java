@@ -3,7 +3,7 @@ package br.app.vizo.application.mapper;
 import br.app.vizo.application.Mapper;
 import br.app.vizo.application.dto.PermissionPresetDTO;
 import br.app.vizo.application.mapper.base.RepresentationMapper;
-import br.app.vizo.core.assignment.PermissionPreset;
+import br.app.vizo.core.assignment.permission.PermissionPreset;
 import br.app.vizo.core.shared.Name;
 import br.app.vizo.infrastructure.persistence.jpa.entity.PermissionPresetEntity;
 

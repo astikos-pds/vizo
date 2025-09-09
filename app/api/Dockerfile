@@ -1,4 +1,4 @@
-FROM gradle:8.14-jdk17-alpine AS builder
+FROM gradle:8.14-jdk21-alpine AS builder
 
 WORKDIR /home/gradle/project
 
@@ -11,7 +11,7 @@ COPY src ./src
 
 RUN gradle bootJar --no-daemon
 
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 

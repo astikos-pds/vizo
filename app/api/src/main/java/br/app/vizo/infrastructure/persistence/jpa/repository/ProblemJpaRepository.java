@@ -17,17 +17,24 @@ public interface ProblemJpaRepository extends JpaRepository<ProblemEntity, UUID>
 
     @Query(value = """
             SELECT * FROM problems p
-            WHERE ST_DWithin(
+            WHERE p.status != 'RESOLVED'
+            AND p.type = :type
+            AND ST_DWithin(
                 p.coordinates::geography,
-                ST_SetSRID(ST_MakePoint(:lat, :lon), 4326)::geography,
+                ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,
                 :distance
             )
+            ORDER BY ST_Distance(
+                p.coordinates::geography,
+                ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography
+            )
             LIMIT 1
-           """, nativeQuery = true)
-    Optional<ProblemEntity> findNearestWithinDistance(
+    """, nativeQuery = true)
+    Optional<ProblemEntity> findClosestUnresolvedByTypeWithinRadiusInMeters(
+            @Param("type") String problemType,
             @Param("lat") Double latitude,
             @Param("lon") Double longitude,
-            @Param("distance") Double distance
+            @Param("distance") Double radiusInMeters
     );
 
     Page<ProblemEntity> findAllByTypeIn(Set<ProblemType> types, Pageable pageable);

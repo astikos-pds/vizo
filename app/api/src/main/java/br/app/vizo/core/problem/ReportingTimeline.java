@@ -10,12 +10,12 @@ public class ReportingTimeline {
     private Instant lastReportedAt;
 
     public ReportingTimeline(Instant firstReportedAt, Instant lastReportedAt) {
-        if (firstReportedAt == null || firstReportedAt.isBefore(Instant.now())) {
+        if (firstReportedAt == null) {
             throw new InvalidTimestampException();
         }
         this.firstReportedAt = firstReportedAt;
 
-        if (lastReportedAt == null || lastReportedAt.isBefore(Instant.now())) {
+        if (lastReportedAt == null || lastReportedAt.isBefore(firstReportedAt)) {
             throw new InvalidTimestampException();
         }
         this.lastReportedAt = lastReportedAt;

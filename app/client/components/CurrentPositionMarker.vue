@@ -1,23 +1,17 @@
-<template>
-  <Marker
-    key="user"
-    :lat-lng="{
-      latitude: latLng.latitude,
-      longitude: latLng.longitude,
-    }"
-    :z-index-offset="-1000"
-    :icon="{
-      url: 'https://static-00.iconduck.com/assets.00/cursor-icon-2048x2048-7mjsp9p1.png',
-      size: [20, 20],
-    }"
-  />
-</template>
-
 <script lang="ts" setup>
 import type { LatLng } from "~/types/geolocation";
 
-interface Props {
-  latLng: LatLng;
-}
-const { latLng } = defineProps<Props>();
+const model = defineModel<LatLng>({ required: true });
 </script>
+
+<template>
+  <Marker
+    key="user"
+    :lat-lng="model"
+    :z-index-offset="-1000"
+    :icon="{
+      url: '/current-position-marker.png',
+      size: [25, 25],
+    }"
+  />
+</template>

@@ -29,12 +29,34 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findByDocument(String document) {
-        return this.jpaRepository.findByDocument(document)
+        String numericOnlyDocument = this.clearSpecialCharactersFromDocument(document);
+        return this.jpaRepository.findByDocument(numericOnlyDocument)
                 .map(this.mapper::toModel);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return this.jpaRepository.findByEmail(email)
+                .map(this.mapper::toModel);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return this.jpaRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByDocumentAndEmail(String document, String email) {
+        String cleanedDocument = this.clearSpecialCharactersFromDocument(document);
+        return this.jpaRepository.existsByDocumentAndEmail(cleanedDocument, email);
     }
 
     @Override
     public boolean existsByDocumentOrEmail(String document, String email) {
         return this.jpaRepository.existsByDocumentOrEmail(document, email);
+    }
+
+    private String clearSpecialCharactersFromDocument(String document) {
+        return document.replaceAll("\\D", "");
     }
 }

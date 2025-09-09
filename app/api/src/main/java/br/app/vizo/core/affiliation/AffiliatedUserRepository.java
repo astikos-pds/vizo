@@ -12,13 +12,21 @@ public interface AffiliatedUserRepository {
 
     Optional<AffiliatedUser> findById(UUID id);
 
+    boolean existsByInstitutionalEmail(String institutionalEmail);
+
     void deleteById(UUID id);
+
+    void deleteByUserIdAndMunicipalityId(UUID userId, UUID municipalityId);
 
     PageDTO<AffiliatedUser> findAllByMunicipalityId(UUID id, PaginationDTO pagination);
 
     PageDTO<AffiliatedUser> findAllByMunicipalityIdAndStatus(UUID id, AffiliationStatus status, PaginationDTO pagination);
 
-    boolean existsByUserIdAndMunicipalityIdAndStatus(UUID userId, UUID municipalityId, AffiliationStatus status);
+    Optional<AffiliatedUser> findByUserIdAndMunicipalityIdAndStatus(UUID userId, UUID municipalityId, AffiliationStatus status);
 
-    Iterable<AffiliatedUser> findAllByUserId(UUID id);
+    PageDTO<AffiliatedUser> findAllByUserId(UUID id, PaginationDTO pagination);
+
+    long countByMunicipalityIdAndIsAdmin(UUID municipalityId, boolean isAdmin);
+
+    Optional<AffiliatedUser> findFirstApprovedNonAdminByMunicipalityId(UUID municipalityId);
 }

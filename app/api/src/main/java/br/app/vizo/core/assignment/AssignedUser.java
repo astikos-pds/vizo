@@ -5,6 +5,9 @@ import br.app.vizo.core.affiliation.exception.ForbiddenActionException;
 import br.app.vizo.core.affiliation.exception.SelfActionNotAllowedException;
 import br.app.vizo.core.assignment.exception.InvalidAssignedUserException;
 import br.app.vizo.core.assignment.exception.OutOfScopeException;
+import br.app.vizo.core.assignment.permission.Permission;
+import br.app.vizo.core.assignment.permission.PermissionMode;
+import br.app.vizo.core.assignment.permission.PermissionPreset;
 import br.app.vizo.core.department.Department;
 import br.app.vizo.core.problem.Problem;
 import br.app.vizo.core.problem.StatusUpdate;
@@ -56,35 +59,23 @@ public class AssignedUser {
         return this;
     }
 
-    public StatusUpdate updateProblemStatus(Problem problem, ProblemStatus status, String text) {
+    public Problem changeProblemStatus(Problem problem, ProblemStatus status) {
         throwIfProblemIsOutOfScope(problem);
         throwIfCannotUpdateStatus();
 
         problem.updateStatusTo(status);
-        return new StatusUpdate(problem, text, status);
+        return problem;
     }
 
-    public void updatePermissionOf(AssignedUser target, PermissionMode mode) {
+    public AssignedUser changePermissionOf(AssignedUser target, PermissionMode mode, Permission customPermission, PermissionPreset permissionPreset) {
         throwIfSameAs(target);
         throwIfCannotManageUsers();
 
         target.permissionMode = mode;
-    }
+        target.customPermission = customPermission;
+        target.permissionPreset = permissionPreset;
 
-    public void updatePermissionOf(AssignedUser target, PermissionPreset preset) {
-        throwIfSameAs(target);
-        throwIfCannotManageUsers();
-
-        target.permissionMode = PermissionMode.PRESET;
-        target.permissionPreset = preset;
-    }
-
-    public void updatePermissionOf(AssignedUser target, Permission permission) {
-        throwIfSameAs(target);
-        throwIfCannotManageUsers();
-
-        target.permissionMode = PermissionMode.CUSTOM;
-        target.customPermission = permission;
+        return target;
     }
 
     public boolean canViewReports() {
@@ -128,7 +119,7 @@ public class AssignedUser {
     }
 
     private void throwIfSameAs(AssignedUser other) {
-        if (this.id.equals(other.getId())) {
+        if (this.isSameAs(other)) {
             throw new SelfActionNotAllowedException();
         }
     }
@@ -157,5 +148,9 @@ public class AssignedUser {
         return this.permissionMode == PermissionMode.PRESET
                 ? permissionPreset.getPermission()
                 : customPermission;
+    }
+
+    public boolean isSameAs(AssignedUser other) {
+        return this.id.equals(other.getId());
     }
 }

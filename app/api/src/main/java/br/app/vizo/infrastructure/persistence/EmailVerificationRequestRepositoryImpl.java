@@ -3,6 +3,7 @@ package br.app.vizo.infrastructure.persistence;
 import br.app.vizo.application.mapper.EmailVerificationRequestMapper;
 import br.app.vizo.core.verification.EmailVerificationRequest;
 import br.app.vizo.core.verification.EmailVerificationRequestRepository;
+import br.app.vizo.core.verification.VerificationPurpose;
 import br.app.vizo.infrastructure.persistence.jpa.repository.EmailVerificationRequestJpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -35,7 +36,17 @@ public class EmailVerificationRequestRepositoryImpl implements EmailVerification
     }
 
     @Override
-    public Optional<EmailVerificationRequest> findByEmail(String email) {
-        return this.jpaRepository.findByEmail(email).map(this.mapper::toModel);
+    public Optional<EmailVerificationRequest> findByEmailAndPurpose(String email, VerificationPurpose purpose) {
+        return this.jpaRepository.findByEmailAndPurpose(email, purpose).map(this.mapper::toModel);
+    }
+
+    @Override
+    public boolean existsByEmailAndPurpose(String email, VerificationPurpose purpose) {
+        return this.jpaRepository.existsByEmailAndPurpose(email, purpose);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        this.jpaRepository.deleteById(id);
     }
 }

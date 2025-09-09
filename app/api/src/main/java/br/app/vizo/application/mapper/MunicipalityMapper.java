@@ -43,7 +43,9 @@ public class MunicipalityMapper implements RepresentationMapper<Municipality, Mu
                 entity.getId(),
                 new Name(entity.getName()),
                 new EmailDomain(entity.getEmailDomain()),
-                entity.getIconUrl() == null ? null : new Image(entity.getIconUrl()),
+                entity.getIconUrl() == null || entity.getIconUrl().isBlank()
+                        ? null
+                        : new Image(entity.getIconUrl()),
                 new MutationTimestamps(entity.getCreatedAt(), entity.getUpdatedAt())
         );
     }

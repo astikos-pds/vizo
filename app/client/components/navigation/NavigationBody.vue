@@ -7,17 +7,47 @@ const { collapsed } = defineProps<{
 
 const { t } = useI18n();
 
-const { isAdmin } = useUserStore();
-
 const items = computed<NavigationMenuItem[][]>(() => {
-  const baseItems = [
-    {
-      label: "Settings",
-      icon: "i-lucide-settings",
-      to: "/settings",
-    },
+  return [
+    [
+      {
+        label: t("navBar.index"),
+        icon: "i-lucide-house",
+        to: "/",
+      },
+      {
+        label: t("navBar.report"),
+        icon: "i-lucide-message-square-warning",
+        to: "/report",
+      },
+      {
+        label: "Points of interest",
+        icon: "i-lucide-map-pin",
+        to: "/points-of-interest",
+        children: [
+          {
+            label: "View all",
+            icon: "i-lucide-map",
+            to: "/points-of-interest",
+          },
+          {
+            label: "Create new",
+            icon: "i-lucide-plus",
+            to: "/points-of-interest/new",
+          },
+        ],
+      },
+    ],
+    [
+      {
+        label: "Settings",
+        icon: "i-lucide-settings",
+        to: "/settings",
+      },
+    ],
   ];
 
+<<<<<<< HEAD
   if (!isAdmin) {
     return [
       [
@@ -41,6 +71,9 @@ const items = computed<NavigationMenuItem[][]>(() => {
     ];
   }
 
+=======
+  /*
+>>>>>>> origin/main
   return [
     [
       {
@@ -56,6 +89,7 @@ const items = computed<NavigationMenuItem[][]>(() => {
     ],
     [...baseItems],
   ];
+  */
 });
 </script>
 

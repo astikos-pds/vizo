@@ -29,4 +29,9 @@ public class MunicipalityRepositoryImpl implements MunicipalityRepository {
     public Optional<Municipality> findByEmailDomain(String emailDomain) {
         return this.jpaRepository.findByEmailDomain(emailDomain).map(this.mapper::toModel);
     }
+
+    @Override
+    public boolean existsById(UUID id) {
+        return this.jpaRepository.existsById(id);
+    }
 }
