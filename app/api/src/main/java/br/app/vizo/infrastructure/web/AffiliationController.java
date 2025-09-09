@@ -7,7 +7,7 @@ import br.app.vizo.application.usecase.affiliation.ChangeAffiliationStatusUseCas
 import br.app.vizo.application.usecase.affiliation.GetUsersAffiliatedToMunicipalityUseCase;
 import br.app.vizo.application.usecase.affiliation.RemoveAffiliateFromMunicipalityUseCase;
 import br.app.vizo.application.usecase.affiliation.RequestAffiliationToMunicipalityUseCase;
-import br.app.vizo.application.usecase.affiliation.filter.AffiliationFilter;
+import br.app.vizo.application.usecase.affiliation.params.AffiliationStatusParam;
 import br.app.vizo.application.usecase.affiliation.request.AffiliateToMunicipalityRequestDTO;
 import br.app.vizo.application.usecase.affiliation.request.ChangeAffiliationStatusRequestDTO;
 import br.app.vizo.config.security.UserDetailsImpl;
@@ -34,7 +34,7 @@ public class AffiliationController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable UUID municipalityId,
             PaginationDTO pagination,
-            AffiliationFilter filter
+            AffiliationStatusParam filter
     ) {
         return ResponseEntity.ok(
                 this.getUsersAffiliatedToMunicipalityUseCase.execute(

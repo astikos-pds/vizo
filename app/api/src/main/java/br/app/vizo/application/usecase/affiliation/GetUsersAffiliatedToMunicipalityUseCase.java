@@ -6,7 +6,7 @@ import br.app.vizo.application.dto.page.PageDTO;
 import br.app.vizo.application.dto.page.PaginationDTO;
 import br.app.vizo.application.mapper.AffiliatedUserMapper;
 import br.app.vizo.application.service.AuthorizationService;
-import br.app.vizo.application.usecase.affiliation.filter.AffiliationFilter;
+import br.app.vizo.application.usecase.affiliation.params.AffiliationStatusParam;
 import br.app.vizo.core.affiliation.AffiliatedUserRepository;
 import br.app.vizo.core.user.User;
 import lombok.RequiredArgsConstructor;
@@ -21,15 +21,15 @@ public class GetUsersAffiliatedToMunicipalityUseCase {
     private final AffiliatedUserRepository affiliatedUserRepository;
     private final AffiliatedUserMapper affiliatedUserMapper;
 
-    public PageDTO<AffiliatedUserDTO> execute(User loggedInUser, UUID municipalityId, PaginationDTO pagination, AffiliationFilter filter) {
+    public PageDTO<AffiliatedUserDTO> execute(User loggedInUser, UUID municipalityId, PaginationDTO pagination, AffiliationStatusParam param) {
         this.authorizationService.ensureUserIsAffiliatedTo(loggedInUser, municipalityId);
 
-        if (filter.status() == null) {
+        if (param.status() == null) {
             return this.affiliatedUserRepository.findAllByMunicipalityId(municipalityId, pagination)
                     .map(this.affiliatedUserMapper::toDto);
         }
 
-        return this.affiliatedUserRepository.findAllByMunicipalityIdAndStatus(municipalityId, filter.status(), pagination)
+        return this.affiliatedUserRepository.findAllByMunicipalityIdAndStatus(municipalityId, param.status(), pagination)
                 .map(this.affiliatedUserMapper::toDto);
     }
 }
