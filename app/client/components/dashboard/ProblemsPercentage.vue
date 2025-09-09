@@ -84,7 +84,7 @@ const chartOptions: ApexOptions = {
             v-model="selectedItem"
             :search-input="false"
             :items="filters"
-            class="w-48 text-right"
+            class="w-42 text-right"
             />
     </div>
     <VueApexCharts

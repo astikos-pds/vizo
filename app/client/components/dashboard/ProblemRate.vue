@@ -20,12 +20,31 @@ const items = ref([
   },
 ]);
 
+const problems = ref([
+  {
+    label: "Buracos na Rua",
+    count: 168,
+  },
+  {
+    label: "Árvore Caída",
+    count: 385,
+  },
+  {
+    label: "Lixo na Rua",
+    count: 201,
+  },
+  {
+    label: "Iluminação Pública",
+    count: 298,
+  }
+]);
+
 const selectedItem = ref(items.value[0]);
 
 const series = computed(() => [
   {
     name: t("problemRate.incidence"),
-    data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+    data: problems.value.map(p => p.count),
   },
 ]);
 
@@ -55,20 +74,7 @@ const chartOptions = computed(() => ({
     colors: ["transparent"],
   },
   xaxis: {
-    categories: [
-      t("months.jan"),
-      t("months.feb"),
-      t("months.mar"),
-      t("months.apr"),
-      t("months.may"),
-      t("months.jun"),
-      t("months.jul"),
-      t("months.aug"),
-      t("months.sep"),
-      t("months.oct"),
-      t("months.nov"),
-      t("months.dec"),
-    ],
+    categories: problems.value.map(p => p.label),
     axisBorder: {
       show: false,
     },

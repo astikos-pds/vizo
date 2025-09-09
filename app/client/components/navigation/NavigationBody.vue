@@ -31,6 +31,11 @@ const items = computed<NavigationMenuItem[][]>(() => {
           icon: "i-lucide-message-square-warning",
           to: "/report",
         },
+        {
+          label: "Dashboard",
+          icon: "i-lucide-layout-dashboard",
+          to: "/dashboard",
+        },
       ],
       [...baseItems],
     ];
