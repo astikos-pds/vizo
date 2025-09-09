@@ -41,9 +41,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByDocumentAndEmail(String document, String email) {
-        String numericOnlyDocument = this.clearSpecialCharactersFromDocument(document);
-        return this.jpaRepository.findByDocumentAndEmail(numericOnlyDocument, email).map(this.mapper::toModel);
+    public boolean existsByEmail(String email) {
+        return this.jpaRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByDocumentAndEmail(String document, String email) {
+        String cleanedDocument = this.clearSpecialCharactersFromDocument(document);
+        return this.jpaRepository.existsByDocumentAndEmail(cleanedDocument, email);
     }
 
     @Override

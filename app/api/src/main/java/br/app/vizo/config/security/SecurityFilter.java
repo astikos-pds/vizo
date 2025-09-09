@@ -23,7 +23,8 @@ public class SecurityFilter extends OncePerRequestFilter {
     };
 
     public final String[] PUBLIC_PATTERNS = {
-            "auth"
+            "auth",
+            "users"
     };
 
     private final UserDetailsService userDetailsService;
