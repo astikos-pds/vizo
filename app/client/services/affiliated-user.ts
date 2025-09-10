@@ -1,4 +1,5 @@
 import type {
+  AffiliatedUser,
   AffiliatedUserDTO,
   AffiliatedUserMapper,
   AffiliationStatus,
@@ -10,8 +11,12 @@ import type {
 } from "~/types/domain/pagination";
 import type { HttpClient } from "~/utils/http";
 
+export interface ExistsAffiliatedUserParams {
+  institutionalEmail: AffiliatedUser["institutionalEmail"];
+}
+
 export interface AffiliationFilter {
-  status: AffiliationStatus;
+  status?: AffiliationStatus;
 }
 
 export interface AffiliateToMunicipalityRequest {
@@ -28,6 +33,12 @@ export class AffiliatedUserService {
     private readonly pageMapper: PageMapper,
     private readonly affiliatedUserMapper: AffiliatedUserMapper
   ) {}
+
+  public async existsAffiliatedUserByParams(
+    params: ExistsAffiliatedUserParams
+  ) {
+    return await this.httpClient.get<boolean>(`/affiliations/exists`, params);
+  }
 
   public async getUsersAffiliatedToMunicipality(
     municipalityId: string,

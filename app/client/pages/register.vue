@@ -23,7 +23,7 @@ const steps = ref<StepperItem[]>([
   },
   {
     title: "Verification",
-    description: "Paste the code sent to e-mail",
+    description: "Enter the code sent to e-mail",
     icon: "i-lucide-badge-check",
     slot: "verification" as const,
   },

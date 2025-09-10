@@ -18,6 +18,7 @@ import type {
 import type { ReportDTO, ReportMapper } from "~/types/domain/report";
 import type { UserDTO, UserMapper } from "~/types/domain/user";
 import type { HttpClient } from "~/utils/http";
+import type { AffiliationFilter } from "./affiliated-user";
 
 export type ReportFilter = {
   latitude: number;
@@ -64,10 +65,10 @@ export class MeService {
     return page.map((t) => this.reportMapper.toModel(t));
   }
 
-  public async getMyAffiliations(pagination?: Pagination) {
+  public async getMyAffiliations(params?: Pagination & AffiliationFilter) {
     const response = await this.httpClient.get<PageDTO<AffiliatedUserDTO>>(
       "/me/affiliations",
-      pagination
+      params
     );
 
     const page = this.pageMapper.toModel(response);

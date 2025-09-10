@@ -1,21 +1,28 @@
 <script lang="ts" setup>
 import type { DropdownMenuItem } from "@nuxt/ui";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
+import type { Municipality } from "~/types/domain/municipality";
 
 const { locale } = useI18n();
 
 const affiliatedUser = defineProps<AffiliatedUser>();
+
+const { disaffiliateFromMunicipality } = useMe();
+
+async function onDelete(municipalityId: Municipality["id"]) {
+  await disaffiliateFromMunicipality(municipalityId);
+
+  await refreshNuxtData();
+}
 
 const actions = ref<DropdownMenuItem[]>([
   {
     label: "Disaffiliate",
     icon: "i-lucide-split",
     color: "error",
-    onSelect: () => console.log(affiliatedUser.id),
+    onSelect: () => onDelete(affiliatedUser.municipality.id),
   },
 ]);
-
-function exitMunicipality(id: string) {}
 </script>
 
 <template>

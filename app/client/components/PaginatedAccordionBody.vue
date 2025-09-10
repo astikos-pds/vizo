@@ -11,7 +11,7 @@ const { items } = defineProps<{
   <div class="w-full mb-6 border border-default rounded-md">
     <div
       v-if="items.totalElements === 0"
-      class="w-full text-sm h-24 flex justify-center items-center border border-default rounded-md"
+      class="w-full text-sm h-24 flex justify-center items-center"
     >
       {{ emptyText }}
     </div>

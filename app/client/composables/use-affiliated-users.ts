@@ -2,6 +2,7 @@ import type {
   AffiliateToMunicipalityRequest,
   AffiliationFilter,
   ChangeAffiliationStatusRequest,
+  ExistsAffiliatedUserParams,
 } from "~/services/affiliated-user";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { Municipality } from "~/types/domain/municipality";
@@ -10,6 +11,12 @@ import type { Pagination } from "~/types/domain/pagination";
 export const useAffiliatedUsers = () => {
   const { $affiliatedUserService } = useNuxtApp();
   const { handle, loading } = useApiHandler();
+
+  function existsAffiliatedUserByParams(params: ExistsAffiliatedUserParams) {
+    return handle(() =>
+      $affiliatedUserService.existsAffiliatedUserByParams(params)
+    );
+  }
 
   function getUsersAffiliatedToMunicipality(
     municipalityId: Municipality["id"],
@@ -63,6 +70,7 @@ export const useAffiliatedUsers = () => {
 
   return {
     loading,
+    existsAffiliatedUserByParams,
     getUsersAffiliatedToMunicipality,
     requestAffiliationToMunicipality,
     changeAffiliationStatus,

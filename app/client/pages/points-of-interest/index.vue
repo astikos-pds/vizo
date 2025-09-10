@@ -23,29 +23,18 @@ const pagination = reactive<Pagination>({
   size: 15,
 });
 
-const currentPage = computed({
-  get: () => pagination.page + 1,
-  set: (val: number) => (pagination.page = val - 1),
-});
-
 const { getMyPointsOfInterest } = useMe();
 const { data: page, pending } = await getMyPointsOfInterest(pagination);
 
-const pointsOfInterest = computed<PointOfInterest[]>(() => {
-  if (!page.value) return [];
-
-  return page.value.content;
-});
+const {
+  items: pointsOfInterest,
+  currentPage,
+  totalElements,
+} = usePagination(pagination, page);
 
 const activePointsOfInterest = computed<PointOfInterest[]>(() =>
   pointsOfInterest.value.filter((p) => p.active)
 );
-
-const totalElements = computed<number>(() => {
-  if (!page.value) return 100;
-
-  return page.value.totalElements;
-});
 
 const { map, zoom, center } = useMap();
 

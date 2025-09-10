@@ -17,71 +17,16 @@ definePageMeta({
   middleware: ["auth"],
 });
 
+const { getMyAffiliations } = useMe();
+
 const approvedAffiliationsPagination = reactive<Pagination>({
   page: 0,
   size: 15,
 });
 
-const approvedAffiliationsPage = ref<PageDTO<AffiliatedUser> | null>({
-  content: [
-    {
-      id: "123",
-      user: {
-        id: "",
-        document: "",
-        email: "",
-        name: "",
-        avatarUrl: null,
-        credibilityPoints: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      municipality: {
-        id: "123",
-        name: "São Paulo",
-        emailDomain: "prefeitura.sp",
-        iconUrl: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      institutionalEmail: "",
-      isAdmin: false,
-      status: "APPROVED",
-      affiliatedAt: new Date(),
-      approver: {
-        id: "",
-        user: {
-          id: "",
-          document: "",
-          email: "",
-          name: "Mateus",
-          avatarUrl: null,
-          credibilityPoints: 0,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        municipality: {
-          id: "",
-          name: "",
-          emailDomain: "",
-          iconUrl: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        institutionalEmail: "",
-        isAdmin: false,
-        status: "APPROVED",
-        affiliatedAt: new Date(),
-        approver: null,
-        approvedAt: null,
-      },
-      approvedAt: new Date(),
-    },
-  ],
-  page: 0,
-  size: 15,
-  totalPages: 1,
-  totalElements: 15,
+const { data: approvedAffiliationsPage } = await getMyAffiliations({
+  ...approvedAffiliationsPagination,
+  status: "APPROVED",
 });
 
 const {
@@ -94,172 +39,8 @@ const requestedAffiliationsPagination = reactive<Pagination>({
   size: 15,
 });
 
-const requestedAffiliationsPage = ref<PageDTO<AffiliatedUser> | null>({
-  content: [
-    {
-      id: "123",
-      user: {
-        id: "",
-        document: "",
-        email: "",
-        name: "",
-        avatarUrl: null,
-        credibilityPoints: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      municipality: {
-        id: "123",
-        name: "São Paulo",
-        emailDomain: "prefeitura.sp",
-        iconUrl: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      institutionalEmail: "",
-      isAdmin: false,
-      status: "PENDING",
-      affiliatedAt: new Date(),
-      approver: {
-        id: "",
-        user: {
-          id: "",
-          document: "",
-          email: "",
-          name: "Mateus",
-          avatarUrl: null,
-          credibilityPoints: 0,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        municipality: {
-          id: "",
-          name: "",
-          emailDomain: "",
-          iconUrl: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        institutionalEmail: "",
-        isAdmin: false,
-        status: "APPROVED",
-        affiliatedAt: new Date(),
-        approver: null,
-        approvedAt: null,
-      },
-      approvedAt: new Date(),
-    },
-    {
-      id: "123",
-      user: {
-        id: "",
-        document: "",
-        email: "",
-        name: "",
-        avatarUrl: null,
-        credibilityPoints: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      municipality: {
-        id: "123",
-        name: "São Paulo",
-        emailDomain: "prefeitura.sp",
-        iconUrl: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      institutionalEmail: "",
-      isAdmin: false,
-      status: "APPROVED",
-      affiliatedAt: new Date(),
-      approver: {
-        id: "",
-        user: {
-          id: "",
-          document: "",
-          email: "",
-          name: "Mateus",
-          avatarUrl: null,
-          credibilityPoints: 0,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        municipality: {
-          id: "",
-          name: "",
-          emailDomain: "",
-          iconUrl: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        institutionalEmail: "",
-        isAdmin: false,
-        status: "APPROVED",
-        affiliatedAt: new Date(),
-        approver: null,
-        approvedAt: null,
-      },
-      approvedAt: new Date(),
-    },
-    {
-      id: "123",
-      user: {
-        id: "",
-        document: "",
-        email: "",
-        name: "",
-        avatarUrl: null,
-        credibilityPoints: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      municipality: {
-        id: "123",
-        name: "São Paulo",
-        emailDomain: "prefeitura.sp",
-        iconUrl: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-      institutionalEmail: "",
-      isAdmin: false,
-      status: "REJECTED",
-      affiliatedAt: new Date(),
-      approver: {
-        id: "",
-        user: {
-          id: "",
-          document: "",
-          email: "",
-          name: "Mateus",
-          avatarUrl: null,
-          credibilityPoints: 0,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        municipality: {
-          id: "",
-          name: "",
-          emailDomain: "",
-          iconUrl: null,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        institutionalEmail: "",
-        isAdmin: false,
-        status: "APPROVED",
-        affiliatedAt: new Date(),
-        approver: null,
-        approvedAt: null,
-      },
-      approvedAt: new Date(),
-    },
-  ],
-  page: 0,
-  size: 15,
-  totalPages: 2,
-  totalElements: 18,
+const { data: requestedAffiliationsPage } = await getMyAffiliations({
+  ...requestedAffiliationsPagination,
 });
 
 const {
@@ -286,7 +67,7 @@ const openSections = ref(["0", "1"]);
 <template>
   <AffiliationsPage>
     <div class="h-full w-[85%] 2xl:w-[70%]">
-      <header class="w-full py-5 text-center flex flex-col gap-2">
+      <header class="w-full py-6 mt-10 text-center flex flex-col gap-2">
         <h1 class="text-3xl font-semibold">Affiliations</h1>
         <span class="text-sm"
           >Below are listed the municipalities you are affiliated with and your

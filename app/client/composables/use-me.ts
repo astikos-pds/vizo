@@ -1,3 +1,4 @@
+import type { AffiliationFilter } from "~/services/affiliated-user";
 import type { ReportFilter } from "~/services/me";
 import type { Department } from "~/types/domain/department";
 import type { Municipality } from "~/types/domain/municipality";
@@ -21,9 +22,10 @@ export const useMe = () => {
     );
   }
 
-  function getMyAffiliations(pagination?: Pagination) {
-    return useAsyncData("my-affiliations", () =>
-      $meService.getMyAffiliations(pagination)
+  function getMyAffiliations(params?: Pagination & AffiliationFilter) {
+    return useAsyncData(
+      params?.status ? `my-affiliations-${params.status}` : "my-affiliations",
+      () => $meService.getMyAffiliations(params)
     );
   }
 

@@ -27,7 +27,7 @@ public class AffiliationController {
     private final ChangeAffiliationStatusUseCase changeAffiliationStatusUseCase;
     private final RemoveAffiliateFromMunicipalityUseCase removeAffiliateFromMunicipalityUseCase;
 
-    @GetMapping("/affiliations")
+    @GetMapping("/affiliations/exists")
     public ResponseEntity<Boolean> existsAffiliatedUserByParams(@RequestParam String institutionalEmail) {
         boolean response = this.existsAffiliatedUserByParamsUseCase.execute(
                 new ExistsAffiliatedUserParams(institutionalEmail)

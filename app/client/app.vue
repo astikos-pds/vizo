@@ -23,7 +23,7 @@ watchEffect(() => {
     <NuxtPwaManifest />
   </ClientOnly>
 
-  <NuxtLoadingIndicator color="primary" />
+  <NuxtLoadingIndicator color="primary" :height="5" :throttle="0" />
 
   <UApp :locale="localesMapping[locale]">
     <NuxtLayout>
