@@ -25,7 +25,7 @@ const items = ref<NavigationMenuItem[]>([
       <UNavigationMenu :items="items" highlight />
     </header>
     <main class="flex-1 flex overflow-hidden">
-      <aside class="w-[35%] 2xl:w-[25%] border-r border-default">
+      <aside class="w-[40%] 2xl:w-[30%] border-r border-default">
         <section
           class="size-full flex flex-col justify-between overflow-y-auto"
         >

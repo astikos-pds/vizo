@@ -17,8 +17,14 @@ export const useMe = () => {
   }
 
   function getMyPointsOfInterest(pagination?: Pagination) {
-    return useAsyncData("my-points-of-interest", () =>
-      $meService.getMyPointsOfInterest(pagination)
+    const key = pagination
+      ? `my-points-of-interest-page-${pagination.page}`
+      : `my-points-of-interest`;
+
+    return useAsyncData(
+      key,
+      () => $meService.getMyPointsOfInterest(pagination),
+      { watch: [() => pagination?.page] }
     );
   }
 

@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
+import MunicipalitiesSelection from "../municipalities/MunicipalitiesSelection.vue";
+
+const open = defineModel<boolean>("open");
 
 const { collapsed } = defineProps<{
   collapsed: boolean;
@@ -7,33 +10,38 @@ const { collapsed } = defineProps<{
 
 const { t } = useI18n();
 
-const items = computed<NavigationMenuItem[][]>(() => {
+const commomItems = computed<NavigationMenuItem[][]>(() => {
   return [
     [
       {
         label: t("navBar.index"),
         icon: "i-lucide-house",
         to: "/",
+        onSelect: () => (open.value = false),
       },
       {
         label: t("navBar.report"),
         icon: "i-lucide-message-square-warning",
         to: "/report",
+        onSelect: () => (open.value = false),
       },
       {
         label: "Points of interest",
         icon: "i-lucide-map-pin",
         to: "/points-of-interest",
+        onSelect: () => (open.value = false),
         children: [
           {
             label: "View all",
             icon: "i-lucide-map",
             to: "/points-of-interest",
+            onSelect: () => (open.value = false),
           },
           {
             label: "Create new",
             icon: "i-lucide-plus",
             to: "/points-of-interest/new",
+            onSelect: () => (open.value = false),
           },
         ],
       },
@@ -41,16 +49,19 @@ const items = computed<NavigationMenuItem[][]>(() => {
         label: "Affiliations",
         icon: "i-lucide-archive",
         to: "/affiliations",
+        onSelect: () => (open.value = false),
         children: [
           {
             label: "View all",
             icon: "i-lucide-building",
             to: "/affiliations",
+            onSelect: () => (open.value = false),
           },
           {
             label: "Request new",
             icon: "i-lucide-git-pull-request",
             to: "/affiliations/request",
+            onSelect: () => (open.value = false),
           },
         ],
       },
@@ -60,37 +71,89 @@ const items = computed<NavigationMenuItem[][]>(() => {
         label: "Settings",
         icon: "i-lucide-settings",
         to: "/settings",
+        onSelect: () => (open.value = false),
       },
     ],
+  ];
+});
+
+const userStore = useLoggedInUserStore();
+const currentAffiliation = computed(() => userStore.currentAffiliation);
+
+const affiliatedItems = computed<NavigationMenuItem[]>(() => {
+  if (!currentAffiliation.value) return [];
+
+  const municipalityId = currentAffiliation.value.municipality.id;
+
+  const items = [
+    {
+      label: "Departments",
+      icon: "i-lucide-package",
+      to: `/municipalities/${municipalityId}/departments`,
+      onSelect: () => (open.value = false),
+      children: currentAffiliation.value.isAdmin
+        ? [
+            {
+              label: "View all",
+              icon: "i-lucide-package-open",
+              to: `/municipalities/${municipalityId}/departments`,
+              onSelect: () => (open.value = false),
+            },
+            {
+              label: "Create new",
+              icon: "i-lucide-square-plus",
+              to: `/municipalities/${municipalityId}/departments/new`,
+              onSelect: () => (open.value = false),
+            },
+          ]
+        : [],
+    },
+    {
+      label: "Public agents",
+      icon: "i-lucide-users",
+      to: `/municipalities/${municipalityId}/public-agents`,
+      onSelect: () => (open.value = false),
+    },
   ];
 
-  /*
-  return [
-    [
-      {
-        label: "Dashboard",
-        icon: "i-lucide-layout-dashboard",
-        to: "/dashboard",
-      },
-      {
-        label: "Problems",
-        icon: "i-lucide-badge-alert",
-        to: "/problems",
-      },
-    ],
-    [...baseItems],
-  ];
-  */
+  if (currentAffiliation.value.isAdmin) {
+    items.push({
+      label: "Affiliation requests",
+      icon: "i-lucide-folder",
+      to: `/municipalities/${municipalityId}/affiliations`,
+      onSelect: () => (open.value = false),
+    });
+  }
+
+  return items;
 });
 </script>
 
 <template>
-  <div class="flex-1 w-full flex flex-col">
+  <div class="flex-1 w-full flex flex-col gap-2">
     <UNavigationMenu
       :collapsed="collapsed"
-      :items="items"
+      :items="commomItems"
       orientation="vertical"
+      highlight
       tooltip
     />
+
+    <div
+      class="w-full flex flex-col mt-3 gap-2"
+      v-if="currentAffiliation && affiliatedItems.length !== 0"
+    >
+      <USeparator :label="currentAffiliation.municipality.name" size="xs" />
+
+      <MunicipalitiesSelection class="mb-2" />
+
+      <UNavigationMenu
+        :collapsed="collapsed"
+        :items="affiliatedItems"
+        orientation="vertical"
+        highlight
+        tooltip
+      />
+    </div>
   </div>
 </template>

@@ -1,7 +1,8 @@
 <script lang="ts" setup>
-import type { ProblemType } from "~/types/domain";
+import type { SelectMenuItem } from "@nuxt/ui";
+import type { ProblemType } from "~/types/domain/problem";
 
-defineProps<{
+const { multiple } = defineProps<{
   multiple?: boolean;
 }>();
 
@@ -11,7 +12,19 @@ const { getProblemTypes } = useProblems();
 
 const { data: problemTypes, pending } = await getProblemTypes();
 
-const items = ref(problemTypes.value ?? []);
+const items = computed<SelectMenuItem[]>(() => {
+  if (!problemTypes.value) return [];
+
+  return [
+    {
+      type: "label",
+      label: "Categories",
+    },
+    ...problemTypes.value,
+  ];
+});
+
+watch(model, (a) => console.log(a));
 </script>
 
 <template>
@@ -20,6 +33,7 @@ const items = ref(problemTypes.value ?? []);
     :loading="pending"
     :multiple="multiple"
     :items="items"
-    placeholder="AAAAAAAAAAAAAAAAA"
+    icon="i-lucide-flag"
+    placeholder="Select a problem type"
   />
 </template>

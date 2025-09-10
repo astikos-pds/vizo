@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { Department } from "~/types/domain/department";
+import DepartmentsCardActions from "./DepartmentsCardActions.vue";
 
 const { locale } = useI18n();
 
@@ -40,7 +41,7 @@ const { currentAffiliation } = useLoggedInUserStore();
           </div>
         </div>
 
-        <DepartmentCardActions
+        <DepartmentsCardActions
           v-if="currentAffiliation.isAdmin"
           v-bind="department"
         />

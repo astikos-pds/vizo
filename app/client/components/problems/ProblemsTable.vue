@@ -2,9 +2,8 @@
 import { h, resolveComponent, ref } from "vue";
 import type { BadgeProps, TableColumn } from "@nuxt/ui";
 import { useI18n } from "vue-i18n";
-import type { Problem, ProblemStatus } from "~/types/domain";
-import type { Pageable } from "~/types/http";
-import { useProblems } from "~/composables/use-problems";
+import type { Pagination } from "~/types/domain/pagination";
+import type { Problem, ProblemStatus } from "~/types/domain/problem";
 
 const { t, locale } = useI18n();
 
@@ -13,15 +12,17 @@ const UBadge = resolveComponent("UBadge");
 const UIcon = resolveComponent("UIcon");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 
-const pagination = defineModel<Pageable>("pagination");
+const pagination = defineModel<Pagination>("pagination", {
+  required: true,
+});
 
 const { currentDepartment } = useDepartmentStore();
 const municipalityId = computed(() => currentDepartment?.municipality.id ?? "");
 const departmentId = computed(() => currentDepartment?.id ?? "");
 
-const { getProblemsByDepartmentId } = useProblems();
+const { getProblemsInScope } = useDepartments();
 
-const { data: problems } = await getProblemsByDepartmentId(
+const { data: problems } = await getProblemsInScope(
   municipalityId.value,
   departmentId.value,
   pagination.value
@@ -32,7 +33,7 @@ const data = computed(() => problems.value?.content ?? []);
 const colorByStatus: Record<ProblemStatus, BadgeProps["color"]> = {
   ANALYSIS: "warning",
   IN_PROGRESS: "info",
-  SOLVED: "success",
+  RESOLVED: "success",
   REJECTED: "error",
 };
 
@@ -46,16 +47,13 @@ const columns: TableColumn<Problem>[] = [
     accessorKey: "reportedAt",
     header: "First reported at",
     cell: ({ row }) => {
-      return new Date(Date.parse(row.original.firstReportedAt)).toLocaleString(
-        locale.value,
-        {
-          day: "numeric",
-          month: "short",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        }
-      );
+      return row.original.firstReportedAt.toLocaleString(locale.value, {
+        day: "numeric",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
     },
   },
   {

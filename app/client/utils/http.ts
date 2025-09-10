@@ -1,5 +1,9 @@
 export interface HttpClient {
-  get<T>(uri: string, params?: any): Promise<T>;
+  get<T>(
+    uri: string,
+    params?: Record<string, any>,
+    headers?: Record<string, any>
+  ): Promise<T>;
   post<T>(uri: string, body: any): Promise<T>;
   put<T>(uri: string, body: any): Promise<T>;
   patch<T>(uri: string, body: any): Promise<T>;
@@ -9,10 +13,15 @@ export interface HttpClient {
 export class HttpClientImpl implements HttpClient {
   constructor(private readonly api: typeof $fetch) {}
 
-  public async get<T>(uri: string, params?: Record<string, any>): Promise<T> {
+  public async get<T>(
+    uri: string,
+    params?: Record<string, any>,
+    headers?: Record<string, any>
+  ): Promise<T> {
     return this.api<T>(uri, {
       method: "GET",
       params,
+      headers,
     });
   }
 

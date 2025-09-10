@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import type { Municipality } from "~/types/domain";
+import DepartmentsCard from "~/components/departments/DepartmentsCard.vue";
+import type { Pagination } from "~/types/domain/pagination";
 
 useHead({
   title: "Vizo | Departments",
@@ -12,65 +13,62 @@ useHead({
 });
 
 definePageMeta({
-  layout: "official",
-  middleware: ["auth", "official"],
+  middleware: ["auth", "affiliated"],
 });
 
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 
-const { data: municipality } = useNuxtData<Municipality>(
-  `municipality-${municipalityId}`
+const pagination = reactive<Pagination>({
+  page: 0,
+  size: 15,
+});
+
+const { getMyAssignmentsInMunicipality } = useMe();
+
+const { data: page, pending } = await getMyAssignmentsInMunicipality(
+  municipalityId,
+  pagination
 );
 
-const { getAssignmentsByMunicipalityId } = useUser();
+const { items: assignments, totalElements } = usePagination(pagination, page);
 
-const { data: assignments, pending } = await getAssignmentsByMunicipalityId(
-  municipalityId
-);
+const departments = computed(() => assignments.value.map((a) => a.department));
 
-const departments = computed(() =>
-  (assignments.value ?? []).map((a) => a.department)
-);
-
-const newDepartmentLink = `/municipalities/${municipalityId}/departments/new`;
-
-const { isAdmin } = useUserStore();
+const { currentAffiliation } = useLoggedInUserStore();
 </script>
 
 <template>
-  <OfficialPage
+  <DepartmentsPage
+    v-if="currentAffiliation"
     title="Departments"
-    :description="`Enter in one of the departments of ${municipality?.name}.`"
+    :description="`Enter in one of the departments of ${currentAffiliation.municipality.name}.`"
   >
     <div v-if="pending">
       <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
     </div>
 
     <div v-else class="size-full flex flex-col">
-      <div class="flex my-4 justify-between items-center">
-        <span class="text-muted">
-          Encontered {{ departments.length }} department(s)
+      <div class="flex my-4">
+        <span class="text-muted text-sm">
+          Encontered {{ totalElements }} department(s)
         </span>
-
-        <UButton v-if="isAdmin" icon="i-lucide-plus" :to="newDepartmentLink"
-          >New department</UButton
-        >
       </div>
 
       <NotFoundMessage v-if="departments.length === 0"
         >No departments found.</NotFoundMessage
       >
+
       <div
         v-else
         class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
       >
-        <DepartmentCard
+        <DepartmentsCard
           v-for="department in departments"
           v-bind="department"
           :key="department.id"
         />
       </div>
     </div>
-  </OfficialPage>
+  </DepartmentsPage>
 </template>

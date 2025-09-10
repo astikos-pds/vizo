@@ -37,7 +37,7 @@ export class AssignedUserService {
     pagination?: Pagination
   ) {
     const response = await this.httpClient.get<PageDTO<AssignedUserDTO>>(
-      `/municipalities/${municipalityId}/department/${departmentId}/assignments`,
+      `/municipalities/${municipalityId}/departments/${departmentId}/assignments`,
       pagination
     );
 
@@ -52,7 +52,7 @@ export class AssignedUserService {
     assignmentId: string
   ) {
     const response = await this.httpClient.get<AssignedUserDTO>(
-      `/municipalities/${municipalityId}/department/${departmentId}/assignments/${assignmentId}`
+      `/municipalities/${municipalityId}/departments/${departmentId}/assignments/${assignmentId}`
     );
 
     return this.assignedUserMapper.toModel(response);
@@ -64,7 +64,7 @@ export class AssignedUserService {
     request: AssignUserToDepartmentRequest
   ) {
     const response = await this.httpClient.put<AssignedUserDTO>(
-      `/municipalities/${municipalityId}/department/${departmentId}/assignments`,
+      `/municipalities/${municipalityId}/departments/${departmentId}/assignments`,
       request
     );
 
@@ -77,7 +77,7 @@ export class AssignedUserService {
     request: AssignUsersToDepartmentRequest
   ) {
     const response = await this.httpClient.put<AssignedUserDTO[]>(
-      `/municipalities/${municipalityId}/department/${departmentId}/assignments`,
+      `/municipalities/${municipalityId}/departments/${departmentId}/assignments`,
       request
     );
 
@@ -91,7 +91,7 @@ export class AssignedUserService {
     request: ChangeAssigneePermissionRequest
   ) {
     const response = await this.httpClient.patch<AssignedUserDTO>(
-      `/municipalities/${municipalityId}/department/${departmentId}/assignments/${assignmentId}`,
+      `/municipalities/${municipalityId}/departments/${departmentId}/assignments/${assignmentId}`,
       request
     );
 
@@ -104,7 +104,7 @@ export class AssignedUserService {
     assignmentId: string
   ) {
     this.httpClient.delete(
-      `/municipalities/${municipalityId}/department/${departmentId}/assignments/${assignmentId}`
+      `/municipalities/${municipalityId}/departments/${departmentId}/assignments/${assignmentId}`
     );
   }
 }

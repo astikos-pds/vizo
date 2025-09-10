@@ -18,7 +18,7 @@ import type { HttpClient } from "~/utils/http";
 
 export interface MutateDepartmentRequest {
   name: string;
-  iconUrl: string;
+  iconUrl?: string;
   colorHex: string;
   problemTypes: ProblemType[];
 }

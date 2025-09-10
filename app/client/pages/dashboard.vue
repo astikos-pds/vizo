@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import type { Pageable } from "~/types/http";
+import ProblemsTable from "~/components/problems/ProblemsTable.vue";
+import type { Pagination } from "~/types/domain/pagination";
 
 const { t } = useI18n();
 
@@ -18,7 +19,7 @@ definePageMeta({
   middleware: ["auth", "official", "department"],
 });
 
-const pagination = ref<Pageable>({
+const pagination = ref<Pagination>({
   page: 0,
   size: 5,
 });
@@ -30,7 +31,7 @@ const pagination = ref<Pageable>({
   >
     <!-- <ProblemRate class="col-span-1" />
     <SolvedProblems class="col-span-1" /> -->
-    <ProblemTable
+    <ProblemsTable
       v-model:pagination="pagination"
       class="col-span-1 md:col-span-2 xl:col-span-2"
     />

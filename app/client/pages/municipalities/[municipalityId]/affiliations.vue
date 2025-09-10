@@ -1,56 +1,37 @@
 <script lang="ts" setup>
 import type { AccordionItem } from "@nuxt/ui";
-import { useAffiliations } from "~/composables/use-affiliated-users";
-import type { Municipality } from "~/types/domain";
-import type { Pageable } from "~/types/http";
+import AffiliationsRequestSection from "~/components/affiliations/AffiliationsRequestSection.vue";
+import { useAffiliationSection } from "~/composables/use-affiliation-section";
 
 useHead({
   title: "Vizo | Affiliation requests",
   meta: [
     {
       name: "description",
-      content: "Find all affiliation requests of this municipality",
+      content: "Manage all affiliation requests of this municipality",
     },
   ],
 });
 
 definePageMeta({
-  layout: "official",
-  middleware: ["auth", "official"],
+  middleware: ["auth", "affiliated"],
 });
 
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 
-const { data: municipality } = useNuxtData<Municipality>(
-  `municipality-${municipalityId}`
-);
+const { currentAffiliation } = useLoggedInUserStore();
 
-const pageable = reactive<Pageable>({
-  page: 0,
-  size: 100,
+const allSection = await useAffiliationSection(municipalityId);
+const pendingSection = await useAffiliationSection(municipalityId, {
+  status: "PENDING",
 });
-
-const { getAffiliationsByMunicipalityId } = useAffiliations();
-
-const { data: page, pending } = await getAffiliationsByMunicipalityId(
-  municipalityId,
-  pageable
-);
-
-const affiliations = computed(() => page.value?.content);
-
-const pendingRequests = computed(() =>
-  (affiliations.value ?? []).filter((a) => a.status === "PENDING")
-);
-
-const approvedRequests = computed(() =>
-  (affiliations.value ?? []).filter((a) => a.status === "APPROVED")
-);
-
-const rejectedRequests = computed(() =>
-  (affiliations.value ?? []).filter((a) => a.status === "REJECTED")
-);
+const approvedSection = await useAffiliationSection(municipalityId, {
+  status: "APPROVED",
+});
+const rejectedSection = await useAffiliationSection(municipalityId, {
+  status: "REJECTED",
+});
 
 const items = ref<AccordionItem[]>([
   {
@@ -79,42 +60,99 @@ const active = ref(["1"]);
 </script>
 
 <template>
-  <OfficialPage
+  <AffiliatedUsersPage
+    v-if="currentAffiliation"
     title="Affiliation requests"
-    :description="`Manage the affiliation requests for ${municipality?.name}.`"
+    :description="`Manage the affiliation requests for ${currentAffiliation.municipality.name}.`"
   >
-    <div v-if="pending || !affiliations">
-      <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
-    </div>
-
-    <UAccordion v-else type="multiple" v-model="active" :items="items">
+    <UAccordion type="multiple" v-model="active" :items="items">
       <template #all>
-        <AffiliationRequestMenu
-          :items="affiliations"
+        <div v-if="allSection.pending.value">
+          <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
+        </div>
+
+        <div v-else-if="!allSection.data.value">
+          <NotFoundMessage>Failed to fetch all affiliations.</NotFoundMessage>
+        </div>
+
+        <AffiliationsRequestSection
+          v-else
+          :items="allSection.data.value"
           empty-text="No requests were found."
-        />
+        >
+          <UPagination
+            v-model:page="allSection.currentPage.value"
+            :items-per-page="allSection.pagination.size"
+            :total="allSection.totalElements.value"
+          />
+        </AffiliationsRequestSection>
       </template>
 
       <template #pending>
-        <AffiliationRequestMenu
-          :items="pendingRequests"
-          empty-text="No pending requests were found."
-        />
+        <div v-if="pendingSection.pending.value">
+          <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
+        </div>
+
+        <div v-else-if="!pendingSection.data.value">
+          <NotFoundMessage>Failed to fetch all affiliations.</NotFoundMessage>
+        </div>
+
+        <AffiliationsRequestSection
+          v-else
+          :items="pendingSection.data.value"
+          empty-text="No requests were found."
+        >
+          <UPagination
+            v-model:page="pendingSection.currentPage.value"
+            :items-per-page="pendingSection.pagination.size"
+            :total="pendingSection.totalElements.value"
+          />
+        </AffiliationsRequestSection>
       </template>
 
       <template #approved>
-        <AffiliationRequestMenu
-          :items="approvedRequests"
-          empty-text="No approved requests were found."
-        />
+        <div v-if="approvedSection.pending.value">
+          <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
+        </div>
+
+        <div v-else-if="!approvedSection.data.value">
+          <NotFoundMessage>Failed to fetch all affiliations.</NotFoundMessage>
+        </div>
+
+        <AffiliationsRequestSection
+          v-else
+          :items="approvedSection.data.value"
+          empty-text="No requests were found."
+        >
+          <UPagination
+            v-model:page="approvedSection.currentPage.value"
+            :items-per-page="approvedSection.pagination.size"
+            :total="approvedSection.totalElements.value"
+          />
+        </AffiliationsRequestSection>
       </template>
 
       <template #rejected>
-        <AffiliationRequestMenu
-          :items="rejectedRequests"
-          empty-text="No rejected requests were found."
-        />
+        <div v-if="rejectedSection.pending.value">
+          <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
+        </div>
+
+        <div v-else-if="!rejectedSection.data.value">
+          <NotFoundMessage>Failed to fetch affiliations.</NotFoundMessage>
+        </div>
+
+        <AffiliationsRequestSection
+          v-else
+          :items="rejectedSection.data.value"
+          empty-text="No requests were found."
+        >
+          <UPagination
+            v-model:page="rejectedSection.currentPage.value"
+            :items-per-page="rejectedSection.pagination.size"
+            :total="rejectedSection.totalElements.value"
+          />
+        </AffiliationsRequestSection>
       </template>
     </UAccordion>
-  </OfficialPage>
+  </AffiliatedUsersPage>
 </template>

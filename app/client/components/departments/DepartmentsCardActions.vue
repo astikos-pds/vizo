@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { DropdownMenuItem } from "@nuxt/ui";
-import DepartmentAssignmentModal from "./DepartmentAssignmentModal.vue";
+import DepartmentsAssignmentModal from "./DepartmentsAssignmentModal.vue";
 import { useDepartments } from "~/composables/use-departments";
 import type { Department } from "~/types/domain/department";
 
@@ -9,7 +9,7 @@ const department = defineProps<Department>();
 const overlay = useOverlay();
 
 function openModal() {
-  const modal = overlay.create(DepartmentAssignmentModal);
+  const modal = overlay.create(DepartmentsAssignmentModal);
 
   modal.open(department);
 }

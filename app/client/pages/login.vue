@@ -39,7 +39,17 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
     password: event.data.password,
   });
 
-  if (!ok) return;
+  if (!ok) {
+    toast.clear();
+
+    toast.add({
+      title: "Não autorizado",
+      description:
+        "Credenciais inválidas. Confira se seu CPF e sua senha estão corretos.",
+      color: "error",
+    });
+    return;
+  }
 
   toast.add({
     title: t("toast.success.title"),

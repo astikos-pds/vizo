@@ -22,7 +22,12 @@ export const useAffiliatedUsers = () => {
     municipalityId: Municipality["id"],
     params?: Pagination & AffiliationFilter
   ) {
-    return useAsyncData(`municipalities-${municipalityId}-affiliations`, () =>
+    const key =
+      params && params.status
+        ? `municipalities-${municipalityId}-affiliations-${params.status}`
+        : `municipalities-${municipalityId}-affiliations`;
+
+    return useAsyncData(key, () =>
       $affiliatedUserService.getUsersAffiliatedToMunicipality(
         municipalityId,
         params

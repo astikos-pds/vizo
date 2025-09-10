@@ -3,6 +3,7 @@ import DepartmentsForm from "~/components/departments/DepartmentsForm.vue";
 import { useAssignedUsers } from "~/composables/use-assigned-users";
 import { useDepartments } from "~/composables/use-departments";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
+import type { Department } from "~/types/domain/department";
 import type { ProblemType } from "~/types/domain/problem";
 
 useHead({
@@ -21,10 +22,43 @@ definePageMeta({
 
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
+const departmentId = route.params.departmentId as string;
+
+const {
+  loading: departmentCreationLoading,
+  updateDepartment,
+  getDepartmentById,
+} = useDepartments();
+
+const { data: department, pending: pendingForDepartments } =
+  await getDepartmentById(municipalityId, departmentId);
+
+const { getUsersAssignedToDepartment } = useAssignedUsers();
+
+const { data: assignees, pending: pendingForAssignees } =
+  await getUsersAssignedToDepartment(municipalityId, departmentId, {
+    page: 0,
+    size: 100,
+  });
+
+const state = computed<
+  (Department & { assignees: AffiliatedUser[] }) | undefined
+>(() => {
+  if (!department.value) return undefined;
+
+  if (!assignees.value)
+    return {
+      ...department.value,
+      assignees: [],
+    };
+
+  return {
+    ...department.value,
+    assignees: assignees.value.content.map((a) => a.user),
+  };
+});
 
 const { loading: imageUploadLoading, uploadImage } = useImage();
-const { loading: departmentCreationLoading, createDepartment } =
-  useDepartments();
 const { loading: userAssignmentLoading, assignUsersToDepartment } =
   useAssignedUsers();
 
@@ -39,14 +73,13 @@ async function onSubmit(data: {
 }) {
   const icon = data.icon;
 
-  const uploadedUrl = await uploadImage({
+  const iconUrl = await uploadImage({
     file: icon,
   });
-  const iconUrl = uploadedUrl.trim();
 
-  const department = await createDepartment(municipalityId, {
+  const department = await updateDepartment(municipalityId, departmentId, {
     name: data.name,
-    iconUrl: iconUrl.length === 0 ? undefined : iconUrl,
+    iconUrl,
     colorHex: data.colorHex,
     problemTypes: data.problemTypes,
   });
@@ -73,15 +106,18 @@ async function onSubmit(data: {
 
   await navigateTo(`/municipalities/${municipalityId}/departments`);
 }
-
-const { currentAffiliation } = useLoggedInUserStore();
 </script>
 
 <template>
+  <EmptyMessage v-if="pendingForDepartments || pendingForAssignees"
+    >Loading...</EmptyMessage
+  >
+  <EmptyMessage v-else-if="!department">Department not found.</EmptyMessage>
   <DepartmentsForm
-    v-if="currentAffiliation"
-    title="New department"
-    :description="`Create a new department in ${currentAffiliation.municipality.name}`"
+    v-else
+    :title="`Editing ${department.name}`"
+    :description="`Edit the ${department.name} in ${department.municipality.name}`"
+    :state="state"
     @submit="onSubmit"
     :loading="
       imageUploadLoading || departmentCreationLoading || userAssignmentLoading

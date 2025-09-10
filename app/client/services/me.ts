@@ -65,10 +65,14 @@ export class MeService {
     return page.map((t) => this.reportMapper.toModel(t));
   }
 
-  public async getMyAffiliations(params?: Pagination & AffiliationFilter) {
+  public async getMyAffiliations(
+    params?: Pagination & AffiliationFilter,
+    header?: { Authorization: string }
+  ) {
     const response = await this.httpClient.get<PageDTO<AffiliatedUserDTO>>(
       "/me/affiliations",
-      params
+      params,
+      header
     );
 
     const page = this.pageMapper.toModel(response);

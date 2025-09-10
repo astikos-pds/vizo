@@ -94,7 +94,7 @@ const isMobile = breakpoints.smallerOrEqual("md");
           {{ name ?? t(`navBar.${route.name?.toString()}`) }}
         </h1>
       </header>
-      <main class="flex-1 w-full overflow-y-auto">
+      <main class="flex-1 w-full overflow-y-auto flex flex-col items-center">
         <slot />
       </main>
     </div>

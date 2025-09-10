@@ -16,12 +16,16 @@ export const useAuth = () => {
 
   const { loading, handle } = useApiHandler();
 
-  const { $authService } = useNuxtApp();
+  const { $authService, $meService } = useNuxtApp();
 
   async function login(request: LoginRequest) {
     const response = await handle(() => $authService.login(request));
 
-    authenticate(response);
+    if (response) {
+      authenticate(response);
+      const affiliations = await getAffiliations();
+      userStore.setAffiliations(affiliations);
+    }
 
     return response;
   }
@@ -32,6 +36,8 @@ export const useAuth = () => {
 
   async function logout() {
     authenticate(null);
+    userStore.setAffiliations([]);
+    userStore.setCurrentAffiliation(null);
   }
 
   async function refresh(request: RefreshRequest) {
@@ -46,6 +52,18 @@ export const useAuth = () => {
     accessToken.value = authentication ? authentication.accessToken : null;
     refreshToken.value = authentication ? authentication.refreshToken : null;
     userStore.setUser(authentication ? authentication.user : null);
+  }
+
+  async function getAffiliations() {
+    const page = await $meService.getMyAffiliations(
+      {
+        page: 0,
+        size: 100,
+        status: "APPROVED",
+      },
+      { Authorization: `Bearer ${accessToken.value}` }
+    );
+    return page.content;
   }
 
   async function requestEmailVerification(request: EmailVerificationRequest) {

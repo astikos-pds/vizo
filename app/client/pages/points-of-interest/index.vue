@@ -20,7 +20,7 @@ definePageMeta({
 
 const pagination = reactive<Pagination>({
   page: 0,
-  size: 15,
+  size: 1,
 });
 
 const { getMyPointsOfInterest } = useMe();
@@ -32,9 +32,11 @@ const {
   totalElements,
 } = usePagination(pagination, page);
 
-const activePointsOfInterest = computed<PointOfInterest[]>(() =>
-  pointsOfInterest.value.filter((p) => p.active)
-);
+const activePointsOfInterest = computed<PointOfInterest[]>(() => {
+  if (!pointsOfInterest.value) return [];
+
+  return pointsOfInterest.value.filter((p) => p.active);
+});
 
 const { map, zoom, center } = useMap();
 
@@ -71,7 +73,9 @@ const zoomToMarker = (marker: LatLng & { radius: number }) => {
         <main class="flex-1">
           <div class="p-3 flex flex-col gap-3">
             <PointsOfInterestCard
+              v-if="pointsOfInterest.length > 0"
               v-for="pointOfInterest in pointsOfInterest"
+              :key="pointOfInterest.id"
               v-bind="pointOfInterest"
               @zoom-in="zoomToMarker(pointOfInterest)"
             />
@@ -93,6 +97,7 @@ const zoomToMarker = (marker: LatLng & { radius: number }) => {
         <div v-if="pending">Loading...</div>
         <Map v-else ref="map" :zoom="zoom" :center="center">
           <PointsOfInterestMarker
+            v-if="activePointsOfInterest.length > 0"
             :key="pointOfInterest.id"
             v-for="pointOfInterest in activePointsOfInterest"
             v-bind="pointOfInterest"
