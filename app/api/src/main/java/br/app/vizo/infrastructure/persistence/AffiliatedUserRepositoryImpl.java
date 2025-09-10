@@ -79,6 +79,13 @@ public class AffiliatedUserRepositoryImpl implements AffiliatedUserRepository {
     }
 
     @Override
+    public PageDTO<AffiliatedUser> findAllByUserIdAndStatus(UUID id, AffiliationStatus status, PaginationDTO pagination) {
+        var page = this.jpaRepository.findAllByUserIdAndStatus(id, status, PaginationDTO.resolve(pagination))
+                .map(this.mapper::toModel);
+        return PageDTO.of(page);
+    }
+
+    @Override
     public long countByMunicipalityIdAndIsAdmin(UUID municipalityId, boolean isAdmin) {
         return this.jpaRepository.countByMunicipalityIdAndIsAdmin(municipalityId, isAdmin);
     }

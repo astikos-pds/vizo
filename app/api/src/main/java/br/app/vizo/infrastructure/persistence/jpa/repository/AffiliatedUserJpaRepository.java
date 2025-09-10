@@ -31,6 +31,8 @@ public interface AffiliatedUserJpaRepository extends JpaRepository<AffiliatedUse
 
     Page<AffiliatedUserEntity> findAllByUserId(UUID userId, Pageable pageable);
 
+    Page<AffiliatedUserEntity> findAllByUserIdAndStatus(UUID userId, AffiliationStatus status, Pageable pageable);
+
     long countByMunicipalityIdAndIsAdmin(UUID municipalityId, boolean isAdmin);
 
     @Query(value = """

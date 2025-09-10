@@ -26,6 +26,8 @@ public interface AffiliatedUserRepository {
 
     PageDTO<AffiliatedUser> findAllByUserId(UUID id, PaginationDTO pagination);
 
+    PageDTO<AffiliatedUser> findAllByUserIdAndStatus(UUID id, AffiliationStatus status, PaginationDTO pagination);
+
     long countByMunicipalityIdAndIsAdmin(UUID municipalityId, boolean isAdmin);
 
     Optional<AffiliatedUser> findFirstApprovedNonAdminByMunicipalityId(UUID municipalityId);

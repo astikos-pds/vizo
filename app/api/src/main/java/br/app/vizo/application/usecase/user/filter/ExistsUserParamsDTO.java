@@ -17,6 +17,6 @@ public record ExistsUserParamsDTO(
     }
 
     public String getDocument() {
-        return document.value();
+        return document == null ? null : document.value();
     }
 }

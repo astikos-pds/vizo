@@ -3,11 +3,9 @@ package br.app.vizo.infrastructure.web;
 import br.app.vizo.application.dto.AffiliatedUserDTO;
 import br.app.vizo.application.dto.page.PageDTO;
 import br.app.vizo.application.dto.page.PaginationDTO;
-import br.app.vizo.application.usecase.affiliation.ChangeAffiliationStatusUseCase;
-import br.app.vizo.application.usecase.affiliation.GetUsersAffiliatedToMunicipalityUseCase;
-import br.app.vizo.application.usecase.affiliation.RemoveAffiliateFromMunicipalityUseCase;
-import br.app.vizo.application.usecase.affiliation.RequestAffiliationToMunicipalityUseCase;
+import br.app.vizo.application.usecase.affiliation.*;
 import br.app.vizo.application.usecase.affiliation.params.AffiliationStatusParam;
+import br.app.vizo.application.usecase.affiliation.params.ExistsAffiliatedUserParams;
 import br.app.vizo.application.usecase.affiliation.request.AffiliateToMunicipalityRequestDTO;
 import br.app.vizo.application.usecase.affiliation.request.ChangeAffiliationStatusRequestDTO;
 import br.app.vizo.config.security.UserDetailsImpl;
@@ -20,33 +18,42 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/municipalities/{municipalityId}/affiliations")
 @RequiredArgsConstructor
 public class AffiliationController {
 
+    private final ExistsAffiliatedUserByParamsUseCase existsAffiliatedUserByParamsUseCase;
     private final GetUsersAffiliatedToMunicipalityUseCase getUsersAffiliatedToMunicipalityUseCase;
     private final RequestAffiliationToMunicipalityUseCase requestAffiliationToMunicipalityUseCase;
     private final ChangeAffiliationStatusUseCase changeAffiliationStatusUseCase;
     private final RemoveAffiliateFromMunicipalityUseCase removeAffiliateFromMunicipalityUseCase;
 
-    @GetMapping
+    @GetMapping("/affiliations")
+    public ResponseEntity<Boolean> existsAffiliatedUserByParams(@RequestParam String institutionalEmail) {
+        boolean response = this.existsAffiliatedUserByParamsUseCase.execute(
+                new ExistsAffiliatedUserParams(institutionalEmail)
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/municipalities/{municipalityId}/affiliations")
     public ResponseEntity<PageDTO<AffiliatedUserDTO>> getUsersAffiliatedToMunicipality(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable UUID municipalityId,
             PaginationDTO pagination,
             AffiliationStatusParam filter
     ) {
-        return ResponseEntity.ok(
-                this.getUsersAffiliatedToMunicipalityUseCase.execute(
-                        userDetails.getUser(),
-                        municipalityId,
-                        pagination,
-                        filter
-                )
+        PageDTO<AffiliatedUserDTO> response = this.getUsersAffiliatedToMunicipalityUseCase.execute(
+                userDetails.getUser(),
+                municipalityId,
+                pagination,
+                filter
         );
+
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping
+    @PostMapping("/municipalities/{municipalityId}/affiliations")
     public ResponseEntity<AffiliatedUserDTO> requestAffiliationToMunicipality(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable UUID municipalityId,
@@ -58,7 +65,7 @@ public class AffiliationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/municipalities/{municipalityId}/affiliations/{id}")
     public ResponseEntity<AffiliatedUserDTO> changeAffiliationStatus(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable UUID municipalityId,
@@ -70,7 +77,7 @@ public class AffiliationController {
         );
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/municipalities/{municipalityId}/affiliations/{id}")
     public ResponseEntity<Void> removeAffiliateFromMunicipality(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable UUID municipalityId,

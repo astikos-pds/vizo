@@ -4,8 +4,10 @@ import br.app.vizo.application.dto.*;
 import br.app.vizo.application.dto.page.PageDTO;
 import br.app.vizo.application.dto.page.PaginationDTO;
 import br.app.vizo.application.usecase.me.*;
+import br.app.vizo.application.usecase.me.filter.GetMyAffiliationsParams;
 import br.app.vizo.application.usecase.me.filter.ReportFilter;
 import br.app.vizo.config.security.UserDetailsImpl;
+import br.app.vizo.core.affiliation.AffiliationStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,9 +46,13 @@ public class MeController {
     @GetMapping("/affiliations")
     public ResponseEntity<PageDTO<AffiliatedUserDTO>> getMyAffiliations(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            PaginationDTO pagination
+            PaginationDTO pagination,
+            @RequestParam(required = false) AffiliationStatus status
     ) {
-        return ResponseEntity.ok(this.getMyAffiliationsUseCase.execute(userDetails.getUser(), pagination));
+        PageDTO<AffiliatedUserDTO> response = this.getMyAffiliationsUseCase
+                .execute(userDetails.getUser(), pagination, new GetMyAffiliationsParams(status));
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/municipalities/{municipalityId}/assignments")
