@@ -2,6 +2,7 @@
 import DepartmentsForm from "~/components/departments/DepartmentsForm.vue";
 import { useAssignedUsers } from "~/composables/use-assigned-users";
 import { useDepartments } from "~/composables/use-departments";
+import { useImageUpload } from "~/composables/use-image-upload";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { ProblemType } from "~/types/domain/problem";
 
@@ -22,7 +23,7 @@ definePageMeta({
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 
-const { loading: imageUploadLoading, uploadImage } = useImage();
+const { loading: imageUploadLoading, uploadImage } = useImageUpload();
 const { loading: departmentCreationLoading, createDepartment } =
   useDepartments();
 const { loading: userAssignmentLoading, assignUsersToDepartment } =

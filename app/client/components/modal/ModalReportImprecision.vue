@@ -45,7 +45,7 @@ const { t } = useI18n();
               v-for="(imageUrl, index) in props.imagesUrls"
               :key="index"
             >
-              <img
+              <NuxtImg
                 class="w-full h-full object-cover"
                 :src="imageUrl"
                 :alt="`${t('imprecisionModal.imageAlt')} ${index + 1}`"

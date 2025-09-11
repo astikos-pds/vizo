@@ -30,7 +30,7 @@ const { report } = defineProps<Props>();
       <p class="p-2 font-semibold">Images:</p>
       <section class="border-t border-default flex flex-row flex-wrap gap-1">
         <div class="size-[5rem]" v-for="(imageUrl, index) in report.imagesUrls">
-          <img
+          <NuxtImg
             class="w-full h-full object-cover"
             :src="imageUrl.toString()"
             :alt="`Image ${index}`"

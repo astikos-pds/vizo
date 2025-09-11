@@ -3,9 +3,9 @@ import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
 import { useDepartmentStore } from "~/stores/department";
-import type { ProblemStatus } from "~/types/domain";
 import type { BadgeProps } from "@nuxt/ui";
 import { useProblems } from "~/composables/use-problems";
+import type { ProblemStatus } from "~/types/domain/problem";
 
 const { t } = useI18n();
 const route = useRoute();
@@ -21,17 +21,17 @@ const { currentDepartment } = useDepartmentStore();
 const municipalityId = computed(() => currentDepartment?.municipality.id ?? "");
 const departmentId = computed(() => currentDepartment?.id ?? "");
 
-const { getProblemInDepartmentContext } = useProblems();
+const { getProblemInScope } = useDepartments();
 
-const { data: problem } = await getProblemInDepartmentContext(
+const { data: problem } = await getProblemInScope(
   municipalityId.value,
   departmentId.value,
   problemId.value
 );
 
-const { getReportsByProblemId } = useReports();
+const { getReportsForProblem } = useProblems();
 
-const { data: page } = await getReportsByProblemId(problemId.value);
+const { data: page } = await getReportsForProblem(problemId.value);
 
 const reports = computed(() => {
   if (page.value) {
@@ -42,7 +42,7 @@ const reports = computed(() => {
 const colorByStatus: Record<ProblemStatus, BadgeProps["color"]> = {
   ANALYSIS: "warning",
   IN_PROGRESS: "info",
-  SOLVED: "success",
+  RESOLVED: "success",
   REJECTED: "error",
 };
 
@@ -63,7 +63,7 @@ const statusColor = computed(() => {
         <Map
           class="rounded-md border border-default"
           :zoom="16"
-          :center="[problem.latitude, problem.longitude]"
+          :center="problem"
           style="height: 250px; width: 100%"
         >
           <Marker
@@ -122,7 +122,7 @@ const statusColor = computed(() => {
                     <span class="font-semibold"
                       >{{ t("details.reports.user") }}:</span
                     >
-                    <span class="ml-1">{{ report.citizen.name }}</span>
+                    <span class="ml-1">{{ report.user.name }}</span>
                   </div>
                   <div>
                     <span class="font-semibold"
@@ -147,13 +147,13 @@ const statusColor = computed(() => {
                   </div>
 
                   <div
-                    v-if="report.images.length > 0"
+                    v-if="report.imagesUrls.length > 0"
                     class="flex gap-2 mt-2 flex-wrap"
                   >
-                    <img
-                      v-for="(img, i) in report.images"
+                    <NuxtImg
+                      v-for="(url, i) in report.imagesUrls"
                       :key="i"
-                      :src="img.url"
+                      :src="url.toString()"
                       class="rounded-lg w-[120px] h-[120px] object-cover aspect-square"
                       :alt="t('details.reports.imageAlt')"
                     />

@@ -29,7 +29,10 @@ export class ProblemService {
     return await this.httpClient.get<ProblemType[]>("/problems/types");
   }
 
-  public async getReportsForProblem(problemId: string, pagination: Pagination) {
+  public async getReportsForProblem(
+    problemId: string,
+    pagination?: Pagination
+  ) {
     const response = await this.httpClient.get<PageDTO<ReportDTO>>(
       `/problems/${problemId}/reports`,
       pagination

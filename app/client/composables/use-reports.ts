@@ -1,9 +1,9 @@
-import { useImage } from "~/composables/use-image";
+import { useImageUpload } from "~/composables/use-image-upload";
 import type { ProblemType } from "~/types/domain/problem";
 
 export const useReports = () => {
   const { loading, handle } = useApiHandler();
-  const { uploadImage } = useImage();
+  const { uploadImage } = useImageUpload();
 
   const { $reportService } = useNuxtApp();
 

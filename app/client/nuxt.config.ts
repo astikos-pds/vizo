@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
-  ssr: false,
+  ssr: true,
   runtimeConfig: {
     public: {
       apiBaseUrl:
@@ -29,7 +29,13 @@ export default defineNuxtConfig({
     "@nuxtjs/i18n",
     "@vite-pwa/nuxt",
     "@pinia/nuxt",
+    "@nuxt/image",
   ],
+  icon: {
+    serverBundle: {
+      collections: ["lucide", "flagpack"],
+    },
+  },
   i18n: {
     defaultLocale: "pt-BR",
     strategy: "no_prefix",

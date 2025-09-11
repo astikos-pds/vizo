@@ -4,7 +4,7 @@ import {
   type UploadImageResponse,
 } from "~/services/upload";
 
-export const useImage = () => {
+export const useImageUpload = () => {
   const { loading, handle } = useApiHandler();
 
   async function uploadImage(request: UploadImageRequest): Promise<string> {

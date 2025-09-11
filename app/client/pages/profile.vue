@@ -223,7 +223,7 @@ const badges = ref([
                       />
                     </div>
                     <div class="w-[200px] h-[200px]">
-                      <img
+                      <NuxtImg
                         :src="report.image"
                         class="rounded-lg w-full h-full object-cover aspect-square"
                       />

@@ -22,7 +22,7 @@ const { locale, t } = useI18n();
       ><p>{{ report.description }}</p></template
     >
     <section class="flex flex-col gap-3">
-      <img
+      <NuxtImg
         v-for="(imageUrl, index) in report.imagesUrls"
         :key="`${report.id}-${index}`"
         :src="imageUrl.toString()"

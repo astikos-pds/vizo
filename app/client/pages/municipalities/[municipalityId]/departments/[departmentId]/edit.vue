@@ -2,6 +2,7 @@
 import DepartmentsForm from "~/components/departments/DepartmentsForm.vue";
 import { useAssignedUsers } from "~/composables/use-assigned-users";
 import { useDepartments } from "~/composables/use-departments";
+import { useImageUpload } from "~/composables/use-image-upload";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { Department } from "~/types/domain/department";
 import type { ProblemType } from "~/types/domain/problem";
@@ -58,7 +59,7 @@ const state = computed<
   };
 });
 
-const { loading: imageUploadLoading, uploadImage } = useImage();
+const { loading: imageUploadLoading, uploadImage } = useImageUpload();
 const { loading: userAssignmentLoading, assignUsersToDepartment } =
   useAssignedUsers();
 

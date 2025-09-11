@@ -16,7 +16,7 @@ export const useProblems = () => {
 
   function getReportsForProblem(
     problemId: Problem["id"],
-    pagination: Pagination
+    pagination?: Pagination
   ) {
     return useAsyncData(`problems-${problemId}-reports`, () =>
       $problemService.getReportsForProblem(problemId, pagination)
