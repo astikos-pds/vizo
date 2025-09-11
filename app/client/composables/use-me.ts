@@ -39,7 +39,7 @@ export const useMe = () => {
     municipalityId: Municipality["id"],
     pagination?: Pagination
   ) {
-    return useAsyncData(`my-municipality-${municipalityId}-assignments`, () =>
+    return useAsyncData(`my-municipalities-${municipalityId}-assignments`, () =>
       $meService.getMyAssignmentsInMunicipality(municipalityId, pagination)
     );
   }

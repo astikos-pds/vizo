@@ -2,7 +2,6 @@
 import DepartmentsForm from "~/components/departments/DepartmentsForm.vue";
 import { useAssignedUsers } from "~/composables/use-assigned-users";
 import { useDepartments } from "~/composables/use-departments";
-import { useImageUpload } from "~/composables/use-image-upload";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { ProblemType } from "~/types/domain/problem";
 
@@ -23,7 +22,6 @@ definePageMeta({
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 
-const { loading: imageUploadLoading, uploadImage } = useImageUpload();
 const { loading: departmentCreationLoading, createDepartment } =
   useDepartments();
 const { loading: userAssignmentLoading, assignUsersToDepartment } =
@@ -36,18 +34,11 @@ async function onSubmit(data: {
   colorHex: string;
   selectedFiliates: AffiliatedUser[];
   problemTypes: ProblemType[];
-  icon?: File | undefined;
+  iconUrl?: string;
 }) {
-  const icon = data.icon;
-
-  const uploadedUrl = await uploadImage({
-    file: icon,
-  });
-  const iconUrl = uploadedUrl.trim();
-
   const department = await createDepartment(municipalityId, {
     name: data.name,
-    iconUrl: iconUrl.length === 0 ? undefined : iconUrl,
+    iconUrl: data.iconUrl,
     colorHex: data.colorHex,
     problemTypes: data.problemTypes,
   });
@@ -84,8 +75,6 @@ const { currentAffiliation } = useLoggedInUserStore();
     title="New department"
     :description="`Create a new department in ${currentAffiliation.municipality.name}`"
     @submit="onSubmit"
-    :loading="
-      imageUploadLoading || departmentCreationLoading || userAssignmentLoading
-    "
+    :loading="departmentCreationLoading || userAssignmentLoading"
   />
 </template>

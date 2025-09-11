@@ -33,11 +33,15 @@ export default defineNuxtPlugin((nuxtApp) => {
     },
 
     onResponse({ response }) {
-      console.debug(`[API] Response:`, response);
+      if (nuxtApp.$config.public.nodeEnv === "development") {
+        console.debug(`[API] Response:`, response);
+      }
     },
 
     async onResponseError({ response, request, options }): Promise<any> {
-      console.error(`[API] Error:`, response.status, response._data);
+      if (nuxtApp.$config.public.nodeEnv === "development") {
+        console.error(`[API] Error:`, response.status, response._data);
+      }
 
       if (
         response.status === 401 &&

@@ -14,7 +14,7 @@ const { state } = defineProps<{
 }>();
 
 const emit = defineEmits<{
-  submit: [data: DepartmentSchema];
+  submit: [data: Omit<DepartmentSchema, "icon"> & { iconUrl?: string }];
 }>();
 
 const departmentSchema = z.object({
@@ -64,16 +64,27 @@ const chip = computed(() => ({ backgroundColor: form.colorHex }));
 
 const { currentAffiliation } = useLoggedInUserStore();
 
+const { loading: imageUploadLoading, uploadImage } = useImageUpload();
+
 async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
-  emit("submit", { ...event.data });
+  const icon = event.data.icon;
+  let iconUrl = undefined;
+
+  if (icon) {
+    iconUrl = await uploadImage({
+      file: icon,
+    });
+  }
+
+  emit("submit", { ...event.data, iconUrl });
 }
 </script>
 
 <template>
   <DepartmentsPage
     v-if="currentAffiliation"
-    title="New department"
-    :description="`Create a new department in ${currentAffiliation.municipality.name}`"
+    :title="title"
+    :description="description"
   >
     <UForm
       :schema="departmentSchema"
@@ -83,6 +94,20 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
     >
       <UFormField label="Name" name="name" required class="w-full">
         <UInput v-model="form.name" class="w-full" />
+      </UFormField>
+
+      <UFormField
+        label="Scope"
+        name="scope"
+        description="The department's scope refers to the types of problems that it can handle"
+        required
+        class="w-full"
+      >
+        <ProblemTypeSelect
+          class="w-full"
+          multiple
+          v-model="form.problemTypes"
+        />
       </UFormField>
 
       <UFormField label="Icon" name="icon" hint="Optional" class="w-full">
@@ -115,20 +140,6 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
       </UFormField>
 
       <UFormField
-        label="Scope"
-        name="scope"
-        description="The department's scope refers to the types of problems that it can handle"
-        required
-        class="w-full"
-      >
-        <ProblemTypeSelect
-          class="w-full"
-          multiple
-          v-model="form.problemTypes"
-        />
-      </UFormField>
-
-      <UFormField
         label="Assign users"
         name="assigned-users"
         hint="Optional"
@@ -140,7 +151,9 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
         />
       </UFormField>
 
-      <UButton type="submit" :loading="loading">Submit</UButton>
+      <UButton type="submit" :loading="loading || imageUploadLoading"
+        >Submit</UButton
+      >
     </UForm>
   </DepartmentsPage>
 </template>

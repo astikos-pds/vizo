@@ -2,24 +2,9 @@
 import DepartmentsForm from "~/components/departments/DepartmentsForm.vue";
 import { useAssignedUsers } from "~/composables/use-assigned-users";
 import { useDepartments } from "~/composables/use-departments";
-import { useImageUpload } from "~/composables/use-image-upload";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { Department } from "~/types/domain/department";
 import type { ProblemType } from "~/types/domain/problem";
-
-useHead({
-  title: "Vizo | New department",
-  meta: [
-    {
-      name: "description",
-      content: "Create a new department in this municipality.",
-    },
-  ],
-});
-
-definePageMeta({
-  middleware: ["auth", "affiliated"],
-});
 
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
@@ -33,6 +18,22 @@ const {
 
 const { data: department, pending: pendingForDepartments } =
   await getDepartmentById(municipalityId, departmentId);
+
+useHead({
+  title: department.value
+    ? `Vizo | Editing ${department.value.name}`
+    : "Vizo | Editing a department",
+  meta: [
+    {
+      name: "description",
+      content: "Edit an existing department in this municipality.",
+    },
+  ],
+});
+
+definePageMeta({
+  middleware: ["auth", "affiliated"],
+});
 
 const { getUsersAssignedToDepartment } = useAssignedUsers();
 
@@ -59,7 +60,6 @@ const state = computed<
   };
 });
 
-const { loading: imageUploadLoading, uploadImage } = useImageUpload();
 const { loading: userAssignmentLoading, assignUsersToDepartment } =
   useAssignedUsers();
 
@@ -70,17 +70,11 @@ async function onSubmit(data: {
   colorHex: string;
   selectedFiliates: AffiliatedUser[];
   problemTypes: ProblemType[];
-  icon?: File | undefined;
+  iconUrl?: string;
 }) {
-  const icon = data.icon;
-
-  const iconUrl = await uploadImage({
-    file: icon,
-  });
-
   const department = await updateDepartment(municipalityId, departmentId, {
     name: data.name,
-    iconUrl,
+    iconUrl: data.iconUrl,
     colorHex: data.colorHex,
     problemTypes: data.problemTypes,
   });
@@ -101,7 +95,7 @@ async function onSubmit(data: {
 
   toast.add({
     title: "Success",
-    description: "Department created successfully!",
+    description: "Department updated successfully!",
     color: "success",
   });
 
@@ -117,11 +111,9 @@ async function onSubmit(data: {
   <DepartmentsForm
     v-else
     :title="`Editing ${department.name}`"
-    :description="`Edit the ${department.name} in ${department.municipality.name}`"
+    :description="`Edit the ${department.name} department in ${department.municipality.name}`"
     :state="state"
     @submit="onSubmit"
-    :loading="
-      imageUploadLoading || departmentCreationLoading || userAssignmentLoading
-    "
+    :loading="departmentCreationLoading || userAssignmentLoading"
   />
 </template>

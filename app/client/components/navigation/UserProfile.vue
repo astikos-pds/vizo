@@ -29,30 +29,25 @@ const { user } = useLoggedInUserStore();
     v-if="user"
     :items="items"
     :content="{
-      align: 'start',
+      align: 'center',
       side: 'top',
     }"
     :ui="{
       content: 'w-48',
       itemLeadingIcon: 'text-lg',
     }"
+    class="w-full"
   >
-    <div>
-      <UButton
-        color="neutral"
-        variant="ghost"
-        :avatar="{
-          src: user.avatarUrl?.toString(),
-          alt: user.name,
-          size: 'md',
-        }"
-        class="w-full"
-        :ui="{
-          base: 'p-[5px]',
-        }"
-      >
-        {{ !collapsed ? user.name : "" }}
-      </UButton>
-    </div>
+    <UButton
+      color="neutral"
+      variant="ghost"
+      :avatar="{
+        src: user.avatarUrl?.toString(),
+        alt: user.name,
+        size: 'md',
+      }"
+      size="lg"
+      :label="collapsed ? undefined : user.name"
+    />
   </UDropdownMenu>
 </template>

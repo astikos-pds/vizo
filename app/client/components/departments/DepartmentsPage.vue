@@ -38,13 +38,13 @@ const items = computed<NavigationMenuItem[]>(() => {
       <UNavigationMenu :items="items" highlight />
     </header>
     <main
-      class="flex-1 w-[75%] 2xl:w-[65%] p-3 my-8 gap-3 flex flex-col items-center"
+      class="flex-1 w-[90%] lg:w-[80%] 2xl:w-[75%] p-3 my-8 gap-3 flex flex-col items-center"
     >
       <div class="text-center flex flex-col gap-1">
         <h1 class="text-2xl font-semibold">{{ title }}</h1>
         <p class="text-sm">{{ description }}</p>
       </div>
-      <div class="w-full flex flex-col">
+      <div class="w-full flex flex-col items-center">
         <slot />
       </div>
     </main>

@@ -28,24 +28,23 @@ async function onDelete(department: Department) {
     color: "success",
   });
 
-  await refreshNuxtData(`municipalities-${municipalityId}-assignments`);
+  await refreshNuxtData(`my-municipalities-${municipalityId}-assignments`);
 }
 
 const items = ref<DropdownMenuItem[][]>([
   [
     {
-      label: "Assign",
+      label: "Assign users",
       icon: "i-lucide-user-plus",
-      color: "info",
       onSelect: openModal,
     },
-  ],
-  [
     {
       label: "Edit",
       icon: "i-lucide-pencil",
-      to: `/municipality/${department.municipality.id}/departments/${department.id}/edit`,
+      to: `/municipalities/${department.municipality.id}/departments/${department.id}/edit`,
     },
+  ],
+  [
     {
       label: "Delete",
       icon: "i-lucide-trash",

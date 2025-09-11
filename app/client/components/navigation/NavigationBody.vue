@@ -10,70 +10,66 @@ const { collapsed } = defineProps<{
 
 const { t } = useI18n();
 
-const commomItems = computed<NavigationMenuItem[][]>(() => {
+const commomItems = computed<NavigationMenuItem[]>(() => {
   return [
-    [
-      {
-        label: t("navBar.index"),
-        icon: "i-lucide-house",
-        to: "/",
-        onSelect: () => (open.value = false),
-      },
-      {
-        label: t("navBar.report"),
-        icon: "i-lucide-message-square-warning",
-        to: "/report",
-        onSelect: () => (open.value = false),
-      },
-      {
-        label: "Points of interest",
-        icon: "i-lucide-map-pin",
-        to: "/points-of-interest",
-        onSelect: () => (open.value = false),
-        children: [
-          {
-            label: "View all",
-            icon: "i-lucide-map",
-            to: "/points-of-interest",
-            onSelect: () => (open.value = false),
-          },
-          {
-            label: "Create new",
-            icon: "i-lucide-plus",
-            to: "/points-of-interest/new",
-            onSelect: () => (open.value = false),
-          },
-        ],
-      },
-      {
-        label: "Affiliations",
-        icon: "i-lucide-archive",
-        to: "/affiliations",
-        onSelect: () => (open.value = false),
-        children: [
-          {
-            label: "View all",
-            icon: "i-lucide-building",
-            to: "/affiliations",
-            onSelect: () => (open.value = false),
-          },
-          {
-            label: "Request new",
-            icon: "i-lucide-git-pull-request",
-            to: "/affiliations/request",
-            onSelect: () => (open.value = false),
-          },
-        ],
-      },
-    ],
-    [
-      {
-        label: "Settings",
-        icon: "i-lucide-settings",
-        to: "/settings",
-        onSelect: () => (open.value = false),
-      },
-    ],
+    {
+      label: t("navBar.index"),
+      icon: "i-lucide-house",
+      to: "/",
+      onSelect: () => (open.value = false),
+    },
+    {
+      label: t("navBar.report"),
+      icon: "i-lucide-message-square-warning",
+      to: "/report",
+      onSelect: () => (open.value = false),
+    },
+    {
+      label: "Points of interest",
+      icon: "i-lucide-map-pin",
+      to: "/points-of-interest",
+      onSelect: () => (open.value = false),
+      children: [
+        {
+          label: "View all",
+          icon: "i-lucide-map",
+          to: "/points-of-interest",
+          onSelect: () => (open.value = false),
+        },
+        {
+          label: "Create new",
+          icon: "i-lucide-plus",
+          to: "/points-of-interest/new",
+          onSelect: () => (open.value = false),
+        },
+      ],
+    },
+    {
+      label: "Affiliations",
+      icon: "i-lucide-archive",
+      to: "/affiliations",
+      onSelect: () => (open.value = false),
+      children: [
+        {
+          label: "View all",
+          icon: "i-lucide-building",
+          to: "/affiliations",
+          onSelect: () => (open.value = false),
+        },
+        {
+          label: "Request new",
+          icon: "i-lucide-git-pull-request",
+          to: "/affiliations/request",
+          onSelect: () => (open.value = false),
+        },
+      ],
+    },
+    {
+      label: "Settings",
+      icon: "i-lucide-settings",
+      to: "/settings",
+      onSelect: () => (open.value = false),
+    },
   ];
 });
 
@@ -130,8 +126,9 @@ const affiliatedItems = computed<NavigationMenuItem[]>(() => {
 </script>
 
 <template>
-  <div class="flex-1 w-full flex flex-col gap-2">
+  <div class="flex-1 w-full flex flex-col items-center gap-2">
     <UNavigationMenu
+      class="w-full"
       :collapsed="collapsed"
       :items="commomItems"
       orientation="vertical"
@@ -140,14 +137,15 @@ const affiliatedItems = computed<NavigationMenuItem[]>(() => {
     />
 
     <div
-      class="w-full flex flex-col mt-3 gap-2"
+      class="w-full flex flex-col mt-2 gap-2 items-center"
       v-if="currentAffiliation && affiliatedItems.length !== 0"
     >
-      <USeparator :label="currentAffiliation.municipality.name" size="xs" />
+      <USeparator size="xs" />
 
-      <MunicipalitiesSelection class="mb-2" />
+      <MunicipalitiesSelection :collapsed="collapsed" class="w-full" />
 
       <UNavigationMenu
+        class="w-full"
         :collapsed="collapsed"
         :items="affiliatedItems"
         orientation="vertical"

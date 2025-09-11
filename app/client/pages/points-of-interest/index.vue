@@ -20,7 +20,7 @@ definePageMeta({
 
 const pagination = reactive<Pagination>({
   page: 0,
-  size: 1,
+  size: 15,
 });
 
 const { getMyPointsOfInterest } = useMe();

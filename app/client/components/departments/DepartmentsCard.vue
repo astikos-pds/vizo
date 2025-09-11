@@ -30,14 +30,26 @@ const { currentAffiliation } = useLoggedInUserStore();
             :alt="department.name"
             size="3xl"
           />
-          <div class="flex flex-col text-start">
-            <h3 class="font-semibold 2xl:text-lg text-ellipsis">
-              {{ department.name }}
-            </h3>
-            <span class="text-xs 2xl:text-sm"
-              >Created at
-              {{ department.createdAt.toLocaleDateString(locale) }}</span
-            >
+          <div class="flex flex-col text-start gap-2">
+            <div class="flex flex-col">
+              <h3 class="font-semibold 2xl:text-lg text-ellipsis">
+                {{ department.name }}
+              </h3>
+              <span class="text-xs 2xl:text-sm"
+                >Created at
+                {{ department.createdAt.toLocaleDateString(locale) }}</span
+              >
+            </div>
+            <div class="w-full flex gap-1 flex-wrap">
+              <UBadge
+                v-for="problemType in department.scope"
+                :key="problemType"
+                color="neutral"
+                variant="outline"
+                size="sm"
+                >{{ problemType }}</UBadge
+              >
+            </div>
           </div>
         </div>
 

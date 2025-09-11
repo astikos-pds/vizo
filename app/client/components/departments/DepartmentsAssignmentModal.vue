@@ -24,7 +24,7 @@ const { data: page, pending } = await getUsersAssignedToDepartment(
 const affiliatedUsersAlreadyAssigned = computed(() => {
   if (!page.value) return [];
 
-  return page.value.content.map((a) => a.user);
+  return page.value.content.filter((a) => !a.user.isAdmin).map((a) => a.user);
 });
 
 const selectedFiliates = ref<AffiliatedUser[]>(

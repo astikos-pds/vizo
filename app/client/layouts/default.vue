@@ -60,9 +60,12 @@ const isMobile = breakpoints.smallerOrEqual("md");
         :collapsed="collapsed"
         class="my-3 flex items-center justify-center"
       />
-      <div class="flex-1 flex flex-col justify-between">
+      <div class="flex-1 flex flex-col justify-between items-center">
         <NavigationBody :collapsed="collapsed" class="px-2" />
-        <UserProfile :collapsed="collapsed" class="border-t border-default" />
+        <UserProfile
+          :collapsed="collapsed"
+          class="border-t border-default w-full"
+        />
       </div>
     </section>
     <div class="h-screen w-full flex flex-col flex-1 border-r border-default">

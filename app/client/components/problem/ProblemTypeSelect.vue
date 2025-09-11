@@ -23,8 +23,6 @@ const items = computed<SelectMenuItem[]>(() => {
     ...problemTypes.value,
   ];
 });
-
-watch(model, (a) => console.log(a));
 </script>
 
 <template>

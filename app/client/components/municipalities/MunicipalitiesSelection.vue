@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import type { AvatarProps, DropdownMenuItem } from "@nuxt/ui";
 
+defineProps<{
+  collapsed?: boolean;
+}>();
+
 const { currentAffiliation, affiliations } = useLoggedInUserStore();
 
 const items = computed<DropdownMenuItem[]>(() =>
@@ -22,7 +26,6 @@ const avatar = computed<AvatarProps | undefined>(() => {
 
   return {
     src: currentAffiliation.municipality.iconUrl?.toString(),
-    icon: "i-lucide-image",
     alt: currentAffiliation.municipality.name,
   };
 });
@@ -32,11 +35,17 @@ const avatar = computed<AvatarProps | undefined>(() => {
   <UDropdownMenu
     :items="items"
     :ui="{
-      content: 'w-48',
+      content: 'min-w-48',
     }"
   >
-    <UButton color="neutral" variant="ghost" :avatar="avatar">{{
-      currentAffiliation?.municipality.name
-    }}</UButton>
+    <UButton
+      color="neutral"
+      variant="ghost"
+      :avatar="avatar"
+      :class="{
+        'p-1 flex justify-center items-center': collapsed,
+      }"
+      >{{ collapsed ? "" : currentAffiliation?.municipality.name }}</UButton
+    >
   </UDropdownMenu>
 </template>

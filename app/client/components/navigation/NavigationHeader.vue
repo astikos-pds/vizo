@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { DropdownMenuItem } from "@nuxt/ui";
-
 const { collapsed } = defineProps<{
   collapsed: boolean;
 }>();
@@ -16,7 +14,7 @@ const vizo = {
 </script>
 
 <template>
-  <section class="px-2 w-full flex flex-col gap-2">
+  <section class="w-full flex flex-col gap-2" :class="{ 'px-2': !collapsed }">
     <UButton
       color="neutral"
       variant="ghost"

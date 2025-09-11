@@ -61,7 +61,7 @@ const { currentAffiliation } = useLoggedInUserStore();
 
       <div
         v-else
-        class="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        class="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"
       >
         <DepartmentsCard
           v-for="department in departments"
