@@ -6,27 +6,31 @@ defineProps<{
 }>();
 
 const userStore = useLoggedInUserStore();
-const currentAffiliation = computed(() => userStore.currentAffiliation);
-const affiliations = computed(() => userStore.affiliations);
+const currentAssignment = computed(() => userStore.currentAssignment);
+const assignments = computed(() => userStore.assignments);
 
 async function close() {
+  const municipalityId = currentAssignment.value?.department.municipality.id;
+
   userStore.setCurrentAssignment(null);
   userStore.setAssignments([]);
-  userStore.setCurrentAffiliation(null);
-  userStore.setAffiliations([]);
 
-  await navigateTo("/affiliations");
+  await navigateTo(
+    municipalityId
+      ? `/municipalities/${municipalityId}/departments`
+      : "/affiliations"
+  );
 }
 
 const items = computed<DropdownMenuItem[][]>(() => {
-  const base = affiliations.value.map((a) => {
+  const base = assignments.value.map((a) => {
     return {
-      label: a.municipality.name,
+      label: a.department.name,
       avatar: {
-        src: a.municipality.iconUrl?.toString(),
-        alt: a.municipality.name,
+        src: a.department.iconUrl?.toString(),
+        alt: a.department.name,
       },
-      to: `/municipalities/${a.municipality.id}`,
+      to: `/departments/${a.department.id}`,
     };
   });
 
@@ -43,17 +47,18 @@ const items = computed<DropdownMenuItem[][]>(() => {
 });
 
 const avatar = computed<AvatarProps | undefined>(() => {
-  if (!currentAffiliation.value) return undefined;
+  if (!currentAssignment.value) return undefined;
 
   return {
-    src: currentAffiliation.value.municipality.iconUrl?.toString(),
-    alt: currentAffiliation.value.municipality.name,
+    src: currentAssignment.value.department.iconUrl?.toString(),
+    alt: currentAssignment.value.department.name,
   };
 });
 </script>
 
 <template>
   <UDropdownMenu
+    v-if="currentAssignment"
     :items="items"
     :ui="{
       content: 'min-w-48',
@@ -66,7 +71,7 @@ const avatar = computed<AvatarProps | undefined>(() => {
       :class="{
         'p-1 flex justify-center items-center': collapsed,
       }"
-      >{{ collapsed ? "" : currentAffiliation?.municipality.name }}</UButton
+      >{{ collapsed ? "" : currentAssignment.department.name }}</UButton
     >
   </UDropdownMenu>
 </template>

@@ -2,6 +2,7 @@
 import type { NavigationMenuItem } from "@nuxt/ui";
 import MunicipalitiesSelection from "../municipalities/MunicipalitiesSelection.vue";
 import type { PermissionPreset } from "~/types/domain/permission";
+import DepartmentsSelection from "../departments/DepartmentsSelection.vue";
 
 const open = defineModel<boolean>("open");
 
@@ -75,6 +76,7 @@ const commomItems = computed<NavigationMenuItem[]>(() => {
 });
 
 const userStore = useLoggedInUserStore();
+
 const currentAffiliation = computed(() => userStore.currentAffiliation);
 
 const affiliatedItems = computed<NavigationMenuItem[]>(() => {
@@ -144,6 +146,31 @@ const affiliatedItems = computed<NavigationMenuItem[]>(() => {
 
   return items;
 });
+
+const currentAssignment = computed(() => userStore.currentAssignment);
+
+const assignedItems = computed<NavigationMenuItem[]>(() => {
+  if (!currentAssignment.value) return [];
+
+  const departmentId = currentAssignment.value.department.id;
+
+  const items = [
+    {
+      label: "Dashboard",
+      icon: "i-lucide-layout-dashboard",
+      to: `/departments/${departmentId}/dashboard`,
+      onSelect: () => (open.value = false),
+    },
+    {
+      label: "Problems",
+      icon: "i-lucide-bug",
+      to: `/departments/${departmentId}/problems`,
+      onSelect: () => (open.value = false),
+    },
+  ];
+
+  return items;
+});
 </script>
 
 <template>
@@ -169,6 +196,24 @@ const affiliatedItems = computed<NavigationMenuItem[]>(() => {
         class="w-full"
         :collapsed="collapsed"
         :items="affiliatedItems"
+        orientation="vertical"
+        highlight
+        tooltip
+      />
+    </div>
+
+    <div
+      class="w-full flex flex-col mt-2 gap-2 items-center"
+      v-if="currentAssignment && assignedItems.length !== 0"
+    >
+      <USeparator size="xs" />
+
+      <DepartmentsSelection :collapsed="collapsed" class="w-full" />
+
+      <UNavigationMenu
+        class="w-full"
+        :collapsed="collapsed"
+        :items="assignedItems"
         orientation="vertical"
         highlight
         tooltip

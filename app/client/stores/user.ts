@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
+import type { AssignedUser } from "~/types/domain/assigned-user";
 import type { User } from "~/types/domain/user";
 
 export const useLoggedInUserStore = defineStore("user-store", () => {
@@ -9,6 +10,11 @@ export const useLoggedInUserStore = defineStore("user-store", () => {
       write: (v: User | null) => (v ? JSON.stringify(v) : ""),
     },
   });
+
+  const setUser = (value: User | null) => {
+    user.value = value;
+  };
+
   const affiliations = useLocalStorage<AffiliatedUser[]>(
     "affiliations",
     () => [],
@@ -21,20 +27,17 @@ export const useLoggedInUserStore = defineStore("user-store", () => {
       },
     }
   );
+
   const currentAffiliationId = useLocalStorage<string | null>(
     "current-affiliation-id",
     () => null
   );
 
   const currentAffiliation = computed(() => {
-    if (!affiliations || !currentAffiliationId) return undefined;
+    if (!affiliations.value || !currentAffiliationId.value) return undefined;
 
     return affiliations.value.find((a) => a.id === currentAffiliationId.value);
   });
-
-  const setUser = (value: User | null) => {
-    user.value = value;
-  };
 
   const setAffiliations = (value: AffiliatedUser[]) => {
     affiliations.value = value ?? [];
@@ -45,7 +48,7 @@ export const useLoggedInUserStore = defineStore("user-store", () => {
   };
 
   const ensureUserIsAffiliatedTo = (municipalityId: string) => {
-    if (!affiliations.value) return false;
+    if (!affiliations.value) return undefined;
 
     const affiliation = affiliations.value.find(
       (affiliation) => affiliation.municipality.id === municipalityId
@@ -54,13 +57,60 @@ export const useLoggedInUserStore = defineStore("user-store", () => {
     return affiliation;
   };
 
+  const assignments = useLocalStorage<AssignedUser[]>("assignments", () => [], {
+    serializer: {
+      read: (v: string | null) => (v ? (JSON.parse(v) as AssignedUser[]) : []),
+      write: (v: AssignedUser[] | null) =>
+        v ? JSON.stringify(v) : JSON.stringify([]),
+    },
+  });
+
+  const currentAssignmentId = useLocalStorage<string | null>(
+    "current-assignment-id",
+    () => null
+  );
+
+  const currentAssignment = computed(() => {
+    if (
+      !currentAffiliation.value ||
+      !assignments.value ||
+      !currentAssignmentId.value
+    )
+      return undefined;
+
+    return assignments.value.find((a) => a.id === currentAssignmentId.value);
+  });
+
+  const setAssignments = (value: AssignedUser[]) => {
+    assignments.value = value ?? [];
+  };
+
+  const setCurrentAssignment = (value: AssignedUser | null) => {
+    currentAssignmentId.value = !value ? null : value.id;
+  };
+
+  const ensureUserIsAssignedTo = (departmentId: string) => {
+    if (!assignments.value || !currentAffiliation.value) return undefined;
+
+    const assignment = assignments.value.find(
+      (assignment) => assignment.department.id === departmentId
+    );
+
+    return assignment;
+  };
+
   return {
     user,
+    setUser,
     affiliations,
     currentAffiliation,
-    setUser,
     setAffiliations,
     setCurrentAffiliation,
     ensureUserIsAffiliatedTo,
+    assignments,
+    currentAssignment,
+    setAssignments,
+    setCurrentAssignment,
+    ensureUserIsAssignedTo,
   };
 });

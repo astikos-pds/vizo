@@ -1,6 +1,20 @@
 <script lang="ts" setup>
 import type { Permission } from "~/types/domain/permission";
 
+useHead({
+  title: "Vizo | New permission preset",
+  meta: [
+    {
+      name: "description",
+      content: "Create a new permission preset in this municipality",
+    },
+  ],
+});
+
+definePageMeta({
+  middleware: ["auth", "affiliated", "affiliated-as-admin"],
+});
+
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 

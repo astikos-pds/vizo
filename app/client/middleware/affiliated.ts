@@ -4,6 +4,9 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
   const toast = useToast();
 
   const municipalityId = to.params.municipalityId as string;
+
+  if (!municipalityId) return navigateTo("/affiliations");
+
   const affiliatedUser = ensureUserIsAffiliatedTo(municipalityId);
 
   if (!affiliatedUser) {

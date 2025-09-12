@@ -1,16 +1,31 @@
 <script lang="ts" setup>
 import type { Permission } from "~/types/domain/permission";
 
+definePageMeta({
+  middleware: ["auth", "affiliated", "affiliated-as-admin"],
+});
+
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 const permissionPresetId = route.params.id as string;
-
-const { currentAffiliation } = useLoggedInUserStore();
 
 const { getPermissionPresetInMunicipality } = usePermissionPresets();
 
 const { data: permissionPreset, pending } =
   await getPermissionPresetInMunicipality(municipalityId, permissionPresetId);
+
+useHead({
+  title: permissionPreset.value
+    ? `Vizo | Managing the ${permissionPreset.value.name} permission preset`
+    : "Vizo | Managing a permission preset",
+  meta: [
+    {
+      name: "description",
+      content:
+        "View, delete or update a permission preset in this municipality",
+    },
+  ],
+});
 
 const {
   loading,

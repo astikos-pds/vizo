@@ -10,12 +10,9 @@ const { currentAffiliation } = useLoggedInUserStore();
 </script>
 
 <template>
-  <UButton
+  <NuxtLink
     v-if="currentAffiliation"
-    variant="link"
-    color="neutral"
-    class="p-0"
-    to="/dashboard"
+    :to="`/municipalities/${department.municipality.id}/departments/${department.id}`"
   >
     <UCard
       :ui="{
@@ -63,5 +60,5 @@ const { currentAffiliation } = useLoggedInUserStore();
         class="w-full h-1"
       ></div>
     </UCard>
-  </UButton>
+  </NuxtLink>
 </template>

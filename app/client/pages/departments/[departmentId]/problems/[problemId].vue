@@ -12,7 +12,7 @@ const route = useRoute();
 
 definePageMeta({
   name: "Problem",
-  middleware: ["auth", "official", "department"],
+  middleware: ["auth", "assigned"],
 });
 
 const problemId = computed(() => route.params.problemId as string);

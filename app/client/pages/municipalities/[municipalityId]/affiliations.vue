@@ -14,7 +14,7 @@ useHead({
 });
 
 definePageMeta({
-  middleware: ["auth", "affiliated"],
+  middleware: ["auth", "affiliated", "affiliated-as-admin"],
 });
 
 const route = useRoute();

@@ -1,0 +1,34 @@
+<script setup lang="ts">
+import type { Pagination } from "~/types/domain/pagination";
+
+definePageMeta({
+  name: "Problems",
+  middleware: ["auth", "assigned"],
+});
+
+const { currentAssignment } = useLoggedInUserStore();
+
+const { getProblemsInScope } = useDepartments();
+
+const pagination = ref<Pagination>({
+  page: 0,
+  size: 20,
+});
+
+const { data: problems } = await getProblemsInScope(
+  currentAssignment ? currentAssignment.department.municipality.id : "",
+  currentAssignment ? currentAssignment.department.id : "",
+  pagination.value
+);
+</script>
+
+<template>
+  <section class="size-full p-3 lg:p-5">
+    <ProblemsTable
+      v-if="problems"
+      v-model:problems="problems"
+      v-model:pagination="pagination"
+      class="w-full"
+    />
+  </section>
+</template>

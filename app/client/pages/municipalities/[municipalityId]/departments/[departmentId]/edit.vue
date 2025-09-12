@@ -6,6 +6,10 @@ import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { Department } from "~/types/domain/department";
 import type { ProblemType } from "~/types/domain/problem";
 
+definePageMeta({
+  middleware: ["auth", "affiliated", "affiliated-as-admin"],
+});
+
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 const departmentId = route.params.departmentId as string;
@@ -29,10 +33,6 @@ useHead({
       content: "Edit an existing department in this municipality.",
     },
   ],
-});
-
-definePageMeta({
-  middleware: ["auth", "affiliated"],
 });
 
 const { getUsersAssignedToDepartment } = useAssignedUsers();

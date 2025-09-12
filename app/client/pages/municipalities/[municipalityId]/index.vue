@@ -1,13 +1,22 @@
 <script lang="ts" setup>
 definePageMeta({
-  middleware: ["auth", "affiliated"],
+  middleware: ["auth"],
 });
 
-const route = useRoute();
+const { getMyAffiliations } = useMe();
 
-await navigateTo(
-  `/municipalities/${route.params.municipalityId as string}/departments`
-);
+const { data: affiliations } = await getMyAffiliations({
+  page: 0,
+  size: 100,
+});
+
+const userStore = useLoggedInUserStore();
+userStore.setAffiliations(affiliations.value ? affiliations.value.content : []);
+
+const route = useRoute();
+const municipalityId = route.params.municipalityId as string;
+
+await navigateTo(`/municipalities/${municipalityId}/departments`);
 </script>
 
 <template></template>

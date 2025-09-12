@@ -2,7 +2,7 @@
 import { h, resolveComponent, ref } from "vue";
 import type { BadgeProps, TableColumn } from "@nuxt/ui";
 import { useI18n } from "vue-i18n";
-import type { Pagination } from "~/types/domain/pagination";
+import { Page, type Pagination } from "~/types/domain/pagination";
 import type { Problem, ProblemStatus } from "~/types/domain/problem";
 
 const { t, locale } = useI18n();
@@ -12,21 +12,13 @@ const UBadge = resolveComponent("UBadge");
 const UIcon = resolveComponent("UIcon");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 
-const pagination = defineModel<Pagination>("pagination", {
+const problems = defineModel<Page<Problem>>("problems", {
   required: true,
 });
 
-const { currentDepartment } = useDepartmentStore();
-const municipalityId = computed(() => currentDepartment?.municipality.id ?? "");
-const departmentId = computed(() => currentDepartment?.id ?? "");
-
-const { getProblemsInScope } = useDepartments();
-
-const { data: problems } = await getProblemsInScope(
-  municipalityId.value,
-  departmentId.value,
-  pagination.value
-);
+const pagination = defineModel<Pagination>("pagination", {
+  required: true,
+});
 
 const data = computed(() => problems.value?.content ?? []);
 
