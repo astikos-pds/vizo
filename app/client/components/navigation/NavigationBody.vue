@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 import MunicipalitiesSelection from "../municipalities/MunicipalitiesSelection.vue";
+import type { PermissionPreset } from "~/types/domain/permission";
 
 const open = defineModel<boolean>("open");
 
@@ -112,12 +113,32 @@ const affiliatedItems = computed<NavigationMenuItem[]>(() => {
     },
   ];
 
+  const { data: permissionPresets } = useNuxtData<PermissionPreset[]>(
+    `municipalities-${municipalityId}-permission-presets`
+  );
+
   if (currentAffiliation.value.isAdmin) {
     items.push({
       label: "Affiliation requests",
       icon: "i-lucide-folder",
       to: `/municipalities/${municipalityId}/affiliations`,
       onSelect: () => (open.value = false),
+    });
+    items.push({
+      label: "Permission presets",
+      icon: "i-lucide-settings-2",
+      to: `/municipalities/${municipalityId}/permission-presets/new`,
+      onSelect: () => (open.value = false),
+      children: permissionPresets.value
+        ? permissionPresets.value.map((p) => {
+            return {
+              label: p.name,
+              icon: "",
+              to: `/municipalities/${municipalityId}/permission-presets/${p.id}`,
+              onSelect: () => (open.value = false),
+            };
+          })
+        : [],
     });
   }
 

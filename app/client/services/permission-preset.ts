@@ -21,12 +21,15 @@ export class PermissionPresetService {
       `/municipalities/${municipalityId}/permission-presets`
     );
 
-    return response.map(this.permissionPresetMapper.toModel);
+    return response.map((t) => this.permissionPresetMapper.toModel(t));
   }
 
-  public async getPermissionPresetInMunicipality(municipalityId: string) {
+  public async getPermissionPresetInMunicipality(
+    municipalityId: string,
+    permissionPresetId: string
+  ) {
     const response = await this.httpClient.get<PermissionPresetDTO>(
-      `/municipalities/${municipalityId}/permission-presets`
+      `/municipalities/${municipalityId}/permission-presets/${permissionPresetId}`
     );
 
     return this.permissionPresetMapper.toModel(response);
