@@ -6,10 +6,31 @@ const municipalityId = route.params.municipalityId as string;
 
 const { currentAffiliation } = useLoggedInUserStore();
 
-const { loading, createPermissionPreset } = usePermissionPresets();
+const {
+  loading,
+  existsPermissionPresetByParamsInMunicipality,
+  createPermissionPreset,
+} = usePermissionPresets();
 const toast = useToast();
 
 const onSubmit = async (data: Permission & { name: string }) => {
+  const nameAlreadyInUse = await existsPermissionPresetByParamsInMunicipality(
+    municipalityId,
+    { name: data.name }
+  );
+  if (nameAlreadyInUse === null) return;
+  if (nameAlreadyInUse === true) {
+    toast.clear();
+
+    toast.add({
+      title: "Name already in use",
+      description:
+        "A permission preset was found with this name in this municipality.",
+      color: "error",
+    });
+    return;
+  }
+
   const created = await createPermissionPreset(municipalityId, {
     name: data.name,
     permission: {

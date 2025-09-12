@@ -10,6 +10,10 @@ export interface MutatePermissionPresetRequest {
   permission: Permission;
 }
 
+export interface ExistsPermissionPresetInMunicipalityParams {
+  name: string
+}
+
 export class PermissionPresetService {
   constructor(
     private readonly httpClient: HttpClient,
@@ -33,6 +37,16 @@ export class PermissionPresetService {
     );
 
     return this.permissionPresetMapper.toModel(response);
+  }
+
+  public async existsPermissionPresetByParamsInMunicipality(
+    municipalityId: string,
+    params: ExistsPermissionPresetInMunicipalityParams
+  ) {
+    return await this.httpClient.get<boolean>(
+      `/municipalities/${municipalityId}/permission-presets/exists`,
+      params
+    );
   }
 
   public async createPermissionPreset(

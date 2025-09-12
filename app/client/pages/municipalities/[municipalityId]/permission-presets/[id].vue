@@ -12,11 +12,32 @@ const { getPermissionPresetInMunicipality } = usePermissionPresets();
 const { data: permissionPreset, pending } =
   await getPermissionPresetInMunicipality(municipalityId, permissionPresetId);
 
-const { loading, updatePermissionPreset } = usePermissionPresets();
+const {
+  loading,
+  existsPermissionPresetByParamsInMunicipality,
+  updatePermissionPreset,
+} = usePermissionPresets();
 const toast = useToast();
 
 const onSubmit = async (data: Permission & { name: string }) => {
   if (!permissionPreset.value) return;
+
+  const nameAlreadyInUse = await existsPermissionPresetByParamsInMunicipality(
+    municipalityId,
+    { name: data.name }
+  );
+  if (nameAlreadyInUse === null) return;
+  if (nameAlreadyInUse === true) {
+    toast.clear();
+
+    toast.add({
+      title: "Name already in use",
+      description:
+        "A permission preset was found with this name in this municipality.",
+      color: "error",
+    });
+    return;
+  }
 
   const updated = await updatePermissionPreset(
     municipalityId,
@@ -44,11 +65,17 @@ const onSubmit = async (data: Permission & { name: string }) => {
 </script>
 
 <template>
+  <PermissionPresetsPage v-if="pending || !permissionPreset">
+    <EmptyMessage v-if="pending">Loading...</EmptyMessage>
+    <EmptyMessage v-else-if="!permissionPreset">
+      Point of interest not found.
+    </EmptyMessage>
+  </PermissionPresetsPage>
   <PermissionPresetsForm
-    v-if="currentAffiliation && permissionPreset"
+    v-else
     :title="`Editing the ${permissionPreset.name} preset`"
     :state="permissionPreset"
-    :loading="loading || pending"
+    :loading="loading"
     editing
     @submit="onSubmit"
   />
