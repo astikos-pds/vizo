@@ -55,6 +55,10 @@ const languageIcon = computed(
   () => languageItems.value.find((item) => item.id === form.language)?.icon
 );
 
+const themeIcon = computed(
+  () => themeItems.value.find((item) => item.value === form.theme)?.icon
+);
+
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
   await setLocale(event.data.language);
@@ -81,7 +85,7 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
       :state="form"
       :schema="settingsSchema"
       @submit="onSubmit"
-      class="w-[65%] md:w-110 lg:w-130 flex flex-col items-center gap-5"
+      class="w-[65%] md:w-110 lg:w-130 flex flex-col items-center gap-4"
     >
       <UFormField
         :label="t('settings.languageLabel')"
@@ -99,26 +103,14 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
           class="w-full"
       /></UFormField>
 
-      <UFormField
-        :label="t('settings.themeLabel')"
-        name="theme"
-        class="w-full rounded-1"
-      >
-        <div class="grid grid-cols-3 gap-1.5">
-          <UButton
-            v-for="item in themeItems"
-            :icon="item.icon"
-            :label="item.label"
-            @click="form.theme = item.value"
-            color="neutral"
-            variant="outline"
-            :class="[
-              form.theme === item.value
-                ? 'bg-elevated'
-                : 'hover:bg-elevated/50',
-            ]"
-          />
-        </div>
+      <UFormField :label="t('settings.themeLabel')" name="theme" class="w-full">
+        <USelect
+          v-model="form.theme"
+          value-key="value"
+          :items="themeItems"
+          :icon="themeIcon"
+          class="w-full"
+        />
       </UFormField>
 
       <UButton type="submit">{{ t("settings.saveButton") }}</UButton>
