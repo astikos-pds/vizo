@@ -17,6 +17,8 @@ const breakpoints = useBreakpoints({
 });
 
 const isMobile = breakpoints.smallerOrEqual("md");
+
+const { user } = useLoggedInUserStore();
 </script>
 
 <template>
@@ -45,7 +47,7 @@ const isMobile = breakpoints.smallerOrEqual("md");
         <NavigationBody :collapsed="collapsed" />
       </template>
       <template #footer>
-        <UserProfile :collapsed="collapsed" />
+        <UserProfile v-if="user" :user="user" :collapsed="collapsed" />
       </template>
     </USlideover>
     <section
@@ -63,6 +65,8 @@ const isMobile = breakpoints.smallerOrEqual("md");
       <div class="flex-1 flex flex-col justify-between items-center">
         <NavigationBody :collapsed="collapsed" class="px-2" />
         <UserProfile
+          v-if="user"
+          :user="user"
           :collapsed="collapsed"
           class="border-t border-default w-full"
         />
@@ -70,32 +74,58 @@ const isMobile = breakpoints.smallerOrEqual("md");
     </section>
     <div class="h-screen w-full flex flex-col flex-1 border-r border-default">
       <header
-        class="h-18 p-3 lg:p-5 border-b border-default flex flex-row items-center gap-1.5"
+        class="h-18 p-3 lg:p-5 border-b border-default flex flex-row items-center justify-between gap-1.5"
       >
-        <UButton
-          v-if="isMobile"
-          icon="i-lucide-menu"
-          color="neutral"
-          variant="ghost"
-          class="text-xl"
-          @click="open = !open"
-        />
+        <div class="flex items-center">
+          <UButton
+            v-if="isMobile"
+            icon="i-lucide-menu"
+            color="neutral"
+            variant="ghost"
+            class="text-xl"
+            @click="open = !open"
+          />
 
-        <UButton
-          v-else
-          :icon="
-            collapsed
-              ? 'i-lucide-square-chevron-right'
-              : 'i-lucide-square-chevron-left'
-          "
-          color="neutral"
-          variant="ghost"
-          class="text-xl"
-          @click="collapsed = !collapsed"
-        />
-        <h1 class="font-semibold text-base capitalize">
-          {{ name ?? t(`navBar.${route.name?.toString()}`) }}
-        </h1>
+          <UButton
+            v-else
+            :icon="
+              collapsed
+                ? 'i-lucide-square-chevron-right'
+                : 'i-lucide-square-chevron-left'
+            "
+            color="neutral"
+            variant="ghost"
+            class="text-xl"
+            @click="collapsed = !collapsed"
+          />
+          <h1 class="font-semibold text-base capitalize">
+            {{ name ?? t(`navBar.${route.name?.toString()}`) }}
+          </h1>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <UButton
+            size="xl"
+            color="neutral"
+            variant="outline"
+            icon="i-lucide-bell"
+            to="/notifications"
+            class="rounded-full size-10 flex items-center justify-center text-xl"
+          />
+
+          <UButton
+            v-if="user"
+            size="xl"
+            color="neutral"
+            variant="link"
+            :avatar="{
+              src: user.avatarUrl?.toString(),
+              alt: user.name,
+              size: 'lg',
+            }"
+            :to="`/users/${user.id}`"
+          />
+        </div>
       </header>
       <main class="flex-1 w-full overflow-y-auto flex flex-col items-center">
         <slot />

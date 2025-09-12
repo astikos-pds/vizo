@@ -1,4 +1,4 @@
-import type { Map as LeafletMap, PointExpression } from "leaflet";
+import type { Map as LeafletMap } from "leaflet";
 import type { LatLng } from "~/types/geolocation";
 
 export const useMap = () => {
@@ -6,13 +6,12 @@ export const useMap = () => {
   const zoom = ref<number>(11);
   const center = reactive<LatLng>(CITY_CENTER);
 
-  const { coords } = useMapGeolocation();
+  const { coords, isLocationPrecise } = useMapGeolocation();
 
   const stopWatch = watch(
     coords,
     (newCoords) => {
-      if (newCoords.latitude === Infinity || newCoords.longitude === Infinity)
-        return;
+      if (!isLocationPrecise.value) return;
 
       center.latitude = newCoords.latitude;
       center.longitude = newCoords.longitude;

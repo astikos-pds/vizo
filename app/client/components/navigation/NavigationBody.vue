@@ -21,6 +21,12 @@ const commomItems = computed<NavigationMenuItem[]>(() => {
       onSelect: () => (open.value = false),
     },
     {
+      label: "Notifications",
+      icon: "i-lucide-bell",
+      to: "/notifications",
+      onSelect: () => (open.value = false),
+    },
+    {
       label: t("navBar.report"),
       icon: "i-lucide-message-square-warning",
       to: "/report",

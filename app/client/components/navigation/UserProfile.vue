@@ -1,7 +1,9 @@
 <script lang="ts" setup>
 import type { DropdownMenuItem } from "@nuxt/ui";
+import type { User } from "~/types/domain/user";
 
-const { collapsed } = defineProps<{
+const { user, collapsed } = defineProps<{
+  user: User;
   collapsed: boolean;
 }>();
 
@@ -10,6 +12,7 @@ const items = ref<DropdownMenuItem[][]>([
     {
       label: "Profile",
       icon: "i-lucide-user",
+      to: `/users/${user.id}`,
     },
   ],
   [
@@ -20,13 +23,10 @@ const items = ref<DropdownMenuItem[][]>([
     },
   ],
 ]);
-
-const { user } = useLoggedInUserStore();
 </script>
 
 <template>
   <UDropdownMenu
-    v-if="user"
     :items="items"
     :content="{
       align: 'center',
