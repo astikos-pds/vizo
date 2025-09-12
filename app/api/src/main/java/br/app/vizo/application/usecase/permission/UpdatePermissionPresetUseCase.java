@@ -3,6 +3,7 @@ package br.app.vizo.application.usecase.permission;
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.PermissionPresetDTO;
 import br.app.vizo.application.exception.PermissionPresetNotFoundException;
+import br.app.vizo.application.exception.PresetNameAlreadyInUseException;
 import br.app.vizo.application.mapper.PermissionMapper;
 import br.app.vizo.application.mapper.PermissionPresetMapper;
 import br.app.vizo.application.service.AuthorizationService;
@@ -31,6 +32,11 @@ public class UpdatePermissionPresetUseCase {
             MutatePermissionPresetRequestDTO request
     ) {
         AffiliatedUser affiliatedUser = this.authorizationService.ensureUserIsAffiliatedTo(loggedInUser, municipalityId);
+
+        boolean nameAlreadyInUse = this.permissionPresetRepository.existsByMunicipalityIdAndName(municipalityId, request.name());
+        if (nameAlreadyInUse) {
+            throw new PresetNameAlreadyInUseException();
+        }
 
         PermissionPreset permissionPreset = this.permissionPresetRepository.findById(permissionPresetId)
                 .orElseThrow(PermissionPresetNotFoundException::new);

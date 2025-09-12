@@ -40,6 +40,11 @@ public class PermissionPresetImpl implements PermissionPresetRepository {
     }
 
     @Override
+    public boolean existsByMunicipalityIdAndName(UUID municipalityId, String name) {
+        return this.jpaRepository.existsByMunicipalityIdAndName(municipalityId, name);
+    }
+
+    @Override
     public void deleteById(UUID id) {
         this.jpaRepository.deleteById(id);
     }

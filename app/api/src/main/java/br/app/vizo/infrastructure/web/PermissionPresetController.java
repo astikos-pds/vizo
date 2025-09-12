@@ -2,6 +2,7 @@ package br.app.vizo.infrastructure.web;
 
 import br.app.vizo.application.dto.PermissionPresetDTO;
 import br.app.vizo.application.usecase.permission.*;
+import br.app.vizo.application.usecase.permission.params.ExistsPermissionPresetParams;
 import br.app.vizo.application.usecase.permission.request.MutatePermissionPresetRequestDTO;
 import br.app.vizo.config.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class PermissionPresetController {
 
     private final GetPermissionPresetsInMunicipalityUseCase getPermissionPresetsInMunicipalityUseCase;
     private final GetPermissionPresetInMunicipalityUseCase getPermissionPresetInMunicipalityUseCase;
+    private final ExistsPermissionPresetByParamsUseCase existsPermissionPresetByParamsUseCase;
     private final CreatePermissionPresetUseCase createPermissionPresetUseCase;
     private final UpdatePermissionPresetUseCase updatePermissionPresetUseCase;
     private final DeletePermissionPresetUseCase deletePermissionPresetUseCase;
@@ -44,6 +46,18 @@ public class PermissionPresetController {
     ) {
         PermissionPresetDTO response = this.getPermissionPresetInMunicipalityUseCase
                 .execute(userDetails.getUser(), municipalityId, permissionPresetId);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/exists")
+    public ResponseEntity<Boolean> existsPermissionPresetByParams(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable UUID municipalityId,
+            @RequestParam String name
+    ) {
+        boolean response = this.existsPermissionPresetByParamsUseCase
+                .execute(userDetails.getUser(), municipalityId, new ExistsPermissionPresetParams(name));
 
         return ResponseEntity.ok(response);
     }
