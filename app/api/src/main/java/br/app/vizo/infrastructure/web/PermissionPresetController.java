@@ -52,7 +52,7 @@ public class PermissionPresetController {
     }
 
     @GetMapping(params = "name")
-    public ResponseEntity<PermissionPresetDTO> existsPermissionPresetByParams(
+    public ResponseEntity<PermissionPresetDTO> getPermissionPresetByParams(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable UUID municipalityId,
             @RequestParam String name
