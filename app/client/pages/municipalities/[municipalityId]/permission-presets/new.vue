@@ -22,18 +22,17 @@ const { currentAffiliation } = useLoggedInUserStore();
 
 const {
   loading,
-  existsPermissionPresetByParamsInMunicipality,
+  getPermissionPresetInMunicipalityByParams,
   createPermissionPreset,
 } = usePermissionPresets();
 const toast = useToast();
 
 const onSubmit = async (data: Permission & { name: string }) => {
-  const nameAlreadyInUse = await existsPermissionPresetByParamsInMunicipality(
+  const existingPreset = await getPermissionPresetInMunicipalityByParams(
     municipalityId,
     { name: data.name }
   );
-  if (nameAlreadyInUse === null) return;
-  if (nameAlreadyInUse === true) {
+  if (existingPreset) {
     toast.clear();
 
     toast.add({

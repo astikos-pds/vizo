@@ -1,5 +1,5 @@
 import type {
-  ExistsPermissionPresetInMunicipalityParams,
+  GetPermissionPresetInMunicipalityParams,
   MutatePermissionPresetRequest,
 } from "~/services/permission-preset";
 import type { Municipality } from "~/types/domain/municipality";
@@ -35,12 +35,12 @@ export const usePermissionPresets = () => {
     );
   }
 
-  function existsPermissionPresetByParamsInMunicipality(
+  function getPermissionPresetInMunicipalityByParams(
     municipalityId: Municipality["id"],
-    params: ExistsPermissionPresetInMunicipalityParams
+    params: GetPermissionPresetInMunicipalityParams
   ) {
     return handle(() =>
-      $permissionPresetService.existsPermissionPresetByParamsInMunicipality(
+      $permissionPresetService.getPermissionPresetInMunicipalityByParams(
         municipalityId,
         params
       )
@@ -86,7 +86,7 @@ export const usePermissionPresets = () => {
     loading,
     getPermissionPresetsInMunicipality,
     getPermissionPresetInMunicipality,
-    existsPermissionPresetByParamsInMunicipality,
+    getPermissionPresetInMunicipalityByParams,
     createPermissionPreset,
     updatePermissionPreset,
     deletePermissionPreset,

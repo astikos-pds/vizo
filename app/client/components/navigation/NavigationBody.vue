@@ -173,6 +173,29 @@ const assignedItems = computed<NavigationMenuItem[]>(() => {
       to: `/departments/${departmentId}/problems`,
       onSelect: () => (open.value = false),
     },
+
+    {
+      label: "Assignees",
+      icon: "i-lucide-contact",
+      to: `/departments/${departmentId}/assignees`,
+      onSelect: () => (open.value = false),
+      children: currentAffiliation.value?.isAdmin
+        ? [
+            {
+              label: "List",
+              icon: "i-lucide-list",
+              to: `/departments/${departmentId}/assignees`,
+              onSelect: () => (open.value = false),
+            },
+            {
+              label: "Assign",
+              icon: "i-lucide-user-plus",
+              to: `/departments/${departmentId}/assignees/add`,
+              onSelect: () => (open.value = false),
+            },
+          ]
+        : [],
+    },
   ];
 
   return items;

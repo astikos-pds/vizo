@@ -10,8 +10,8 @@ export interface MutatePermissionPresetRequest {
   permission: Permission;
 }
 
-export interface ExistsPermissionPresetInMunicipalityParams {
-  name: string
+export interface GetPermissionPresetInMunicipalityParams {
+  name: string;
 }
 
 export class PermissionPresetService {
@@ -39,14 +39,16 @@ export class PermissionPresetService {
     return this.permissionPresetMapper.toModel(response);
   }
 
-  public async existsPermissionPresetByParamsInMunicipality(
+  public async getPermissionPresetInMunicipalityByParams(
     municipalityId: string,
-    params: ExistsPermissionPresetInMunicipalityParams
+    params: GetPermissionPresetInMunicipalityParams
   ) {
-    return await this.httpClient.get<boolean>(
-      `/municipalities/${municipalityId}/permission-presets/exists`,
+    const response = await this.httpClient.get<PermissionPresetDTO>(
+      `/municipalities/${municipalityId}/permission-presets`,
       params
     );
+
+    return this.permissionPresetMapper.toModel(response);
   }
 
   public async createPermissionPreset(

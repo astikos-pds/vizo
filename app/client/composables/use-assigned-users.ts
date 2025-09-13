@@ -1,11 +1,10 @@
-import { de } from "zod/v4/locales";
 import type {
   AssignUsersToDepartmentRequest,
   AssignUserToDepartmentRequest,
   ChangeAssigneePermissionRequest,
 } from "~/services/assigned-user";
-import type { Department } from "~/types/domain";
 import type { AssignedUser } from "~/types/domain/assigned-user";
+import type { Department } from "~/types/domain/department";
 import type { Municipality } from "~/types/domain/municipality";
 import type { Pagination } from "~/types/domain/pagination";
 

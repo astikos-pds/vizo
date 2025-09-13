@@ -29,8 +29,8 @@ const items = ref<NavigationMenuItem[]>([
         <section
           class="size-full flex flex-col justify-between overflow-y-auto"
         >
-          <header class="p-5 text-center border-b border-default">
-            <h1 class="text-2xl font-semibold">{{ title }}</h1>
+          <header class="p-3 text-center border-b border-default">
+            <h1 class="text-xl font-semibold">{{ title }}</h1>
           </header>
           <slot name="aside" />
         </section>

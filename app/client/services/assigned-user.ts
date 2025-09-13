@@ -21,7 +21,7 @@ export interface AssignUsersToDepartmentRequest {
 export interface ChangeAssigneePermissionRequest {
   permissionMode: PermissionMode;
   customPermission: Permission;
-  permissionPresetId: string;
+  permissionPresetId?: string;
 }
 
 export class AssignedUserService {

@@ -94,7 +94,6 @@ const hasUnsavedChanges = computed(() => {
             <UButton
               :color="editing ? 'neutral' : 'primary'"
               type="submit"
-              chip="primary"
               :loading="loading"
               >{{ editing ? "Save changes" : "Save" }}</UButton
             >
@@ -103,7 +102,6 @@ const hasUnsavedChanges = computed(() => {
             v-else
             :color="editing ? 'neutral' : 'primary'"
             type="submit"
-            chip="primary"
             :loading="loading"
             >{{ editing ? "Save changes" : "Save" }}</UButton
           >

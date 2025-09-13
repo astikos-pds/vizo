@@ -29,7 +29,7 @@ useHead({
 
 const {
   loading,
-  existsPermissionPresetByParamsInMunicipality,
+  getPermissionPresetInMunicipalityByParams,
   updatePermissionPreset,
 } = usePermissionPresets();
 const toast = useToast();
@@ -37,12 +37,11 @@ const toast = useToast();
 const onSubmit = async (data: Permission & { name: string }) => {
   if (!permissionPreset.value) return;
 
-  const nameAlreadyInUse = await existsPermissionPresetByParamsInMunicipality(
+  const existingPreset = await getPermissionPresetInMunicipalityByParams(
     municipalityId,
     { name: data.name }
   );
-  if (nameAlreadyInUse === null) return;
-  if (nameAlreadyInUse === true) {
+  if (existingPreset && existingPreset.id !== permissionPreset.value.id) {
     toast.clear();
 
     toast.add({

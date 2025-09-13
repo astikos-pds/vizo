@@ -10,6 +10,10 @@ export const usePagination = <T>(
     return paginated.value.content;
   });
 
+  const size = computed(() =>
+    paginated.value ? paginated.value.size : pagination.size ?? 15
+  );
+
   const currentPage = computed({
     get: () => pagination.page + 1,
     set: (val: number) => (pagination.page = val - 1),
@@ -23,6 +27,7 @@ export const usePagination = <T>(
 
   return {
     items,
+    size,
     currentPage,
     totalElements,
   };

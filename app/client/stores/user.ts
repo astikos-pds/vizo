@@ -78,7 +78,19 @@ export const useLoggedInUserStore = defineStore("user-store", () => {
     )
       return undefined;
 
-    return assignments.value.find((a) => a.id === currentAssignmentId.value);
+    const assignment = assignments.value.find(
+      (a) => a.id === currentAssignmentId.value
+    );
+
+    if (!assignment) return undefined;
+
+    return {
+      ...assignment,
+      effectivePermission:
+        assignment.permissionMode !== "CUSTOM" && assignment.permissionPreset
+          ? assignment.permissionPreset.permission
+          : assignment.customPermission,
+    };
   });
 
   const setAssignments = (value: AssignedUser[]) => {
