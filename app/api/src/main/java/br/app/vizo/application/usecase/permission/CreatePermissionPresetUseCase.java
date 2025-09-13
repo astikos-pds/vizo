@@ -27,7 +27,10 @@ public class CreatePermissionPresetUseCase {
     public PermissionPresetDTO execute(User loggedInUser, UUID municipalityId, MutatePermissionPresetRequestDTO request) {
         AffiliatedUser affiliatedUser = this.authorizationService.ensureUserIsAffiliatedTo(loggedInUser, municipalityId);
 
-        boolean nameAlreadyInUse = this.permissionPresetRepository.existsByMunicipalityIdAndName(municipalityId, request.name());
+        boolean nameAlreadyInUse = this.permissionPresetRepository
+                .findByMunicipalityIdAndName(municipalityId, request.name())
+                .isPresent();
+
         if (nameAlreadyInUse) {
             throw new PresetNameAlreadyInUseException();
         }

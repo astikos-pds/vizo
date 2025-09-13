@@ -2,7 +2,7 @@ package br.app.vizo.infrastructure.web;
 
 import br.app.vizo.application.dto.PermissionPresetDTO;
 import br.app.vizo.application.usecase.permission.*;
-import br.app.vizo.application.usecase.permission.params.ExistsPermissionPresetParams;
+import br.app.vizo.application.usecase.permission.params.GetPermissionPresetParams;
 import br.app.vizo.application.usecase.permission.request.MutatePermissionPresetRequestDTO;
 import br.app.vizo.config.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ public class PermissionPresetController {
 
     private final GetPermissionPresetsInMunicipalityUseCase getPermissionPresetsInMunicipalityUseCase;
     private final GetPermissionPresetInMunicipalityUseCase getPermissionPresetInMunicipalityUseCase;
-    private final ExistsPermissionPresetByParamsUseCase existsPermissionPresetByParamsUseCase;
+    private final GetPermissionPresetByParamsUseCase getPermissionPresetByParamsUseCase;
     private final CreatePermissionPresetUseCase createPermissionPresetUseCase;
     private final UpdatePermissionPresetUseCase updatePermissionPresetUseCase;
     private final DeletePermissionPresetUseCase deletePermissionPresetUseCase;
@@ -30,7 +30,8 @@ public class PermissionPresetController {
     @GetMapping
     public ResponseEntity<List<PermissionPresetDTO>> getPermissionPresetsInMunicipality(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PathVariable UUID municipalityId
+            @PathVariable UUID municipalityId,
+            @RequestParam(required = false) String name
     ) {
         List<PermissionPresetDTO> body = this.getPermissionPresetsInMunicipalityUseCase
                 .execute(userDetails.getUser(), municipalityId);
@@ -50,14 +51,14 @@ public class PermissionPresetController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/exists")
-    public ResponseEntity<Boolean> existsPermissionPresetByParams(
+    @GetMapping(params = "name")
+    public ResponseEntity<PermissionPresetDTO> existsPermissionPresetByParams(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable UUID municipalityId,
             @RequestParam String name
     ) {
-        boolean response = this.existsPermissionPresetByParamsUseCase
-                .execute(userDetails.getUser(), municipalityId, new ExistsPermissionPresetParams(name));
+        PermissionPresetDTO response = this.getPermissionPresetByParamsUseCase
+                .execute(userDetails.getUser(), municipalityId, new GetPermissionPresetParams(name));
 
         return ResponseEntity.ok(response);
     }

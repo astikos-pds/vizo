@@ -12,7 +12,7 @@ public interface PermissionPresetRepository {
 
     List<PermissionPreset> findAllByMunicipalityId(UUID municipalityId);
 
-    boolean existsByMunicipalityIdAndName(UUID municipalityId, String name);
+    Optional<PermissionPreset> findByMunicipalityIdAndName(UUID municipalityId, String name);
 
     void deleteById(UUID id);
 }

@@ -40,8 +40,8 @@ public class PermissionPresetImpl implements PermissionPresetRepository {
     }
 
     @Override
-    public boolean existsByMunicipalityIdAndName(UUID municipalityId, String name) {
-        return this.jpaRepository.existsByMunicipalityIdAndName(municipalityId, name);
+    public Optional<PermissionPreset> findByMunicipalityIdAndName(UUID municipalityId, String name) {
+        return this.jpaRepository.findByMunicipalityIdAndName(municipalityId, name).map(this.mapper::toModel);
     }
 
     @Override

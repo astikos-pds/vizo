@@ -14,6 +14,7 @@ import br.app.vizo.core.assignment.permission.PermissionPresetRepository;
 import br.app.vizo.core.user.User;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @UseCase
@@ -33,13 +34,15 @@ public class UpdatePermissionPresetUseCase {
     ) {
         AffiliatedUser affiliatedUser = this.authorizationService.ensureUserIsAffiliatedTo(loggedInUser, municipalityId);
 
-        boolean nameAlreadyInUse = this.permissionPresetRepository.existsByMunicipalityIdAndName(municipalityId, request.name());
-        if (nameAlreadyInUse) {
-            throw new PresetNameAlreadyInUseException();
-        }
-
         PermissionPreset permissionPreset = this.permissionPresetRepository.findById(permissionPresetId)
                 .orElseThrow(PermissionPresetNotFoundException::new);
+
+        Optional<PermissionPreset> existingPresetWithSameName = this.permissionPresetRepository
+                .findByMunicipalityIdAndName(municipalityId, request.name());
+
+        if (existingPresetWithSameName.isPresent() && !existingPresetWithSameName.get().isSameAs(permissionPreset)) {
+            throw new PresetNameAlreadyInUseException();
+        }
 
         PermissionPreset updated = affiliatedUser.updatePermissionPreset(
                 permissionPreset,

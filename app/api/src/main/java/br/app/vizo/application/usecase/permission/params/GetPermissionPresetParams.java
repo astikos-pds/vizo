@@ -2,11 +2,11 @@ package br.app.vizo.application.usecase.permission.params;
 
 import br.app.vizo.core.shared.Name;
 
-public record ExistsPermissionPresetParams(
+public record GetPermissionPresetParams(
         Name name
 ) {
 
-    public ExistsPermissionPresetParams(String name) {
+    public GetPermissionPresetParams(String name) {
         this(new Name(name));
     }
 
