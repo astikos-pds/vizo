@@ -2,10 +2,12 @@
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { Pagination } from "~/types/domain/pagination";
 
-const selectedFiliates = defineModel<AffiliatedUser[]>();
+const selectedFiliates = defineModel<AffiliatedUser[]>({ required: true });
 
-const route = useRoute();
-const municipalityId = route.params.municipalityId as string;
+const { currentAffiliation } = useLoggedInUserStore();
+const municipalityId = computed(() =>
+  currentAffiliation ? currentAffiliation.municipality.id : ""
+);
 
 const pagination = reactive<Pagination>({
   page: 0,
@@ -15,7 +17,7 @@ const pagination = reactive<Pagination>({
 const { getUsersAffiliatedToMunicipality } = useAffiliatedUsers();
 
 const { data: page, pending } = await getUsersAffiliatedToMunicipality(
-  municipalityId,
+  municipalityId.value,
   pagination
 );
 

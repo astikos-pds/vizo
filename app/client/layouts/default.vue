@@ -60,10 +60,12 @@ const { user } = useLoggedInUserStore();
     >
       <NavigationHeader
         :collapsed="collapsed"
-        class="my-3 flex items-center justify-center"
+        class="mt-3 flex items-center justify-center"
       />
-      <div class="flex-1 flex flex-col justify-between items-center">
-        <NavigationBody :collapsed="collapsed" class="px-2" />
+      <div
+        class="flex-1 flex flex-col justify-between items-center overflow-hidden"
+      >
+        <NavigationBody :collapsed="collapsed" class="p-2" />
         <UserProfile
           v-if="user"
           :user="user"
@@ -103,7 +105,7 @@ const { user } = useLoggedInUserStore();
           </h1>
         </div>
 
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1">
           <UButton
             size="xl"
             color="neutral"

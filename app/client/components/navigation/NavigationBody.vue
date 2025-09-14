@@ -203,7 +203,7 @@ const assignedItems = computed<NavigationMenuItem[]>(() => {
 </script>
 
 <template>
-  <div class="flex-1 w-full flex flex-col items-center gap-2">
+  <div class="flex-1 w-full flex flex-col items-center gap-2 overflow-y-auto">
     <UNavigationMenu
       class="w-full"
       :collapsed="collapsed"

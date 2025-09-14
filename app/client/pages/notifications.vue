@@ -7,7 +7,7 @@ const UInput = resolveComponent("UInput");
 const { t } = useI18n();
 
 useHead({
-  title: "Notificações",
+  title: "Vizo | Notificações",
   meta: [{ name: "description", content: "Notificações recentes do sistema." }],
 });
 
