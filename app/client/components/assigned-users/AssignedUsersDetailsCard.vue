@@ -11,6 +11,9 @@ const { assignedUser, permissionPresets } = defineProps<{
   permissionPresets: PermissionPreset[];
 }>();
 
+const municipalityId = assignedUser.department.municipality.id;
+const departmentId = assignedUser.department.id;
+
 const emit = defineEmits<{
   close: [];
 }>();
@@ -96,14 +99,12 @@ const hasUnsavedChanges = computed(() => {
   return modeChanged || permissionPresetChanged || customPermissionChanged;
 });
 
-const { loading, changeAssigneePermission } = useAssignedUsers();
+const { loading, changeAssigneePermission, removeAssigneeFromDepartment } =
+  useAssignedUsers();
 const toast = useToast();
 
 const onSubmit = async (event: FormSubmitEvent<AssigneeSchema>) => {
   if (!hasUnsavedChanges) return;
-
-  const municipalityId = assignedUser.department.municipality.id;
-  const departmentId = assignedUser.department.id;
 
   const saved = await changeAssigneePermission(
     municipalityId,
@@ -128,7 +129,25 @@ const onSubmit = async (event: FormSubmitEvent<AssigneeSchema>) => {
   );
 };
 
+const onDelete = async () => {
+  await removeAssigneeFromDepartment(
+    municipalityId,
+    departmentId,
+    assignedUser.id
+  );
+
+  await refreshNuxtData(
+    `municipalities-${municipalityId}-departments-${departmentId}-assignments`
+  );
+};
+
 const { currentAssignment } = useLoggedInUserStore();
+const loggedInUserCanExecuteActions = computed(
+  () =>
+    currentAssignment &&
+    currentAssignment.effectivePermission.canManageUsers &&
+    assignedUser.id !== currentAssignment.id
+);
 </script>
 
 <template>
@@ -144,70 +163,72 @@ const { currentAssignment } = useLoggedInUserStore();
     </template>
 
     <div class="size-full flex flex-col gap-5 p-2">
-      <AssignedUsersCardBody v-bind="assignedUser" />
+      <div class="flex items-center">
+        <AssignedUsersCardBody v-bind="assignedUser" />
 
-      <USeparator
-        v-if="
-          currentAssignment.effectivePermission.canManageUsers &&
-          assignedUser.id !== currentAssignment.id
-        "
-      />
-
-      <main
-        v-if="
-          currentAssignment.effectivePermission.canManageUsers &&
-          assignedUser.id !== currentAssignment.id
-        "
-        class="w-full px-2"
-      >
-        <UForm
-          :schema="assigneeSchema"
-          :state="form"
-          class="w-full flex flex-col items-center gap-5"
+        <UButton
+          v-if="loggedInUserCanExecuteActions"
+          color="error"
+          variant="subtle"
+          @click="onDelete"
+          >Remove</UButton
         >
-          <UFormField
-            label="Permission mode"
-            name="permission-mode"
-            class="w-full"
+      </div>
+
+      <div v-if="loggedInUserCanExecuteActions" class="flex flex-col gap-5">
+        <USeparator />
+
+        <main class="w-full px-2">
+          <UForm
+            :schema="assigneeSchema"
+            :state="form"
+            @submit="onSubmit"
+            class="w-full flex flex-col items-center gap-5"
           >
-            <USelectMenu
-              v-model="form.mode"
-              value-key="value"
-              :items="permissionItems"
-              :search-input="{
-                placeholder: 'Search',
-                icon: 'i-lucide-search',
-              }"
+            <UFormField
+              label="Permission mode"
+              name="permission-mode"
               class="w-full"
-              @update:model-value="onUpdateMode"
+            >
+              <USelectMenu
+                v-model="form.mode"
+                value-key="value"
+                :items="permissionItems"
+                :search-input="{
+                  placeholder: 'Search',
+                  icon: 'i-lucide-search',
+                }"
+                class="w-full"
+                @update:model-value="onUpdateMode"
+              />
+            </UFormField>
+
+            <PermissionsInputs
+              v-model="effectivePermission"
+              :disabled="form.mode !== 'CUSTOM'"
+              class="w-full"
             />
-          </UFormField>
 
-          <PermissionsInputs
-            v-model="effectivePermission"
-            :disabled="form.mode !== 'CUSTOM'"
-            class="w-full"
-          />
-
-          <UChip v-if="hasUnsavedChanges" color="info">
+            <UChip v-if="hasUnsavedChanges" color="info">
+              <UButton
+                color="neutral"
+                variant="solid"
+                :loading="loading"
+                type="submit"
+                >Save changes</UButton
+              >
+            </UChip>
             <UButton
+              v-else
               color="neutral"
               variant="solid"
               :loading="loading"
               type="submit"
               >Save changes</UButton
             >
-          </UChip>
-          <UButton
-            v-else
-            color="neutral"
-            variant="solid"
-            :loading="loading"
-            type="submit"
-            >Save changes</UButton
-          >
-        </UForm>
-      </main>
+          </UForm>
+        </main>
+      </div>
     </div>
   </UCard>
 </template>
