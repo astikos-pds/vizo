@@ -1,10 +1,9 @@
-<!-- <script setup lang="ts">
+<script setup lang="ts">
 import { h, resolveComponent, ref } from "vue";
 import type { BadgeProps, TableColumn } from "@nuxt/ui";
 import { useI18n } from "vue-i18n";
-import type { Problem, ProblemStatus } from "~/types/domain";
-import type { Pageable } from "~/types/http";
-import { useProblems } from "~/composables/use-problems";
+import { Page, type Pagination } from "~/types/domain/pagination";
+import type { Problem, ProblemStatus } from "~/types/domain/problem";
 
 const { t, locale } = useI18n();
 
@@ -13,26 +12,20 @@ const UBadge = resolveComponent("UBadge");
 const UIcon = resolveComponent("UIcon");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 
-const pagination = defineModel<Pageable>("pagination");
+const problems = defineModel<Page<Problem>>("problems", {
+  required: true,
+});
 
-const { currentDepartment } = useDepartmentStore();
-const municipalityId = computed(() => currentDepartment?.municipality.id ?? "");
-const departmentId = computed(() => currentDepartment?.id ?? "");
-
-const { getProblemsByDepartmentId } = useProblems();
-
-const { data: problems } = await getProblemsByDepartmentId(
-  municipalityId.value,
-  departmentId.value,
-  pagination.value
-);
+const pagination = defineModel<Pagination>("pagination", {
+  required: true,
+});
 
 const data = computed(() => problems.value?.content ?? []);
 
 const colorByStatus: Record<ProblemStatus, BadgeProps["color"]> = {
   ANALYSIS: "warning",
   IN_PROGRESS: "info",
-  SOLVED: "success",
+  RESOLVED: "success",
   REJECTED: "error",
 };
 
@@ -44,28 +37,25 @@ const columns: TableColumn<Problem>[] = [
   },
   {
     accessorKey: "reportedAt",
-    header: t("problems.firstReportedAt"),
+    header: "First reported at",
     cell: ({ row }) => {
-      return new Date(Date.parse(row.original.firstReportedAt)).toLocaleString(
-        locale.value,
-        {
-          day: "numeric",
-          month: "short",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        }
-      );
+      return row.original.firstReportedAt.toLocaleString(locale.value, {
+        day: "numeric",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
     },
   },
   {
     accessorKey: "type",
-    header: t("problems.type"),
+    header: "Type",
     cell: ({ row }) => row.original.type,
   },
   {
     accessorKey: "status",
-    header: t("problems.status"),
+    header: t("lastProblems.status"),
     cell: ({ row }) => {
       const status = row.getValue("status") as Problem["status"];
       const label = status;
@@ -82,7 +72,7 @@ const columns: TableColumn<Problem>[] = [
   },
   {
     accessorKey: "validated",
-    header: t("problems.validated"),
+    header: "Validated",
     cell: ({ row }) => {
       const validated = row.original.validated;
       const color = validated ? "success" : "error";
@@ -169,7 +159,7 @@ const filteredData = computed(() => {
   >
     <div class="flex flex-col gap-3 px-4 py-3.5">
       <h3 class="text-lg font-semibold">
-        {{ t('problems.problem') }} ({{ problems?.totalElements }})
+        Problems ({{ problems?.totalElements }})
       </h3>
       <UInput
         v-model="search"
@@ -201,4 +191,3 @@ const filteredData = computed(() => {
     </div>
   </div>
 </template>
- -->

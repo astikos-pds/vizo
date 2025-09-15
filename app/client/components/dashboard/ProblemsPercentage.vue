@@ -73,11 +73,7 @@ const chartOptions: ApexOptions = {
 </script>
 
 <template>
-  <div class="border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] p-6 mt-8 rounded-lg max-w-[360px]">
-    <!-- <div
-            class="border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] p-6 mt-8"
-          > -->
-          
+  <div class="border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] p-6 rounded-lg w-full xl:w-[30%] self-start max-h-[500px] overflow-auto">
     <h3 class="text-center mb-4">Situação Atual dos Problemas</h3>
     <div class="flex justify-end">
         <USelectMenu
@@ -91,6 +87,7 @@ const chartOptions: ApexOptions = {
       type="donut"
       :options="chartOptions"
       :series="series"
+      height="280"
     />
   </div>
 </template>

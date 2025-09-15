@@ -9,7 +9,7 @@ defineProps<{
 
 <template>
   <div
-    class="m-8 overflow-hidden rounded-md border border-gray-200 px-5 pt-5 dark:border-gray-800 min-h-50"
+    class="m-8 overflow-hidden rounded-3xl px-5 pt-5 dark:border-gray-800 min-h-50"
     :class="color"
   >
     <div class="flex flex-col justify-center items-center h-full py-8">
