@@ -2,29 +2,11 @@
 import { ref } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 import type { ApexOptions } from "apexcharts";
+import Filter from "./Filter.vue";
 
 const { t } = useI18n();
 
 const series = ref([44, 55, 41]);
-
-const filters = ref([
-  {
-    label: t("filter.today"),
-  },
-  {
-    label: t("filter.week"),
-  },
-  {
-    label: t("filter.month"),
-  },
-  {
-    label: t("filter.year"),
-  },
-]);
-
-const selectedItem = ref({
-  label: t("filter.week")
-})
 
 const chartOptions: ApexOptions = {
   chart: {
@@ -76,12 +58,7 @@ const chartOptions: ApexOptions = {
   <div class="border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] p-6 rounded-lg w-full xl:w-[30%] self-start max-h-[500px] overflow-auto">
     <h3 class="text-center mb-4">Situação Atual dos Problemas</h3>
     <div class="flex justify-end">
-        <USelectMenu
-            v-model="selectedItem"
-            :search-input="false"
-            :items="filters"
-            class="w-42 text-right"
-            />
+      <Filter/>
     </div>
     <VueApexCharts
       type="donut"

@@ -70,7 +70,7 @@ const problems: Page<Problem> = <Page<Problem>>({
     <InfoCard value="765" label="Problemas Resolvidos" desc="nos últimos 30 dias" color="bg-gradient-to-tr from-green-600 to-green-300" />
     <InfoCard value="23" label="Problemas a Resolver" desc="" color="bg-gradient-to-tr from-orange-600 to-yellow-300" />
     <InfoCard value="23" label="Problemas em Análise" desc="" color="bg-gradient-to-tr from-yellow-500 to-yellow-300" />
-    <InfoCard value="23" label="Problemas Rejeitados" desc="" color="bg-gradient-to-tr from-red-500 to-red-300" />
+    <InfoCard value="23" label="Problemas Rejeitados" desc="nos últimos 30 dias" color="bg-gradient-to-tr from-red-500 to-red-300" />
   </div>
 
   <div class="grid grid-cols-1 gap-6 p-4 sm:p-6 md:p-8 md:grid-cols-1 xl:grid-cols-1">

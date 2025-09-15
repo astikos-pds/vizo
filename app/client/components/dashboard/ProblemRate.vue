@@ -2,23 +2,9 @@
 import { ref, computed } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 import { useI18n } from "vue-i18n";
+import Filter from "./Filter.vue";
 
 const { t } = useI18n();
-
-const items = ref([
-  {
-    label: t("filter.today"),
-  },
-  {
-    label: t("filter.week"),
-  },
-  {
-    label: t("filter.month"),
-  },
-  {
-    label: t("filter.year"),
-  },
-]);
 
 const problems = ref([
   {
@@ -38,8 +24,6 @@ const problems = ref([
     count: 298,
   }
 ]);
-
-const selectedItem = ref(items.value[0]);
 
 const series = computed(() => [
   {
@@ -120,7 +104,7 @@ const chartOptions = computed(() => ({
 
 <template>
   <div
-    class="overflow-hidden rounded-md border border-gray-200 bg-white px-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6"
+    class="rounded-md border border-gray-200 bg-white px-5 pt-5 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6 sm:pt-6"
   >
     <div class="flex items-center justify-between">
       <div>
@@ -131,12 +115,7 @@ const chartOptions = computed(() => ({
           {{ t("problemRate.subtitle") }}
         </p>
       </div>
-      <USelectMenu
-        v-model="selectedItem"
-        :search-input="false"
-        :items="items"
-        class="w-48"
-      />
+      <Filter/>
     </div>
 
     <div class="mt-4">
