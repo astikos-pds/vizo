@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
-import type { PasswordRequirements } from "~/types/domain";
+import type { PasswordRequirements } from "~/types/domain/password";
 import { isDocumentValid } from "~/utils/document-validation";
 import { vMaska } from "maska/vue";
 

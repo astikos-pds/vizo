@@ -20,7 +20,6 @@ const emit = defineEmits<{
     @click="emit('click', assignedUser)"
   >
     <UCard
-      color="neutral"
       variant="outline"
       class="size-full flex"
       :ui="{ body: 'p-0 sm:p-0' }"

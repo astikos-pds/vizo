@@ -17,24 +17,7 @@ definePageMeta({
   middleware: ["auth", "assigned"],
 });
 
-const route = useRoute();
-const departmentId = route.params.departmentId as string;
-
 const { currentAffiliation } = useLoggedInUserStore();
-
-const pagination = reactive<Pagination>({
-  page: 0,
-  size: 15,
-});
-
-const { getUsersAssignedToDepartment } = useAssignedUsers();
-
-const { data: page, pending: pendingForUsers } =
-  await getUsersAssignedToDepartment(
-    currentAffiliation ? currentAffiliation.municipality.id : "",
-    departmentId,
-    pagination
-  );
 
 const { getPermissionPresetsInMunicipality } = usePermissionPresets();
 
@@ -43,52 +26,46 @@ const { data: permissionPresets, pending: pendingForPresets } =
     currentAffiliation ? currentAffiliation.municipality.id : ""
   );
 
-const {
-  items: assignedUsers,
-  currentPage,
-  totalElements,
-} = usePagination(pagination, page);
+const selectedAssignee = ref<AssignedUser | undefined>(undefined);
 
-const selectedAssignee = ref<AssignedUser | null>(null);
+const breakpoints = useBreakpoints({
+  lg: 1024,
+});
+
+const isMobile = breakpoints.smallerOrEqual("lg");
+
+const snapPoints = [0.3, 0.5, 0.9];
+const activeSnapPoint = ref(snapPoints[0]);
+
+const open = computed(() => isMobile.value);
 </script>
 
 <template>
   <AssignedUsersPage>
     <div class="size-full flex">
-      <aside class="w-[30%] border-r border-default">
-        <section
-          class="size-full flex flex-col justify-between overflow-y-auto"
-        >
-          <header class="p-3 text-center border-b border-default">
-            <h1 class="text-xl font-semibold">Assignees</h1>
-          </header>
-          <main class="flex-1 flex flex-col p-3">
-            <EmptyMessage v-if="pendingForUsers">Loading...</EmptyMessage>
-            <EmptyMessage v-else-if="!page"
-              >Failed to fetch assignees</EmptyMessage
-            >
-            <AssignedUsersCard
-              v-else
-              v-for="assignedUser in assignedUsers"
-              :assigned-user="assignedUser"
-              :selected="selectedAssignee?.id === assignedUser.id"
-              :key="assignedUser.id"
-              @click="(a) => (selectedAssignee = a)"
-            />
-          </main>
-          <footer
-            class="p-2 2xl:p-3 flex justify-center items-center border-t border-default"
-          >
-            <UPagination
-              v-model:page="currentPage"
-              :items-per-page="pagination.size"
-              :total="totalElements"
-            />
-          </footer>
-        </section>
+      <UDrawer
+        v-if="isMobile"
+        v-model:open="open"
+        direction="bottom"
+        :overlay="false"
+        :dismissible="false"
+        :modal="false"
+        handle-only
+        :snap-points="snapPoints"
+        :active-snap-point="activeSnapPoint"
+        class="min-h-screen"
+      >
+        <template #body>
+          <AssignedUsersList v-model="selectedAssignee" />
+        </template>
+      </UDrawer>
+      <aside v-else class="w-[40%] 2xl:w-[30%] border-r border-default">
+        <AssignedUsersList v-model="selectedAssignee" />
       </aside>
       <div class="flex-1">
-        <div class="size-full flex justify-center items-center">
+        <div
+          class="size-full flex justify-center items-start mt-10 lg:items-center lg:mt-0"
+        >
           <UIcon
             v-if="!selectedAssignee"
             name="lucide:contact"
@@ -104,7 +81,7 @@ const selectedAssignee = ref<AssignedUser | null>(null);
             v-else
             :assigned-user="selectedAssignee"
             :permission-presets="permissionPresets"
-            @close="() => (selectedAssignee = null)"
+            @close="() => (selectedAssignee = undefined)"
             class="w-[80%]"
           />
         </div>

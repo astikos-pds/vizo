@@ -90,7 +90,7 @@ async function onSubmit(event: FormSubmitEvent<DepartmentSchema>) {
       :schema="departmentSchema"
       :state="form"
       @submit="onSubmit"
-      class="flex flex-col justify-center items-center gap-5"
+      class="w-full flex flex-col justify-center items-center gap-5"
     >
       <UFormField label="Name" name="name" required class="w-full">
         <UInput v-model="form.name" class="w-full" />

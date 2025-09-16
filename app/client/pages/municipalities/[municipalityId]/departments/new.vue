@@ -16,6 +16,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "New department",
   middleware: ["auth", "affiliated", "affiliated-as-admin"],
 });
 

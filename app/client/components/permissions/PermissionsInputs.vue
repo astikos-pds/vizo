@@ -15,7 +15,7 @@ defineProps<{
       name="can-view-reports"
       description="This permits that a filiate view all reports for a problem"
       required
-      class="w-full flex justify-between items-center"
+      class="w-full flex justify-between items-center gap-3"
     >
       <USwitch v-model="model.canViewReports" :disabled="disabled" />
     </UFormField>
@@ -27,7 +27,7 @@ defineProps<{
       name="can-update-status"
       description="This permits that a filiate changes a problem's status"
       required
-      class="w-full flex justify-between items-center"
+      class="w-full flex justify-between items-center gap-3"
     >
       <USwitch v-model="model.canUpdateStatus" :disabled="disabled" />
     </UFormField>
@@ -39,7 +39,7 @@ defineProps<{
       name="can-manage-users"
       description="This permits that a filiate changes the permission of other assignees in a department"
       required
-      class="w-full flex justify-between items-center"
+      class="w-full flex justify-between items-center gap-3"
     >
       <USwitch v-model="model.canManageUsers" :disabled="disabled" />
     </UFormField>

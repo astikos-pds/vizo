@@ -15,6 +15,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "Points of interest",
   middleware: ["auth"],
 });
 
@@ -55,7 +56,7 @@ const zoomToMarker = (marker: LatLng & { radius: number }) => {
 </script>
 
 <template>
-  <PointsOfInterestPage title="Points of interest">
+  <PointsOfInterestPage>
     <template #aside>
       <div v-if="pending">Loading</div>
       <div
@@ -70,10 +71,9 @@ const zoomToMarker = (marker: LatLng & { radius: number }) => {
         >
       </div>
       <div v-else class="size-full flex flex-col">
-        <main class="flex-1">
-          <div class="p-3 flex flex-col gap-3">
+        <main class="flex-1 size-full">
+          <div class="p-3 2xl:p-5 flex flex-col gap-3">
             <PointsOfInterestCard
-              v-if="pointsOfInterest.length > 0"
               v-for="pointOfInterest in pointsOfInterest"
               :key="pointOfInterest.id"
               v-bind="pointOfInterest"
@@ -82,6 +82,7 @@ const zoomToMarker = (marker: LatLng & { radius: number }) => {
           </div>
         </main>
         <footer
+          v-if="page && page.totalPages > 1"
           class="p-3 flex justify-center items-center border-t border-default"
         >
           <UPagination

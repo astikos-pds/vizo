@@ -10,6 +10,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "New point of interest",
   middleware: ["auth"],
 });
 

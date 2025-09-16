@@ -2,6 +2,7 @@
 import type { Permission } from "~/types/domain/permission";
 
 definePageMeta({
+  name: "Permission preset",
   middleware: ["auth", "affiliated", "affiliated-as-admin"],
 });
 

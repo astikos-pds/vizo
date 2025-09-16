@@ -16,7 +16,7 @@ defineProps<{
           </slot>
         </span>
       </div>
-      <div class="h-full w-[70%] md:w-[50%] lg:w-[65%] 2xl:w-[50%]">
+      <div class="h-full w-[80%] lg:w-[65%] 2xl:w-[60%]">
         <slot />
       </div>
     </main>

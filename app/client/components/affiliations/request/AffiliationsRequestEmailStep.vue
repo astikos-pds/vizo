@@ -156,10 +156,10 @@ const onConfirm = () => {
             }"
           >
             <template #header>
-              <h2 class="font-semibold text-lg">
+              <h2 class="font-semibold">
                 {{ t("registerOfficial.emailStep.municipalityCard.title") }}
               </h2>
-              <p>
+              <p class="text-sm">
                 {{
                   t("registerOfficial.emailStep.municipalityCard.description")
                 }}

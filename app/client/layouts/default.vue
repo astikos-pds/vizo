@@ -3,6 +3,7 @@ import { useBreakpoints } from "@vueuse/core";
 import NavigationBody from "~/components/navigation/NavigationBody.vue";
 import NavigationHeader from "~/components/navigation/NavigationHeader.vue";
 import UserProfile from "~/components/navigation/UserProfile.vue";
+import { useLoggedInUserStore } from "~/stores/user";
 
 const { t } = useI18n();
 
@@ -14,9 +15,13 @@ const name = computed(() => route.meta.name);
 
 const breakpoints = useBreakpoints({
   md: 768,
+  lg: 1024,
 });
 
 const isMobile = breakpoints.smallerOrEqual("md");
+const shouldCollapse = breakpoints.smallerOrEqual("lg");
+
+watch(shouldCollapse, (should) => (collapsed.value = should));
 
 const { user } = useLoggedInUserStore();
 </script>
@@ -44,7 +49,7 @@ const { user } = useLoggedInUserStore();
         />
       </template>
       <template #body>
-        <NavigationBody :collapsed="collapsed" />
+        <NavigationBody :collapsed="collapsed" v-model:open="open" />
       </template>
       <template #footer>
         <UserProfile v-if="user" :user="user" :collapsed="collapsed" />
@@ -100,7 +105,7 @@ const { user } = useLoggedInUserStore();
             class="text-xl"
             @click="collapsed = !collapsed"
           />
-          <h1 class="font-semibold text-base capitalize">
+          <h1 class="font-semibold text-base">
             {{ name ?? t(`navBar.${route.name?.toString()}`) }}
           </h1>
         </div>

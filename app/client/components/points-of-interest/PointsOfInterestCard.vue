@@ -18,7 +18,7 @@ const { deletePointOfInterest } = usePointsOfInterest();
 async function onDelete(id: PointOfInterest["id"]) {
   await deletePointOfInterest(id);
 
-  await refreshNuxtData("my-points-of-interest");
+  await refreshNuxtData();
 }
 
 const actions = ref<DropdownMenuItem[]>([
@@ -46,7 +46,7 @@ const actions = ref<DropdownMenuItem[]>([
     :variant="pointOfInterest.active ? 'outline' : 'subtle'"
     :class="{ 'opacity-80': !pointOfInterest.active }"
   >
-    <div class="size-full flex gap-3 relative">
+    <div class="size-full flex gap-3 relative items-center">
       <div class="min-h-full flex justify-center items-center">
         <div
           class="rounded-full size-13 flex items-center justify-center"
@@ -79,7 +79,7 @@ const actions = ref<DropdownMenuItem[]>([
           >
         </main>
       </div>
-      <UDropdownMenu class="absolute top-0 right-0" :items="actions">
+      <UDropdownMenu :items="actions">
         <UButton
           variant="ghost"
           color="neutral"

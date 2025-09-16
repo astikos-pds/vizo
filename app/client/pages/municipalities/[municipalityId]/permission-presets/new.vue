@@ -12,6 +12,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "New permission preset",
   middleware: ["auth", "affiliated", "affiliated-as-admin"],
 });
 

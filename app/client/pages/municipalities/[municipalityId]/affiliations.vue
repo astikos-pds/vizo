@@ -72,7 +72,7 @@ const active = ref(["1"]);
         </div>
 
         <div v-else-if="!allSection.data.value">
-          <NotFoundMessage>Failed to fetch all affiliations.</NotFoundMessage>
+          <EmptyMessage>Failed to fetch all affiliations.</EmptyMessage>
         </div>
 
         <AffiliationsRequestSection
@@ -94,7 +94,7 @@ const active = ref(["1"]);
         </div>
 
         <div v-else-if="!pendingSection.data.value">
-          <NotFoundMessage>Failed to fetch all affiliations.</NotFoundMessage>
+          <EmptyMessage>Failed to fetch all affiliations.</EmptyMessage>
         </div>
 
         <AffiliationsRequestSection
@@ -116,7 +116,7 @@ const active = ref(["1"]);
         </div>
 
         <div v-else-if="!approvedSection.data.value">
-          <NotFoundMessage>Failed to fetch all affiliations.</NotFoundMessage>
+          <EmptyMessage>Failed to fetch all affiliations.</EmptyMessage>
         </div>
 
         <AffiliationsRequestSection
@@ -138,7 +138,7 @@ const active = ref(["1"]);
         </div>
 
         <div v-else-if="!rejectedSection.data.value">
-          <NotFoundMessage>Failed to fetch affiliations.</NotFoundMessage>
+          <EmptyMessage>Failed to fetch affiliations.</EmptyMessage>
         </div>
 
         <AffiliationsRequestSection

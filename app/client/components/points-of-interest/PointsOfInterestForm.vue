@@ -75,16 +75,7 @@ const onSubmit = (event: FormSubmitEvent<PointOfInterestSchema>) => {
 <template>
   <PointsOfInterestPage :title="title">
     <template #aside>
-      <div class="p-3">
-        <UButton
-          variant="link"
-          color="neutral"
-          icon="i-lucide-arrow-left"
-          to="/points-of-interest"
-          >Back</UButton
-        >
-      </div>
-      <main class="flex-1 flex justify-center p-5">
+      <main class="flex-1 flex justify-center lg:p-5 mt-2">
         <UForm
           :schema="pointOfInterestSchema"
           :state="form"
@@ -133,7 +124,7 @@ const onSubmit = (event: FormSubmitEvent<PointOfInterestSchema>) => {
             label="Active"
             name="active"
             description="If activated, points of interest notifies you if a new problem appear in it's area."
-            class="w-full flex flex-col justify-center items-center gap-2"
+            class="w-full flex justify-between items-center gap-3"
           >
             <USwitch v-model="form.active" />
           </UFormField>

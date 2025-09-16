@@ -19,6 +19,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "Editing point of interest",
   middleware: ["auth"],
 });
 

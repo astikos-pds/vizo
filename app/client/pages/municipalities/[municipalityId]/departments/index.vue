@@ -13,6 +13,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "Departments",
   middleware: ["auth", "affiliated"],
 });
 
@@ -55,9 +56,18 @@ const { currentAffiliation } = useLoggedInUserStore();
         </span>
       </div>
 
-      <NotFoundMessage v-if="departments.length === 0"
-        >No departments found.</NotFoundMessage
-      >
+      <EmptyMessage v-if="departments.length === 0" class="mt-5">
+        <span>
+          No departments found.
+          <NuxtLink
+            v-if="currentAffiliation.isAdmin"
+            :to="`/municipalities/${municipalityId}/departments/new`"
+            class="text-primary"
+          >
+            Create the first one here.
+          </NuxtLink>
+        </span>
+      </EmptyMessage>
 
       <div
         v-else

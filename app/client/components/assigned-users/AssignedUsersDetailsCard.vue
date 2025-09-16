@@ -151,7 +151,7 @@ const loggedInUserCanExecuteActions = computed(
 </script>
 
 <template>
-  <UCard v-if="currentAssignment" color="neutral" varaint="outline">
+  <UCard v-if="currentAssignment" color="neutral">
     <template #header>
       <UButton
         color="neutral"
