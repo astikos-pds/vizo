@@ -2,13 +2,6 @@
 import { ref, reactive } from "vue";
 import { useI18n } from "vue-i18n";
 import type { TabsItem } from "@nuxt/ui";
-import type { Map as LeafletMap, PointExpression } from "leaflet";
-import { useProblems } from "~/composables/use-problems";
-import { useMapGeolocation } from "~/composables/use-map-geolocation";
-import ProblemDetails from "~/components/problem/ProblemDetails.vue";
-import type { Problem } from "~/types/domain/problem";
-import type { LatLng } from "~/types/geolocation";
-
 
 const { t } = useI18n();
 
@@ -75,13 +68,17 @@ const reports = [
 const badges = ref([
   { icon: "i-lucide-headset", label: t("profile.badges.solver") },
   { icon: "i-lucide-heart-handshake", label: t("profile.badges.helper") },
+  { icon: "i-lucide-heart-handshake", label: t("profile.badges.helper") },
 ]);
-const avatarOptions = Array.from({ length: 12 }, (_, i) => `/avatar/avatar${i + 1}.png`)
+const avatarOptions: string[] = [];
+  for (let i = 1; i <= 12; i++) {
+    avatarOptions.push(`/avatar/avatar${i}.png`);
+}
 </script>
 
 <template>
   <div class="grid grid-cols-1 gap-6 p-4 sm:p-6 md:p-8 xl:grid-cols-1 m-10 ml-50 mr-50">
-    <div class="overflow-hidden rounded-2xl sm:px-6 flex flex-col items-left border border-gray-200 px-5 pt-5 dark:border-gray-800">
+    <div class="overflow-hidden rounded-2xl sm:px-6 flex flex-col items-left border border-gray-200 px-5 pt-5 dark:border-gray-800 grid grid-cols-2">
       <div class="flex items-center gap-6 mb-4">
         <img
           :src="user.avatar || `https://avatar.iran.liara.run/username?username=${user.name}`"
@@ -91,7 +88,7 @@ const avatarOptions = Array.from({ length: 12 }, (_, i) => `/avatar/avatar${i + 
         />
         <div class="flex flex-col">
           <span class="text-lg font-semibold">@{{ user.username }}</span>
-          <!-- Modal de editar -->
+          <!-- Modal -->
           <UModal title="Escolha um Avatar">
             <UButton
               icon="i-lucide-pencil"
@@ -116,9 +113,24 @@ const avatarOptions = Array.from({ length: 12 }, (_, i) => `/avatar/avatar${i + 
               </div>
             </template>
           </UModal>
+          
         </div>
       </div>
-      
+      <!-- Badges -->
+      <!-- <div class="w-full flex justify-center">
+        <div class="grid grid-cols-3 place-items-center w-fit">
+          <UBadge
+            v-for="(badge, idx) in badges"
+            :key="idx"
+            :icon="badge.icon"
+            size="md"
+            color="primary"
+            variant="solid"
+          >
+            {{ badge.label }}
+          </UBadge>
+        </div>
+      </div> -->
     </div>
 
     <!-- Reportes -->
@@ -137,18 +149,20 @@ const avatarOptions = Array.from({ length: 12 }, (_, i) => `/avatar/avatar${i + 
               <div class="font-semibold">
                 Descrição: <span class="font-normal">{{ report.description }}</span>
               </div>
-              <div class="font-semibold flex items-center gap-2">
+              <div class="font-semibold items-center gap-2 grid">
                 Imagem:
                 <img
                   v-if="report.images"
                   :src="`/images/${report.images}`"
-                  alt="Imagem do relatório"
-                  class="w-20 h-20 object-cover rounded"
+                  alt="Imagem do reporte"
+                  class="w-20 h-20 object-cover rounded font-normal"
                 />
                 <span v-else class="text-gray-400">Sem imagem</span>
               </div>
-              <div class="font-semibold">Credibilidade: {{ report.credibility }}</div>
-              <div class="text-xs text-gray-400">Criado em: {{ report.createdAt }}</div>
+              <div class="flex flex-col h-full justify-end gap-5 mb-4">
+                <div class="font-semibold">Credibilidade: <UBadge>{{ report.credibility }}</UBadge> </div>
+                <div class="text-xs text-gray-400">Criado em: {{ report.createdAt }}</div>
+              </div>
             </div>
             
             <div class="flex items-center justify-center m-10">
