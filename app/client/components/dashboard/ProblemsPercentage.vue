@@ -14,13 +14,13 @@ const chartOptions: ApexOptions = {
     height: 280,
     toolbar: { show: false },
   },
-  colors: ["#D3F527", "#F5B027", "#F54927"],
-  labels: ["Pendente", "Em Andamento", "Concluído"],
+  colors: ["#e9d700", "#F5B027", "#F54927"],
+  labels: ["\u00A0Pendente", "\u00A0Em Andamento", "\u00A0Concluído"],
   legend: {
     position: "right",
     fontSize: "14px",
     fontWeight: 500,
-    labels: { colors: "#333" },
+    labels: { colors: "#808080" },
     // markers: { width: 12, height: 12, radius: 6 },
   },
   dataLabels: {
