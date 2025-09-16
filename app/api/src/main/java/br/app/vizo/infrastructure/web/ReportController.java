@@ -2,6 +2,7 @@ package br.app.vizo.infrastructure.web;
 
 import br.app.vizo.application.dto.ReportDTO;
 import br.app.vizo.application.usecase.report.DeleteReportUseCase;
+import br.app.vizo.application.usecase.report.GetReportUseCase;
 import br.app.vizo.application.usecase.report.ReportProblemUseCase;
 import br.app.vizo.application.usecase.report.UpdateReportUseCase;
 import br.app.vizo.application.usecase.report.request.ReportProblemRequestDTO;
@@ -19,9 +20,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ReportController {
 
+    private final GetReportUseCase getReportUseCase;
     private final ReportProblemUseCase reportProblemUseCase;
     private final UpdateReportUseCase updateReportUseCase;
     private final DeleteReportUseCase deleteReportUseCase;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ReportDTO> getReport(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PathVariable UUID id
+    ) {
+        ReportDTO response = this.getReportUseCase.execute(userDetails.getUser(), id);
+
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping
     public ResponseEntity<ReportDTO> reportProblem(
