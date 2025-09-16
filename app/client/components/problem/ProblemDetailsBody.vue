@@ -3,6 +3,7 @@ import type { Page } from "~/types/domain/pagination";
 import type { Problem } from "~/types/domain/problem";
 import type { Report } from "~/types/domain/report";
 import type { Badge } from "~/types/ui";
+import ReportForProblem from "./ReportForProblem.vue";
 
 const { problem, reports } = defineProps<{
   problem: Problem;
@@ -69,7 +70,7 @@ const credibilityBadge: Badge = (() => {
         v-if="reports"
         class="min-h-screen p-1 flex flex-col gap-3 overflow-y-auto"
       >
-        <ProblemReport
+        <ReportForProblem
           v-for="report in reports.content"
           :report="report"
           :key="report.id"

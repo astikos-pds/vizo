@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-import type { LatLng } from "~/types/geolocation";
-
-const model = defineModel<LatLng>({ required: true });
+const { coords, isLocationPrecise } = useMapGeolocation();
 </script>
 
 <template>
   <Marker
-    key="user"
-    :lat-lng="model"
+    v-if="isLocationPrecise"
+    :lat-lng="coords"
     :z-index-offset="-1000"
     :icon="{
       url: '/current-position-marker.png',

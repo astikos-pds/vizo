@@ -1,5 +1,6 @@
 import { useImageUpload } from "~/composables/use-image-upload";
 import type { ProblemType } from "~/types/domain/problem";
+import type { Report } from "~/types/domain/report";
 
 export const useReports = () => {
   const { loading, handle } = useApiHandler();
@@ -12,20 +13,45 @@ export const useReports = () => {
     images: File[];
     latitude: number;
     longitude: number;
-    problemType: ProblemType;
   }
+
+  async function getReport(id: Report["id"]) {
+    return useAsyncData(`reports-${id}`, () => $reportService.getReport(id));
+  }
+
   async function report(request: RawReportRequest) {
-    const imagesUrls = await Promise.all(
-      request.images.map((image) => uploadImage({ file: image }))
-    );
+    const imagesUrls = await uploadImages(request.images);
 
     return await handle(() =>
       $reportService.reportProblem({
-        imagesUrls: imagesUrls.filter((imageUrl) => imageUrl !== ""),
+        imagesUrls,
         ...request,
       })
     );
   }
 
-  return { loading, report };
+  async function updateReport(id: Report["id"], request: RawReportRequest) {
+    const imagesUrls = await uploadImages(request.images);
+
+    return await handle(() =>
+      $reportService.updateReport(id, {
+        imagesUrls,
+        ...request,
+      })
+    );
+  }
+
+  async function uploadImages(images: File[]) {
+    const response = await Promise.all(
+      images.map((image) => uploadImage({ file: image }))
+    );
+
+    return response.filter((imageUrl) => imageUrl !== "");
+  }
+
+  async function deleteReport(id: Report["id"]) {
+    await handle(() => $reportService.deleteReport(id));
+  }
+
+  return { loading, getReport, report, updateReport, deleteReport };
 };

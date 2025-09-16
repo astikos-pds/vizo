@@ -26,7 +26,7 @@ const { map, zoom, center } = useMap();
 
 const zoomToMarker = (problem: { latitude: number; longitude: number }) => {
   map.value?.flyTo([problem.latitude, problem.longitude], 18, {
-    animate: true,
+    animate: false,
     duration: 1,
   });
 };

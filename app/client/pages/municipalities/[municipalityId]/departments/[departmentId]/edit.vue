@@ -7,6 +7,7 @@ import type { Department } from "~/types/domain/department";
 import type { ProblemType } from "~/types/domain/problem";
 
 definePageMeta({
+  name: "Editing department",
   middleware: ["auth", "affiliated", "affiliated-as-admin"],
 });
 

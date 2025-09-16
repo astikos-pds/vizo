@@ -27,10 +27,24 @@ const commomItems = computed<NavigationMenuItem[]>(() => {
       onSelect: () => (open.value = false),
     },
     {
-      label: t("navBar.report"),
+      label: "Reports",
       icon: "i-lucide-message-square-warning",
-      to: "/report",
+      to: "/reports/new",
       onSelect: () => (open.value = false),
+      children: [
+        {
+          label: "New problem",
+          icon: "i-lucide-plus",
+          to: "/reports/new",
+          onSelect: () => (open.value = false),
+        },
+        {
+          label: "History",
+          icon: "i-lucide-history",
+          to: "/reports",
+          onSelect: () => (open.value = false),
+        },
+      ],
     },
     {
       label: "Points of interest",
@@ -46,7 +60,7 @@ const commomItems = computed<NavigationMenuItem[]>(() => {
         },
         {
           label: "Create new",
-          icon: "i-lucide-plus",
+          icon: "i-lucide-map-pin-plus",
           to: "/points-of-interest/new",
           onSelect: () => (open.value = false),
         },

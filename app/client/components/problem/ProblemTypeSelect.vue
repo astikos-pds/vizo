@@ -15,13 +15,7 @@ const { data: problemTypes, pending } = await getProblemTypes();
 const items = computed<SelectMenuItem[]>(() => {
   if (!problemTypes.value) return [];
 
-  return [
-    {
-      type: "label",
-      label: "Categories",
-    },
-    ...problemTypes.value,
-  ];
+  return [...problemTypes.value];
 });
 </script>
 

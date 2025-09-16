@@ -24,6 +24,11 @@ const shouldCollapse = breakpoints.smallerOrEqual("lg");
 watch(shouldCollapse, (should) => (collapsed.value = should));
 
 const { user } = useLoggedInUserStore();
+
+const { error } = useMapGeolocation();
+const isPermissionForGeolocationDenied = computed(
+  () => error.value?.code === 1
+);
 </script>
 
 <template>
@@ -113,6 +118,18 @@ const { user } = useLoggedInUserStore();
         <div class="flex items-center gap-1">
           <UButton
             size="xl"
+            :color="isPermissionForGeolocationDenied ? 'neutral' : 'primary'"
+            variant="ghost"
+            :icon="
+              isPermissionForGeolocationDenied
+                ? 'i-lucide-navigation-off'
+                : 'i-lucide-navigation'
+            "
+            class="rounded-full size-10 flex items-center justify-center text-xl pointer-auto"
+          />
+
+          <UButton
+            size="xl"
             color="neutral"
             variant="outline"
             icon="i-lucide-bell"
@@ -134,7 +151,7 @@ const { user } = useLoggedInUserStore();
           />
         </div>
       </header>
-      <main class="flex-1 w-full overflow-y-auto flex flex-col items-center">
+      <main class="flex-1 w-full overflow-hidden flex flex-col items-center">
         <slot />
       </main>
     </div>

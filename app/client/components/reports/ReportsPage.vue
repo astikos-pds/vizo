@@ -3,14 +3,14 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 
 const items = ref<NavigationMenuItem[]>([
   {
-    label: "View all",
-    icon: "i-lucide-map",
-    to: "/points-of-interest",
+    label: "New problem",
+    icon: "i-lucide-plus",
+    to: "/reports/new",
   },
   {
-    label: "Create new",
-    icon: "i-lucide-map-pin-plus",
-    to: "/points-of-interest/new",
+    label: "History",
+    icon: "i-lucide-history",
+    to: "/reports",
   },
 ]);
 
@@ -31,9 +31,9 @@ const open = computed(() => isMobile.value);
     <header class="w-full border-b border-default px-2">
       <UNavigationMenu :items="items" highlight />
     </header>
-    <main class="flex-1 flex overflow-hidden">
+    <main class="flex-1 flex justify-center">
       <UDrawer
-        v-if="isMobile"
+        v-if="$slots.aside && isMobile"
         v-model:open="open"
         direction="bottom"
         :overlay="false"
@@ -48,15 +48,15 @@ const open = computed(() => isMobile.value);
           <slot name="aside" />
         </template>
       </UDrawer>
-      <aside v-else class="w-[40%] 2xl:w-[30%] border-r border-default">
-        <section
-          class="size-full flex flex-col justify-between overflow-y-auto"
-        >
-          <slot name="aside" />
-        </section>
+      <aside
+        v-else-if="$slots.aside"
+        class="w-[40%] 2xl:w-[30%] border-r border-default overflow-auto"
+      >
+        <slot name="aside" />
       </aside>
-      <div class="flex-1">
-        <slot name="main" />
+
+      <div class="flex-1 flex justify-center items-center">
+        <slot />
       </div>
     </main>
   </section>

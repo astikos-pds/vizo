@@ -12,7 +12,7 @@ interface PartialReport {
 }
 
 interface Props {
-  lastReport: PartialReport;
+  lastReport: PartialReport & { createdAt: Date };
   currentReport: PartialReport;
 }
 const { lastReport, currentReport } = defineProps<Props>();
@@ -35,14 +35,35 @@ const { t } = useI18n();
     }"
   >
     <template #body>
-      <section
-        class="flex flex-col md:flex-row gap-3 items-center justify-center"
-      >
-        <ReportCard :report="currentReport" />
-        <Icon name="lucide:git-compare" class="text-4xl" />
-        <ReportCard :report="lastReport" variant="soft" class="opacity-85" />
+      <section class="flex flex-col gap-3">
+        <div class="w-full flex gap-3 items-center justify-center">
+          <UCard class="w-full">
+            <template #header>
+              <span class="font-semibold">Last report</span>
+            </template>
+
+            <div class="size-full flex flex-col">
+              <span>"{{ lastReport.description }}"</span>
+              <span
+                >Reported at
+                {{ lastReport.createdAt.toLocaleDateString() }}</span
+              >
+            </div>
+          </UCard>
+
+          <Icon name="lucide:git-compare" class="text-4xl" />
+
+          <UCard class="w-full">
+            <template #header>
+              <span class="font-semibold">Current report</span>
+            </template>
+
+            "{{ currentReport.description }}"
+          </UCard>
+        </div>
       </section>
     </template>
+
     <template #footer>
       <div class="flex gap-2">
         <UButton

@@ -52,7 +52,7 @@ async function createFileFromUrl(url: URL) {
   try {
     const response = await fetch(url);
     const blob = await response.blob();
-    const file = new File([blob], url.pathname, { type: "'mage/jpeg" });
+    const file = new File([blob], url.pathname, { type: "'image/jpeg" });
     return file;
   } catch (error) {
     console.error("Error creating file from URL:", error);

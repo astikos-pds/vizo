@@ -1,18 +1,15 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent, RadioGroupItem } from "@nuxt/ui";
 import {
-  MAX_FILE_SIZE_IN_BYTES,
-  MAX_FILE_SIZE_IN_MB,
   MAX_RADIUS_IN_METERS,
   RADIUS_OF_RELATED_REPORTS_IN_METERS,
   REPORT_CONFLICT_PERIOD_IN_MS,
 } from "~/utils/constants";
-import * as z from "zod";
 import { useReports } from "~/composables/use-reports";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
 import ModalReportImprecision from "~/components/modal/ModalReportImprecision.vue";
 import ModalRecentReport from "~/components/modal/ModalRecentReport.vue";
-import type { ProblemType } from "~/types/domain/problem";
+import { reportSchema, type ReportSchema } from "~/lib/report-schema";
 
 const { t } = useI18n();
 
@@ -26,32 +23,6 @@ definePageMeta({
   middleware: ["auth"],
 });
 
-type LocationOption = "CURRENT" | "POINT";
-
-const reportSchema = z.object({
-  description: z
-    .string()
-    .min(1, t("reportProblem.validation.descriptionRequired")),
-  images: z
-    .custom<File[]>()
-    .refine(
-      (files) => files.length <= 5,
-      t("reportProblem.validation.maxImages", { count: 5 })
-    )
-    .refine(
-      (files) => files.every((file) => file.type.startsWith("image/")),
-      t("reportProblem.validation.mustBeImages")
-    )
-    .refine(
-      (files) => files.every((file) => file.size <= MAX_FILE_SIZE_IN_BYTES),
-      t("reportProblem.validation.imageSize", { size: MAX_FILE_SIZE_IN_MB })
-    ),
-  location: z.custom<LocationOption>(),
-  problemType: z.custom<ProblemType>(),
-});
-
-type ReportSchema = z.output<typeof reportSchema>;
-
 const {
   coords,
   error: geolocationError,
@@ -64,7 +35,6 @@ const form = reactive<ReportSchema>({
   description: "",
   images: [],
   location: "CURRENT",
-  problemType: "OTHER",
 });
 
 watch(geolocationError, (newError) => {
@@ -147,9 +117,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
 
   toast.add({
     title: t("toast.success.title"),
-    description: t("toast.success.description.reportCreated", {
-      id: response.id,
-    }),
+    description: "Report created successfully",
     color: "success",
   });
 
@@ -229,7 +197,7 @@ function resolveCoordinates(data: ReportSchema) {
 </script>
 
 <template>
-  <section class="size-full flex justify-center items-center overflow-auto">
+  <ReportsPage>
     <div
       class="w-[90%] md:w-[75%] xl:w-[65%] 2xl:w-[55%] h-full flex flex-col p-10"
     >
@@ -320,19 +288,10 @@ function resolveCoordinates(data: ReportSchema) {
           </p>
         </UFormField>
 
-        <UFormField
-          label="Problem type"
-          name="problemType"
-          required
-          class="w-full"
-        >
-          <ProblemTypeSelect class="w-full" v-model="form.problemType" />
-        </UFormField>
-
         <UButton type="submit" :loading="loading">{{
           t("reportProblem.sendButton")
         }}</UButton>
       </UForm>
     </div>
-  </section>
+  </ReportsPage>
 </template>

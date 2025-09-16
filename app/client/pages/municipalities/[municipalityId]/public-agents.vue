@@ -15,6 +15,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "Public agents",
   middleware: ["auth", "affiliated"],
 });
 

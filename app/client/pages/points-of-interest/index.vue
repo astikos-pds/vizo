@@ -41,8 +41,6 @@ const activePointsOfInterest = computed<PointOfInterest[]>(() => {
 
 const { map, zoom, center } = useMap();
 
-const { coords, isLocationPrecise } = useMapGeolocation();
-
 const zoomToMarker = (marker: LatLng & { radius: number }) => {
   map.value?.flyTo(
     [marker.latitude, marker.longitude],
@@ -98,14 +96,13 @@ const zoomToMarker = (marker: LatLng & { radius: number }) => {
         <div v-if="pending">Loading...</div>
         <Map v-else ref="map" :zoom="zoom" :center="center">
           <PointsOfInterestMarker
-            v-if="activePointsOfInterest.length > 0"
-            :key="pointOfInterest.id"
             v-for="pointOfInterest in activePointsOfInterest"
+            :key="pointOfInterest.id"
             v-bind="pointOfInterest"
             @click="zoomToMarker(pointOfInterest)"
           />
 
-          <CurrentPositionMarker v-if="isLocationPrecise" v-model="coords" />
+          <CurrentPositionMarker />
         </Map>
       </div>
     </template>

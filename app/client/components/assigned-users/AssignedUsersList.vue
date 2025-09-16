@@ -32,7 +32,7 @@ const {
 
 <template>
   <section class="size-full flex flex-col justify-between overflow-y-auto">
-    <main class="flex-1 flex flex-col p-3 2xl:p-5">
+    <main class="flex-1 flex flex-col">
       <EmptyMessage v-if="pendingForUsers">Loading...</EmptyMessage>
       <EmptyMessage v-else-if="!page">Failed to fetch assignees</EmptyMessage>
       <AssignedUsersCard

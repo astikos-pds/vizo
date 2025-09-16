@@ -21,9 +21,9 @@ import type { HttpClient } from "~/utils/http";
 import type { AffiliationFilter } from "./affiliated-user";
 
 export type ReportFilter = {
-  latitude: number;
-  longitude: number;
-  radius: number;
+  latitude?: number;
+  longitude?: number;
+  radius?: number;
 };
 
 export class MeService {

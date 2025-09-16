@@ -50,7 +50,7 @@ const isMobile = breakpoints.smallerOrEqual("lg");
 const snapPoints = [0.3, 0.5, 0.9];
 const activeSnapPoint = ref(snapPoints[1]);
 
-const title = "Problem details";
+const title = reports.value?.content[0].problem.type;
 
 const ui = {
   footer: "flex justify-center items-center",
@@ -66,7 +66,6 @@ const ui = {
     :ui="ui"
     :snap-points="snapPoints"
     :active-snap-point="activeSnapPoint"
-    @update:active-snap-point="(value: number | string) => (activeSnapPoint = value as number)"
   >
     <template #body>
       <div v-if="pending" class="flex flex-col gap-4">
@@ -81,7 +80,7 @@ const ui = {
         :reports="reports"
       />
     </template>
-    <template #footer>
+    <template #footer v-if="reports && reports.totalPages > 1">
       <UPagination
         v-model:page="currentPage"
         :items-per-page="pagination.size"
@@ -114,7 +113,7 @@ const ui = {
         :reports="reports"
       />
     </template>
-    <template #footer>
+    <template #footer v-if="reports && reports.totalPages > 1">
       <UPagination
         v-model:page="currentPage"
         :items-per-page="pagination.size"

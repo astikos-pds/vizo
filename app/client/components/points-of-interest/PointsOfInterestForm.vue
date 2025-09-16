@@ -3,7 +3,7 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import type { PointOfInterest } from "~/types/domain/point-of-interest";
 
-const props = defineProps<{
+const { state } = defineProps<{
   title: string;
   state?: PointOfInterest;
   loading?: boolean;
@@ -37,10 +37,10 @@ const pointOfInterestSchema = z.object({
 type PointOfInterestSchema = z.infer<typeof pointOfInterestSchema>;
 
 const form = reactive<PointOfInterestSchema>({
-  name: props.state?.name ?? "",
-  radius: props.state?.radius ?? 1000,
-  colorHex: props.state?.colorHex ?? "#000000",
-  active: props.state?.active ?? true,
+  name: state?.name ?? "",
+  radius: state?.radius ?? 1000,
+  colorHex: state?.colorHex ?? "#000000",
+  active: state?.active ?? true,
 });
 
 const { map, center } = useMap();
@@ -48,14 +48,14 @@ const { map, center } = useMap();
 const { coords, isLocationPrecise } = useMapGeolocation();
 
 const marker = reactive({
-  latitude: props.state?.latitude ?? center.latitude,
-  longitude: props.state?.longitude ?? center.longitude,
+  latitude: state?.latitude ?? center.latitude,
+  longitude: state?.longitude ?? center.longitude,
 });
 
 const stopWatch = watch(
   coords,
   (newCoords) => {
-    if (props.state) return;
+    if (state) return;
     if (newCoords.latitude === Infinity || newCoords.longitude === Infinity)
       return;
 
@@ -70,6 +70,17 @@ const stopWatch = watch(
 const onSubmit = (event: FormSubmitEvent<PointOfInterestSchema>) => {
   emit("submit", { ...event.data, ...marker });
 };
+
+const hasUnsavedChanges = computed(() => {
+  if (!state) return false;
+
+  return (
+    state.name !== form.name ||
+    state.radius !== form.radius ||
+    state.colorHex !== form.colorHex ||
+    state.active !== form.active
+  );
+});
 </script>
 
 <template>
@@ -129,13 +140,28 @@ const onSubmit = (event: FormSubmitEvent<PointOfInterestSchema>) => {
             <USwitch v-model="form.active" />
           </UFormField>
 
-          <UButton type="submit" :loading="loading">Save</UButton>
+          <UButton
+            v-if="!hasUnsavedChanges"
+            color="neutral"
+            variant="outline"
+            to="/points-of-interest"
+            >Cancel</UButton
+          >
+          <UButton
+            v-else-if="state"
+            color="neutral"
+            type="submit"
+            :loading="loading"
+            >Save changes</UButton
+          >
+
+          <UButton v-else type="submit" :loading="loading">Save</UButton>
         </UForm>
       </main>
     </template>
     <template #main>
       <div class="size-full flex justify-center items-center">
-        <Map ref="map" :zoom="15" :center="props.state ? marker : center">
+        <Map ref="map" :zoom="15" :center="marker">
           <PointsOfInterestMarker
             v-model="marker"
             :radius="form.radius"

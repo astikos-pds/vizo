@@ -38,7 +38,7 @@ export interface Problem {
   updatedAt: Date;
   firstReportedAt: Date;
   lastReportedAt: Date;
-  resolvedAt: Date;
+  resolvedAt?: Date;
 }
 
 export class ProblemMapper {
