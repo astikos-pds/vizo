@@ -32,6 +32,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDTO(e.getMessage()));
     }
 
+    @ExceptionHandler(UnprocessableEntityException.class)
+    public ResponseEntity<ErrorDTO> handleUnprocessableEntityException(UnprocessableEntityException e) {
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ErrorDTO(e.getMessage()));
+    }
+
     @ExceptionHandler(IllegalException.class)
     public ResponseEntity<ErrorDTO> handleIllegalException(IllegalException e) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDTO(e.getMessage()));

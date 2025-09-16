@@ -9,6 +9,7 @@ import br.app.vizo.infrastructure.persistence.jpa.entity.ReportEntity;
 import br.app.vizo.infrastructure.persistence.jpa.repository.ReportJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -27,6 +28,11 @@ public class ReportRepositoryImpl implements ReportRepository {
         ReportEntity entity = this.mapper.toEntity(report);
         ReportEntity saved = this.jpaRepository.save(entity);
         return this.mapper.toModel(saved);
+    }
+
+    @Override
+    public Optional<Report> findById(UUID id) {
+        return this.jpaRepository.findById(id).map(this.mapper::toModel);
     }
 
     @Override
@@ -61,5 +67,10 @@ public class ReportRepositoryImpl implements ReportRepository {
         ).map(this.mapper::toModel);
 
         return PageDTO.of(page);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        this.jpaRepository.deleteById(id);
     }
 }

@@ -14,10 +14,10 @@ public class Report {
     private final UUID id;
     private final User user;
     private final Problem problem;
-    private final Description description;
-    private final Coordinates coordinates;
-    private final EvidenceImages images;
-    private final Credibility credibility;
+    private Description description;
+    private Coordinates coordinates;
+    private EvidenceImages images;
+    private Credibility credibility;
     private final Instant createdAt;
 
     public Report(UUID id, User user, Problem problem, Description description, Coordinates coordinates, EvidenceImages images, Credibility credibility, Instant createdAt) {
@@ -40,6 +40,17 @@ public class Report {
         this.images = EvidenceImages.of(imagesUrls);
         this.credibility = new Credibility(credibility);
         this.createdAt = Instant.now();
+    }
+
+    public void update(Description description, Coordinates coordinates, EvidenceImages images, Credibility credibility) {
+        this.description = description;
+        this.images = images;
+        this.coordinates = coordinates;
+        this.credibility = credibility;
+    }
+
+    public boolean wasMadeBy(User user) {
+        return this.user.getId().equals(user.getId());
     }
 
     public UUID getId() {

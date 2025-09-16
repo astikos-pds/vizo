@@ -26,4 +26,6 @@ public interface ProblemRepository {
             Double longitude,
             Double radiusInMeters
     );
+
+    void deleteById(UUID id);
 }

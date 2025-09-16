@@ -18,7 +18,8 @@ public class ReportCredibilityService {
             double userCredibility,
             String description,
             int numberOfImages,
-            boolean userAlreadyReportedProblem
+            boolean userAlreadyReportedProblem,
+            double textImageConsistency
     ) {
         double reputationScore = userCredibility * REPUTATION_WEIGHT;
 
@@ -31,6 +32,10 @@ public class ReportCredibilityService {
         double rawScore = reputationScore + detailingScore + evidenceScore;
 
         if (userAlreadyReportedProblem) {
+            rawScore -= 20.0;
+        }
+
+        if (textImageConsistency < 0.2) {
             rawScore -= 20.0;
         }
 

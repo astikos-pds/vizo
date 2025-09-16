@@ -2,7 +2,9 @@ package br.app.vizo.application.usecase.report;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.ReportDTO;
+import br.app.vizo.application.exception.LowReportConfidenceException;
 import br.app.vizo.application.mapper.ReportMapper;
+import br.app.vizo.application.service.ReportAnalysisService;
 import br.app.vizo.application.service.ReportCredibilityService;
 import br.app.vizo.application.usecase.report.request.ReportProblemRequestDTO;
 import br.app.vizo.core.problem.Problem;
@@ -24,24 +26,36 @@ public class ReportProblemUseCase {
     private final ReportMapper reportMapper;
     private final ProblemFactory problemFactory;
     private final ReportCredibilityService reportCredibilityService;
+    private final ReportAnalysisService reportAnalysisService;
 
     public ReportDTO execute(User loggedInUser, ReportProblemRequestDTO request) {
-        Problem problem = this.findRelatedOrCreateProblem(request);
+        ReportAnalysisService.AnalysisResponse response = this.reportAnalysisService
+                .analyseReport(request.description(), request.imagesUrls());
 
-        int numberOfImages = request.imagesUrls().size();
+        if (response.confidence() < 0.3) {
+            throw new LowReportConfidenceException();
+        }
+
+        Problem problem = this.findRelatedOrCreateProblem(
+                response.predicted_type(),
+                request.latitude(),
+                request.longitude()
+        );
+
         boolean userAlreadyReportedProblem = this.reportRepository.existsByUserIdAndProblemId(
                 loggedInUser.getId(),
                 problem.getId()
         );
 
+        int numberOfImages = request.imagesUrls().size();
+
         Double reportCredibility = this.reportCredibilityService.calculate(
                 loggedInUser.getCredibilityPoints(),
                 request.description(),
                 numberOfImages,
-                userAlreadyReportedProblem
+                userAlreadyReportedProblem,
+                response.text_image_consistency()
         );
-
-        System.out.println(reportCredibility);
 
         Report report = loggedInUser.report(
                 problem,
@@ -60,11 +74,7 @@ public class ReportProblemUseCase {
         return this.reportMapper.toDto(saved);
     }
 
-    private Problem findRelatedOrCreateProblem(ReportProblemRequestDTO request) {
-        ProblemType problemType = request.problemType();
-        Double latitude = request.latitude();
-        Double longitude = request.longitude();
-
+    private Problem findRelatedOrCreateProblem(ProblemType problemType, Double latitude, Double longitude) {
         return this.problemRepository
                 .findClosestUnresolvedByTypeWithinRadiusInMeters(problemType, latitude, longitude, 5.0)
                 .orElseGet(() -> problemFactory.create(Coordinates.of(latitude, longitude), problemType)

@@ -67,4 +67,9 @@ public class ProblemRepositoryImpl implements ProblemRepository {
                 .findClosestUnresolvedByTypeWithinRadiusInMeters(problemType.name(), latitude, longitude, radiusInMeters)
                 .map(this.mapper::toModel);
     }
+
+    @Override
+    public void deleteById(UUID id) {
+        this.jpaRepository.deleteById(id);
+    }
 }

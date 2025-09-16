@@ -19,6 +19,10 @@ public record Credibility(
         return new Credibility(this.points + delta);
     }
 
+    public Credibility deaccumulate(Double delta) {
+        return new Credibility(this.points - delta);
+    }
+
     public static Credibility of(Double points) {
         return new Credibility(points);
     }

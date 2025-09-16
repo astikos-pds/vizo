@@ -6,6 +6,8 @@ import br.app.vizo.core.municipality.Municipality;
 import br.app.vizo.core.poi.PointOfInterest;
 import br.app.vizo.core.poi.Radius;
 import br.app.vizo.core.problem.Problem;
+import br.app.vizo.core.report.Description;
+import br.app.vizo.core.report.EvidenceImages;
 import br.app.vizo.core.report.Report;
 import br.app.vizo.core.shared.*;
 import br.app.vizo.core.shared.coordinates.Coordinates;
@@ -53,6 +55,16 @@ public class User {
         return new Report(this, problem, description, latitude, longitude, imageUrls, credibility);
     }
 
+    public Report updateReport(Report target, String description, Double latitude, Double longitude, Set<String> imagesUrls, Double credibility) {
+        if (!this.made(target)) {
+            throw new IllegalException("You cannot update a report of another user.");
+        }
+
+        target.update(new Description(description), Coordinates.of(latitude, longitude), EvidenceImages.of(imagesUrls), new Credibility(credibility));
+
+        return target;
+    }
+
     public AffiliationIntent requestAffiliationTo(Municipality municipality) {
         return new AffiliationIntent(this, municipality);
     }
@@ -96,6 +108,10 @@ public class User {
 
     public boolean owns(PointOfInterest poi) {
         return poi.isOwnedBy(this);
+    }
+
+    public boolean made(Report report) {
+        return report.wasMadeBy(this);
     }
 
     public UUID getId() {

@@ -36,3 +36,6 @@ api:
 
 client:
   url: ${CLIENT_URL}
+
+analyser:
+  url: ${ANALYSER_URL}

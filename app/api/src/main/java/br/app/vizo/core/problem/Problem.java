@@ -47,12 +47,18 @@ public class Problem {
     public void increaseCredibility(Double reportCredibility) {
         this.accumulatedCredibility = this.accumulatedCredibility.accumulate(reportCredibility);
 
-        if (accumulatedCredibility.points() > 120) {
-            this.validated = true;
-        }
+        this.validated = accumulatedCredibility.points() > 120;
 
         this.timestamps.update();
         this.reportingTimeline.update();
+    }
+
+    public void decreaseCredibility(Double reportCredibility) {
+        this.accumulatedCredibility = this.accumulatedCredibility.deaccumulate(reportCredibility);
+
+        this.validated = accumulatedCredibility.points() > 120;
+
+        this.timestamps.update();
     }
 
     public UUID getId() {
