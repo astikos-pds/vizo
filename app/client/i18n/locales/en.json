@@ -384,43 +384,18 @@
     }
   },
   "profile": {
-    "tab": {
-      "account": {
-        "label": "My Account",
-        "description": "Make changes to your profile, such as username and email."
-      },
-      "admin": {
-        "label": "Administration",
-        "description": "Manage users and permissions."
-      }
+    "modal": {
+      "title": "Choose an Avatar"
     },
-    "form": {
-      "name": "Name",
-      "username": "Username",
-      "email": "Email",
-      "cellphone": "Cellphone",
-      "address": "Address",
-      "save": "Save Changes"
-    },
+    "editButton": "Edit",
     "reports": {
-      "title": "Reports Made",
-      "type": "Report Type",
-      "date": "Date",
-      "description": "Report Description",
-      "delete": "Delete"
-    },
-    "stats": {
-      "solved": "Problems Solved",
-      "helped": "People Helped by You"
-    },
-    "badges": {
-      "solver": "Problem Solver",
-      "helper": "Helper"
-    },
-    "fields": {
-      "permission": "Permission",
-      "city": "City",
-      "team": "Team"
+      "noReports": "No reports found.",
+      "problem": "Problem: ",
+      "description": "Description: ",
+      "image": "Image: ",
+      "imageAlt": "Report Image",
+      "credibility": "Credibility: ",
+      "reportedAt": "Reported at: "
     }
   },
   "details": {

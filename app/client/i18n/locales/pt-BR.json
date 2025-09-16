@@ -380,43 +380,18 @@
     }
   },
   "profile": {
-    "tab": {
-      "account": {
-        "label": "Minha Conta",
-        "description": "Faça alterações no seu perfil, como nome de usuário e email."
-      },
-      "admin": {
-        "label": "Administração",
-        "description": "Faça Gerenciamento de usuários e permissões."
-      }
+    "modal": {
+      "title": "Escolha um Avatar"
     },
-    "form": {
-      "name": "Nome",
-      "username": "Nome de Usuário",
-      "email": "Email",
-      "cellphone": "Celular",
-      "address": "Endereço",
-      "save": "Salvar Mudanças"
-    },
+    "editButton": "Editar",
     "reports": {
-      "title": "Reportes Realizados",
-      "type": "Tipo de Reporte",
-      "date": "Data",
-      "description": "Descrição do Reporte",
-      "delete": "Excluir"
-    },
-    "stats": {
-      "solved": "Problemas Resolvidos",
-      "helped": "Pessoas Beneficiadas por você"
-    },
-    "badges": {
-      "solver": "Resolvedor de Problemas",
-      "helper": "Ajudante"
-    },
-    "fields": {
-      "permission": "Permissão",
-      "city": "Cidade",
-      "team": "Equipe"
+      "noReports": "Nenhum reporte encontrado.",
+      "problem": "Problema: ",
+      "description": "Descrição",
+      "image": "Imagem: ",
+      "imageAlt": "Imagem do reporte",
+      "credibility": "Credibilidade: ",
+      "reportedAt": "Reportado em: "
     }
   },
   "details": {

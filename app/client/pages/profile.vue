@@ -17,21 +17,6 @@ useHead({
 
 const { map, zoom, center } = useMap();
 
-const items = [
-  {
-    label: t("profile.tab.account.label"),
-    description: t("profile.tab.account.description"),
-    icon: "i-lucide-user",
-    slot: "account" as const,
-  },
-  {
-    label: t("profile.tab.admin.label"),
-    description: t("profile.tab.admin.description"),
-    icon: "i-lucide-lock",
-    slot: "password" as const,
-  },
-] satisfies TabsItem[];
-
 const user = reactive({
   name: "Joaquim Souza",
   username: "joaquimsouza",
@@ -65,11 +50,12 @@ const reports = [
   }
 ]
 
-const badges = ref([
+/* const badges = ref([
   { icon: "i-lucide-headset", label: t("profile.badges.solver") },
   { icon: "i-lucide-heart-handshake", label: t("profile.badges.helper") },
   { icon: "i-lucide-heart-handshake", label: t("profile.badges.helper") },
-]);
+]); */
+
 const avatarOptions: string[] = [];
   for (let i = 1; i <= 12; i++) {
     avatarOptions.push(`/avatar/avatar${i}.png`);
@@ -89,7 +75,7 @@ const avatarOptions: string[] = [];
         <div class="flex flex-col">
           <span class="text-lg font-semibold">@{{ user.username }}</span>
           <!-- Modal -->
-          <UModal title="Escolha um Avatar">
+          <UModal :title="t('profile.modal.title')">
             <UButton
               icon="i-lucide-pencil"
               size="sm"
@@ -97,7 +83,7 @@ const avatarOptions: string[] = [];
               color="primary"
               variant="soft"
             >
-              Editar
+              {{ t("profile.editButton") }}
             </UButton>
             <template #body>
               <div class="flex flex-wrap gap-4 justify-center items-center py-4">
@@ -135,7 +121,7 @@ const avatarOptions: string[] = [];
 
     <!-- Reportes -->
       <div class="mt-8">
-        <div v-if="reports.length === 0" class="text-gray-500">Nenhum relatório encontrado.</div>
+        <div v-if="reports.length === 0" class="text-gray-500">{{ t("profile.reports.noReports") }}</div>
         <div v-else class="space-y-6">
           <div
             v-for="report in reports"
@@ -144,24 +130,24 @@ const avatarOptions: string[] = [];
           >
             <div class="flex flex-col gap-2">
               <div class="font-semibold">
-                Problema: <span class="font-normal">{{ report.problem }}</span>
+                {{ t("profile.reports.problem") }} <span class="font-normal">{{ report.problem }}</span>
               </div>
               <div class="font-semibold">
-                Descrição: <span class="font-normal">{{ report.description }}</span>
+                {{ t("profile.reports.description") }} <span class="font-normal">{{ report.description }}</span>
               </div>
               <div class="font-semibold items-center gap-2 grid">
-                Imagem:
+                {{ t("profile.reports.image") }}
                 <img
                   v-if="report.images"
                   :src="`/images/${report.images}`"
-                  alt="Imagem do reporte"
+                  :alt="t('profile.reports.imageAlt')"
                   class="w-20 h-20 object-cover rounded font-normal"
                 />
                 <span v-else class="text-gray-400">Sem imagem</span>
               </div>
               <div class="flex flex-col h-full justify-end gap-5 mb-4">
-                <div class="font-semibold">Credibilidade: <UBadge>{{ report.credibility }}</UBadge> </div>
-                <div class="text-xs text-gray-400">Criado em: {{ report.createdAt }}</div>
+                <div class="font-semibold">{{ t("profile.reports.credibility") }} <UBadge>{{ report.credibility }}</UBadge> </div>
+                <div class="text-xs text-gray-400">{{ t("profile.reports.reportedAt") }} {{ report.createdAt }}</div>
               </div>
             </div>
             
