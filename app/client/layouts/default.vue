@@ -137,7 +137,7 @@ const isPermissionForGeolocationDenied = computed(
             class="rounded-full size-10 flex items-center justify-center text-xl"
           />
 
-          <UButton
+          <!-- <UButton
             v-if="user"
             size="xl"
             color="neutral"
@@ -148,7 +148,7 @@ const isPermissionForGeolocationDenied = computed(
               size: 'lg',
             }"
             :to="`/users/${user.id}`"
-          />
+          /> -->
         </div>
       </header>
       <main class="flex-1 w-full overflow-hidden flex flex-col items-center">

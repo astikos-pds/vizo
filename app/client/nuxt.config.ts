@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     "~/plugins/01.api.ts",
     "~/plugins/02.services.ts",
     "~/plugins/leaflet.client.ts",
+    "~/plugins/apexcharts.client.ts",
   ],
   modules: [
     "@nuxtjs/leaflet",

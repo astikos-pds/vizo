@@ -217,7 +217,7 @@ const stepper = useSteps();
         required
         @click="showPassword = !showPassword"
       >
-        <RegisterPasswordStrength
+        <PasswordStrengthIndicator
           :password="form.password"
           :password-requirements="passwordRequirements"
         />

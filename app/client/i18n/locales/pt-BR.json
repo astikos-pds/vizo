@@ -165,16 +165,16 @@
 
   "login": {
     "title": "Entre em sua conta",
-    "cpf": "Documento",
-    "cpfPlaceholder": "Digite seu documento",
+    "cpf": "CPF",
+    "cpfPlaceholder": "Digite seu CPF",
     "password": "Senha",
     "passwordPlaceholder": "Digite sua senha",
     "dontHaveAccount": "Ainda não possui uma conta?",
     "signUpHere": "Cadastre-se aqui.",
     "signInButton": "Entrar",
     "verification": {
-      "documentRequired": "Insira o documento",
-      "invalidDocument": "Documento inválido",
+      "documentRequired": "Insira o CPF",
+      "invalidDocument": "CPF inválido",
       "passwordRequired": "Insira a senha"
     }
   },

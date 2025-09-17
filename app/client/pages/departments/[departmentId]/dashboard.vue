@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import ProblemsTable from "~/components/problems/ProblemsTable.vue";
 import type { Pagination } from "~/types/domain/pagination";
+import type { ProblemStatus } from "~/types/domain/problem";
+import type { Badge } from "~/types/ui";
 
 const { t } = useI18n();
 
@@ -33,19 +35,43 @@ const { data: problems } = await getProblemsInScope(
   currentAssignment ? currentAssignment.department.id : "",
   pagination.value
 );
+
+const { countProblemsInScopeByStatus } = useDepartments();
+
+const { data: countsByStatus } = await countProblemsInScopeByStatus(
+  currentAssignment ? currentAssignment.department.municipality.id : "",
+  currentAssignment ? currentAssignment.department.id : ""
+);
+
+const mapStatusToColor: Record<ProblemStatus, Badge["color"]> = {
+  REJECTED: "error",
+  ANALYSIS: "warning",
+  IN_PROGRESS: "info",
+  RESOLVED: "success",
+};
 </script>
 
 <template>
   <div
-    class="grid grid-cols-1 gap-6 p-4 sm:p-6 md:p-8 md:grid-cols-1 xl:grid-cols-2"
+    class="w-full gap-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 p-4 md:p-6 overflow-auto"
   >
-    <!-- <ProblemRate class="col-span-1" />
-    <SolvedProblems class="col-span-1" /> -->
+    <DashboardCountCard
+      v-for="countByStatus in countsByStatus"
+      :color="mapStatusToColor[countByStatus.status]"
+      :label="countByStatus.status"
+      :count="countByStatus.count"
+      class="col-span-1"
+    />
+
+    <DashboardProblemsRate
+      class="border border-default rounded-md col-span-4"
+    />
+
     <ProblemsTable
       v-if="problems"
       v-model:problems="problems"
       v-model:pagination="pagination"
-      class="col-span-1 md:col-span-2 xl:col-span-2"
+      class="col-span-4"
     />
   </div>
 </template>

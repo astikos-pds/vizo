@@ -99,13 +99,20 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           @click="showPassword = !showPassword"
         />
 
-        <div class="text-center text-sm flex flex-col">
+        <div class="text-center text-sm flex flex-col gap-2">
           <span>
             {{ t("login.dontHaveAccount") }}
             <NuxtLink to="/register" class="text-primary">{{
               t("login.signUpHere")
             }}</NuxtLink>
           </span>
+
+          <span
+            >Forgot your password?
+            <NuxtLink to="/change-password" class="text-primary"
+              >Reset it here.</NuxtLink
+            ></span
+          >
         </div>
 
         <UButton type="submit" :loading="loading">{{

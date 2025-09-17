@@ -1,5 +1,6 @@
 import type {
   ChangeProblemStatusInScopeRequest,
+  GetProblemsInScopeStatisticsParams,
   MutateDepartmentRequest,
 } from "~/services/department";
 import type { Department } from "~/types/domain/department";
@@ -98,6 +99,39 @@ export const useDepartments = () => {
     );
   }
 
+  function getProblemsInScopeStatistics(
+    municipalityId: Municipality["id"],
+    departmentId: Department["id"],
+    params: GetProblemsInScopeStatisticsParams
+  ) {
+    return useAsyncData(
+      `municipalities-${municipalityId}-departments-${departmentId}-problems-statistics`,
+      () =>
+        $departmentService.getProblemsInScopeStatistics(
+          municipalityId,
+          departmentId,
+          params
+        ),
+      {
+        watch: [params],
+      }
+    );
+  }
+
+  function countProblemsInScopeByStatus(
+    municipalityId: Municipality["id"],
+    departmentId: Department["id"]
+  ) {
+    return useAsyncData(
+      `municipalities-${municipalityId}-departments-${departmentId}-problems-count-by-status`,
+      () =>
+        $departmentService.countProblemsInScopeByStatus(
+          municipalityId,
+          departmentId
+        )
+    );
+  }
+
   return {
     loading,
     getDepartmentById,
@@ -107,5 +141,7 @@ export const useDepartments = () => {
     getProblemsInScope,
     getProblemInScope,
     changeProblemStatusInScope,
+    getProblemsInScopeStatistics,
+    countProblemsInScopeByStatus,
   };
 };

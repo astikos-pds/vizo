@@ -27,6 +27,23 @@ export interface ChangeProblemStatusInScopeRequest {
   status: ProblemStatus;
 }
 
+export interface GetProblemsInScopeStatisticsParams {
+  start: Date;
+  end: Date;
+  statuses?: ProblemStatus[];
+  types?: ProblemType[];
+}
+
+export interface ProblemStatistics {
+  date: string;
+  count: number;
+}
+
+export interface ProblemCountByStatus {
+  status: ProblemStatus;
+  count: number;
+}
+
 export class DepartmentService {
   constructor(
     private readonly httpClient: HttpClient,
@@ -113,5 +130,37 @@ export class DepartmentService {
     );
 
     return this.problemMapper.toModel(response);
+  }
+
+  public async getProblemsInScopeStatistics(
+    municipalityId: string,
+    departmentId: string,
+    params: GetProblemsInScopeStatisticsParams
+  ) {
+    const response = await this.httpClient.get<ProblemStatistics[]>(
+      `municipalities/${municipalityId}/departments/${departmentId}/problems/statistics`,
+      {
+        start: params.start.toISOString().split("T")[0],
+        end: params.end.toISOString().split("T")[0],
+        statuses: params.statuses,
+        types: params.types,
+      }
+    );
+
+    return response.map((a) => {
+      return {
+        date: new Date(a.date),
+        count: a.count,
+      };
+    });
+  }
+
+  public countProblemsInScopeByStatus(
+    municipalityId: string,
+    departmentId: string
+  ) {
+    return this.httpClient.get<ProblemCountByStatus[]>(
+      `municipalities/${municipalityId}/departments/${departmentId}/problems/count`
+    );
   }
 }

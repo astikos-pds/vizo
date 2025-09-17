@@ -8,13 +8,13 @@ const { user, collapsed } = defineProps<{
 }>();
 
 const items = ref<DropdownMenuItem[][]>([
-  [
-    {
-      label: "Profile",
-      icon: "i-lucide-user",
-      to: `/users/${user.id}`,
-    },
-  ],
+  // [
+  //   {
+  //     label: "Profile",
+  //     icon: "i-lucide-user",
+  //     to: `/users/${user.id}`,
+  //   },
+  // ],
   [
     {
       label: "Exit",

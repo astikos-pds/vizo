@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { PasswordRequirements } from '~/types/domain';
+import type { PasswordRequirements } from "~/types/domain/password";
 
 const { password, passwordRequirements } = defineProps<{
   password: string;
