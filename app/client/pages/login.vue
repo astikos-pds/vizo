@@ -97,6 +97,14 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
             }}</NuxtLink>
           </span>
         </div>
+        <div class="text-center text-sm flex flex-col">
+          <span>
+            Esqueceu sua senha?
+            <NuxtLink to="/change-password" class="text-primary">
+              Recupere aqui.
+            </NuxtLink>
+          </span>
+        </div>
 
         <UButton type="submit" :loading="loading">{{
           t("login.signInButton")
