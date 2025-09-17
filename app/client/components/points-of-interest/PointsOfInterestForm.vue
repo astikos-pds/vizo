@@ -154,7 +154,7 @@ const hasUnsavedChanges = computed(() => {
           </UFormField>
 
           <UButton
-            v-if="!hasUnsavedChanges"
+            v-if="state && !hasUnsavedChanges"
             color="neutral"
             variant="outline"
             to="/points-of-interest"
