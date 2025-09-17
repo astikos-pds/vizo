@@ -20,12 +20,12 @@ const commomItems = computed<NavigationMenuItem[]>(() => {
       to: "/",
       onSelect: () => (open.value = false),
     },
-    {
-      label: "Notifications",
-      icon: "i-lucide-bell",
-      to: "/notifications",
-      onSelect: () => (open.value = false),
-    },
+    // {
+    //   label: "Notifications",
+    //   icon: "i-lucide-bell",
+    //   to: "/notifications",
+    //   onSelect: () => (open.value = false),
+    // },
     {
       label: "Reports",
       icon: "i-lucide-message-square-warning",

@@ -128,14 +128,14 @@ const isPermissionForGeolocationDenied = computed(
             class="rounded-full size-10 flex items-center justify-center text-xl pointer-auto"
           />
 
-          <UButton
+          <!-- <UButton
             size="xl"
             color="neutral"
             variant="outline"
             icon="i-lucide-bell"
             to="/notifications"
             class="rounded-full size-10 flex items-center justify-center text-xl"
-          />
+          /> -->
 
           <!-- <UButton
             v-if="user"
