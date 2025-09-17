@@ -1,10 +1,12 @@
 <script lang="ts" setup>
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | New point of interest",
+  title: t("head.newPointOfInterest.title"),
   meta: [
     {
       name: "description",
-      content: "Create a new point of interest to keep up with the city.",
+      content: t("head.newPointOfInterest.description"),
     },
   ],
 });
@@ -34,7 +36,7 @@ const onSubmit = async (data: {
 
 <template>
   <PointsOfInterestForm
-    title="New point of interest"
+    :title="t('pages.pointsOfInterest.newTitle')"
     @submit="onSubmit"
     :loading="loading"
   />

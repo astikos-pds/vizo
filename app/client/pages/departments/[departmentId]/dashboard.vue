@@ -7,11 +7,11 @@ import type { Badge } from "~/types/ui";
 const { t } = useI18n();
 
 useHead({
-  title: "Vizo | Dashboard",
+  title: t("head.dashboard.title"),
   meta: [
     {
       name: "description",
-      content: "Dashboard",
+      content: t("head.dashboard.description"),
     },
   ],
 });

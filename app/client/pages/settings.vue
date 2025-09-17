@@ -79,7 +79,7 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
     class="size-full flex items-center flex-col gap-5 py-20 overflow-y-auto"
   >
     <h1 class="text-3xl font-semibold">
-      {{ t("settings.title") }}
+      {{ t("pages.settings.title") }}
     </h1>
 
     <UForm
@@ -89,7 +89,7 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
       class="w-[65%] md:w-110 lg:w-130 flex flex-col items-center gap-4"
     >
       <UFormField
-        :label="t('settings.languageLabel')"
+        :label="t('pages.settings.languageLabel')"
         name="language"
         class="w-full"
         ><USelectMenu
@@ -98,13 +98,17 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
           :items="languageItems"
           :icon="languageIcon"
           :search-input="{
-            placeholder: t('settings.searchPlaceholder'),
+            placeholder: t('pages.settings.searchPlaceholder'),
             icon: 'i-lucide-search',
           }"
           class="w-full"
       /></UFormField>
 
-      <UFormField :label="t('settings.themeLabel')" name="theme" class="w-full">
+      <UFormField
+        :label="t('pages.settings.themeLabel')"
+        name="theme"
+        class="w-full"
+      >
         <USelect
           v-model="form.theme"
           value-key="value"
@@ -114,7 +118,7 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
         />
       </UFormField>
 
-      <UButton type="submit">{{ t("settings.saveButton") }}</UButton>
+      <UButton type="submit">{{ t("pages.settings.saveButton") }}</UButton>
     </UForm>
   </section>
 </template>

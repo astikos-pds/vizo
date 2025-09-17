@@ -5,6 +5,8 @@ import {
   getLocalTimeZone,
 } from "@internationalized/date";
 
+const { t } = useI18n();
+
 const model = defineModel<{
   start: Date;
   end: Date;
@@ -49,7 +51,7 @@ const modelValue = computed({
           {{ df.format(model.start) }}
         </template>
       </template>
-      <template v-else>Pick a date</template>
+      <template v-else>{{ t("components.rangePicker.pickDate") }}</template>
     </UButton>
 
     <template #content>

@@ -3,12 +3,14 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | Assign users to department",
+  title: t("head.assignUsers.title"),
   meta: [
     {
       name: "description",
-      content: "Assign users to a department",
+      content: t("head.assignUsers.description"),
     },
   ],
 });
@@ -66,8 +68,8 @@ const onSubmit = async (event: FormSubmitEvent<AssignSchema>) => {
   if (!response) return;
 
   toast.add({
-    title: "Success",
-    description: "Filiates assigned successfully!",
+    title: t("pages.assignUsers.success.title"),
+    description: t("pages.assignUsers.success.description"),
     color: "success",
   });
 
@@ -85,11 +87,13 @@ const onSubmit = async (event: FormSubmitEvent<AssignSchema>) => {
       <div class="w-[70%] mt-15 flex flex-col gap-5">
         <header class="w-full flex flex-col items-center gap-1">
           <h1 class="text-2xl font-semibold">
-            Assign to {{ currentAssignment.department.name }}
+            {{
+              t("pages.assignUsers.title", {
+                departmentName: currentAssignment.department.name,
+              })
+            }}
           </h1>
-          <span class="text-sm"
-            >Search for public agents in this municipality to assign</span
-          >
+          <span class="text-sm">{{ t("pages.assignUsers.description") }}</span>
         </header>
         <main class="w-full flex flex-col items-center">
           <UForm
@@ -98,7 +102,7 @@ const onSubmit = async (event: FormSubmitEvent<AssignSchema>) => {
             class="w-full flex flex-col items-center gap-5"
           >
             <UFormField
-              label="Users assigned"
+              :label="t('pages.assignUsers.usersAssigned')"
               name="users-assigned"
               class="w-full"
             >
@@ -108,7 +112,9 @@ const onSubmit = async (event: FormSubmitEvent<AssignSchema>) => {
               />
             </UFormField>
 
-            <UButton type="submit" :loading="loading">Assign</UButton>
+            <UButton type="submit" :loading="loading">{{
+              t("pages.assignUsers.assign")
+            }}</UButton>
           </UForm>
         </main>
       </div>

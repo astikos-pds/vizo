@@ -4,10 +4,8 @@ import type { StepperItem } from "@nuxt/ui";
 const { t } = useI18n();
 
 useHead({
-  title: t("head.registerCitizen.title"),
-  meta: [
-    { name: "description", content: t("head.registerCitizen.description") },
-  ],
+  title: t("head.register.title"),
+  meta: [{ name: "description", content: t("head.register.description") }],
 });
 
 definePageMeta({
@@ -16,20 +14,20 @@ definePageMeta({
 
 const steps = ref<StepperItem[]>([
   {
-    title: "E-mail",
-    description: "Give us your e-mail to verify",
+    title: t("pages.register.steps.email.title"),
+    description: t("pages.register.steps.email.description"),
     icon: "i-lucide-mail",
     slot: "email" as const,
   },
   {
-    title: "Verification",
-    description: "Enter the code sent to e-mail",
+    title: t("pages.register.steps.verification.title"),
+    description: t("pages.register.steps.verification.description"),
     icon: "i-lucide-badge-check",
     slot: "verification" as const,
   },
   {
-    title: "Details",
-    description: "Complete your registration",
+    title: t("pages.register.steps.details.title"),
+    description: t("pages.register.steps.details.description"),
     icon: "i-lucide-book-text",
     slot: "details" as const,
   },

@@ -13,11 +13,11 @@ const { t, locale } = useI18n();
 const route = useRoute();
 
 useHead({
-  title: "Vizo | Problem",
+  title: t("head.problem.title"),
   meta: [
     {
       name: "description",
-      content: "View problem details.",
+      content: t("head.problem.description"),
     },
   ],
 });
@@ -105,7 +105,7 @@ function openModal() {
       <div class="w-full">
         <div class="flex flex-col gap-2">
           <div class="flex gap-1.5">
-            <span class="font-semibold">Type:</span>
+            <span class="font-semibold">{{ t("pages.problem.type") }}</span>
             <UBadge color="neutral" variant="subtle" size="lg">{{
               problem.type
             }}</UBadge>
@@ -126,7 +126,9 @@ function openModal() {
             </UButtonGroup>
           </div>
           <div class="flex gap-1.5">
-            <span class="font-semibold">First reported at:</span>
+            <span class="font-semibold">{{
+              t("pages.problem.firstReportedAt")
+            }}</span>
             <span>{{
               problem.firstReportedAt.toLocaleDateString(locale, {
                 dateStyle: "full",
@@ -135,7 +137,9 @@ function openModal() {
           </div>
 
           <div class="flex gap-1.5">
-            <span class="font-semibold">Last reported at:</span>
+            <span class="font-semibold">{{
+              t("pages.problem.lastReportedAt")
+            }}</span>
             <span>{{
               problem.lastReportedAt.toLocaleDateString(locale, {
                 dateStyle: "full",
@@ -144,7 +148,9 @@ function openModal() {
           </div>
 
           <div class="flex gap-1.5">
-            <span class="font-semibold">Credibility:</span>
+            <span class="font-semibold">{{
+              t("pages.problem.credibility")
+            }}</span>
             <span>{{ problem.accumulatedCredibility.toFixed(0) }}</span>
           </div>
         </div>

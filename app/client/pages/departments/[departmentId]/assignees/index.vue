@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import type { AssignedUser } from "~/types/domain/assigned-user";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | Assigned users",
+  title: t("head.assignedUsers.title"),
   meta: [
     {
       name: "description",
-      content: "View all assigned users in this department",
+      content: t("head.assignedUsers.description"),
     },
   ],
 });
@@ -71,11 +73,12 @@ const open = computed(() => isMobile.value);
             mode="svg"
             class="size-30"
           />
-          <EmptyMessage v-else-if="pendingForPresets">Loading...</EmptyMessage>
-          <EmptyMessage v-else-if="permissionPresets === null"
-            >Failed to fetch permission presets in this
-            municipality</EmptyMessage
-          >
+          <EmptyMessage v-else-if="pendingForPresets">{{
+            t("pages.assignedUsers.loading")
+          }}</EmptyMessage>
+          <EmptyMessage v-else-if="permissionPresets === null">
+            {{ t("pages.assignedUsers.failedToFetch") }}
+          </EmptyMessage>
           <AssignedUsersDetailsCard
             v-else
             :assigned-user="selectedAssignee"

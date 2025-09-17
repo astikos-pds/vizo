@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+const { t } = useI18n();
 const route = useRoute();
 const id = route.params.id as string;
 
@@ -8,12 +9,12 @@ const { data: pointOfInterest, pending } = await getPointOfInterest(id);
 
 useHead({
   title: pointOfInterest.value
-    ? `Vizo | Editing ${pointOfInterest.value.name}`
-    : "Vizo | Editing a point of interest",
+    ? t("head.editPointOfInterest.title", { name: pointOfInterest.value.name })
+    : t("head.editPointOfInterest.title", { name: "point of interest" }),
   meta: [
     {
       name: "description",
-      content: "Edit a point of interest to keep up with the city.",
+      content: t("head.editPointOfInterest.description"),
     },
   ],
 });
@@ -40,13 +41,17 @@ const onSubmit = async (data: {
 </script>
 
 <template>
-  <EmptyMessage v-if="pending">Loading...</EmptyMessage>
+  <EmptyMessage v-if="pending">{{
+    t("pages.pointsOfInterest.loading")
+  }}</EmptyMessage>
   <EmptyMessage v-else-if="!pointOfInterest">
-    Point of interest not found.
+    {{ t("pages.pointsOfInterest.notFound") }}
   </EmptyMessage>
   <PointsOfInterestForm
     v-else
-    :title="`Editing ${pointOfInterest.name}`"
+    :title="
+      t('pages.pointsOfInterest.editTitle', { name: pointOfInterest.name })
+    "
     :state="pointOfInterest"
     :loading="loading"
     @submit="onSubmit"

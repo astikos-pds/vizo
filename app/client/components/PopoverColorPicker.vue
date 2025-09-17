@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+const { t } = useI18n();
+
 const colorHex = defineModel<string>();
 
 const chip = computed(() => ({ backgroundColor: colorHex.value }));
@@ -7,7 +9,7 @@ const chip = computed(() => ({ backgroundColor: colorHex.value }));
 <template>
   <UPopover>
     <UButton
-      label="Choose color"
+      :label="t('components.popoverColorPicker.chooseColor')"
       color="neutral"
       variant="outline"
       class="w-full"

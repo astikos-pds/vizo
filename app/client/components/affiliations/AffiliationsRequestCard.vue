@@ -6,7 +6,7 @@ import type {
   AffiliationStatus,
 } from "~/types/domain/affiliated-user";
 
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 
 const affiliatedUser = defineProps<AffiliatedUser>();
 
@@ -62,13 +62,13 @@ async function cancel() {
           <h3 class="font-semibold">{{ affiliatedUser.user.name }}</h3>
           <div class="text-xs 2xl:text-sm flex flex-col">
             <span
-              >E-mail:
+              >{{ t("components.affiliations.email") }}:
               <UBadge variant="subtle" color="neutral" size="sm">{{
                 affiliatedUser.institutionalEmail
               }}</UBadge></span
             >
             <span
-              >Requested at
+              >{{ t("components.affiliations.requestedAt") }}
               {{ affiliatedUser.affiliatedAt.toLocaleDateString(locale) }}</span
             >
           </div>
@@ -82,14 +82,14 @@ async function cancel() {
             color="error"
             variant="subtle"
             @click="reject"
-            >Reject</UButton
+            >{{ t("components.affiliations.reject") }}</UButton
           >
           <UButton
             class="flex justify-center"
             color="success"
             variant="subtle"
             @click="approve"
-            >Approve</UButton
+            >{{ t("components.affiliations.approve") }}</UButton
           >
         </div>
         <div v-else class="w-full flex justify-center items-center">
@@ -98,7 +98,7 @@ async function cancel() {
             color="neutral"
             variant="solid"
             @click="cancel"
-            >Cancel</UButton
+            >{{ t("components.affiliations.cancel") }}</UButton
           >
         </div>
       </template>

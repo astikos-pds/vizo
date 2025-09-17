@@ -5,9 +5,9 @@ import ChangePasswordCredentialsStep from "~/components/change-password/ChangePa
 const { t } = useI18n();
 
 useHead({
-  title: t("head.registerCitizen.title"),
+  title: t("head.changePassword.title"),
   meta: [
-    { name: "description", content: t("head.registerCitizen.description") },
+    { name: "description", content: t("head.changePassword.description") },
   ],
 });
 
@@ -17,20 +17,20 @@ definePageMeta({
 
 const steps = ref<StepperItem[]>([
   {
-    title: "Credentials",
-    description: "Check your e-mail and CPF",
+    title: t("pages.changePassword.steps.credentials.title"),
+    description: t("pages.changePassword.steps.credentials.description"),
     icon: "i-lucide-mail",
     slot: "credentials" as const,
   },
   {
-    title: "Verification",
-    description: "Paste the code sent to e-mail",
+    title: t("pages.changePassword.steps.verification.title"),
+    description: t("pages.changePassword.steps.verification.description"),
     icon: "i-lucide-badge-check",
     slot: "verification" as const,
   },
   {
-    title: "New password",
-    description: "Define a new password",
+    title: t("pages.changePassword.steps.details.title"),
+    description: t("pages.changePassword.steps.details.description"),
     icon: "i-lucide-book-text",
     slot: "details" as const,
   },

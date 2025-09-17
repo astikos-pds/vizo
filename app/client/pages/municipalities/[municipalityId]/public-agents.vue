@@ -4,12 +4,14 @@ import AffiliatedUsersList from "~/components/affiliated-users/AffiliatedUsersLi
 import { useAffiliatedUsers } from "~/composables/use-affiliated-users";
 import type { Pagination } from "~/types/domain/pagination";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | Public agents",
+  title: t("head.publicAgents.title"),
   meta: [
     {
       name: "description",
-      content: "Find all public agents affiliated to municipality",
+      content: t("head.publicAgents.description"),
     },
   ],
 });
@@ -54,12 +56,12 @@ const adminFiliates = computed(() =>
 
 const items = ref<AccordionItem[]>([
   {
-    label: "Agents",
+    label: t("pages.publicAgents.sections.agents"),
     icon: "i-lucide-sticky-note",
     slot: "agents" as const,
   },
   {
-    label: "Administrators",
+    label: t("pages.publicAgents.sections.admins"),
     icon: "i-lucide-shield",
     slot: "admins" as const,
   },
@@ -71,8 +73,12 @@ const active = ref(["0", "1"]);
 <template>
   <AffiliatedUsersPage
     v-if="currentAffiliation"
-    title="Public agents"
-    :description="`See below the public agents affiliated with ${currentAffiliation.municipality.name}`"
+    :title="t('pages.publicAgents.title')"
+    :description="
+      t('pages.publicAgents.description', {
+        municipalityName: currentAffiliation.municipality.name,
+      })
+    "
     class="max-w-150 2xl:max-w-170"
   >
     <div v-if="pending">

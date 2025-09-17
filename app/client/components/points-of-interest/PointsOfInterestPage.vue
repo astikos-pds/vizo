@@ -1,14 +1,16 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+const { t } = useI18n();
+
 const items = ref<NavigationMenuItem[]>([
   {
-    label: "View all",
+    label: t("components.navigation.viewAll"),
     icon: "i-lucide-map",
     to: "/points-of-interest",
   },
   {
-    label: "Create new",
+    label: t("components.navigation.createNew"),
     icon: "i-lucide-map-pin-plus",
     to: "/points-of-interest/new",
   },

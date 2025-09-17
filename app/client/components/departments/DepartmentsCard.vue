@@ -2,7 +2,7 @@
 import type { Department } from "~/types/domain/department";
 import DepartmentsCardActions from "./DepartmentsCardActions.vue";
 
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 
 const department = defineProps<Department>();
 
@@ -33,7 +33,7 @@ const { currentAffiliation } = useLoggedInUserStore();
                 {{ department.name }}
               </h3>
               <span class="text-xs 2xl:text-sm"
-                >Created at
+                >{{ t("components.departments.createdAt") }}
                 {{ department.createdAt.toLocaleDateString(locale) }}</span
               >
             </div>

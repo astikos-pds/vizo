@@ -4,6 +4,8 @@ import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { Department } from "~/types/domain/department";
 import type { Pagination } from "~/types/domain/pagination";
 
+const { t } = useI18n();
+
 const department = defineProps<Department>();
 
 const emit = defineEmits<{ close: [] }>();
@@ -49,8 +51,10 @@ async function save() {
   if (!response) return;
 
   toast.add({
-    title: "Success",
-    description: `${response.length} users were assigned to ${department.name}`,
+    title: t("components.departments.success"),
+    description: `${response.length} ${t(
+      "components.departments.usersWereAssigned"
+    )} ${department.name}`,
     color: "success",
   });
 }
@@ -58,8 +62,8 @@ async function save() {
 
 <template>
   <UModal
-    :title="`Assign public agents to ${name}`"
-    description="Add users to this department."
+    :title="`${t('components.departments.assignTo')} ${name}`"
+    :description="t('components.departments.addUsersToThisDepartment')"
     :ui="{
       body: 'p-0 sm:p-0',
     }"
@@ -73,15 +77,15 @@ async function save() {
 
     <template #footer>
       <div class="size-full flex gap-2 justify-end">
-        <UButton color="neutral" variant="solid" @click="emit('close')"
-          >Cancel</UButton
-        >
+        <UButton color="neutral" variant="solid" @click="emit('close')">{{
+          t("components.departments.cancel")
+        }}</UButton>
         <UButton
           color="success"
           variant="subtle"
           :loading="loading"
           @click="save"
-          >Save</UButton
+          >{{ t("components.departments.save") }}</UButton
         >
       </div>
     </template>

@@ -1,12 +1,14 @@
 <script lang="ts" setup>
 import type { Permission } from "~/types/domain/permission";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | New permission preset",
+  title: t("head.newPermissionPreset.title"),
   meta: [
     {
       name: "description",
-      content: "Create a new permission preset in this municipality",
+      content: t("head.newPermissionPreset.description"),
     },
   ],
 });
@@ -37,9 +39,8 @@ const onSubmit = async (data: Permission & { name: string }) => {
     toast.clear();
 
     toast.add({
-      title: "Name already in use",
-      description:
-        "A permission preset was found with this name in this municipality.",
+      title: t("pages.permissionPresets.nameInUse.title"),
+      description: t("pages.permissionPresets.nameInUse.description"),
       color: "error",
     });
     return;
@@ -57,8 +58,8 @@ const onSubmit = async (data: Permission & { name: string }) => {
   toast.clear();
 
   toast.add({
-    title: "Success",
-    description: "Permission preset created successfully!",
+    title: t("pages.permissionPresets.success.created.title"),
+    description: t("pages.permissionPresets.success.created.description"),
     color: "success",
   });
 
@@ -69,7 +70,7 @@ const onSubmit = async (data: Permission & { name: string }) => {
 <template>
   <PermissionPresetsForm
     v-if="currentAffiliation"
-    title="New permission preset"
+    :title="t('pages.permissionPresets.newTitle')"
     :loading="loading"
     @submit="onSubmit"
   />

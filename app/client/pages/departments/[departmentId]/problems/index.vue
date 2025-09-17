@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import type { Pagination } from "~/types/domain/pagination";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | Problems",
+  title: t("head.problems.title"),
   meta: [
     {
       name: "description",
-      content: "View problems in department scope.",
+      content: t("head.problems.description"),
     },
   ],
 });

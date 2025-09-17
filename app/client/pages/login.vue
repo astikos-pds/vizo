@@ -17,8 +17,8 @@ definePageMeta({
 });
 
 const loginSchema = z.object({
-  document: z.string().min(1, t("login.verification.documentRequired")),
-  password: z.string().min(1, t("login.verification.passwordRequired")),
+  document: z.string().min(1, t("pages.login.verification.documentRequired")),
+  password: z.string().min(1, t("pages.login.verification.passwordRequired")),
 });
 
 type LoginSchema = z.infer<typeof loginSchema>;
@@ -43,9 +43,8 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
     toast.clear();
 
     toast.add({
-      title: "Não autorizado",
-      description:
-        "Credenciais inválidas. Confira se seu CPF e sua senha estão corretos.",
+      title: t("pages.login.unauthorized.title"),
+      description: t("pages.login.unauthorized.description"),
       color: "error",
     });
     return;
@@ -69,7 +68,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
       <h1
         class="text-4xl font-semibold text-wrap text-neutral-900 dark:text-neutral-50 text-center"
       >
-        {{ t("login.title") }}
+        {{ t("pages.login.title") }}
       </h1>
 
       <UForm
@@ -79,12 +78,16 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         :disabled="loading"
         class="flex flex-col items-center gap-5 mt-8"
       >
-        <UFormField :label="t('login.cpf')" name="document" class="w-full">
+        <UFormField
+          :label="t('pages.login.cpf')"
+          name="document"
+          class="w-full"
+        >
           <UInput
             icon="i-lucide-id-card"
             v-model="form.document"
             type="text"
-            :placeholder="t('login.cpfPlaceholder')"
+            :placeholder="t('pages.login.cpfPlaceholder')"
             v-maska="CPF_MASK"
             class="w-full text-xl"
           />
@@ -93,30 +96,30 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         <PasswordInput
           v-model="form.password"
           :show="showPassword"
-          :label="t('login.password')"
+          :label="t('pages.login.password')"
           name="password"
-          :placeholder="t('login.passwordPlaceholder')"
+          :placeholder="t('pages.login.passwordPlaceholder')"
           @click="showPassword = !showPassword"
         />
 
         <div class="text-center text-sm flex flex-col gap-2">
           <span>
-            {{ t("login.dontHaveAccount") }}
+            {{ t("pages.login.dontHaveAccount") }}
             <NuxtLink to="/register" class="text-primary">{{
-              t("login.signUpHere")
+              t("pages.login.signUpHere")
             }}</NuxtLink>
           </span>
 
-          <span
-            >Forgot your password?
-            <NuxtLink to="/change-password" class="text-primary"
-              >Reset it here.</NuxtLink
-            ></span
-          >
+          <span>
+            {{ t("pages.login.forgotPassword") }}
+            <NuxtLink to="/change-password" class="text-primary">
+              {{ t("pages.login.resetHere") }}
+            </NuxtLink>
+          </span>
         </div>
 
         <UButton type="submit" :loading="loading">{{
-          t("login.signInButton")
+          t("pages.login.signInButton")
         }}</UButton>
       </UForm>
     </section>

@@ -6,6 +6,8 @@ import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { Department } from "~/types/domain/department";
 import type { ProblemType } from "~/types/domain/problem";
 
+const { t } = useI18n();
+
 definePageMeta({
   name: "Editing department",
   middleware: ["auth", "affiliated", "affiliated-as-admin"],
@@ -26,12 +28,14 @@ const { data: department, pending: pendingForDepartments } =
 
 useHead({
   title: department.value
-    ? `Vizo | Editing ${department.value.name}`
-    : "Vizo | Editing a department",
+    ? t("head.editingDepartment.title", {
+        departmentName: department.value.name,
+      })
+    : t("head.editingDepartment.title", { departmentName: "department" }),
   meta: [
     {
       name: "description",
-      content: "Edit an existing department in this municipality.",
+      content: t("head.editingDepartment.description"),
     },
   ],
 });
@@ -73,19 +77,23 @@ async function onSubmit(data: {
   problemTypes: ProblemType[];
   iconUrl?: string;
 }) {
-  const department = await updateDepartment(municipalityId, departmentId, {
-    name: data.name,
-    iconUrl: data.iconUrl,
-    colorHex: data.colorHex,
-    problemTypes: data.problemTypes,
-  });
+  const updatedDepartment = await updateDepartment(
+    municipalityId,
+    departmentId,
+    {
+      name: data.name,
+      iconUrl: data.iconUrl,
+      colorHex: data.colorHex,
+      problemTypes: data.problemTypes,
+    }
+  );
 
-  if (!department) return;
+  if (!updatedDepartment) return;
 
   if (data.selectedFiliates.length > 0) {
     const assignments = await assignUsersToDepartment(
       municipalityId,
-      department.id,
+      updatedDepartment.id,
       {
         affiliationsIds: data.selectedFiliates.map((f) => f.id),
       }
@@ -95,8 +103,8 @@ async function onSubmit(data: {
   }
 
   toast.add({
-    title: "Success",
-    description: "Department updated successfully!",
+    title: t("pages.editDepartment.success.title"),
+    description: t("pages.editDepartment.success.description"),
     color: "success",
   });
 
@@ -105,14 +113,23 @@ async function onSubmit(data: {
 </script>
 
 <template>
-  <EmptyMessage v-if="pendingForDepartments || pendingForAssignees"
-    >Loading...</EmptyMessage
-  >
-  <EmptyMessage v-else-if="!department">Department not found.</EmptyMessage>
+  <EmptyMessage v-if="pendingForDepartments || pendingForAssignees">
+    {{ t("pages.editDepartment.loading") }}
+  </EmptyMessage>
+  <EmptyMessage v-else-if="!department">{{
+    t("pages.editDepartment.notFound")
+  }}</EmptyMessage>
   <DepartmentsForm
     v-else
-    :title="`Editing ${department.name}`"
-    :description="`Edit the ${department.name} department in ${department.municipality.name}`"
+    :title="
+      t('pages.editDepartment.title', { departmentName: department.name })
+    "
+    :description="
+      t('pages.editDepartment.description', {
+        departmentName: department.name,
+        municipalityName: department.municipality.name,
+      })
+    "
     :state="state"
     @submit="onSubmit"
     :loading="departmentCreationLoading || userAssignmentLoading"

@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 import type { AccordionItem } from "@nuxt/ui";
-import type { AffiliatedUser } from "~/types/domain/affiliated-user";
-import type { PageDTO, Pagination } from "~/types/domain/pagination";
+import type { Pagination } from "~/types/domain/pagination";
+
+const { t } = useI18n();
 
 useHead({
-  title: "Vizo | Affiliations",
+  title: t("head.affiliations.title"),
   meta: [
     {
       name: "description",
-      content: "View all yours approved and requested affiliations.",
+      content: t("head.affiliations.description"),
     },
   ],
 });
@@ -51,12 +52,12 @@ const {
 
 const items = ref<AccordionItem[]>([
   {
-    label: "Municipalities",
+    label: t("pages.affiliations.municipalities"),
     icon: "i-lucide-building-2",
     slot: "approved",
   },
   {
-    label: "Requested affiliations",
+    label: t("pages.affiliations.requestedAffiliations"),
     icon: "i-lucide-clock",
     slot: "requested",
   },
@@ -69,11 +70,10 @@ const openSections = ref(["0", "1"]);
   <AffiliationsPage>
     <div class="h-full w-[85%] 2xl:w-[70%]">
       <header class="w-full py-6 mt-10 text-center flex flex-col gap-2">
-        <h1 class="text-3xl font-semibold">Affiliations</h1>
-        <span class="text-sm"
-          >Below are listed the municipalities you are affiliated with and your
-          pending affiliation requests.</span
-        >
+        <h1 class="text-3xl font-semibold">
+          {{ t("pages.affiliations.title") }}
+        </h1>
+        <span class="text-sm">{{ t("pages.affiliations.description") }}</span>
       </header>
 
       <UAccordion :items="items" type="multiple" v-model="openSections">
@@ -81,7 +81,7 @@ const openSections = ref(["0", "1"]);
           <AffiliationsSection
             v-if="approvedAffiliationsPage"
             :items="approvedAffiliationsPage"
-            empty-text="No approved affiliations"
+            :empty-text="t('pages.affiliations.noApprovedAffiliations')"
             purpose="APPROVED"
           >
             <template #pagination>
@@ -98,7 +98,7 @@ const openSections = ref(["0", "1"]);
           <AffiliationsSection
             v-if="requestedAffiliationsPage"
             :items="requestedAffiliationsPage"
-            empty-text="No requested affiliations"
+            :empty-text="t('pages.affiliations.noRequestedAffiliations')"
             purpose="REQUESTED"
           >
             <template #pagination>

@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { Permission } from "~/types/domain/permission";
 
+const { t } = useI18n();
+
 definePageMeta({
   name: "Permission preset",
   middleware: ["auth", "affiliated", "affiliated-as-admin"],
@@ -17,13 +19,14 @@ const { data: permissionPreset, pending } =
 
 useHead({
   title: permissionPreset.value
-    ? `Vizo | Managing the ${permissionPreset.value.name} permission preset`
-    : "Vizo | Managing a permission preset",
+    ? t("head.editPermissionPreset.title", {
+        name: permissionPreset.value.name,
+      })
+    : t("head.editPermissionPreset.title", { name: "permission preset" }),
   meta: [
     {
       name: "description",
-      content:
-        "View, delete or update a permission preset in this municipality",
+      content: t("head.editPermissionPreset.description"),
     },
   ],
 });
@@ -46,9 +49,8 @@ const onSubmit = async (data: Permission & { name: string }) => {
     toast.clear();
 
     toast.add({
-      title: "Name already in use",
-      description:
-        "A permission preset was found with this name in this municipality.",
+      title: t("pages.permissionPresets.nameInUse.title"),
+      description: t("pages.permissionPresets.nameInUse.description"),
       color: "error",
     });
     return;
@@ -68,8 +70,8 @@ const onSubmit = async (data: Permission & { name: string }) => {
   if (!updated) return;
 
   toast.add({
-    title: "Success",
-    description: "Permission preset updated successfully!",
+    title: t("pages.permissionPresets.success.updated.title"),
+    description: t("pages.permissionPresets.success.updated.description"),
     color: "success",
   });
 
@@ -81,14 +83,16 @@ const onSubmit = async (data: Permission & { name: string }) => {
 
 <template>
   <PermissionPresetsPage v-if="pending || !permissionPreset">
-    <EmptyMessage v-if="pending">Loading...</EmptyMessage>
+    <EmptyMessage v-if="pending">{{ t("common.loading") }}</EmptyMessage>
     <EmptyMessage v-else-if="!permissionPreset">
-      Point of interest not found.
+      {{ t("pages.permissionPresets.notFound") }}
     </EmptyMessage>
   </PermissionPresetsPage>
   <PermissionPresetsForm
     v-else
-    :title="`Editing the ${permissionPreset.name} preset`"
+    :title="
+      t('pages.permissionPresets.editTitle', { name: permissionPreset.name })
+    "
     :state="permissionPreset"
     :loading="loading"
     editing

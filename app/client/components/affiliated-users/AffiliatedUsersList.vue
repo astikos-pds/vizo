@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+const { t } = useI18n();
+
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import AffiliatedUsersProfile from "./AffiliatedUsersProfile.vue";
 
@@ -13,7 +15,7 @@ defineProps<{
       v-if="items.length === 0"
       class="text-sm flex justify-center items-center h-24 border border-default rounded-md"
     >
-      No public agents found.
+      {{ t("components.affiliatedUsers.noPublicAgentsFound") }}
     </div>
     <div v-else class="w-full" v-for="(affiliatedUser, i) in items">
       <AffiliatedUsersProfile

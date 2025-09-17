@@ -4,12 +4,14 @@ import type { Pagination } from "~/types/domain/pagination";
 import type { PointOfInterest } from "~/types/domain/point-of-interest";
 import type { LatLng } from "~/types/geolocation";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | Points of interest",
+  title: t("head.pointsOfInterest.title"),
   meta: [
     {
       name: "description",
-      content: "View all yours points of interest in the city.",
+      content: t("head.pointsOfInterest.description"),
     },
   ],
 });
@@ -56,17 +58,17 @@ const zoomToMarker = (marker: LatLng & { radius: number }) => {
 <template>
   <PointsOfInterestPage>
     <template #aside>
-      <div v-if="pending">Loading</div>
+      <div v-if="pending">{{ t("pages.pointsOfInterest.loading") }}</div>
       <div
         v-else-if="pointsOfInterest.length === 0"
         class="size-full flex justify-center items-center p-5"
       >
-        <span class="text-sm"
-          >No points of interest found.
-          <NuxtLink to="/points-of-interest/new" class="text-primary"
-            >Create your first one here.</NuxtLink
-          ></span
-        >
+        <span class="text-sm">
+          {{ t("pages.pointsOfInterest.noPoints") }}
+          <NuxtLink to="/points-of-interest/new" class="text-primary">
+            {{ t("pages.pointsOfInterest.createFirst") }}
+          </NuxtLink>
+        </span>
       </div>
       <div v-else class="size-full flex flex-col">
         <main class="flex-1 size-full">
@@ -93,7 +95,7 @@ const zoomToMarker = (marker: LatLng & { radius: number }) => {
     </template>
     <template #main>
       <div class="size-full flex justify-center items-center">
-        <div v-if="pending">Loading...</div>
+        <div v-if="pending">{{ t("pages.pointsOfInterest.loading") }}</div>
         <Map v-else ref="map" :zoom="zoom" :center="center">
           <PointsOfInterestMarker
             v-for="pointOfInterest in activePointsOfInterest"

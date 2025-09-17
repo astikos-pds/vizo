@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { AssignedUser } from "~/types/domain/assigned-user";
 
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 
 const assignedUser = defineProps<AssignedUser>();
 
@@ -12,9 +12,9 @@ const effectivePermissions =
 
 const cardLabel = computed<Record<string, string>>(() => {
   return {
-    canViewReports: "Can view reports",
-    canUpdateStatus: "Can update status",
-    canManageUsers: "Can manage users",
+    canViewReports: t("components.assignedUsers.canViewReports"),
+    canUpdateStatus: t("components.assignedUsers.canUpdateStatus"),
+    canManageUsers: t("components.assignedUsers.canManageUsers"),
   };
 });
 </script>
@@ -35,7 +35,9 @@ const cardLabel = computed<Record<string, string>>(() => {
             assignedUser.user.user.name
           }}</span>
 
-          <UBadge color="neutral" variant="soft" size="sm">You</UBadge>
+          <UBadge color="neutral" variant="soft" size="sm">{{
+            t("components.assignedUsers.you")
+          }}</UBadge>
         </div>
         <span class="text-xs 2xl:text-sm">{{
           assignedUser.user.institutionalEmail
@@ -43,7 +45,7 @@ const cardLabel = computed<Record<string, string>>(() => {
       </header>
       <main class="flex flex-col justify-start gap-2">
         <span class="text-xs"
-          >Assigned at
+          >{{ t("components.assignedUsers.assignedAt") }}
           {{
             assignedUser.assignedAt.toLocaleDateString(locale, {
               dateStyle: "long",

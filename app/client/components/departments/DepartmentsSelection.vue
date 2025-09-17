@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { AvatarProps, DropdownMenuItem } from "@nuxt/ui";
 
+const { t } = useI18n();
+
 defineProps<{
   collapsed?: boolean;
 }>();
@@ -38,7 +40,7 @@ const items = computed<DropdownMenuItem[][]>(() => {
     base,
     [
       {
-        label: "Close",
+        label: t("components.departments.close"),
         icon: "i-lucide-circle-x",
         onSelect: () => close(),
       },

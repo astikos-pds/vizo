@@ -66,7 +66,7 @@ const { data: problems, pending } = await getProblems();
 <template>
   <section class="relative size-full flex flex-row">
     <div class="size-full flex justify-center items-center lg:p-5">
-      <div v-if="pending">Loading...</div>
+      <div v-if="pending">{{ t("common.loading") }}</div>
       <Map
         v-else
         ref="map"

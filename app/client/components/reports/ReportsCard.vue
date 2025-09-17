@@ -4,11 +4,11 @@ import type { ProblemStatus, ProblemType } from "~/types/domain/problem";
 import type { Report } from "~/types/domain/report";
 import type { Badge } from "~/types/ui";
 
+const { t, locale } = useI18n();
+
 const report = defineProps<Report>();
 
 const emit = defineEmits(["zoomIn"]);
-
-const { locale } = useI18n();
 
 const problemTypeSymbol: Record<ProblemType, { icon: string; color: string }> =
   {
@@ -72,7 +72,7 @@ const onDelete = async (report: Report) => {
 const actions = computed<DropdownMenuItem[]>(() => {
   const base = [
     {
-      label: "View on map",
+      label: t("components.reports.viewOnMap"),
       icon: "i-lucide-eye",
       onSelect: () => emit("zoomIn"),
     },
@@ -85,12 +85,12 @@ const actions = computed<DropdownMenuItem[]>(() => {
   return [
     ...base,
     {
-      label: "Edit",
+      label: t("components.reports.edit"),
       icon: "i-lucide-pencil",
       to: `/reports/${report.id}/edit`,
     },
     {
-      label: "Delete",
+      label: t("components.reports.delete"),
       icon: "i-lucide-trash",
       color: "error",
       onSelect: () => onDelete(report),
@@ -116,7 +116,7 @@ const actions = computed<DropdownMenuItem[]>(() => {
 
         <UCollapsible v-if="report.imagesUrls.length > 0">
           <UButton
-            label="Images"
+            :label="t('components.report.images')"
             color="neutral"
             :variant="problemWasResolved ? 'subtle' : 'outline'"
             trailing-icon="i-lucide-chevron-down"
@@ -138,7 +138,7 @@ const actions = computed<DropdownMenuItem[]>(() => {
         </UCollapsible>
 
         <span class="text-sm"
-          >Reported at
+          >{{ t("components.problem.reportedAt") }}
           {{
             report.createdAt.toLocaleDateString(locale, { dateStyle: "full" })
           }}</span
@@ -157,7 +157,7 @@ const actions = computed<DropdownMenuItem[]>(() => {
             color="info"
             variant="soft"
             icon="i-lucide-users"
-            >This problem is being reported by many citizens</UBadge
+            >{{ t("components.reports.thisProblemIsBeingReported") }}</UBadge
           >
 
           <UBadge
@@ -165,7 +165,7 @@ const actions = computed<DropdownMenuItem[]>(() => {
             color="success"
             variant="soft"
             icon="i-lucide-circle-check"
-            >This report was very credible.</UBadge
+            >{{ t("components.reports.thisReportWasVeryCredible") }}</UBadge
           >
         </div>
       </main>
@@ -183,7 +183,7 @@ const actions = computed<DropdownMenuItem[]>(() => {
 
     <template #footer v-if="problemWasResolved && report.problem.resolvedAt">
       <span v-if="report.problem.resolvedAt" class="text-sm"
-        >Resolved at
+        >{{ t("components.reports.resolvedAt") }}
         {{
           report.problem.resolvedAt.toLocaleDateString(locale, {
             dateStyle: "full",

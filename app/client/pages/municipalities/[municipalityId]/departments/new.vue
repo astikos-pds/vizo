@@ -5,12 +5,14 @@ import { useDepartments } from "~/composables/use-departments";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { ProblemType } from "~/types/domain/problem";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | New department",
+  title: t("head.newDepartment.title"),
   meta: [
     {
       name: "description",
-      content: "Create a new department in this municipality.",
+      content: t("head.newDepartment.description"),
     },
   ],
 });
@@ -59,8 +61,8 @@ async function onSubmit(data: {
   }
 
   toast.add({
-    title: "Success",
-    description: "Department created successfully!",
+    title: t("pages.newDepartment.success.title"),
+    description: t("pages.newDepartment.success.description"),
     color: "success",
   });
 
@@ -73,8 +75,12 @@ const { currentAffiliation } = useLoggedInUserStore();
 <template>
   <DepartmentsForm
     v-if="currentAffiliation"
-    title="New department"
-    :description="`Create a new department in ${currentAffiliation.municipality.name}`"
+    :title="t('pages.newDepartment.title')"
+    :description="
+      t('pages.newDepartment.description', {
+        municipalityName: currentAffiliation.municipality.name,
+      })
+    "
     @submit="onSubmit"
     :loading="departmentCreationLoading || userAssignmentLoading"
   />

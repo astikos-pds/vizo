@@ -2,12 +2,14 @@
 import DepartmentsCard from "~/components/departments/DepartmentsCard.vue";
 import type { Pagination } from "~/types/domain/pagination";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | Departments",
+  title: t("head.departments.title"),
   meta: [
     {
       name: "description",
-      content: "Find all departments of this municipality.",
+      content: t("head.departments.description"),
     },
   ],
 });
@@ -42,8 +44,12 @@ const { currentAffiliation } = useLoggedInUserStore();
 <template>
   <DepartmentsPage
     v-if="currentAffiliation"
-    title="Departments"
-    :description="`Enter in one of the departments of ${currentAffiliation.municipality.name}.`"
+    :title="t('pages.departments.title')"
+    :description="
+      t('pages.departments.description', {
+        municipalityName: currentAffiliation.municipality.name,
+      })
+    "
   >
     <div v-if="pending">
       <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
@@ -52,19 +58,19 @@ const { currentAffiliation } = useLoggedInUserStore();
     <div v-else class="size-full flex flex-col">
       <div class="flex my-4">
         <span class="text-muted text-sm">
-          Encontered {{ totalElements }} department(s)
+          {{ t("pages.departments.found", { count: totalElements }) }}
         </span>
       </div>
 
       <EmptyMessage v-if="departments.length === 0" class="mt-5">
         <span>
-          No departments found.
+          {{ t("pages.departments.noDepartments") }}
           <NuxtLink
             v-if="currentAffiliation.isAdmin"
             :to="`/municipalities/${municipalityId}/departments/new`"
             class="text-primary"
           >
-            Create the first one here.
+            {{ t("pages.departments.createFirstOne") }}
           </NuxtLink>
         </span>
       </EmptyMessage>

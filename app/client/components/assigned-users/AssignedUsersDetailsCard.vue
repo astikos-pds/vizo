@@ -4,7 +4,7 @@ import z from "zod";
 import type { AssignedUser } from "~/types/domain/assigned-user";
 import type { Permission, PermissionPreset } from "~/types/domain/permission";
 
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 
 const { assignedUser, permissionPresets } = defineProps<{
   assignedUser: AssignedUser;
@@ -30,7 +30,7 @@ const form = reactive<AssigneeSchema>({
   mode:
     assignedUser.permissionMode === "PRESET" && assignedUser.permissionPreset
       ? assignedUser.permissionPreset.name
-      : "CUSTOM",
+      : t("components.assignedUsers.custom"),
   permissionPresetId: assignedUser.permissionPreset
     ? assignedUser.permissionPreset.id
     : undefined,
@@ -41,8 +41,8 @@ const permissionItems = computed<SelectMenuItem[][]>(() => {
   return [
     [
       {
-        label: "Custom",
-        value: "CUSTOM",
+        label: t("components.assignedUsers.custom"),
+        value: t("components.assignedUsers.custom"),
       },
     ],
     permissionPresets.map((p) => {
@@ -55,7 +55,7 @@ const permissionItems = computed<SelectMenuItem[][]>(() => {
 });
 
 function onUpdateMode(newValue: string) {
-  if (newValue === "CUSTOM") {
+  if (newValue === t("components.assignedUsers.custom")) {
     form.permissionPresetId = undefined;
     form.customPermission = assignedUser.customPermission;
     return;
@@ -72,7 +72,8 @@ const selectedPermissionPreset = computed(() =>
 
 const effectivePermission = computed({
   get: () => {
-    return form.mode !== "CUSTOM" && selectedPermissionPreset.value
+    return form.mode !== t("components.assignedUsers.custom") &&
+      selectedPermissionPreset.value
       ? selectedPermissionPreset.value.permission
       : form.customPermission;
   },
@@ -83,7 +84,8 @@ const effectivePermission = computed({
 
 const hasUnsavedChanges = computed(() => {
   const modeChanged =
-    (form.mode === "CUSTOM") !== (assignedUser.permissionMode === "CUSTOM");
+    (form.mode === t("components.assignedUsers.custom")) !==
+    (assignedUser.permissionMode === "CUSTOM");
 
   const permissionPresetChanged =
     form.permissionPresetId !== assignedUser.permissionPreset?.id;
@@ -111,7 +113,10 @@ const onSubmit = async (event: FormSubmitEvent<AssigneeSchema>) => {
     departmentId,
     assignedUser.id,
     {
-      permissionMode: event.data.mode === "CUSTOM" ? "CUSTOM" : "PRESET",
+      permissionMode:
+        event.data.mode === t("components.assignedUsers.custom")
+          ? "CUSTOM"
+          : "PRESET",
       ...event.data,
     }
   );
@@ -119,8 +124,8 @@ const onSubmit = async (event: FormSubmitEvent<AssigneeSchema>) => {
   if (!saved) return;
 
   toast.add({
-    title: "Changes saved",
-    description: "Assignee permission saved successfully",
+    title: t("components.assignedUsers.changesSaved"),
+    description: t("components.assignedUsers.assigneePermissionSaved"),
     color: "success",
   });
 
@@ -171,7 +176,7 @@ const loggedInUserCanExecuteActions = computed(
           color="error"
           variant="subtle"
           @click="onDelete"
-          >Remove</UButton
+          >{{ t("components.assignedUsers.remove") }}</UButton
         >
       </div>
 
@@ -186,7 +191,7 @@ const loggedInUserCanExecuteActions = computed(
             class="w-full flex flex-col items-center gap-5"
           >
             <UFormField
-              label="Permission mode"
+              :label="t('components.assignedUsers.permissionMode')"
               name="permission-mode"
               class="w-full"
             >
@@ -195,7 +200,7 @@ const loggedInUserCanExecuteActions = computed(
                 value-key="value"
                 :items="permissionItems"
                 :search-input="{
-                  placeholder: 'Search',
+                  placeholder: t('settings.searchPlaceholder'),
                   icon: 'i-lucide-search',
                 }"
                 class="w-full"
@@ -205,7 +210,7 @@ const loggedInUserCanExecuteActions = computed(
 
             <PermissionsInputs
               v-model="effectivePermission"
-              :disabled="form.mode !== 'CUSTOM'"
+              :disabled="form.mode !== t('components.assignedUsers.custom')"
               class="w-full"
             />
 
@@ -215,7 +220,7 @@ const loggedInUserCanExecuteActions = computed(
                 variant="solid"
                 :loading="loading"
                 type="submit"
-                >Save changes</UButton
+                >{{ t("components.assignedUsers.saveChanges") }}</UButton
               >
             </UChip>
             <UButton
@@ -224,7 +229,7 @@ const loggedInUserCanExecuteActions = computed(
               variant="solid"
               :loading="loading"
               type="submit"
-              >Save changes</UButton
+              >{{ t("components.assignedUsers.saveChanges") }}</UButton
             >
           </UForm>
         </main>

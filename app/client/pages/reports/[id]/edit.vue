@@ -6,17 +6,17 @@ import {
 } from "~/lib/report-schema";
 import type { LatLng } from "~/types/geolocation";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Editing report",
-  meta: [{ name: "description", content: "Edit a report under analysis." }],
+  title: t("head.editingReport.title"),
+  meta: [{ name: "description", content: t("head.editingReport.description") }],
 });
 
 definePageMeta({
   name: "Editing report",
   middleware: ["auth"],
 });
-
-const { t } = useI18n();
 
 const route = useRoute();
 const reportId = route.params.id as string;
@@ -106,8 +106,12 @@ const hasUnsavedChanges = computed(() => {
 </script>
 
 <template>
-  <EmptyMessage v-if="pending">Loading...</EmptyMessage>
-  <EmptyMessage v-if="!report">Failed to fetch report.</EmptyMessage>
+  <EmptyMessage v-if="pending">{{
+    t("pages.reports.editing.loading")
+  }}</EmptyMessage>
+  <EmptyMessage v-if="!report">{{
+    t("pages.reports.editing.failedToFetch")
+  }}</EmptyMessage>
   <ReportsPage v-else>
     <template #aside>
       <div class="size-full p-3 2xl:p-5 pt-5 flex flex-col items-center">
@@ -118,23 +122,23 @@ const hasUnsavedChanges = computed(() => {
           class="w-[90%] 2xl:w-[85%] flex flex-col items-center gap-5"
         >
           <UFormField
-            :label="t('reportProblem.description')"
+            :label="t('pages.reportProblem.description')"
             name="description"
             class="w-full"
             required
             ><UTextarea
               v-model="form.description"
-              :placeholder="t('reportProblem.descriptionPlaceholder')"
+              :placeholder="t('pages.reportProblem.descriptionPlaceholder')"
               class="w-full"
               autoresize
           /></UFormField>
 
           <UFormField
-            :label="t('reportProblem.images')"
+            :label="t('pages.reportProblem.images')"
             name="images"
             class="w-full"
-            :hint="t('reportProblem.optional')"
-            :description="t('reportProblem.uploadImages')"
+            :hint="t('pages.reportProblem.optional')"
+            :description="t('pages.reportProblem.uploadImages')"
           >
             <UFileUpload
               class="w-full"
@@ -150,8 +154,8 @@ const hasUnsavedChanges = computed(() => {
             v-if="!isMarkerOutOfBounds"
             color="neutral"
             variant="subtle"
-            title="Heads up!"
-            description="You may choose the coordinates by moving the marker in the map."
+            :title="t('pages.reports.editing.alertTitle')"
+            :description="t('pages.reports.editing.alertDescription')"
             icon="i-lucide-map-pin"
           />
 
@@ -159,8 +163,12 @@ const hasUnsavedChanges = computed(() => {
             v-else
             color="error"
             variant="subtle"
-            title="Heads up!"
-            :description="`You cannot move the marker more than ${REPORT_MAX_RADIUS_TO_UPDATE_COORDINATES_IN_METERS} meters away than it's original position`"
+            :title="t('pages.reports.editing.alertTitle')"
+            :description="
+              t('pages.reports.editing.alertError', {
+                meters: REPORT_MAX_RADIUS_TO_UPDATE_COORDINATES_IN_METERS,
+              })
+            "
             icon="i-lucide-ban"
           />
 
@@ -169,9 +177,12 @@ const hasUnsavedChanges = computed(() => {
             color="neutral"
             variant="outline"
             to="/reports"
-            >Cancel</UButton
           >
-          <UButton v-else color="neutral" type="submit">Save changes</UButton>
+            {{ t("pages.reports.editing.cancel") }}
+          </UButton>
+          <UButton v-else color="neutral" type="submit">
+            {{ t("pages.reports.editing.saveChanges") }}
+          </UButton>
         </UForm>
       </div>
     </template>

@@ -1,33 +1,4 @@
 {
-  "head": {
-    "index": {
-      "description": "Engage in a collaborative mapping of urban problems"
-    },
-    "login": {
-      "title": "Vizo | Log in",
-      "description": "Log in to Vizo"
-    },
-    "registerCitizen": {
-      "title": "Vizo | Sign up as citizen",
-      "description": "Register as citizen in Vizo"
-    },
-    "registerOfficial": {
-      "title": "Vizo | Sign up as official",
-      "description": "Register as official in Vizo"
-    },
-    "report": {
-      "title": "Vizo | Report a problem",
-      "description": "Report a problem to municipalities"
-    },
-    "settings": {
-      "title": "Vizo | Settings",
-      "description": "Update your settings in Vizo"
-    },
-    "municipalities": {
-      "title": "Municipalities",
-      "description": "Explore the municipalities you are affiliated with."
-    }
-  },
   "navBar": {
     "index": "Home",
     "report": "Report",
@@ -231,9 +202,6 @@
     "imageAlt": "Image",
     "confirm": "Send anyway"
   },
-  "common": {
-    "cancel": "Cancel"
-  },
   "settings": {
     "title": "Settings",
     "saveButton": "Save",
@@ -418,30 +386,6 @@
       "team": "Team"
     }
   },
-  "details": {
-    "title": "Problem Details",
-    "form": {
-      "id": "ID",
-      "title": "Title",
-      "status": "Status",
-      "date": "Date",
-      "address": "Address",
-      "description": "Description"
-    },
-    "photos": "Photos:",
-    "reports": {
-      "title": "User Reports",
-      "user": "User:",
-      "date": "Date:",
-      "description": "Description:",
-      "imageAlt": "Report photo"
-    },
-    "statusLabel": {
-      "completed": "Completed",
-      "in_progress": "In Progress",
-      "pending": "Pending"
-    }
-  },
 
   "affiliation": {
     "status": {
@@ -458,6 +402,588 @@
       "date": "Date",
       "title": "Title",
       "description": "Description"
+    }
+  },
+
+  "head": {
+    "affiliations": {
+      "title": "Vizo | Affiliations",
+      "description": "View all yours approved and requested affiliations."
+    },
+    "requestAffiliation": {
+      "title": "Vizo | Request affiliation",
+      "description": "Request affiliation to a municipality with your institutional e-mail."
+    },
+    "changePassword": {
+      "title": "Vizo | Change password",
+      "description": "Change your access password."
+    },
+    "assignUsers": {
+      "title": "Vizo | Assign users to department",
+      "description": "Assign users to a department"
+    },
+    "assignedUsers": {
+      "title": "Vizo | Assigned users",
+      "description": "View all assigned users in this department"
+    },
+    "dashboard": {
+      "title": "Vizo | Dashboard",
+      "description": "Dashboard"
+    },
+    "problem": {
+      "title": "Vizo | Problem",
+      "description": "View problem details."
+    },
+    "problems": {
+      "title": "Vizo | Problems",
+      "description": "View problems in department scope."
+    },
+    "departments": {
+      "title": "Vizo | Departments",
+      "description": "Find all departments of this municipality."
+    },
+    "newDepartment": {
+      "title": "Vizo | New department",
+      "description": "Create a new department in this municipality."
+    },
+    "editingDepartment": {
+      "title": "Vizo | Editing department",
+      "description": "Edit an existing department in this municipality."
+    },
+    "affiliationRequests": {
+      "title": "Vizo | Affiliation requests",
+      "description": "Manage all affiliation requests of this municipality"
+    },
+    "newPermissionPreset": {
+      "title": "Vizo | New permission preset",
+      "description": "Create a new permission preset in this municipality"
+    },
+    "editPermissionPreset": {
+      "title": "Vizo | Managing permission preset",
+      "description": "View, delete or update a permission preset in this municipality"
+    },
+    "publicAgents": {
+      "title": "Vizo | Public agents",
+      "description": "Find all public agents affiliated to municipality"
+    },
+    "notifications": {
+      "title": "Vizo | Notifications",
+      "description": "Recent system notifications."
+    },
+    "pointsOfInterest": {
+      "title": "Vizo | Points of interest",
+      "description": "View all yours points of interest in the city."
+    },
+    "newPointOfInterest": {
+      "title": "Vizo | New point of interest",
+      "description": "Create a new point of interest to keep up with the city."
+    },
+    "editPointOfInterest": {
+      "title": "Vizo | Editing point of interest",
+      "description": "Edit a point of interest to keep up with the city."
+    },
+    "reportHistory": {
+      "title": "Vizo | Report history",
+      "description": "See your last reports in Vizo"
+    },
+    "editingReport": {
+      "title": "Editing report",
+      "description": "Edit a report under analysis."
+    },
+    "login": {
+      "title": "Vizo | Login",
+      "description": "Login to your Vizo account"
+    },
+    "register": {
+      "title": "Vizo | Register",
+      "description": "Create your Vizo account"
+    },
+    "settings": {
+      "title": "Vizo | Settings",
+      "description": "Configure your preferences"
+    },
+    "index": {
+      "description": "Platform to report urban problems"
+    },
+    "report": {
+      "title": "Vizo | Report problem",
+      "description": "Report a problem in your city"
+    }
+  },
+  "pages": {
+    "affiliations": {
+      "title": "Affiliations",
+      "description": "Below are listed the municipalities you are affiliated with and your pending affiliation requests.",
+      "municipalities": "Municipalities",
+      "requestedAffiliations": "Requested affiliations",
+      "noApprovedAffiliations": "No approved affiliations",
+      "noRequestedAffiliations": "No requested affiliations"
+    },
+    "affiliationRequest": {
+      "steps": {
+        "email": {
+          "title": "Email",
+          "description": "Give us your institutional e-mail to verify"
+        },
+        "verify": {
+          "title": "Verification",
+          "description": "Enter the code sent to the institutional e-mail"
+        },
+        "approval": {
+          "title": "Await approval",
+          "description": "Wait until an municipal admin approves your request"
+        }
+      }
+    },
+    "changePassword": {
+      "steps": {
+        "credentials": {
+          "title": "Credentials",
+          "description": "Check your e-mail and CPF"
+        },
+        "verification": {
+          "title": "Verification",
+          "description": "Paste the code sent to e-mail"
+        },
+        "details": {
+          "title": "New password",
+          "description": "Define a new password"
+        }
+      }
+    },
+    "assignUsers": {
+      "title": "Assign to {departmentName}",
+      "description": "Search for public agents in this municipality to assign",
+      "usersAssigned": "Users assigned",
+      "assign": "Assign",
+      "success": {
+        "title": "Success",
+        "description": "Filiates assigned successfully!"
+      }
+    },
+    "assignedUsers": {
+      "loading": "Loading...",
+      "failedToFetch": "Failed to fetch permission presets in this municipality"
+    },
+    "dashboard": {
+      "problemsRate": "Problems rate"
+    },
+    "problem": {
+      "type": "Type:",
+      "firstReportedAt": "First reported at:",
+      "lastReportedAt": "Last reported at:",
+      "credibility": "Credibility:"
+    },
+    "departments": {
+      "title": "Departments",
+      "description": "Enter in one of the departments of {municipalityName}.",
+      "found": "Encontered {count} department(s)",
+      "noDepartments": "No departments found.",
+      "createFirstOne": "Create the first one here."
+    },
+    "newDepartment": {
+      "title": "New department",
+      "description": "Create a new department in {municipalityName}",
+      "success": {
+        "title": "Success",
+        "description": "Department created successfully!"
+      }
+    },
+    "editDepartment": {
+      "loading": "Loading...",
+      "notFound": "Department not found.",
+      "title": "Editing {departmentName}",
+      "description": "Edit the {departmentName} department in {municipalityName}",
+      "success": {
+        "title": "Success",
+        "description": "Department updated successfully!"
+      }
+    },
+    "affiliationRequests": {
+      "title": "Affiliation requests",
+      "description": "Manage the affiliation requests for {municipalityName}.",
+      "sections": {
+        "all": "All",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "failedToFetch": "Failed to fetch all affiliations.",
+      "noRequests": "No requests were found."
+    },
+    "permissionPresets": {
+      "newTitle": "New permission preset",
+      "editTitle": "Editing the {name} preset",
+      "notFound": "Point of interest not found.",
+      "nameInUse": {
+        "title": "Name already in use",
+        "description": "A permission preset was found with this name in this municipality."
+      },
+      "success": {
+        "created": {
+          "title": "Success",
+          "description": "Permission preset created successfully!"
+        },
+        "updated": {
+          "title": "Success",
+          "description": "Permission preset updated successfully!"
+        }
+      }
+    },
+    "publicAgents": {
+      "title": "Public agents",
+      "description": "See below the public agents affiliated with {municipalityName}",
+      "sections": {
+        "agents": "Agents",
+        "admins": "Administrators"
+      }
+    },
+    "notifications": {
+      "title": "Notifications",
+      "searchPlaceholder": "Search notifications...",
+      "table": {
+        "date": "Date",
+        "title": "Title",
+        "description": "Description"
+      }
+    },
+    "pointsOfInterest": {
+      "noPoints": "No points of interest found.",
+      "createFirst": "Create your first one here.",
+      "loading": "Loading...",
+      "newTitle": "New point of interest",
+      "editTitle": "Editing {name}",
+      "notFound": "Point of interest not found."
+    },
+    "reports": {
+      "historyTitle": "Report history",
+      "loading": "Loading",
+      "failedToFetch": "Failed to fetch last reports.",
+      "noReports": "No reports were found.",
+      "reportNew": "Report a new problem here.",
+      "editing": {
+        "loading": "Loading...",
+        "failedToFetch": "Failed to fetch report.",
+        "hasUnsavedChanges": "You have unsaved changes",
+        "cancel": "Cancel",
+        "saveChanges": "Save changes",
+        "alertTitle": "Heads up!",
+        "alertDescription": "You may choose the coordinates by moving the marker in the map.",
+        "alertError": "You cannot move the marker more than {meters} meters away than it's original position"
+      }
+    },
+    "reportProblem": {
+      "title": "Report a problem",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe the problem you found...",
+      "images": "Images",
+      "optional": "Optional",
+      "uploadImages": "Upload images of the problem",
+      "locationLabel": "Location",
+      "localization": {
+        "current": "Current location",
+        "currentDescription": "Use your current location",
+        "point": "Point on map",
+        "pointDescription": "Point the problem on the map"
+      },
+      "geolocationAccuracyWarning": "Imprecise location (±{accuracy}m). Consider pointing on the map.",
+      "markerOutOfBounds": "You cannot move the marker more than {radius} meters from your current location.",
+      "sendButton": "Send report"
+    },
+    "login": {
+      "title": "Login to Vizo",
+      "cpf": "CPF",
+      "cpfPlaceholder": "Enter your CPF",
+      "password": "Password",
+      "passwordPlaceholder": "Enter your password",
+      "dontHaveAccount": "Don't have an account?",
+      "signUpHere": "Sign up here",
+      "forgotPassword": "Forgot your password?",
+      "resetHere": "Reset it here.",
+      "signInButton": "Sign in",
+      "verification": {
+        "documentRequired": "CPF is required",
+        "passwordRequired": "Password is required"
+      },
+      "unauthorized": {
+        "title": "Unauthorized",
+        "description": "Invalid credentials. Check if your CPF and password are correct."
+      }
+    },
+    "register": {
+      "steps": {
+        "email": {
+          "title": "E-mail",
+          "description": "Give us your e-mail to verify"
+        },
+        "verification": {
+          "title": "Verification",
+          "description": "Enter the code sent to e-mail"
+        },
+        "details": {
+          "title": "Details",
+          "description": "Complete your registration"
+        }
+      }
+    },
+    "settings": {
+      "title": "Settings",
+      "languageLabel": "Language",
+      "themeLabel": "Theme",
+      "searchPlaceholder": "Search language...",
+      "saveButton": "Save"
+    },
+    "profile": {
+      "tab": {
+        "account": {
+          "label": "Account",
+          "description": "Manage your account information"
+        },
+        "admin": {
+          "label": "Administration",
+          "description": "Statistics and administrative information"
+        }
+      },
+      "form": {
+        "name": "Name",
+        "username": "Username",
+        "email": "Email",
+        "cellphone": "Phone",
+        "address": "Address",
+        "save": "Save"
+      },
+      "reports": {
+        "title": "Reports",
+        "type": "Type",
+        "date": "Date",
+        "description": "Description",
+        "delete": "Delete"
+      },
+      "stats": {
+        "solved": "Problems solved",
+        "helped": "People helped"
+      },
+      "fields": {
+        "permission": "Permission",
+        "city": "City",
+        "team": "Team"
+      },
+      "badges": {
+        "solver": "Solver",
+        "helper": "Helper"
+      }
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "success": "Success",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Information"
+  },
+  "details": {
+    "form": {
+      "status": "Status"
+    },
+    "reports": {
+      "title": "Reports"
+    }
+  },
+  "components": {
+    "accordionBody": {
+      "emptyText": "No items found"
+    },
+    "collapsibleMenu": {
+      "emptyText": "No items found"
+    },
+    "passwordInput": {
+      "hidePassword": "Hide password",
+      "showPassword": "Show password"
+    },
+    "passwordStrengthIndicator": {
+      "enterPassword": "Enter a password",
+      "weak": "Weak password",
+      "medium": "Medium password",
+      "strong": "Strong password",
+      "passwordStrengthIndicator": "Must contain:"
+    },
+    "popoverColorPicker": {
+      "chooseColor": "Choose color"
+    },
+    "rangePicker": {
+      "pickDate": "Pick a date"
+    },
+    "affiliatedUsers": {
+      "noPublicAgentsFound": "No public agents found.",
+      "since": "Since",
+      "assignToDepartment": "Assign to department"
+    },
+    "affiliations": {
+      "viewAll": "View all",
+      "requestNew": "Request new",
+      "disaffiliate": "Disaffiliate",
+      "requestedAt": "Requested at",
+      "since": "Since",
+      "approvedBy": "Approved by",
+      "reject": "Reject",
+      "approve": "Approve",
+      "cancel": "Cancel",
+      "waitForApproval": "Wait for approval",
+      "waitDescription": "Please wait until a municipal administrator approves your affiliation request.",
+      "seeAllRequests": "See all your requests in the affiliations page",
+      "email": "E-mail",
+      "verifyWithCode": "Verify with code",
+      "enterCodeSentTo": "Enter the verification code sent to",
+      "sendingEmailVerification": "Sending e-mail verification...",
+      "code": "Code",
+      "codeWillExpireIn": "Code will expire in",
+      "resend": "Resend",
+      "verify": "Verify"
+    },
+    "assignedUsers": {
+      "you": "You",
+      "assignedAt": "Assigned at",
+      "canViewReports": "Can view reports",
+      "canUpdateStatus": "Can update status",
+      "canManageUsers": "Can manage users",
+      "permissionMode": "Permission mode",
+      "custom": "Custom",
+      "saveChanges": "Save changes",
+      "remove": "Remove",
+      "changesSaved": "Changes saved",
+      "assigneePermissionSaved": "Assignee permission saved successfully"
+    },
+    "dashboard": {
+      "problemsStatistics": "Problems statistics",
+      "filterByStatus": "Filter by status",
+      "filterByProblemType": "Filter by problem type"
+    },
+    "departments": {
+      "assignUsers": "Assign users",
+      "edit": "Edit",
+      "delete": "Delete",
+      "createdAt": "Created at",
+      "assignTo": "Assign to",
+      "addUsersToThisDepartment": "Add users to this department",
+      "cancel": "Cancel",
+      "save": "Save",
+      "success": "Success",
+      "usersWereAssigned": "users were assigned to",
+      "departmentDeletedSuccessfully": "Department deleted successfully!",
+      "close": "Close"
+    },
+    "modal": {
+      "updateProblemStatus": "Update problem status",
+      "chooseNewStatus": "Choose a new status to assign to this problem",
+      "newStatus": "New status",
+      "problemStatusChanged": "Problem status changed",
+      "problemStatusUpdated": "Problem status was updated successfully"
+    },
+    "municipalities": {
+      "close": "Close"
+    },
+    "navigation": {
+      "home": "Home",
+      "notifications": "Notifications",
+      "reports": "Reports",
+      "newProblem": "New problem",
+      "history": "History",
+      "pointsOfInterest": "Points of interest",
+      "viewAll": "View all",
+      "createNew": "Create new",
+      "affiliations": "Affiliations",
+      "requestNew": "Request new",
+      "settings": "Settings",
+      "departments": "Departments",
+      "publicAgents": "Public agents",
+      "affiliationRequests": "Affiliation requests",
+      "permissionPresets": "Permission presets",
+      "dashboard": "Dashboard",
+      "problems": "Problems",
+      "assignees": "Assignees",
+      "list": "List",
+      "assign": "Assign",
+      "profile": "Profile",
+      "exit": "Exit"
+    },
+    "permissionPresets": {
+      "name": "Name",
+      "nameDescription": "The nickname of this set of permissions",
+      "veryMemorableName": "Very memorable name",
+      "delete": "Delete",
+      "saveChanges": "Save changes",
+      "save": "Save",
+      "createNew": "Create new",
+      "permissionPresetDescription": "A permission preset is a predefinition of permissions in a municipality that can be applied to a assigned user"
+    },
+    "permissions": {
+      "canViewReports": "Can view reports",
+      "canViewReportsDescription": "This permits that a filiate view all reports for a problem",
+      "canUpdateStatus": "Can update status",
+      "canUpdateStatusDescription": "This permits that a filiate changes a problem's status",
+      "canManageUsers": "Can manage users",
+      "canManageUsersDescription": "This permits that a filiate changes the permission of other assignees in a department"
+    },
+    "pointsOfInterest": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "radius": "Radius",
+      "createdAt": "Created at",
+      "viewOnMap": "View on map",
+      "edit": "Edit",
+      "delete": "Delete",
+      "name": "Name",
+      "nameRequired": "Name is required.",
+      "veryImportantThing": "Very important thing",
+      "color": "Color",
+      "headsUp": "Heads up!",
+      "chooseCoordinatesDescription": "You may choose the coordinates by moving the marker in the map.",
+      "activeDescription": "If activated, points of interest notifies you if a new problem appear in it's area.",
+      "cancel": "Cancel"
+    },
+    "problem": {
+      "type": "Type",
+      "status": "Status",
+      "firstReportedAt": "First reported at",
+      "lastReportedAt": "Last reported at",
+      "credibility": "Credibility",
+      "userReports": "User reports",
+      "reportedAt": "Reported at"
+    },
+    "problems": {
+      "searchPlaceholder": "Search by ID, title or status...",
+      "firstReportedAt": "First reported at",
+      "type": "Type",
+      "validated": "Validated",
+      "actions": "Actions",
+      "viewDetails": "View details"
+    },
+    "pwa": {
+      "install": "Install",
+      "update": "Update",
+      "installed": "Installed"
+    },
+    "report": {
+      "description": "Description",
+      "images": "Images",
+      "coordinates": "Coordinates"
+    },
+    "reports": {
+      "newProblem": "New problem",
+      "history": "History",
+      "viewOnMap": "View on map",
+      "edit": "Edit",
+      "delete": "Delete",
+      "resolvedAt": "Resolved at",
+      "thisReportWasVeryCredible": "This report was very credible.",
+      "thisProblemIsBeingReported": "This problem is being reported by many citizens",
+      "noReportsFound": "No reports found.",
+      "reportNewProblem": "Report a new problem here."
     }
   }
 }

@@ -3,12 +3,14 @@ import type { AccordionItem } from "@nuxt/ui";
 import AffiliationsRequestSection from "~/components/affiliations/AffiliationsRequestSection.vue";
 import { useAffiliationSection } from "~/composables/use-affiliation-section";
 
+const { t } = useI18n();
+
 useHead({
-  title: "Vizo | Affiliation requests",
+  title: t("head.affiliationRequests.title"),
   meta: [
     {
       name: "description",
-      content: "Manage all affiliation requests of this municipality",
+      content: t("head.affiliationRequests.description"),
     },
   ],
 });
@@ -36,22 +38,22 @@ const rejectedSection = await useAffiliationSection(municipalityId, {
 
 const items = ref<AccordionItem[]>([
   {
-    label: "All",
+    label: t("pages.affiliationRequests.sections.all"),
     icon: "i-lucide-swatch-book",
     slot: "all" as const,
   },
   {
-    label: "Pending",
+    label: t("pages.affiliationRequests.sections.pending"),
     icon: "i-lucide-clock",
     slot: "pending" as const,
   },
   {
-    label: "Approved",
+    label: t("pages.affiliationRequests.sections.approved"),
     icon: "i-lucide-check",
     slot: "approved" as const,
   },
   {
-    label: "Rejected",
+    label: t("pages.affiliationRequests.sections.rejected"),
     icon: "i-lucide-ban",
     slot: "rejected" as const,
   },
@@ -63,8 +65,12 @@ const active = ref(["1"]);
 <template>
   <AffiliatedUsersPage
     v-if="currentAffiliation"
-    title="Affiliation requests"
-    :description="`Manage the affiliation requests for ${currentAffiliation.municipality.name}.`"
+    :title="t('pages.affiliationRequests.title')"
+    :description="
+      t('pages.affiliationRequests.description', {
+        municipalityName: currentAffiliation.municipality.name,
+      })
+    "
   >
     <UAccordion type="multiple" v-model="active" :items="items">
       <template #all>
@@ -73,13 +79,15 @@ const active = ref(["1"]);
         </div>
 
         <div v-else-if="!allSection.data.value">
-          <EmptyMessage>Failed to fetch all affiliations.</EmptyMessage>
+          <EmptyMessage>{{
+            t("pages.affiliationRequests.failedToFetch")
+          }}</EmptyMessage>
         </div>
 
         <AffiliationsRequestSection
           v-else
           :items="allSection.data.value"
-          empty-text="No requests were found."
+          :empty-text="t('pages.affiliationRequests.noRequests')"
         >
           <UPagination
             v-model:page="allSection.currentPage.value"
@@ -95,13 +103,15 @@ const active = ref(["1"]);
         </div>
 
         <div v-else-if="!pendingSection.data.value">
-          <EmptyMessage>Failed to fetch all affiliations.</EmptyMessage>
+          <EmptyMessage>{{
+            t("pages.affiliationRequests.failedToFetch")
+          }}</EmptyMessage>
         </div>
 
         <AffiliationsRequestSection
           v-else
           :items="pendingSection.data.value"
-          empty-text="No requests were found."
+          :empty-text="t('pages.affiliationRequests.noRequests')"
         >
           <UPagination
             v-model:page="pendingSection.currentPage.value"
@@ -117,13 +127,15 @@ const active = ref(["1"]);
         </div>
 
         <div v-else-if="!approvedSection.data.value">
-          <EmptyMessage>Failed to fetch all affiliations.</EmptyMessage>
+          <EmptyMessage>{{
+            t("pages.affiliationRequests.failedToFetch")
+          }}</EmptyMessage>
         </div>
 
         <AffiliationsRequestSection
           v-else
           :items="approvedSection.data.value"
-          empty-text="No requests were found."
+          :empty-text="t('pages.affiliationRequests.noRequests')"
         >
           <UPagination
             v-model:page="approvedSection.currentPage.value"
@@ -139,13 +151,15 @@ const active = ref(["1"]);
         </div>
 
         <div v-else-if="!rejectedSection.data.value">
-          <EmptyMessage>Failed to fetch affiliations.</EmptyMessage>
+          <EmptyMessage>{{
+            t("pages.affiliationRequests.failedToFetch")
+          }}</EmptyMessage>
         </div>
 
         <AffiliationsRequestSection
           v-else
           :items="rejectedSection.data.value"
-          empty-text="No requests were found."
+          :empty-text="t('pages.affiliationRequests.noRequests')"
         >
           <UPagination
             v-model:page="rejectedSection.currentPage.value"

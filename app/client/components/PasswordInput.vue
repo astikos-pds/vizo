@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+const { t } = useI18n();
+
 const model = defineModel<string>();
 interface Props {
   label: string;
@@ -42,7 +44,11 @@ const emit = defineEmits<{ (e: "click"): void }>();
           class="text-xl"
           variant="link"
           :icon="show ? 'i-lucide-eye-closed' : 'i-lucide-eye'"
-          :aria-label="show ? 'Hide password' : 'Show password'"
+          :aria-label="
+            show
+              ? t('components.passwordInput.hidePassword')
+              : t('components.passwordInput.showPassword')
+          "
           @click="emit('click')"
         />
       </template>

@@ -15,31 +15,31 @@ const { t } = useI18n();
 const commomItems = computed<NavigationMenuItem[]>(() => {
   return [
     {
-      label: t("navBar.index"),
+      label: t("components.navigation.home"),
       icon: "i-lucide-house",
       to: "/",
       onSelect: () => (open.value = false),
     },
     // {
-    //   label: "Notifications",
+    //   label: t("components.navigation.notifications"),
     //   icon: "i-lucide-bell",
     //   to: "/notifications",
     //   onSelect: () => (open.value = false),
     // },
     {
-      label: "Reports",
+      label: t("components.navigation.reports"),
       icon: "i-lucide-message-square-warning",
       to: "/reports/new",
       onSelect: () => (open.value = false),
       children: [
         {
-          label: "New problem",
+          label: t("components.navigation.newProblem"),
           icon: "i-lucide-plus",
           to: "/reports/new",
           onSelect: () => (open.value = false),
         },
         {
-          label: "History",
+          label: t("components.navigation.history"),
           icon: "i-lucide-history",
           to: "/reports",
           onSelect: () => (open.value = false),
@@ -47,19 +47,19 @@ const commomItems = computed<NavigationMenuItem[]>(() => {
       ],
     },
     {
-      label: "Points of interest",
+      label: t("components.navigation.pointsOfInterest"),
       icon: "i-lucide-map-pin",
       to: "/points-of-interest",
       onSelect: () => (open.value = false),
       children: [
         {
-          label: "View all",
+          label: t("components.navigation.viewAll"),
           icon: "i-lucide-map",
           to: "/points-of-interest",
           onSelect: () => (open.value = false),
         },
         {
-          label: "Create new",
+          label: t("components.navigation.createNew"),
           icon: "i-lucide-map-pin-plus",
           to: "/points-of-interest/new",
           onSelect: () => (open.value = false),
@@ -67,19 +67,19 @@ const commomItems = computed<NavigationMenuItem[]>(() => {
       ],
     },
     {
-      label: "Affiliations",
+      label: t("components.navigation.affiliations"),
       icon: "i-lucide-archive",
       to: "/affiliations",
       onSelect: () => (open.value = false),
       children: [
         {
-          label: "View all",
+          label: t("components.navigation.viewAll"),
           icon: "i-lucide-building",
           to: "/affiliations",
           onSelect: () => (open.value = false),
         },
         {
-          label: "Request new",
+          label: t("components.navigation.requestNew"),
           icon: "i-lucide-git-pull-request",
           to: "/affiliations/request",
           onSelect: () => (open.value = false),
@@ -87,7 +87,7 @@ const commomItems = computed<NavigationMenuItem[]>(() => {
       ],
     },
     {
-      label: "Settings",
+      label: t("components.navigation.settings"),
       icon: "i-lucide-settings",
       to: "/settings",
       onSelect: () => (open.value = false),
@@ -106,20 +106,20 @@ const affiliatedItems = computed<NavigationMenuItem[]>(() => {
 
   const items = [
     {
-      label: "Departments",
+      label: t("components.navigation.departments"),
       icon: "i-lucide-package",
       to: `/municipalities/${municipalityId}/departments`,
       onSelect: () => (open.value = false),
       children: currentAffiliation.value.isAdmin
         ? [
             {
-              label: "View all",
+              label: t("components.navigation.viewAll"),
               icon: "i-lucide-package-open",
               to: `/municipalities/${municipalityId}/departments`,
               onSelect: () => (open.value = false),
             },
             {
-              label: "Create new",
+              label: t("components.navigation.createNew"),
               icon: "i-lucide-square-plus",
               to: `/municipalities/${municipalityId}/departments/new`,
               onSelect: () => (open.value = false),
@@ -128,7 +128,7 @@ const affiliatedItems = computed<NavigationMenuItem[]>(() => {
         : [],
     },
     {
-      label: "Public agents",
+      label: t("components.navigation.publicAgents"),
       icon: "i-lucide-users",
       to: `/municipalities/${municipalityId}/public-agents`,
       onSelect: () => (open.value = false),
@@ -141,13 +141,13 @@ const affiliatedItems = computed<NavigationMenuItem[]>(() => {
 
   if (currentAffiliation.value.isAdmin) {
     items.push({
-      label: "Affiliation requests",
+      label: t("components.navigation.affiliationRequests"),
       icon: "i-lucide-folder",
       to: `/municipalities/${municipalityId}/affiliations`,
       onSelect: () => (open.value = false),
     });
     items.push({
-      label: "Permission presets",
+      label: t("components.navigation.permissionPresets"),
       icon: "i-lucide-settings-2",
       to: `/municipalities/${municipalityId}/permission-presets/new`,
       onSelect: () => (open.value = false),
@@ -176,33 +176,33 @@ const assignedItems = computed<NavigationMenuItem[]>(() => {
 
   const items = [
     {
-      label: "Dashboard",
+      label: t("components.navigation.dashboard"),
       icon: "i-lucide-layout-dashboard",
       to: `/departments/${departmentId}/dashboard`,
       onSelect: () => (open.value = false),
     },
     {
-      label: "Problems",
+      label: t("components.navigation.problems"),
       icon: "i-lucide-bug",
       to: `/departments/${departmentId}/problems`,
       onSelect: () => (open.value = false),
     },
 
     {
-      label: "Assignees",
+      label: t("components.navigation.assignees"),
       icon: "i-lucide-contact",
       to: `/departments/${departmentId}/assignees`,
       onSelect: () => (open.value = false),
       children: currentAffiliation.value?.isAdmin
         ? [
             {
-              label: "List",
+              label: t("components.navigation.list"),
               icon: "i-lucide-list",
               to: `/departments/${departmentId}/assignees`,
               onSelect: () => (open.value = false),
             },
             {
-              label: "Assign",
+              label: t("components.navigation.assign"),
               icon: "i-lucide-user-plus",
               to: `/departments/${departmentId}/assignees/add`,
               onSelect: () => (open.value = false),
