@@ -43,7 +43,6 @@ const zoomToMarker = (marker: LatLng) => {
 <template>
   <ReportsPage class="flex">
     <template #aside>
-<<<<<<< HEAD
       <EmptyMessage v-if="pending">{{
         t("pages.reports.loading")
       }}</EmptyMessage>
@@ -56,18 +55,6 @@ const zoomToMarker = (marker: LatLng) => {
           <NuxtLink to="/reports/new" class="text-primary">
             {{ t("pages.reports.reportNew") }}
           </NuxtLink>
-=======
-      <EmptyMessage v-if="pending">{{ t('common.loading') }}</EmptyMessage>
-      <EmptyMessage v-else-if="!page"
-        >{{ t('toast.error.description.default') }}</EmptyMessage
-      >
-      <EmptyMessage v-else-if="reports.length === 0">
-        <span>
-          {{ t('components.reports.noReportsFound') }}
-          <NuxtLink to="/reports/new" class="text-primary"
-            >{{ t('components.reports.reportNewProblem') }}</NuxtLink
-          >
->>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
         </span>
       </EmptyMessage>
       <section
