@@ -1,6 +1,16 @@
 <script setup lang="ts">
 import type { Pagination } from "~/types/domain/pagination";
 
+useHead({
+  title: "Vizo | Problems",
+  meta: [
+    {
+      name: "description",
+      content: "View problems in department scope.",
+    },
+  ],
+});
+
 definePageMeta({
   name: "Problems",
   middleware: ["auth", "assigned"],

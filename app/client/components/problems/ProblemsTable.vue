@@ -12,6 +12,9 @@ const UBadge = resolveComponent("UBadge");
 const UIcon = resolveComponent("UIcon");
 const UDropdownMenu = resolveComponent("UDropdownMenu");
 
+const route = useRoute();
+const departmentId = route.params.departmentId as string;
+
 const problems = defineModel<Page<Problem>>("problems", {
   required: true,
 });
@@ -96,7 +99,7 @@ const columns: TableColumn<Problem>[] = [
         {
           label: t("lastProblems.viewDetails"),
           icon: "i-lucide-arrow-right",
-          to: `/problems/${row.original.id}`,
+          to: `/departments/${departmentId}/problems/${row.original.id}`,
         },
       ];
       return h(

@@ -54,15 +54,15 @@ const onSubmit = async (data: Permission & { name: string }) => {
 
   if (!created) return;
 
+  toast.clear();
+
   toast.add({
     title: "Success",
     description: "Permission preset created successfully!",
     color: "success",
   });
 
-  await navigateTo(
-    `/municipalities/${municipalityId}/permission-presets/${created.id}`
-  );
+  await refreshNuxtData(`municipalities-${municipalityId}-permission-presets`);
 };
 </script>
 

@@ -29,7 +29,7 @@ const { locale, t } = useI18n();
         </aside>
         <main class="flex flex-col">
           <span class="font-medium">{{ report.user.name }}</span>
-          <span class="text-sm">{{ report.user.email }}</span>
+          <span class="text-sm">{{ report.user.email.split("@")[0] }}</span>
         </main>
       </div>
     </template>

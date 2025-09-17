@@ -199,7 +199,7 @@ function resolveCoordinates(data: ReportSchema) {
 <template>
   <ReportsPage>
     <div
-      class="w-[90%] md:w-[75%] xl:w-[65%] 2xl:w-[55%] h-full flex flex-col p-10"
+      class="w-[90%] md:w-[75%] xl:w-[65%] 2xl:w-[55%] h-full flex flex-col gap-5 py-10 p-5 xl:p-10"
     >
       <h1 class="text-3xl text-center font-semibold px-2">
         {{ t("reportProblem.title") }}
@@ -209,7 +209,7 @@ function resolveCoordinates(data: ReportSchema) {
         :schema="reportSchema"
         :state="form"
         @submit="onSubmit"
-        class="mt-3 flex flex-col items-center gap-5"
+        class="mt-3 flex flex-col items-center gap-5 pb-15"
       >
         <UFormField
           :label="t('reportProblem.description')"

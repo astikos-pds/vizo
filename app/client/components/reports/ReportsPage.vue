@@ -31,7 +31,7 @@ const open = computed(() => isMobile.value);
     <header class="w-full border-b border-default px-2">
       <UNavigationMenu :items="items" highlight />
     </header>
-    <main class="flex-1 flex justify-center">
+    <main class="flex-1 flex justify-center overflow-hidden">
       <UDrawer
         v-if="$slots.aside && isMobile"
         v-model:open="open"
@@ -55,7 +55,7 @@ const open = computed(() => isMobile.value);
         <slot name="aside" />
       </aside>
 
-      <div class="flex-1 flex justify-center items-center">
+      <div class="flex-1 flex justify-center items-center overflow-auto">
         <slot />
       </div>
     </main>

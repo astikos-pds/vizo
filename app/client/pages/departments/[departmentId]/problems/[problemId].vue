@@ -6,9 +6,21 @@ import { useDepartmentStore } from "~/stores/department";
 import type { BadgeProps } from "@nuxt/ui";
 import { useProblems } from "~/composables/use-problems";
 import type { ProblemStatus } from "~/types/domain/problem";
+import ReportForProblem from "~/components/problem/ReportForProblem.vue";
+import ModalChangeProblemStatus from "~/components/modal/ModalChangeProblemStatus.vue";
 
-const { t } = useI18n();
+const { t, locale } = useI18n();
 const route = useRoute();
+
+useHead({
+  title: "Vizo | Problem",
+  meta: [
+    {
+      name: "description",
+      content: "View problem details.",
+    },
+  ],
+});
 
 definePageMeta({
   name: "Problem",
@@ -16,10 +28,12 @@ definePageMeta({
 });
 
 const problemId = computed(() => route.params.problemId as string);
-const { currentDepartment } = useDepartmentStore();
+const { currentAssignment } = useLoggedInUserStore();
 
-const municipalityId = computed(() => currentDepartment?.municipality.id ?? "");
-const departmentId = computed(() => currentDepartment?.id ?? "");
+const municipalityId = computed(
+  () => currentAssignment?.department.municipality.id ?? ""
+);
+const departmentId = computed(() => currentAssignment?.department.id ?? "");
 
 const { getProblemInScope } = useDepartments();
 
@@ -51,20 +65,33 @@ const statusColor = computed(() => {
     return colorByStatus[problem.value.status];
   }
 });
+
+const overlay = useOverlay();
+
+function openModal() {
+  if (!problem.value) return;
+
+  const modal = overlay.create(ModalChangeProblemStatus, {
+    props: {
+      problem: problem.value,
+    },
+  });
+
+  modal.open();
+}
 </script>
 
 <template>
   <div
     v-if="problem"
-    class="grid grid-cols-1 gap-6 p-4 sm:p-6 md:p-8 xl:grid-cols-1"
+    class="size-full flex justify-center gap-6 p-4 sm:p-6 md:p-8 overflow-auto"
   >
-    <div class="overflow-hidden rounded-2xl sm:px-6 flex flex-col items-center">
-      <div class="w-full max-w-2xl">
+    <div class="rounded-2xl flex flex-col items-center gap-5 xl:w-[60%]">
+      <div class="w-full">
         <Map
-          class="rounded-md border border-default"
+          class="w-full min-h-80 rounded-md border border-default"
           :zoom="16"
           :center="problem"
-          style="height: 250px; width: 100%"
         >
           <Marker
             :lat-lng="{
@@ -75,98 +102,68 @@ const statusColor = computed(() => {
         </Map>
       </div>
 
-      <h2 class="text-2xl font-bold my-8">{{ t("details.title") }}</h2>
-
-      <div class="w-full max-w-2xl space-y-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="space-y-2">
-            <div>
-              <span class="font-semibold">{{ t("details.form.id") }}:</span>
-              <span class="ml-2">{{ problem.id }}</span>
-            </div>
-            <div>
-              <span class="font-semibold">{{ t("details.form.title") }}:</span>
-              <span class="ml-2">{{ problem.type }}</span>
-            </div>
-            <div>
-              <span class="font-semibold">{{ t("details.form.status") }}:</span>
-              <UBadge
-                :color="statusColor"
-                variant="subtle"
-                class="ml-2 capitalize"
-              >
+      <div class="w-full">
+        <div class="flex flex-col gap-2">
+          <div class="flex gap-1.5">
+            <span class="font-semibold">Type:</span>
+            <UBadge color="neutral" variant="subtle" size="lg">{{
+              problem.type
+            }}</UBadge>
+          </div>
+          <div class="flex gap-1.5">
+            <span class="font-semibold">{{ t("details.form.status") }}:</span>
+            <UButtonGroup size="lg">
+              <UBadge :color="statusColor" variant="subtle">
                 {{ problem.status }}
               </UBadge>
-            </div>
+              <UButton
+                v-if="currentAssignment?.effectivePermission.canUpdateStatus"
+                color="neutral"
+                variant="outline"
+                icon="i-lucide-pencil"
+                @click="openModal"
+              />
+            </UButtonGroup>
+          </div>
+          <div class="flex gap-1.5">
+            <span class="font-semibold">First reported at:</span>
+            <span>{{
+              problem.firstReportedAt.toLocaleDateString(locale, {
+                dateStyle: "full",
+              })
+            }}</span>
+          </div>
+
+          <div class="flex gap-1.5">
+            <span class="font-semibold">Last reported at:</span>
+            <span>{{
+              problem.lastReportedAt.toLocaleDateString(locale, {
+                dateStyle: "full",
+              })
+            }}</span>
+          </div>
+
+          <div class="flex gap-1.5">
+            <span class="font-semibold">Credibility:</span>
+            <span>{{ problem.accumulatedCredibility.toFixed(0) }}</span>
           </div>
         </div>
+      </div>
 
-        <!-- Relatos -->
-        <div
-          v-if="reports"
-          class="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-white/[0.03] p-6"
-        >
-          <h3 class="text-xl font-semibold mb-6">
-            {{ t("details.reports.title") }}
-          </h3>
+      <div
+        v-if="reports && currentAssignment?.effectivePermission.canViewReports"
+        class="w-full rounded-md border border-default p-4"
+      >
+        <h3 class="text-xl font-semibold mb-6">
+          {{ t("details.reports.title") }}
+        </h3>
 
-          <div class="flex flex-col gap-8">
-            <div
-              v-for="(report, idx) in reports"
-              :key="report.id"
-              class="flex flex-col gap-4"
-            >
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="flex flex-col gap-2">
-                  <div>
-                    <span class="font-semibold"
-                      >{{ t("details.reports.user") }}:</span
-                    >
-                    <span class="ml-1">{{ report.user.name }}</span>
-                  </div>
-                  <div>
-                    <span class="font-semibold"
-                      >{{ t("details.reports.date") }}:</span
-                    >
-                    <span class="ml-1">{{
-                      new Date(report.createdAt).toLocaleString()
-                    }}</span>
-                  </div>
-                </div>
-
-                <div class="flex flex-col gap-2 md:col-span-2">
-                  <div>
-                    <span class="font-semibold">{{
-                      t("details.reports.description")
-                    }}</span>
-                  </div>
-                  <div
-                    class="bg-white dark:bg-neutral-900 rounded-lg border border-gray-200 dark:border-gray-700 p-3 max-h-40 overflow-auto break-words"
-                  >
-                    {{ report.description }}
-                  </div>
-
-                  <div
-                    v-if="report.imagesUrls.length > 0"
-                    class="flex gap-2 mt-2 flex-wrap"
-                  >
-                    <NuxtImg
-                      v-for="(url, i) in report.imagesUrls"
-                      :key="i"
-                      :src="url.toString()"
-                      class="rounded-lg w-[120px] h-[120px] object-cover aspect-square"
-                      :alt="t('details.reports.imageAlt')"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <hr
-                v-if="idx < reports.length - 1"
-                class="border-t border-gray-300 dark:border-gray-700 my-4"
-              />
-            </div>
-          </div>
+        <div class="flex flex-col gap-5">
+          <ReportForProblem
+            v-for="report in reports"
+            :key="report.id"
+            :report="report"
+          />
         </div>
       </div>
     </div>
