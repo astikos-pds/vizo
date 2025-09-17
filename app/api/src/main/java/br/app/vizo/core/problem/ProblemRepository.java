@@ -3,6 +3,7 @@ package br.app.vizo.core.problem;
 import br.app.vizo.application.dto.page.PageDTO;
 import br.app.vizo.application.dto.page.PaginationDTO;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -26,6 +27,15 @@ public interface ProblemRepository {
             Double longitude,
             Double radiusInMeters
     );
+
+    List<ProblemStatistics> countByRangeAndStatusesAndTypes(
+            LocalDate start,
+            LocalDate end,
+            Set<ProblemStatus> statuses,
+            Set<ProblemType> types
+    );
+
+    long countByStatusAndTypeIn(ProblemStatus status, Set<ProblemType> types);
 
     void deleteById(UUID id);
 }

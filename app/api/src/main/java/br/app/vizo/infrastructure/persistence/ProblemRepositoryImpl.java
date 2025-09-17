@@ -3,13 +3,13 @@ package br.app.vizo.infrastructure.persistence;
 import br.app.vizo.application.dto.page.PageDTO;
 import br.app.vizo.application.dto.page.PaginationDTO;
 import br.app.vizo.application.mapper.ProblemMapper;
-import br.app.vizo.core.problem.Problem;
-import br.app.vizo.core.problem.ProblemRepository;
-import br.app.vizo.core.problem.ProblemType;
+import br.app.vizo.core.problem.*;
 import br.app.vizo.infrastructure.persistence.jpa.entity.ProblemEntity;
 import br.app.vizo.infrastructure.persistence.jpa.repository.ProblemJpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -66,6 +66,28 @@ public class ProblemRepositoryImpl implements ProblemRepository {
         return this.jpaRepository
                 .findClosestUnresolvedByTypeWithinRadiusInMeters(problemType.name(), latitude, longitude, radiusInMeters)
                 .map(this.mapper::toModel);
+    }
+
+    @Override
+    public List<ProblemStatistics> countByRangeAndStatusesAndTypes(
+            LocalDate start,
+            LocalDate end,
+            Set<ProblemStatus> statuses,
+            Set<ProblemType> types
+    ) {
+        return this.jpaRepository.countByRangeAndStatusesAndTypes(start, end, statuses, types)
+                .stream()
+                .map((o) -> {
+                    Date sqlDate = (Date) o[0];
+                    return new ProblemStatistics(sqlDate.toLocalDate(), (Long) o[1]);
+                })
+                .toList();
+    }
+
+
+    @Override
+    public long countByStatusAndTypeIn(ProblemStatus status, Set<ProblemType> types) {
+        return this.jpaRepository.countByStatusAndTypeIn(status, types);
     }
 
     @Override

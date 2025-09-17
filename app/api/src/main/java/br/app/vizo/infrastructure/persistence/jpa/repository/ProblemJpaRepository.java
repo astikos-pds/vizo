@@ -1,6 +1,6 @@
 package br.app.vizo.infrastructure.persistence.jpa.repository;
 
-
+import br.app.vizo.core.problem.ProblemStatus;
 import br.app.vizo.core.problem.ProblemType;
 import br.app.vizo.infrastructure.persistence.jpa.entity.ProblemEntity;
 import org.springframework.data.domain.Page;
@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -38,4 +40,22 @@ public interface ProblemJpaRepository extends JpaRepository<ProblemEntity, UUID>
     );
 
     Page<ProblemEntity> findAllByTypeIn(Set<ProblemType> types, Pageable pageable);
+
+    @Query(value = """
+        SELECT FUNCTION('DATE', p.createdAt), COUNT(p)
+        FROM ProblemEntity p
+        WHERE FUNCTION('DATE', p.createdAt) BETWEEN :start AND :end
+          AND p.status IN :statuses
+          AND p.type IN :types
+        GROUP BY FUNCTION('DATE', p.createdAt)
+        ORDER BY FUNCTION('DATE', p.createdAt)
+    """)
+    List<Object[]> countByRangeAndStatusesAndTypes(
+            @Param("start") LocalDate start,
+            @Param("end") LocalDate end,
+            @Param("statuses") Set<ProblemStatus> statuses,
+            @Param("types") Set<ProblemType> types
+    );
+
+    long countByStatusAndTypeIn(ProblemStatus status, Set<ProblemType> types);
 }
