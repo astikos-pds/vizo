@@ -8,6 +8,7 @@ import br.app.vizo.infrastructure.persistence.jpa.repository.UserJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
@@ -25,6 +26,11 @@ public class UserRepositoryImpl implements UserRepository {
         UserEntity userEntity = this.mapper.toEntity(user);
         UserEntity saved = this.jpaRepository.save(userEntity);
         return this.mapper.toModel(saved);
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        return this.jpaRepository.findById(id).map(this.mapper::toModel);
     }
 
     @Override

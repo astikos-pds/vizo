@@ -45,6 +45,8 @@ dependencies {
 
 	annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
+    implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.9.0")
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

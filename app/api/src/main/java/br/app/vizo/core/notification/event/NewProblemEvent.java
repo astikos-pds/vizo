@@ -1,4 +1,4 @@
-package br.app.vizo.core.notification;
+package br.app.vizo.core.notification.event;
 
 import br.app.vizo.core.problem.ProblemType;
 

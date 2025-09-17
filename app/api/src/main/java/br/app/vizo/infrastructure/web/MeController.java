@@ -5,6 +5,7 @@ import br.app.vizo.application.dto.page.PageDTO;
 import br.app.vizo.application.dto.page.PaginationDTO;
 import br.app.vizo.application.usecase.me.*;
 import br.app.vizo.application.usecase.me.filter.GetMyAffiliationsParams;
+import br.app.vizo.application.usecase.me.filter.GetMyNotificationsParams;
 import br.app.vizo.application.usecase.me.filter.ReportFilter;
 import br.app.vizo.config.security.UserDetailsImpl;
 import br.app.vizo.core.affiliation.AffiliationStatus;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class MeController {
 
     private final GetMeUseCase getMeUseCase;
+    private final GetMyNotificationsUseCase getMyNotificationsUseCase;
     private final GetMyPointsOfInterestUseCase getMyPointsOfInterestUseCase;
     private final GetMyAffiliationsUseCase getMyAffiliationsUseCase;
     private final GetMyAssignmentsInMunicipalityUseCase getMyAssignmentsInMunicipalityUseCase;
@@ -31,6 +34,16 @@ public class MeController {
     @GetMapping
     public ResponseEntity<UserDTO> getMe(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         UserDTO response = this.getMeUseCase.execute(userDetails.getUser());
+
+        return ResponseEntity.ok(response);
+    }
+
+    public ResponseEntity<List<NotificationDTO<?>>> getMyNotification(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestParam(required = false) Boolean read
+    ) {
+        List<NotificationDTO<?>> response = this.getMyNotificationsUseCase
+                .execute(userDetails.getUser(), new GetMyNotificationsParams(read));
 
         return ResponseEntity.ok(response);
     }
