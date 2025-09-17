@@ -861,7 +861,7 @@
     "assignedUsers": {
       "you": "Você",
       "assignedAt": "Atribuído em",
-      "canViewReports": "Pode visualizar relatórios",
+      "canViewReports": "Pode visualizar reportes",
       "canUpdateStatus": "Pode atualizar status",
       "canManageUsers": "Pode gerenciar usuários",
       "permissionMode": "Modo de permissão",
@@ -903,7 +903,7 @@
     "navigation": {
       "home": "Início",
       "notifications": "Notificações",
-      "reports": "Relatórios",
+      "reports": "Reportes",
       "newProblem": "Novo problema",
       "history": "Histórico",
       "pointsOfInterest": "Pontos de interesse",
@@ -935,8 +935,8 @@
       "permissionPresetDescription": "Uma predefinição de permissão é uma predefinição de permissões em um município que pode ser aplicada a um usuário atribuído"
     },
     "permissions": {
-      "canViewReports": "Pode visualizar relatórios",
-      "canViewReportsDescription": "Isso permite que um afiliado visualize todos os relatórios de um problema",
+      "canViewReports": "Pode visualizar reportes",
+      "canViewReportsDescription": "Isso permite que um afiliado visualize todos os reportes de um problema",
       "canUpdateStatus": "Pode atualizar status",
       "canUpdateStatusDescription": "Isso permite que um afiliado altere o status de um problema",
       "canManageUsers": "Pode gerenciar usuários",
@@ -962,15 +962,15 @@
     "problem": {
       "type": "Tipo",
       "status": "Status",
-      "firstReportedAt": "Primeiro relatório em",
-      "lastReportedAt": "Último relatório em",
+      "firstReportedAt": "Primeiro reporte em",
+      "lastReportedAt": "Último reporte em",
       "credibility": "Credibilidade",
-      "userReports": "Relatórios de usuários",
+      "userReports": "Reportes de usuários",
       "reportedAt": "Relatado em"
     },
     "problems": {
       "searchPlaceholder": "Pesquisar por ID, título ou status...",
-      "firstReportedAt": "Primeiro relatório em",
+      "firstReportedAt": "Primeiro reporte em",
       "type": "Tipo",
       "validated": "Validado",
       "actions": "Ações",
@@ -993,10 +993,10 @@
       "edit": "Editar",
       "delete": "Excluir",
       "resolvedAt": "Resolvido em",
-      "thisReportWasVeryCredible": "Este relatório foi muito confiável.",
+      "thisReportWasVeryCredible": "Este reporte foi muito confiável.",
       "thisProblemIsBeingReported": "Este problema está sendo relatado por muitos cidadãos",
-      "noReportsFound": "Nenhum relatório encontrado.",
-      "reportNewProblem": "Relate um novo problema aqui."
+      "noReportsFound": "Nenhum reporte encontrado.",
+      "reportNewProblem": "Reporte um novo problema aqui."
     }
   }
 }
