@@ -86,8 +86,11 @@ public class ProblemRepositoryImpl implements ProblemRepository {
 
 
     @Override
-    public long countByStatusAndTypeIn(ProblemStatus status, Set<ProblemType> types) {
-        return this.jpaRepository.countByStatusAndTypeIn(status, types);
+    public List<ProblemCountByStatus> countByStatusAndTypeIn(Set<ProblemType> types) {
+        return this.jpaRepository.countByStatusAndTypeIn(types)
+                .stream()
+                .map((o) -> new ProblemCountByStatus((ProblemStatus) o[0], (Long) o[1]))
+                .toList();
     }
 
     @Override

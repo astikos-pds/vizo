@@ -57,5 +57,11 @@ public interface ProblemJpaRepository extends JpaRepository<ProblemEntity, UUID>
             @Param("types") Set<ProblemType> types
     );
 
-    long countByStatusAndTypeIn(ProblemStatus status, Set<ProblemType> types);
+    @Query(value = """
+            SELECT p.status, COUNT(p)
+            FROM ProblemEntity p
+            WHERE p.type IN :types
+            GROUP BY p.status
+    """)
+    List<Object[]> countByStatusAndTypeIn(@Param("types") Set<ProblemType> types);
 }

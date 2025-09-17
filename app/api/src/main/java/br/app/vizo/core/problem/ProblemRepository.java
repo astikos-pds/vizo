@@ -35,7 +35,7 @@ public interface ProblemRepository {
             Set<ProblemType> types
     );
 
-    long countByStatusAndTypeIn(ProblemStatus status, Set<ProblemType> types);
+    List<ProblemCountByStatus> countByStatusAndTypeIn(Set<ProblemType> types);
 
     void deleteById(UUID id);
 }

@@ -5,11 +5,11 @@ import br.app.vizo.application.dto.ProblemDTO;
 import br.app.vizo.application.dto.page.PageDTO;
 import br.app.vizo.application.dto.page.PaginationDTO;
 import br.app.vizo.application.usecase.department.*;
-import br.app.vizo.application.usecase.department.param.CountProblemsInScopeParams;
 import br.app.vizo.application.usecase.department.param.GetProblemsInScopeStatisticsParams;
 import br.app.vizo.application.usecase.department.request.ChangeProblemStatusRequestDTO;
 import br.app.vizo.application.usecase.department.request.MutateDepartmentRequestDTO;
 import br.app.vizo.config.security.UserDetailsImpl;
+import br.app.vizo.core.problem.ProblemCountByStatus;
 import br.app.vizo.core.problem.ProblemStatistics;
 import br.app.vizo.core.problem.ProblemStatus;
 import br.app.vizo.core.problem.ProblemType;
@@ -149,17 +149,15 @@ public class DepartmentController {
     }
 
     @GetMapping("/{departmentId}/problems/count")
-    public ResponseEntity<Long> countProblemsInScopeByStatus(
+    public ResponseEntity<List<ProblemCountByStatus>> countProblemsInScopeByStatus(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable UUID municipalityId,
-            @PathVariable UUID departmentId,
-            @RequestParam ProblemStatus status
+            @PathVariable UUID departmentId
     ) {
-        long response = this.countProblemsInScopeByStatusUseCase.execute(
+        List<ProblemCountByStatus> response = this.countProblemsInScopeByStatusUseCase.execute(
                 userDetails.getUser(),
                 municipalityId,
-                departmentId,
-                new CountProblemsInScopeParams(status)
+                departmentId
         );
 
         return ResponseEntity.ok(response);
