@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import type { AssignedUser } from "~/types/domain/assigned-user";
-import type { Pagination } from "~/types/domain/pagination";
 
 useHead({
-  title: "Vizo | List assigned users",
+  title: "Vizo | Assigned users",
   meta: [
     {
       name: "description",

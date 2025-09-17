@@ -7,6 +7,7 @@ export const MIN_AGE = 13;
 export const MAX_RADIUS_IN_METERS = 1500;
 export const CITY_CENTER: LatLng = { latitude: -23.5489, longitude: -46.6388 };
 export const RADIUS_OF_RELATED_REPORTS_IN_METERS = 5.0;
+export const REPORT_MAX_RADIUS_TO_UPDATE_COORDINATES_IN_METERS = 100;
 
 export const MS_PER_DAY = 24 * 60 * 60 * 1000;
 export const REPORT_CONFLICT_PERIOD_IN_DAYS = 14;

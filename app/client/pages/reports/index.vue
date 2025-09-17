@@ -9,7 +9,7 @@ useHead({
 });
 
 definePageMeta({
-  name: "History",
+  name: "History of reports",
   middleware: ["auth"],
 });
 
@@ -83,6 +83,7 @@ const zoomToMarker = (marker: LatLng) => {
         v-for="report in reports"
         :key="report.id"
         v-bind:lat-lng="report"
+        @click="zoomToMarker(report)"
       />
 
       <CurrentPositionMarker />

@@ -11,6 +11,11 @@ useHead({
   meta: [{ name: "description", content: "Notificações recentes do sistema." }],
 });
 
+definePageMeta({
+  name: "Notifications",
+  middleware: ["auth"],
+});
+
 type Notification = {
   id: string;
   date: string;

@@ -14,7 +14,7 @@ useHead({
 });
 
 definePageMeta({
-  name: "Assign",
+  name: "Assign a filiate",
   middleware: ["auth", "assigned"],
 });
 

@@ -11,6 +11,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "Settings",
   middleware: ["auth"],
 });
 

@@ -13,6 +13,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "Request new affiliation",
   middleware: ["auth"],
 });
 

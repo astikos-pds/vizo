@@ -54,14 +54,28 @@ const form = reactive<UpdateReportSchema>({
   images: [...images.value],
 });
 
-const { map, center, zoom } = useMap();
+const { map, center } = useMap();
 
 const marker = reactive<LatLng>({
   latitude: report.value ? report.value.latitude : center.latitude,
   longitude: report.value ? report.value.longitude : center.longitude,
 });
 
+const { isWithinRadius } = useMapGeolocation();
+
+const isMarkerOutOfBounds = computed<boolean>(() => {
+  if (!report.value) return false;
+
+  return !isWithinRadius(
+    report.value,
+    marker,
+    REPORT_MAX_RADIUS_TO_UPDATE_COORDINATES_IN_METERS
+  );
+});
+
 const onSubmit = async (event: FormSubmitEvent<UpdateReportSchema>) => {
+  if (isMarkerOutOfBounds.value) return;
+
   const response = await updateReport(reportId, { ...event.data, ...marker });
 
   if (!response) return;
@@ -82,7 +96,12 @@ const hasUnsavedChanges = computed(() => {
     }
   }
 
-  return report.value.description !== form.description || hasImagesChanged;
+  return (
+    report.value.description !== form.description ||
+    hasImagesChanged ||
+    marker.latitude !== report.value.latitude ||
+    marker.longitude !== report.value.longitude
+  );
 });
 </script>
 
@@ -127,6 +146,24 @@ const hasUnsavedChanges = computed(() => {
             />
           </UFormField>
 
+          <UAlert
+            v-if="!isMarkerOutOfBounds"
+            color="neutral"
+            variant="subtle"
+            title="Heads up!"
+            description="You may choose the coordinates by moving the marker in the map."
+            icon="i-lucide-map-pin"
+          />
+
+          <UAlert
+            v-else
+            color="error"
+            variant="subtle"
+            title="Heads up!"
+            :description="`You cannot move the marker more than ${REPORT_MAX_RADIUS_TO_UPDATE_COORDINATES_IN_METERS} meters away than it's original position`"
+            icon="i-lucide-ban"
+          />
+
           <UButton
             v-if="!hasUnsavedChanges"
             color="neutral"
@@ -139,8 +176,16 @@ const hasUnsavedChanges = computed(() => {
       </div>
     </template>
 
-    <Map ref="map" :center="center" :zoom="zoom">
-      <Marker :key="report.id" v-model="marker" draggable />
+    <Map ref="map" :center="marker" :zoom="18">
+      <Marker :key="report.id" v-model="marker" />
+
+      <LCircle
+        :lat-lng="[report.latitude, report.longitude]"
+        :radius="REPORT_MAX_RADIUS_TO_UPDATE_COORDINATES_IN_METERS"
+        color="#0003ff"
+        :fill-opacity="0.1"
+        :opacity="0.5"
+      />
 
       <CurrentPositionMarker />
     </Map>

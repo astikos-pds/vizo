@@ -19,7 +19,7 @@ useHead({
 });
 
 definePageMeta({
-  name: "Report",
+  name: "Report a problem",
   middleware: ["auth"],
 });
 
@@ -270,7 +270,7 @@ function resolveCoordinates(data: ReportSchema) {
               v-if="isLocationPrecise"
               :lat-lng="[coords.latitude, coords.longitude]"
               :radius="MAX_RADIUS_IN_METERS"
-              fill-color="#0003ff"
+              color="#0003ff"
               :fill-opacity="0.1"
               :opacity="0.5"
             />

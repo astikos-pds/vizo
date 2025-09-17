@@ -14,6 +14,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "Affiliations",
   middleware: ["auth"],
 });
 

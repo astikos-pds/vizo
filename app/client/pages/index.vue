@@ -19,6 +19,7 @@ useHead({
 });
 
 definePageMeta({
+  name: "Home",
   middleware: ["auth"],
 });
 

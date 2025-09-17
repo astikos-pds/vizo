@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { FormSubmitEvent, StepperItem } from "@nuxt/ui";
+import type { StepperItem } from "@nuxt/ui";
 
 const { t } = useI18n();
 

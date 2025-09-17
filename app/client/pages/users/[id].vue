@@ -11,6 +11,11 @@ useHead({
   ],
 });
 
+definePageMeta({
+  name: "Profile",
+  middleware: ["auth"],
+});
+
 const items = [
   {
     label: t("profile.tab.account.label"),
