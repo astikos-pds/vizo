@@ -3,6 +3,8 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import type { PermissionPreset } from "~/types/domain/permission";
 
+const { t } = useI18n();
+
 const { state, editing } = defineProps<{
   title: string;
   state?: PermissionPreset;
@@ -15,7 +17,7 @@ const emit = defineEmits<{
 }>();
 
 const permissionPresetSchema = z.object({
-  name: z.string().min(1, "Name is required"),
+  name: z.string().min(1, t('components.permissionPresets.name')),
   canViewReports: z.boolean(),
   canUpdateStatus: z.boolean(),
   canManageUsers: z.boolean(),
@@ -77,8 +79,7 @@ const hasUnsavedChanges = computed(() => {
         <div class="flex flex-col">
           <h1 class="font-semibold text-lg">{{ title }}</h1>
           <span class="text-xs sm:text-sm"
-            >A permission preset is a predefinition of permissions in a
-            municipality that can be applied to a assigned user</span
+            >{{ t('components.permissionPresets.permissionPresetDescription') }}</span
           >
         </div>
         <div class="flex-1 flex gap-2 items-center justify-end text-nowrap">
@@ -88,14 +89,14 @@ const hasUnsavedChanges = computed(() => {
             :disabled="loading"
             :loading="loadingForDeleting"
             @click="onDelete"
-            >Delete</UButton
+            >{{ t('components.permissionPresets.delete') }}</UButton
           >
           <UChip v-if="hasUnsavedChanges" color="info">
             <UButton
               :color="editing ? 'neutral' : 'primary'"
               type="submit"
               :loading="loading"
-              >{{ editing ? "Save changes" : "Save" }}</UButton
+              >{{ editing ? t('components.permissionPresets.saveChanges') : t('components.permissionPresets.save') }}</UButton
             >
           </UChip>
           <UButton
@@ -103,7 +104,7 @@ const hasUnsavedChanges = computed(() => {
             :color="editing ? 'neutral' : 'primary'"
             type="submit"
             :loading="loading"
-            >{{ editing ? "Save changes" : "Save" }}</UButton
+            >{{ editing ? t('components.permissionPresets.saveChanges') : t('components.permissionPresets.save') }}</UButton
           >
         </div>
       </header>
@@ -113,15 +114,15 @@ const hasUnsavedChanges = computed(() => {
           class="size-full flex flex-col justify-center items-center gap-5 p-3"
         >
           <UFormField
-            label="Name"
+            :label="t('components.permissionPresets.name')"
             name="name"
-            description="The nickname of this set of permissions"
+            :description="t('components.permissionPresets.nameDescription')"
             required
             class="w-full flex flex-col justify-between gap-1 md:flex-row md:items-center"
           >
             <UInput
               v-model="form.name"
-              placeholder="Very memorable name"
+              :placeholder="t('components.permissionPresets.veryMemorableName')"
               class="w-full"
             />
           </UFormField>

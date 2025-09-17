@@ -3,6 +3,8 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import type { Problem, ProblemStatus } from "~/types/domain/problem";
 
+const { t } = useI18n();
+
 const { problem } = defineProps<{
   problem: Problem;
 }>();
@@ -52,8 +54,8 @@ const onSubmit = async (event: FormSubmitEvent<ChangeProblemStatusSchema>) => {
   if (!ok) return;
 
   toast.add({
-    title: "Problem status changed",
-    description: "Problem status was updated successfully",
+    title: t('components.modal.problemStatusChanged'),
+    description: t('components.modal.problemStatusUpdated'),
     color: "success",
   });
 
@@ -70,8 +72,8 @@ const hasUnsavedChanges = computed(() => {
 <template>
   <UModal
     v-model:open="open"
-    title="Update problem status"
-    description="Choose a new status to assign to this problem"
+    :title="t('components.modal.updateProblemStatus')"
+    :description="t('components.modal.chooseNewStatus')"
     :ui="{ footer: 'justify-end' }"
   >
     <template #body="{ close }">
@@ -81,7 +83,7 @@ const hasUnsavedChanges = computed(() => {
         @submit="onSubmit"
         class="w-full flex flex-col items-center gap-5"
       >
-        <UFormField label="New status" name="status" required class="w-full">
+        <UFormField :label="t('components.modal.newStatus')" name="status" required class="w-full">
           <USelect :items="items" v-model="form.newStatus" class="w-full" />
         </UFormField>
 
@@ -90,11 +92,12 @@ const hasUnsavedChanges = computed(() => {
           color="neutral"
           variant="outline"
           @click="close"
-          >Cancel</UButton
+          >{{ t('common.cancel') }}</UButton
         >
 
-        <UButton v-else color="neutral" type="submit" :loading="loading"
-          >Save changes</UButton
+        <UButton v-else color="neutral" type="submit" :loading="loading">{{
+          t('components.assignedUsers.saveChanges')
+        }}</UButton
         >
       </UForm>
     </template>

@@ -227,6 +227,7 @@
     "confirm": "Enviar mesmo assim"
   },
   "common": {
+    "loading": "Carregando...",
     "cancel": "Cancelar"
   },
   "settings": {
@@ -454,6 +455,200 @@
       "date": "Data",
       "title": "Título",
       "description": "Descrição"
+    }
+  },
+
+  "components": {
+    "accordionBody": {
+      "emptyText": "Nenhum item encontrado"
+    },
+    "collapsibleMenu": {
+      "emptyText": "Nenhum item encontrado"
+    },
+    "passwordInput": {
+      "hidePassword": "Ocultar senha",
+      "showPassword": "Mostrar senha"
+    },
+    "passwordStrengthIndicator": {
+      "enterPassword": "Digite uma senha",
+      "weak": "Senha fraca",
+      "medium": "Senha média",
+      "strong": "Senha forte",
+      "passwordStrengthIndicator": "Deve conter:"
+    },
+    "popoverColorPicker": {
+      "chooseColor": "Escolher cor"
+    },
+    "rangePicker": {
+      "pickDate": "Escolher uma data"
+    },
+    "affiliatedUsers": {
+      "noPublicAgentsFound": "Nenhum agente público encontrado.",
+      "since": "Desde",
+      "assignToDepartment": "Atribuir ao departamento"
+    },
+    "affiliations": {
+      "viewAll": "Ver todos",
+      "requestNew": "Solicitar novo",
+      "disaffiliate": "Desafiliar",
+      "requestedAt": "Solicitado em",
+      "since": "Desde",
+      "approvedBy": "Aprovado por",
+      "reject": "Rejeitar",
+      "approve": "Aprovar",
+      "cancel": "Cancelar",
+      "waitForApproval": "Aguardar aprovação",
+      "waitDescription": "Aguarde até que um administrador municipal aprove sua solicitação de afiliação.",
+      "seeAllRequests": "Veja todas as suas solicitações na página de afiliações",
+      "email": "E-mail",
+      "verifyWithCode": "Verificar com código",
+      "enterCodeSentTo": "Digite o código de verificação enviado para",
+      "sendingEmailVerification": "Enviando verificação por e-mail...",
+      "code": "Código",
+      "codeWillExpireIn": "O código expirará em",
+      "resend": "Reenviar",
+      "verify": "Verificar"
+    },
+    "assignedUsers": {
+      "you": "Você",
+      "assignedAt": "Atribuído em",
+      "canViewReports": "Pode visualizar relatórios",
+      "canUpdateStatus": "Pode atualizar status",
+      "canManageUsers": "Pode gerenciar usuários",
+      "permissionMode": "Modo de permissão",
+      "custom": "Personalizado",
+      "saveChanges": "Salvar alterações",
+      "remove": "Remover",
+      "changesSaved": "Alterações salvas",
+      "assigneePermissionSaved": "Permissão do designado salva com sucesso"
+    },
+    "dashboard": {
+      "problemsStatistics": "Estatísticas de problemas",
+      "filterByStatus": "Filtrar por status",
+      "filterByProblemType": "Filtrar por tipo de problema"
+    },
+    "departments": {
+      "assignUsers": "Atribuir usuários",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "createdAt": "Criado em",
+      "assignTo": "Atribuir a",
+      "addUsersToThisDepartment": "Adicionar usuários a este departamento",
+      "cancel": "Cancelar",
+      "save": "Salvar",
+      "success": "Sucesso",
+      "usersWereAssigned": "usuários foram atribuídos a",
+      "departmentDeletedSuccessfully": "Departamento excluído com sucesso!",
+      "close": "Fechar"
+    },
+    "modal": {
+      "updateProblemStatus": "Atualizar status do problema",
+      "chooseNewStatus": "Escolha um novo status para atribuir a este problema",
+      "newStatus": "Novo status",
+      "problemStatusChanged": "Status do problema alterado",
+      "problemStatusUpdated": "Status do problema foi atualizado com sucesso"
+    },
+    "municipalities": {
+      "close": "Fechar"
+    },
+    "navigation": {
+      "home": "Início",
+      "notifications": "Notificações",
+      "reports": "Relatórios",
+      "newProblem": "Novo problema",
+      "history": "Histórico",
+      "pointsOfInterest": "Pontos de interesse",
+      "viewAll": "Ver todos",
+      "createNew": "Criar novo",
+      "affiliations": "Afiliações",
+      "requestNew": "Solicitar novo",
+      "settings": "Configurações",
+      "departments": "Departamentos",
+      "publicAgents": "Agentes públicos",
+      "affiliationRequests": "Solicitações de afiliação",
+      "permissionPresets": "Predefinições de permissão",
+      "dashboard": "Painel",
+      "problems": "Problemas",
+      "assignees": "Designados",
+      "list": "Lista",
+      "assign": "Atribuir",
+      "profile": "Perfil",
+      "exit": "Sair"
+    },
+    "permissionPresets": {
+      "name": "Nome",
+      "nameDescription": "O apelido deste conjunto de permissões",
+      "veryMemorableName": "Nome muito memorável",
+      "delete": "Excluir",
+      "saveChanges": "Salvar alterações",
+      "save": "Salvar",
+      "createNew": "Criar novo",
+      "permissionPresetDescription": "Uma predefinição de permissão é uma predefinição de permissões em um município que pode ser aplicada a um usuário atribuído"
+    },
+    "permissions": {
+      "canViewReports": "Pode visualizar relatórios",
+      "canViewReportsDescription": "Isso permite que um afiliado visualize todos os relatórios de um problema",
+      "canUpdateStatus": "Pode atualizar status",
+      "canUpdateStatusDescription": "Isso permite que um afiliado altere o status de um problema",
+      "canManageUsers": "Pode gerenciar usuários",
+      "canManageUsersDescription": "Isso permite que um afiliado altere a permissão de outros designados em um departamento"
+    },
+    "pointsOfInterest": {
+      "active": "Ativo",
+      "inactive": "Inativo",
+      "radius": "Raio",
+      "createdAt": "Criado em",
+      "viewOnMap": "Ver no mapa",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "name": "Nome",
+      "nameRequired": "Nome é obrigatório.",
+      "veryImportantThing": "Coisa muito importante",
+      "color": "Cor",
+      "headsUp": "Atenção!",
+      "chooseCoordinatesDescription": "Você pode escolher as coordenadas movendo o marcador no mapa.",
+      "active": "Ativo",
+      "activeDescription": "Se ativado, os pontos de interesse o notificam se um novo problema aparecer em sua área.",
+      "cancel": "Cancelar"
+    },
+    "problem": {
+      "type": "Tipo",
+      "status": "Status",
+      "firstReportedAt": "Primeiro relatório em",
+      "lastReportedAt": "Último relatório em",
+      "credibility": "Credibilidade",
+      "userReports": "Relatórios de usuários",
+      "reportedAt": "Relatado em"
+    },
+    "problems": {
+      "searchPlaceholder": "Pesquisar por ID, título ou status...",
+      "firstReportedAt": "Primeiro relatório em",
+      "type": "Tipo",
+      "validated": "Validado",
+      "actions": "Ações",
+      "viewDetails": "Ver detalhes"
+    },
+    "pwa": {
+      "install": "Instalar",
+      "update": "Atualizar",
+      "installed": "Instalado"
+    },
+    "report": {
+      "description": "Descrição",
+      "images": "Imagens",
+      "coordinates": "Coordenadas"
+    },
+    "reports": {
+      "newProblem": "Novo problema",
+      "history": "Histórico",
+      "viewOnMap": "Ver no mapa",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "resolvedAt": "Resolvido em",
+      "thisReportWasVeryCredible": "Este relatório foi muito confiável.",
+      "thisProblemIsBeingReported": "Este problema está sendo relatado por muitos cidadãos",
+      "noReportsFound": "Nenhum relatório encontrado.",
+      "reportNewProblem": "Relate um novo problema aqui."
     }
   }
 }

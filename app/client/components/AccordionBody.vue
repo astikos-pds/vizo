@@ -1,7 +1,9 @@
 <script lang="ts" setup>
+const { t } = useI18n();
+
 defineProps<{
   items: any[];
-  emptyText: string;
+  emptyText?: string;
 }>();
 </script>
 
@@ -11,7 +13,7 @@ defineProps<{
       v-if="items.length === 0"
       class="w-full text-sm h-24 flex justify-center items-center border border-default rounded-md"
     >
-      {{ emptyText }}
+      {{ emptyText || t('components.accordionBody.emptyText') }}
     </div>
     <div
       v-else

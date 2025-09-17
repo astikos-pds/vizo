@@ -3,6 +3,8 @@ import type { FormSubmitEvent } from "@nuxt/ui";
 import z from "zod";
 import type { PointOfInterest } from "~/types/domain/point-of-interest";
 
+const { t } = useI18n();
+
 const { state } = defineProps<{
   title: string;
   state?: PointOfInterest;
@@ -16,7 +18,7 @@ const emit = defineEmits<{
 }>();
 
 const pointOfInterestSchema = z.object({
-  name: z.string().min(1, "Name is required."),
+  name: z.string().min(1, t('components.pointsOfInterest.nameRequired')),
   radius: z
     .number()
     .min(
@@ -93,20 +95,20 @@ const hasUnsavedChanges = computed(() => {
           class="w-[90%] 2xl:w-[85%] flex flex-col items-center gap-6"
           @submit="onSubmit"
         >
-          <UFormField label="Name" name="name" required class="w-full">
+          <UFormField :label="t('components.pointsOfInterest.name')" name="name" required class="w-full">
             <UInput
               v-model="form.name"
-              placeholder="Very important thing"
+              :placeholder="t('components.pointsOfInterest.veryImportantThing')"
               class="w-full"
             />
           </UFormField>
 
-          <UFormField label="Color" name="color" class="w-full">
+          <UFormField :label="t('components.pointsOfInterest.color')" name="color" class="w-full">
             <PopoverColorPicker v-model="form.colorHex" />
           </UFormField>
 
           <UFormField
-            label="Radius"
+            :label="t('components.pointsOfInterest.radius')"
             name="radius"
             class="w-full"
             :hint="
@@ -126,15 +128,15 @@ const hasUnsavedChanges = computed(() => {
           <UAlert
             color="neutral"
             variant="subtle"
-            title="Heads up!"
-            description="You may choose the coordinates by moving the marker in the map."
+            :title="t('components.pointsOfInterest.headsUp')"
+            :description="t('components.pointsOfInterest.chooseCoordinatesDescription')"
             icon="i-lucide-map-pin"
           />
 
           <UFormField
-            label="Active"
+            :label="t('components.pointsOfInterest.active')"
             name="active"
-            description="If activated, points of interest notifies you if a new problem appear in it's area."
+            :description="t('components.pointsOfInterest.activeDescription')"
             class="w-full flex justify-between items-center gap-3"
           >
             <USwitch v-model="form.active" />
@@ -145,17 +147,17 @@ const hasUnsavedChanges = computed(() => {
             color="neutral"
             variant="outline"
             to="/points-of-interest"
-            >Cancel</UButton
+            >{{ t('components.pointsOfInterest.cancel') }}</UButton
           >
           <UButton
             v-else-if="state"
             color="neutral"
             type="submit"
             :loading="loading"
-            >Save changes</UButton
+            >{{ t('components.permissionPresets.saveChanges') }}</UButton
           >
 
-          <UButton v-else type="submit" :loading="loading">Save</UButton>
+          <UButton v-else type="submit" :loading="loading">{{ t('components.permissionPresets.save') }}</UButton>
         </UForm>
       </main>
     </template>

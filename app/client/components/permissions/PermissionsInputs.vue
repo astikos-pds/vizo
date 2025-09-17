@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { Permission } from "~/types/domain/permission";
 
+const { t } = useI18n();
+
 const model = defineModel<Permission>({ required: true });
 
 defineProps<{
@@ -11,9 +13,9 @@ defineProps<{
 <template>
   <section class="flex flex-col gap-5">
     <UFormField
-      label="Can view reports"
+      :label="t('components.permissions.canViewReports')"
       name="can-view-reports"
-      description="This permits that a filiate view all reports for a problem"
+      :description="t('components.permissions.canViewReportsDescription')"
       required
       class="w-full flex justify-between items-center gap-3"
     >
@@ -23,9 +25,9 @@ defineProps<{
     <USeparator />
 
     <UFormField
-      label="Can update status"
+      :label="t('components.permissions.canUpdateStatus')"
       name="can-update-status"
-      description="This permits that a filiate changes a problem's status"
+      :description="t('components.permissions.canUpdateStatusDescription')"
       required
       class="w-full flex justify-between items-center gap-3"
     >
@@ -35,9 +37,9 @@ defineProps<{
     <USeparator />
 
     <UFormField
-      label="Can manage users"
+      :label="t('components.permissions.canManageUsers')"
       name="can-manage-users"
-      description="This permits that a filiate changes the permission of other assignees in a department"
+      :description="t('components.permissions.canManageUsersDescription')"
       required
       class="w-full flex justify-between items-center gap-3"
     >

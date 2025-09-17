@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+const { t } = useI18n();
+
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
 
@@ -24,7 +26,7 @@ const items = computed<NavigationMenuItem[]>(() => {
   return [
     ...base,
     {
-      label: "Create new",
+      label: t('components.permissionPresets.createNew'),
       icon: "i-lucide-badge-plus",
       to: `/municipalities/${currentAffiliation.municipality.id}/permission-presets/new`,
     },

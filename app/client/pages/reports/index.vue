@@ -3,6 +3,8 @@ import type { PageDTO, Pagination } from "~/types/domain/pagination";
 import type { Report } from "~/types/domain/report";
 import type { LatLng } from "~/types/geolocation";
 
+const { t } = useI18n();
+
 useHead({
   title: "Vizo | Report history",
   meta: [{ name: "description", content: "See your last reports in Vizo" }],
@@ -41,15 +43,15 @@ const zoomToMarker = (marker: LatLng) => {
 <template>
   <ReportsPage class="flex">
     <template #aside>
-      <EmptyMessage v-if="pending">Loading</EmptyMessage>
+      <EmptyMessage v-if="pending">{{ t('common.loading') }}</EmptyMessage>
       <EmptyMessage v-else-if="!page"
-        >Failed to fetch last reports.</EmptyMessage
+        >{{ t('toast.error.description.default') }}</EmptyMessage
       >
       <EmptyMessage v-else-if="reports.length === 0">
         <span>
-          No reports were found.
+          {{ t('components.reports.noReportsFound') }}
           <NuxtLink to="/reports/new" class="text-primary"
-            >Report a new problem here.</NuxtLink
+            >{{ t('components.reports.reportNewProblem') }}</NuxtLink
           >
         </span>
       </EmptyMessage>

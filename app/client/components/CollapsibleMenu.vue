@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+const { t } = useI18n();
+
 const { defaultOpen } = defineProps<{
   title: string;
   items: any[];
@@ -27,7 +29,7 @@ const open = ref<boolean>(defaultOpen ?? false);
           class="w-full h-24 lg:h-48 flex justify-center items-center border border-default rounded-lg"
         >
           <p class="text-sm text-center p-3">
-            <slot name="empty" />
+            <slot name="empty">{{ t('components.collapsibleMenu.emptyText') }}</slot>
           </p>
         </div>
 

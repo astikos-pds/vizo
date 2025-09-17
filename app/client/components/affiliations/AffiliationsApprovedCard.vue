@@ -3,7 +3,7 @@ import type { DropdownMenuItem } from "@nuxt/ui";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { Municipality } from "~/types/domain/municipality";
 
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 
 const affiliatedUser = defineProps<AffiliatedUser>();
 
@@ -17,7 +17,7 @@ async function onDelete(municipalityId: Municipality["id"]) {
 
 const actions = ref<DropdownMenuItem[]>([
   {
-    label: "Disaffiliate",
+    label: t('components.affiliations.disaffiliate'),
     icon: "i-lucide-split",
     color: "error",
     onSelect: () => onDelete(affiliatedUser.municipality.id),
@@ -45,7 +45,7 @@ const actions = ref<DropdownMenuItem[]>([
           </h3>
           <div class="text-xs 2xl:text-sm flex flex-col">
             <span>
-              Requested at
+              {{ t('components.affiliations.requestedAt') }}
               {{
                 affiliatedUser.affiliatedAt.toLocaleDateString(locale, {
                   dateStyle: "full",
@@ -74,7 +74,7 @@ const actions = ref<DropdownMenuItem[]>([
         <div class="w-full flex justify-between items-center">
           <div class="text-xs flex flex-col">
             <span v-if="affiliatedUser.approvedAt"
-              >Since
+              >{{ t('components.affiliations.since') }}
               {{
                 affiliatedUser.approvedAt.toLocaleDateString(locale, {
                   dateStyle: "full",
@@ -82,7 +82,7 @@ const actions = ref<DropdownMenuItem[]>([
               }}</span
             >
             <span v-if="affiliatedUser.approver"
-              >Approved by {{ affiliatedUser.approver.user.name }}</span
+              >{{ t('components.affiliations.approvedBy') }} {{ affiliatedUser.approver.user.name }}</span
             >
           </div>
         </div>

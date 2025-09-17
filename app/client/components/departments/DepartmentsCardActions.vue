@@ -4,6 +4,8 @@ import DepartmentsAssignmentModal from "./DepartmentsAssignmentModal.vue";
 import { useDepartments } from "~/composables/use-departments";
 import type { Department } from "~/types/domain/department";
 
+const { t } = useI18n();
+
 const department = defineProps<Department>();
 
 const overlay = useOverlay();
@@ -23,8 +25,8 @@ async function onDelete(department: Department) {
   await deleteDepartment(municipalityId, department.id);
 
   toast.add({
-    title: "Success",
-    description: "Department deleted successfully!",
+    title: t('components.departments.success'),
+    description: t('components.departments.departmentDeletedSuccessfully'),
     color: "success",
   });
 
@@ -34,19 +36,19 @@ async function onDelete(department: Department) {
 const items = ref<DropdownMenuItem[][]>([
   [
     {
-      label: "Assign users",
+      label: t('components.departments.assignUsers'),
       icon: "i-lucide-user-plus",
       onSelect: openModal,
     },
     {
-      label: "Edit",
+      label: t('components.departments.edit'),
       icon: "i-lucide-pencil",
       to: `/municipalities/${department.municipality.id}/departments/${department.id}/edit`,
     },
   ],
   [
     {
-      label: "Delete",
+      label: t('components.departments.delete'),
       icon: "i-lucide-trash",
       color: "error",
       onSelect: () => onDelete(department),

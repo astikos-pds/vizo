@@ -232,6 +232,7 @@
     "confirm": "Send anyway"
   },
   "common": {
+    "loading": "Loading...",
     "cancel": "Cancel"
   },
   "settings": {
@@ -458,6 +459,200 @@
       "date": "Date",
       "title": "Title",
       "description": "Description"
+    }
+  },
+
+  "components": {
+    "accordionBody": {
+      "emptyText": "No items found"
+    },
+    "collapsibleMenu": {
+      "emptyText": "No items found"
+    },
+    "passwordInput": {
+      "hidePassword": "Hide password",
+      "showPassword": "Show password"
+    },
+    "passwordStrengthIndicator": {
+      "enterPassword": "Enter a password",
+      "weak": "Weak password",
+      "medium": "Medium password",
+      "strong": "Strong password",
+      "passwordStrengthIndicator": "Must contain:"
+    },
+    "popoverColorPicker": {
+      "chooseColor": "Choose color"
+    },
+    "rangePicker": {
+      "pickDate": "Pick a date"
+    },
+    "affiliatedUsers": {
+      "noPublicAgentsFound": "No public agents found.",
+      "since": "Since",
+      "assignToDepartment": "Assign to department"
+    },
+    "affiliations": {
+      "viewAll": "View all",
+      "requestNew": "Request new",
+      "disaffiliate": "Disaffiliate",
+      "requestedAt": "Requested at",
+      "since": "Since",
+      "approvedBy": "Approved by",
+      "reject": "Reject",
+      "approve": "Approve",
+      "cancel": "Cancel",
+      "waitForApproval": "Wait for approval",
+      "waitDescription": "Please wait until a municipal administrator approves your affiliation request.",
+      "seeAllRequests": "See all your requests in the affiliations page",
+      "email": "E-mail",
+      "verifyWithCode": "Verify with code",
+      "enterCodeSentTo": "Enter the verification code sent to",
+      "sendingEmailVerification": "Sending e-mail verification...",
+      "code": "Code",
+      "codeWillExpireIn": "Code will expire in",
+      "resend": "Resend",
+      "verify": "Verify"
+    },
+    "assignedUsers": {
+      "you": "You",
+      "assignedAt": "Assigned at",
+      "canViewReports": "Can view reports",
+      "canUpdateStatus": "Can update status",
+      "canManageUsers": "Can manage users",
+      "permissionMode": "Permission mode",
+      "custom": "Custom",
+      "saveChanges": "Save changes",
+      "remove": "Remove",
+      "changesSaved": "Changes saved",
+      "assigneePermissionSaved": "Assignee permission saved successfully"
+    },
+    "dashboard": {
+      "problemsStatistics": "Problems statistics",
+      "filterByStatus": "Filter by status",
+      "filterByProblemType": "Filter by problem type"
+    },
+    "departments": {
+      "assignUsers": "Assign users",
+      "edit": "Edit",
+      "delete": "Delete",
+      "createdAt": "Created at",
+      "assignTo": "Assign to",
+      "addUsersToThisDepartment": "Add users to this department",
+      "cancel": "Cancel",
+      "save": "Save",
+      "success": "Success",
+      "usersWereAssigned": "users were assigned to",
+      "departmentDeletedSuccessfully": "Department deleted successfully!",
+      "close": "Close"
+    },
+    "modal": {
+      "updateProblemStatus": "Update problem status",
+      "chooseNewStatus": "Choose a new status to assign to this problem",
+      "newStatus": "New status",
+      "problemStatusChanged": "Problem status changed",
+      "problemStatusUpdated": "Problem status was updated successfully"
+    },
+    "municipalities": {
+      "close": "Close"
+    },
+    "navigation": {
+      "home": "Home",
+      "notifications": "Notifications",
+      "reports": "Reports",
+      "newProblem": "New problem",
+      "history": "History",
+      "pointsOfInterest": "Points of interest",
+      "viewAll": "View all",
+      "createNew": "Create new",
+      "affiliations": "Affiliations",
+      "requestNew": "Request new",
+      "settings": "Settings",
+      "departments": "Departments",
+      "publicAgents": "Public agents",
+      "affiliationRequests": "Affiliation requests",
+      "permissionPresets": "Permission presets",
+      "dashboard": "Dashboard",
+      "problems": "Problems",
+      "assignees": "Assignees",
+      "list": "List",
+      "assign": "Assign",
+      "profile": "Profile",
+      "exit": "Exit"
+    },
+    "permissionPresets": {
+      "name": "Name",
+      "nameDescription": "The nickname of this set of permissions",
+      "veryMemorableName": "Very memorable name",
+      "delete": "Delete",
+      "saveChanges": "Save changes",
+      "save": "Save",
+      "createNew": "Create new",
+      "permissionPresetDescription": "A permission preset is a predefinition of permissions in a municipality that can be applied to a assigned user"
+    },
+    "permissions": {
+      "canViewReports": "Can view reports",
+      "canViewReportsDescription": "This permits that a filiate view all reports for a problem",
+      "canUpdateStatus": "Can update status",
+      "canUpdateStatusDescription": "This permits that a filiate changes a problem's status",
+      "canManageUsers": "Can manage users",
+      "canManageUsersDescription": "This permits that a filiate changes the permission of other assignees in a department"
+    },
+    "pointsOfInterest": {
+      "active": "Active",
+      "inactive": "Inactive",
+      "radius": "Radius",
+      "createdAt": "Created at",
+      "viewOnMap": "View on map",
+      "edit": "Edit",
+      "delete": "Delete",
+      "name": "Name",
+      "nameRequired": "Name is required.",
+      "veryImportantThing": "Very important thing",
+      "color": "Color",
+      "headsUp": "Heads up!",
+      "chooseCoordinatesDescription": "You may choose the coordinates by moving the marker in the map.",
+      "active": "Active",
+      "activeDescription": "If activated, points of interest notifies you if a new problem appear in it's area.",
+      "cancel": "Cancel"
+    },
+    "problem": {
+      "type": "Type",
+      "status": "Status",
+      "firstReportedAt": "First reported at",
+      "lastReportedAt": "Last reported at",
+      "credibility": "Credibility",
+      "userReports": "User reports",
+      "reportedAt": "Reported at"
+    },
+    "problems": {
+      "searchPlaceholder": "Search by ID, title or status...",
+      "firstReportedAt": "First reported at",
+      "type": "Type",
+      "validated": "Validated",
+      "actions": "Actions",
+      "viewDetails": "View details"
+    },
+    "pwa": {
+      "install": "Install",
+      "update": "Update",
+      "installed": "Installed"
+    },
+    "report": {
+      "description": "Description",
+      "images": "Images",
+      "coordinates": "Coordinates"
+    },
+    "reports": {
+      "newProblem": "New problem",
+      "history": "History",
+      "viewOnMap": "View on map",
+      "edit": "Edit",
+      "delete": "Delete",
+      "resolvedAt": "Resolved at",
+      "thisReportWasVeryCredible": "This report was very credible.",
+      "thisProblemIsBeingReported": "This problem is being reported by many citizens",
+      "noReportsFound": "No reports found.",
+      "reportNewProblem": "Report a new problem here."
     }
   }
 }

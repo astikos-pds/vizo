@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+const { t } = useI18n();
+
 defineProps<{
   title: string;
   description: String;
@@ -13,12 +15,12 @@ const items = computed<NavigationMenuItem[]>(() => {
 
   return [
     {
-      label: "View all",
+      label: t('components.navigation.viewAll'),
       icon: "i-lucide-package-open",
       to: `/municipalities/${currentAffiliation.municipality.id}/departments`,
     },
     {
-      label: "Create new",
+      label: t('components.navigation.createNew'),
       icon: "i-lucide-square-plus",
       to: `/municipalities/${currentAffiliation.municipality.id}/departments/new`,
     },

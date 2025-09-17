@@ -105,13 +105,13 @@ function openModal() {
       <div class="w-full">
         <div class="flex flex-col gap-2">
           <div class="flex gap-1.5">
-            <span class="font-semibold">Type:</span>
+            <span class="font-semibold">{{ t('components.problem.type') }}:</span>
             <UBadge color="neutral" variant="subtle" size="lg">{{
               problem.type
             }}</UBadge>
           </div>
           <div class="flex gap-1.5">
-            <span class="font-semibold">{{ t("details.form.status") }}:</span>
+            <span class="font-semibold">{{ t('components.problem.status') }}:</span>
             <UButtonGroup size="lg">
               <UBadge :color="statusColor" variant="subtle">
                 {{ problem.status }}
@@ -126,7 +126,7 @@ function openModal() {
             </UButtonGroup>
           </div>
           <div class="flex gap-1.5">
-            <span class="font-semibold">First reported at:</span>
+            <span class="font-semibold">{{ t('components.problem.firstReportedAt') }}:</span>
             <span>{{
               problem.firstReportedAt.toLocaleDateString(locale, {
                 dateStyle: "full",
@@ -135,7 +135,7 @@ function openModal() {
           </div>
 
           <div class="flex gap-1.5">
-            <span class="font-semibold">Last reported at:</span>
+            <span class="font-semibold">{{ t('components.problem.lastReportedAt') }}:</span>
             <span>{{
               problem.lastReportedAt.toLocaleDateString(locale, {
                 dateStyle: "full",
@@ -144,7 +144,7 @@ function openModal() {
           </div>
 
           <div class="flex gap-1.5">
-            <span class="font-semibold">Credibility:</span>
+            <span class="font-semibold">{{ t('components.problem.credibility') }}:</span>
             <span>{{ problem.accumulatedCredibility.toFixed(0) }}</span>
           </div>
         </div>
@@ -155,7 +155,7 @@ function openModal() {
         class="w-full rounded-md border border-default p-4"
       >
         <h3 class="text-xl font-semibold mb-6">
-          {{ t("details.reports.title") }}
+          {{ t('components.problem.userReports') }}
         </h3>
 
         <div class="flex flex-col gap-5">

@@ -40,7 +40,7 @@ const columns: TableColumn<Problem>[] = [
   },
   {
     accessorKey: "reportedAt",
-    header: "First reported at",
+    header: t('components.problems.firstReportedAt'),
     cell: ({ row }) => {
       return row.original.firstReportedAt.toLocaleString(locale.value, {
         day: "numeric",
@@ -53,12 +53,12 @@ const columns: TableColumn<Problem>[] = [
   },
   {
     accessorKey: "type",
-    header: "Type",
+    header: t('components.problems.type'),
     cell: ({ row }) => row.original.type,
   },
   {
     accessorKey: "status",
-    header: t("lastProblems.status"),
+    header: t('lastProblems.status'),
     cell: ({ row }) => {
       const status = row.getValue("status") as Problem["status"];
       const label = status;
@@ -75,7 +75,7 @@ const columns: TableColumn<Problem>[] = [
   },
   {
     accessorKey: "validated",
-    header: "Validated",
+    header: t('components.problems.validated'),
     cell: ({ row }) => {
       const validated = row.original.validated;
       const color = validated ? "success" : "error";
@@ -94,10 +94,10 @@ const columns: TableColumn<Problem>[] = [
     id: "actions",
     cell: ({ row }) => {
       const items = [
-        { type: "label", label: t("lastProblems.actions") },
+        { type: "label", label: t('components.problems.actions') },
         { type: "separator" },
         {
-          label: t("lastProblems.viewDetails"),
+          label: t('components.problems.viewDetails'),
           icon: "i-lucide-arrow-right",
           to: `/departments/${departmentId}/problems/${row.original.id}`,
         },
@@ -162,11 +162,11 @@ const filteredData = computed(() => {
   >
     <div class="flex flex-col gap-3 px-4 py-3.5">
       <h3 class="text-lg font-semibold">
-        Problems ({{ problems?.totalElements }})
+        {{ t('components.navigation.problems') }} ({{ problems?.totalElements }})
       </h3>
       <UInput
         v-model="search"
-        :placeholder="t('problems.searchPlaceholder')"
+        :placeholder="t('components.problems.searchPlaceholder')"
         clearable
         icon="i-lucide-search"
         class="w-70"

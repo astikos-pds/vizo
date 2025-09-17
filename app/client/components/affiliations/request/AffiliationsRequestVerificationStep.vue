@@ -4,6 +4,8 @@ import z from "zod";
 import { useEmailVerification } from "~/composables/use-email-verification";
 import { useAffiliationRequestStore } from "~/stores/affiliation-request";
 
+const { t } = useI18n();
+
 const stepper = useSteps();
 const store = useAffiliationRequestStore();
 
@@ -62,8 +64,8 @@ const onSubmit = async (event: FormSubmitEvent<CodeSchema>) => {
     toast.clear();
 
     toast.add({
-      title: "Error",
-      description: "The affiliation request failed, try again later.",
+      title: t('toast.error.title'),
+      description: t('toast.error.description.default'),
       color: "error",
     });
     return;
@@ -81,9 +83,9 @@ const onResend = async () => {
 </script>
 
 <template>
-  <AffiliationsRequestStep title="Verify with code">
+  <AffiliationsRequestStep :title="t('components.affiliations.verifyWithCode')">
     <template #description>
-      Enter the verification code sent to
+      {{ t('components.affiliations.enterCodeSentTo') }}
       <UButtonGroup orientation="horizontal">
         <UBadge color="primary" variant="subtle">{{
           store.institutionalEmail
@@ -98,7 +100,7 @@ const onResend = async () => {
     </template>
 
     <div v-if="!emailVerification" class="text-sm size-full text-center">
-      Sending e-mail verification...
+      {{ t('components.affiliations.sendingEmailVerification') }}
     </div>
 
     <UForm
@@ -109,20 +111,21 @@ const onResend = async () => {
       class="size-full flex flex-col items-center gap-4"
     >
       <div class="flex flex-col gap-2">
-        <UFormField label="Code" name="code" required>
+        <UFormField :label="t('components.affiliations.code')" name="code" required>
           <UPinInput v-model="form.code" otp autofocus :length="codeLength" />
         </UFormField>
 
         <div class="text-center text-sm">
-          <span>Code will expire in {{ formatTime(remainingTime) }}</span>
+          <span>{{ t('components.affiliations.codeWillExpireIn') }} {{ formatTime(remainingTime) }}</span>
         </div>
       </div>
 
       <div class="flex gap-1">
-        <UButton color="neutral" variant="subtle" @click="onResend"
-          >Resend</UButton
+        <UButton color="neutral" variant="subtle" @click="onResend">{{
+          t('components.affiliations.resend')
+        }}</UButton
         >
-        <UButton type="submit" :loading="loading">Verify</UButton>
+        <UButton type="submit" :loading="loading">{{ t('components.affiliations.verify') }}</UButton>
       </div>
     </UForm>
   </AffiliationsRequestStep>

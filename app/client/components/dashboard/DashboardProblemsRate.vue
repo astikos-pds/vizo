@@ -3,6 +3,8 @@ import { ref } from "vue";
 import VueApexCharts from "vue3-apexcharts";
 import type { ProblemStatus, ProblemType } from "~/types/domain/problem";
 
+const { t } = useI18n();
+
 const filters = reactive<{
   start: Date;
   end: Date;
@@ -38,7 +40,7 @@ const { data: statistics } = await getProblemsInScopeStatistics(
 
 const series = ref([
   {
-    name: "Problemas",
+    name: t('components.dashboard.problemsStatistics'),
     data: [] as { x: number; y: number }[],
   },
 ]);
@@ -109,7 +111,7 @@ watch(
 <template>
   <section class="flex flex-col">
     <header class="p-5 pb-1 flex flex-col gap-3">
-      <h1 class="font-semibold text-lg">Problems statistics</h1>
+      <h1 class="font-semibold text-lg">{{ t('components.dashboard.problemsStatistics') }}</h1>
 
       <div class="flex gap-2">
         <RangePicker v-model="filters" />
@@ -118,7 +120,7 @@ watch(
           v-model="filters.statuses"
           multiple
           :items="statuses"
-          placeholder="Filter by status"
+          :placeholder="t('components.dashboard.filterByStatus')"
           icon="i-lucide-funnel"
           class="min-w-48"
         />
@@ -127,7 +129,7 @@ watch(
           v-model="filters.types"
           multiple
           :items="types"
-          placeholder="Filter by problem type"
+          :placeholder="t('components.dashboard.filterByProblemType')"
           icon="i-lucide-list-filter"
           class="min-w-48"
         />

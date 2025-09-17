@@ -2,7 +2,7 @@
 import type { DropdownMenuItem } from "@nuxt/ui";
 import type { PointOfInterest } from "~/types/domain/point-of-interest";
 
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 
 const pointOfInterest = defineProps<PointOfInterest>();
 
@@ -23,17 +23,17 @@ async function onDelete(id: PointOfInterest["id"]) {
 
 const actions = ref<DropdownMenuItem[]>([
   {
-    label: "View on map",
+    label: t('components.pointsOfInterest.viewOnMap'),
     icon: "i-lucide-eye",
     onSelect: () => emit("zoomIn"),
   },
   {
-    label: "Edit",
+    label: t('components.pointsOfInterest.edit'),
     icon: "i-lucide-pencil",
     to: `/points-of-interest/${pointOfInterest.id}/edit`,
   },
   {
-    label: "Delete",
+    label: t('components.pointsOfInterest.delete'),
     icon: "i-lucide-trash",
     color: "error",
     onSelect: () => onDelete(pointOfInterest.id),
@@ -64,13 +64,13 @@ const actions = ref<DropdownMenuItem[]>([
             variant="subtle"
             :color="pointOfInterest.active ? 'success' : 'neutral'"
           >
-            {{ pointOfInterest.active ? "Active" : "Inactive" }}
+            {{ pointOfInterest.active ? t('components.pointsOfInterest.active') : t('components.pointsOfInterest.inactive') }}
           </UBadge>
         </header>
         <main class="text-xs 2xl:text-sm flex flex-col">
-          <span>Radius: {{ formattedRadius }}</span>
+          <span>{{ t('components.pointsOfInterest.radius') }}: {{ formattedRadius }}</span>
           <span
-            >Created at:
+            >{{ t('components.pointsOfInterest.createdAt') }}:
             {{
               pointOfInterest.createdAt.toLocaleDateString(locale, {
                 dateStyle: "full",

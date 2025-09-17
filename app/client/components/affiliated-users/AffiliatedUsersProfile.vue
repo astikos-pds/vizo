@@ -3,7 +3,7 @@ import type { DropdownMenuItem } from "@nuxt/ui";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { Pagination } from "~/types/domain/pagination";
 
-const { locale } = useI18n();
+const { t, locale } = useI18n();
 
 const affiliatedUser = defineProps<AffiliatedUser>();
 
@@ -34,7 +34,7 @@ function assign(departmentId: string) {
 
 const items = ref<DropdownMenuItem[]>([
   {
-    label: "Assign to department",
+    label: t('components.affiliatedUsers.assignToDepartment'),
     icon: "i-lucide-forward",
     children: departments.value?.map((d) => {
       return {
@@ -83,7 +83,7 @@ const items = ref<DropdownMenuItem[]>([
       </div>
 
       <div class="my-auto text-xs 2xl:text-sm font-normal">
-        Since {{ affiliatedUser.affiliatedAt.toLocaleDateString(locale) }}
+        {{ t('components.affiliatedUsers.since') }} {{ affiliatedUser.affiliatedAt.toLocaleDateString(locale) }}
       </div>
 
       <div v-if="affiliatedUser.isAdmin" class="my-auto">

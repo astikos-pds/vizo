@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { useAffiliationRequestStore } from "~/stores/affiliation-request";
 
+const { t } = useI18n();
+
 const stepper = useSteps();
 const store = useAffiliationRequestStore();
 
@@ -14,13 +16,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <AffiliationsRequestStep title="Wait for approval">
+  <AffiliationsRequestStep :title="t('components.affiliations.waitForApproval')">
     <template #description
-      >Please wait until a municipal administrator approves your affiliation
-      request.
-      <NuxtLink to="/affiliations" class="text-primary"
-        >See all your requests in the affiliations page</NuxtLink
-      >.</template
+      >{{ t('components.affiliations.waitDescription') }}
+      <NuxtLink to="/affiliations" class="text-primary">{{
+        t('components.affiliations.seeAllRequests')
+      }}</NuxtLink>.</template
     >
 
     <UIcon name="i-lucide-hourglass" mode="svg" class="size-15 mt-10" />
