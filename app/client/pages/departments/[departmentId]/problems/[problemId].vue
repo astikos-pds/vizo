@@ -105,17 +105,15 @@ function openModal() {
       <div class="w-full">
         <div class="flex flex-col gap-2">
           <div class="flex gap-1.5">
-<<<<<<< HEAD
             <span class="font-semibold">{{ t("pages.problem.type") }}</span>
-=======
-            <span class="font-semibold">{{ t('components.problem.type') }}:</span>
->>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
             <UBadge color="neutral" variant="subtle" size="lg">{{
               problem.type
             }}</UBadge>
           </div>
           <div class="flex gap-1.5">
-            <span class="font-semibold">{{ t('components.problem.status') }}:</span>
+            <span class="font-semibold"
+              >{{ t("components.problem.status") }}:</span
+            >
             <UButtonGroup size="lg">
               <UBadge :color="statusColor" variant="subtle">
                 {{ problem.status }}
@@ -130,13 +128,9 @@ function openModal() {
             </UButtonGroup>
           </div>
           <div class="flex gap-1.5">
-<<<<<<< HEAD
             <span class="font-semibold">{{
               t("pages.problem.firstReportedAt")
             }}</span>
-=======
-            <span class="font-semibold">{{ t('components.problem.firstReportedAt') }}:</span>
->>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
             <span>{{
               problem.firstReportedAt.toLocaleDateString(locale, {
                 dateStyle: "full",
@@ -145,13 +139,9 @@ function openModal() {
           </div>
 
           <div class="flex gap-1.5">
-<<<<<<< HEAD
             <span class="font-semibold">{{
               t("pages.problem.lastReportedAt")
             }}</span>
-=======
-            <span class="font-semibold">{{ t('components.problem.lastReportedAt') }}:</span>
->>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
             <span>{{
               problem.lastReportedAt.toLocaleDateString(locale, {
                 dateStyle: "full",
@@ -160,13 +150,9 @@ function openModal() {
           </div>
 
           <div class="flex gap-1.5">
-<<<<<<< HEAD
             <span class="font-semibold">{{
               t("pages.problem.credibility")
             }}</span>
-=======
-            <span class="font-semibold">{{ t('components.problem.credibility') }}:</span>
->>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
             <span>{{ problem.accumulatedCredibility.toFixed(0) }}</span>
           </div>
         </div>
@@ -177,7 +163,7 @@ function openModal() {
         class="w-full rounded-md border border-default p-4"
       >
         <h3 class="text-xl font-semibold mb-6">
-          {{ t('components.problem.userReports') }}
+          {{ t("components.problem.userReports") }}
         </h3>
 
         <div class="flex flex-col gap-5">
