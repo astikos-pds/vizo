@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @UseCase
 @RequiredArgsConstructor
@@ -85,7 +84,6 @@ public class ReportProblemUseCase {
                         problem.getLongitude(),
                         report.getId(),
                         report.getDescription(),
-                        loggedInUser.getId(),
                         Instant.now()
 
                 )
