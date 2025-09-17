@@ -1,4 +1,29 @@
 {
+  "meta": {
+    "names": {
+      "settings": "Settings",
+      "reports/new": "Report",
+      "reports": "Reports",
+      "reports/edit": "Editing report",
+      "index": "Home",
+      "points-of-interest": "Points of interest",
+      "points-of-interest/new": "New point of interest",
+      "points-of-interest/edit": "Editing point of interest",
+      "affiliations": "Affiliations",
+      "affiliations/request": "Request new affiliation",
+      "municipalities/departments": "Departments",
+      "municipalities/departments/new": "New department",
+      "municipalities/departments/edit": "Editing department",
+      "municipalities/permission-presets": "Permission preset",
+      "municipalities/permission-presets/new": "New permission preset",
+      "municipalities/public-agents": "Public agents",
+      "municipalities/affiliations": "Affiliations requests",
+      "departments/dashboard": "Dashboard",
+      "departments/problems": "Problems",
+      "departments/assignees": "Permission preset",
+      "departments/assignees/add": "Permission preset"
+    }
+  },
   "navBar": {
     "index": "Home",
     "report": "Report",

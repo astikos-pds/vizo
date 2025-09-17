@@ -31,7 +31,7 @@ const items = computed<NavigationMenuItem[]>(() => {
 <template>
   <section
     v-if="currentAffiliation"
-    class="size-full flex flex-col items-center"
+    class="size-full flex flex-col items-center overflow-auto"
   >
     <header
       v-if="currentAffiliation.isAdmin"
@@ -46,7 +46,7 @@ const items = computed<NavigationMenuItem[]>(() => {
         <h1 class="text-2xl font-semibold">{{ title }}</h1>
         <p class="text-sm">{{ description }}</p>
       </div>
-      <div class="w-full flex flex-col items-center">
+      <div class="size-full flex flex-col items-center">
         <slot />
       </div>
     </main>

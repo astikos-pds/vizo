@@ -37,7 +37,7 @@ const items = computed<NavigationMenuItem[]>(() => {
 <template>
   <section
     v-if="currentAffiliation && currentAffiliation.isAdmin"
-    class="size-full flex flex-col items-center"
+    class="size-full flex flex-col items-center overflow-auto"
   >
     <header class="w-full border-b border-default px-2">
       <UNavigationMenu :items="items" highlight />

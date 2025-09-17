@@ -81,9 +81,6 @@ const hasUnsavedChanges = computed(() => {
           <span class="text-xs sm:text-sm">{{
             t("components.permissionPresets.permissionPresetDescription")
           }}</span>
-          <span class="text-xs sm:text-sm">{{
-            t("components.permissionPresets.permissionPresetDescription")
-          }}</span>
         </div>
         <div class="flex-1 flex gap-2 items-center justify-end text-nowrap">
           <UButton
