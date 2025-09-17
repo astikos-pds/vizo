@@ -29,7 +29,7 @@
 }
 
 .dark {
-  --color-primary: #465fff;
+  --color-primary: rgb(126, 126, 255);
 }
 
 .apexcharts-tooltip {

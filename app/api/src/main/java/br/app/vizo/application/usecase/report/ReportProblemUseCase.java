@@ -76,19 +76,6 @@ public class ReportProblemUseCase {
         this.problemRepository.save(problem);
         Report saved = this.reportRepository.save(report);
 
-        this.eventPublisher.publishEvent(
-                new NewProblemEvent(
-                        problem.getId(),
-                        problem.getType(),
-                        problem.getLatitude(),
-                        problem.getLongitude(),
-                        report.getId(),
-                        report.getDescription(),
-                        Instant.now()
-
-                )
-        );
-
         return this.reportMapper.toDto(saved);
     }
 
