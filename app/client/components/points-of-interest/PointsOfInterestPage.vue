@@ -5,12 +5,12 @@ const { t } = useI18n();
 
 const items = ref<NavigationMenuItem[]>([
   {
-    label: t("components.navigation.viewAll"),
+    label: "View all",
     icon: "i-lucide-map",
     to: "/points-of-interest",
   },
   {
-    label: t("components.navigation.createNew"),
+    label: "Create new",
     icon: "i-lucide-map-pin-plus",
     to: "/points-of-interest/new",
   },

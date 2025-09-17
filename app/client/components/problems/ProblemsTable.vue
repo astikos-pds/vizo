@@ -164,6 +164,8 @@ const filteredData = computed(() => {
       <h3 class="text-lg font-semibold">
         {{ t("components.navigation.problems") }} ({{
           problems?.totalElements
+        }}) {{ t("components.navigation.problems") }} ({{
+          problems?.totalElements
         }})
       </h3>
       <UInput

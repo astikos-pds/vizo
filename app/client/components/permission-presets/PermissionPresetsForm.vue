@@ -78,9 +78,15 @@ const hasUnsavedChanges = computed(() => {
       <header class="w-full flex justify-between items-center gap-4">
         <div class="flex flex-col">
           <h1 class="font-semibold text-lg">{{ title }}</h1>
+          <<<<<<< HEAD
           <span class="text-xs sm:text-sm">{{
             t("components.permissionPresets.permissionPresetDescription")
           }}</span>
+          =======
+          <span class="text-xs sm:text-sm">{{
+            t("components.permissionPresets.permissionPresetDescription")
+          }}</span>
+          >>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
         </div>
         <div class="flex-1 flex gap-2 items-center justify-end text-nowrap">
           <UButton

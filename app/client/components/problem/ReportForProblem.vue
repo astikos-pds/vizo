@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { Report } from "~/types/domain/report";
 
+const { t, locale } = useI18n();
+
 interface Props {
   report: Report;
 }
 const { report } = defineProps<Props>();
-
-const { locale, t } = useI18n();
 </script>
 
 <template>
@@ -52,7 +52,7 @@ const { locale, t } = useI18n();
 
     <template #footer>
       <span class="text-sm">
-        {{ t("problemReport.reportedAt") }}
+        {{ t("components.problem.reportedAt") }}
         {{ report.createdAt.toLocaleDateString(locale, { dateStyle: "full" }) }}
       </span>
     </template>

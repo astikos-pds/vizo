@@ -29,9 +29,13 @@ const open = ref<boolean>(defaultOpen ?? false);
           class="w-full h-24 lg:h-48 flex justify-center items-center border border-default rounded-lg"
         >
           <p class="text-sm text-center p-3">
+<<<<<<< HEAD
             <slot name="empty">{{
               t("components.collapsibleMenu.emptyText")
             }}</slot>
+=======
+            <slot name="empty">{{ t('components.collapsibleMenu.emptyText') }}</slot>
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
           </p>
         </div>
 

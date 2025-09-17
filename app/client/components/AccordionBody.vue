@@ -13,7 +13,11 @@ defineProps<{
       v-if="items.length === 0"
       class="w-full text-sm h-24 flex justify-center items-center border border-default rounded-md"
     >
+<<<<<<< HEAD
       {{ emptyText || t("components.accordionBody.emptyText") }}
+=======
+      {{ emptyText || t('components.accordionBody.emptyText') }}
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
     </div>
     <div
       v-else

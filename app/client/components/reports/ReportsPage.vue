@@ -5,12 +5,20 @@ const { t } = useI18n();
 
 const items = ref<NavigationMenuItem[]>([
   {
+<<<<<<< HEAD
     label: t("components.reports.newProblem"),
+=======
+    label: t('components.reports.newProblem'),
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
     icon: "i-lucide-plus",
     to: "/reports/new",
   },
   {
+<<<<<<< HEAD
     label: t("components.reports.history"),
+=======
+    label: t('components.reports.history'),
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
     icon: "i-lucide-history",
     to: "/reports",
   },

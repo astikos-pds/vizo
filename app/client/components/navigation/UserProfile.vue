@@ -2,6 +2,8 @@
 import type { DropdownMenuItem } from "@nuxt/ui";
 import type { User } from "~/types/domain/user";
 
+const { t } = useI18n();
+
 const { user, collapsed } = defineProps<{
   user: User;
   collapsed: boolean;
@@ -10,14 +12,14 @@ const { user, collapsed } = defineProps<{
 const items = ref<DropdownMenuItem[][]>([
   // [
   //   {
-  //     label: "Profile",
+  //     label: t("components.navigation.profile"),
   //     icon: "i-lucide-user",
   //     to: `/users/${user.id}`,
   //   },
   // ],
   [
     {
-      label: "Exit",
+      label: t("components.navigation.exit"),
       icon: "i-lucide-log-out",
       to: "/logout",
     },

@@ -72,7 +72,11 @@ const onDelete = async (report: Report) => {
 const actions = computed<DropdownMenuItem[]>(() => {
   const base = [
     {
+<<<<<<< HEAD
       label: t("components.reports.viewOnMap"),
+=======
+      label: t('components.reports.viewOnMap'),
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
       icon: "i-lucide-eye",
       onSelect: () => emit("zoomIn"),
     },
@@ -85,12 +89,20 @@ const actions = computed<DropdownMenuItem[]>(() => {
   return [
     ...base,
     {
+<<<<<<< HEAD
       label: t("components.reports.edit"),
+=======
+      label: t('components.reports.edit'),
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
       icon: "i-lucide-pencil",
       to: `/reports/${report.id}/edit`,
     },
     {
+<<<<<<< HEAD
       label: t("components.reports.delete"),
+=======
+      label: t('components.reports.delete'),
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
       icon: "i-lucide-trash",
       color: "error",
       onSelect: () => onDelete(report),
@@ -138,7 +150,11 @@ const actions = computed<DropdownMenuItem[]>(() => {
         </UCollapsible>
 
         <span class="text-sm"
+<<<<<<< HEAD
           >{{ t("components.problem.reportedAt") }}
+=======
+          >{{ t('components.problem.reportedAt') }}
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
           {{
             report.createdAt.toLocaleDateString(locale, { dateStyle: "full" })
           }}</span
@@ -157,7 +173,11 @@ const actions = computed<DropdownMenuItem[]>(() => {
             color="info"
             variant="soft"
             icon="i-lucide-users"
+<<<<<<< HEAD
             >{{ t("components.reports.thisProblemIsBeingReported") }}</UBadge
+=======
+            >{{ t('components.reports.thisProblemIsBeingReported') }}</UBadge
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
           >
 
           <UBadge
@@ -165,7 +185,11 @@ const actions = computed<DropdownMenuItem[]>(() => {
             color="success"
             variant="soft"
             icon="i-lucide-circle-check"
+<<<<<<< HEAD
             >{{ t("components.reports.thisReportWasVeryCredible") }}</UBadge
+=======
+            >{{ t('components.reports.thisReportWasVeryCredible') }}</UBadge
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
           >
         </div>
       </main>
@@ -183,7 +207,11 @@ const actions = computed<DropdownMenuItem[]>(() => {
 
     <template #footer v-if="problemWasResolved && report.problem.resolvedAt">
       <span v-if="report.problem.resolvedAt" class="text-sm"
+<<<<<<< HEAD
         >{{ t("components.reports.resolvedAt") }}
+=======
+        >{{ t('components.reports.resolvedAt') }}
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
         {{
           report.problem.resolvedAt.toLocaleDateString(locale, {
             dateStyle: "full",

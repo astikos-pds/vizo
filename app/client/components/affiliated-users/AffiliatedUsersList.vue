@@ -15,7 +15,11 @@ defineProps<{
       v-if="items.length === 0"
       class="text-sm flex justify-center items-center h-24 border border-default rounded-md"
     >
+<<<<<<< HEAD
       {{ t("components.affiliatedUsers.noPublicAgentsFound") }}
+=======
+      {{ t('components.affiliatedUsers.noPublicAgentsFound') }}
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
     </div>
     <div v-else class="w-full" v-for="(affiliatedUser, i) in items">
       <AffiliatedUsersProfile

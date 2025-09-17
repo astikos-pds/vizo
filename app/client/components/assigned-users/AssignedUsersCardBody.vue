@@ -35,9 +35,15 @@ const cardLabel = computed<Record<string, string>>(() => {
             assignedUser.user.user.name
           }}</span>
 
+          <<<<<<< HEAD
           <UBadge color="neutral" variant="soft" size="sm">{{
             t("components.assignedUsers.you")
           }}</UBadge>
+          =======
+          <UBadge color="neutral" variant="soft" size="sm">{{
+            t("components.assignedUsers.you")
+          }}</UBadge>
+          >>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
         </div>
         <span class="text-xs 2xl:text-sm">{{
           assignedUser.user.institutionalEmail

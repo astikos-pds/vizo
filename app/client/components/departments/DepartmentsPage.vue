@@ -15,12 +15,20 @@ const items = computed<NavigationMenuItem[]>(() => {
 
   return [
     {
+<<<<<<< HEAD
       label: t("components.navigation.viewAll"),
+=======
+      label: t('components.navigation.viewAll'),
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
       icon: "i-lucide-package-open",
       to: `/municipalities/${currentAffiliation.municipality.id}/departments`,
     },
     {
+<<<<<<< HEAD
       label: t("components.navigation.createNew"),
+=======
+      label: t('components.navigation.createNew'),
+>>>>>>> 4492851ec4479446cd92d78277630bfd4d8f8a01
       icon: "i-lucide-square-plus",
       to: `/municipalities/${currentAffiliation.municipality.id}/departments/new`,
     },
