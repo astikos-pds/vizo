@@ -30,8 +30,9 @@ export default defineNuxtConfig({
     "@nuxt/ui",
     "@nuxtjs/i18n",
     "@vite-pwa/nuxt",
-    "@pinia/nuxt",
     "@nuxt/image",
+    "@pinia/nuxt",
+    "pinia-plugin-persistedstate/nuxt",
   ],
   icon: {
     serverBundle: {

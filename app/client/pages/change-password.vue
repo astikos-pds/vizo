@@ -41,6 +41,7 @@ stepper.setTotalSteps(steps.value.length);
 </script>
 
 <template>
+  <LogoGradient />
   <section class="relative size-full flex flex-col items-center">
     <ConfigHeader class="w-full" />
     <section class="size-full flex flex-col items-center overflow-y-auto">
@@ -68,5 +69,4 @@ stepper.setTotalSteps(steps.value.length);
       </UStepper>
     </section>
   </section>
-  <LogoGradient />
 </template>

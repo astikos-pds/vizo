@@ -3,126 +3,104 @@ import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { AssignedUser } from "~/types/domain/assigned-user";
 import type { User } from "~/types/domain/user";
 
-export const useLoggedInUserStore = defineStore("user-store", () => {
-  const user = useLocalStorage<User | null>("user", () => null, {
-    serializer: {
-      read: (v: string | null) => (v ? (JSON.parse(v) as User) : null),
-      write: (v: User | null) => (v ? JSON.stringify(v) : ""),
-    },
-  });
+export const useLoggedInUserStore = defineStore(
+  "user-store",
+  () => {
+    const user = ref<User | null>(null);
 
-  const setUser = (value: User | null) => {
-    user.value = value;
-  };
+    const setUser = (value: User | null) => {
+      user.value = value;
+    };
 
-  const affiliations = useLocalStorage<AffiliatedUser[]>(
-    "affiliations",
-    () => [],
-    {
-      serializer: {
-        read: (v: string | null) =>
-          v ? (JSON.parse(v) as AffiliatedUser[]) : [],
-        write: (v: AffiliatedUser[] | null) =>
-          v ? JSON.stringify(v) : JSON.stringify([]),
-      },
-    }
-  );
+    const affiliations = ref<AffiliatedUser[]>([]);
+    const currentAffiliationId = ref<string | null>(null);
 
-  const currentAffiliationId = useLocalStorage<string | null>(
-    "current-affiliation-id",
-    () => null
-  );
+    const currentAffiliation = computed(() => {
+      if (!affiliations.value || !currentAffiliationId.value) return undefined;
 
-  const currentAffiliation = computed(() => {
-    if (!affiliations.value || !currentAffiliationId.value) return undefined;
+      return affiliations.value.find(
+        (a) => a.id === currentAffiliationId.value
+      );
+    });
 
-    return affiliations.value.find((a) => a.id === currentAffiliationId.value);
-  });
+    const assignments = ref<AssignedUser[]>([]);
+    const currentAssignmentId = ref<string | null>(null);
 
-  const setAffiliations = (value: AffiliatedUser[]) => {
-    affiliations.value = value ?? [];
-  };
+    const currentAssignment = computed(() => {
+      if (
+        !currentAffiliation.value ||
+        !assignments.value ||
+        !currentAssignmentId.value
+      )
+        return undefined;
 
-  const setCurrentAffiliation = (value: AffiliatedUser | null) => {
-    currentAffiliationId.value = !value ? null : value.id;
-  };
+      const assignment = assignments.value.find(
+        (a) => a.id === currentAssignmentId.value
+      );
 
-  const ensureUserIsAffiliatedTo = (municipalityId: string) => {
-    if (!affiliations.value) return undefined;
+      if (!assignment) return undefined;
 
-    const affiliation = affiliations.value.find(
-      (affiliation) => affiliation.municipality.id === municipalityId
-    );
+      return {
+        ...assignment,
+        effectivePermission:
+          assignment.permissionMode !== "CUSTOM" && assignment.permissionPreset
+            ? assignment.permissionPreset.permission
+            : assignment.customPermission,
+      };
+    });
 
-    return affiliation;
-  };
+    const setAffiliations = (value: AffiliatedUser[]) => {
+      affiliations.value = value ?? [];
+    };
 
-  const assignments = useLocalStorage<AssignedUser[]>("assignments", () => [], {
-    serializer: {
-      read: (v: string | null) => (v ? (JSON.parse(v) as AssignedUser[]) : []),
-      write: (v: AssignedUser[] | null) =>
-        v ? JSON.stringify(v) : JSON.stringify([]),
-    },
-  });
+    const setCurrentAffiliation = (value: AffiliatedUser | null) => {
+      currentAffiliationId.value = !value ? null : value.id;
+    };
 
-  const currentAssignmentId = useLocalStorage<string | null>(
-    "current-assignment-id",
-    () => null
-  );
+    const ensureUserIsAffiliatedTo = (municipalityId: string) => {
+      if (!affiliations.value) return undefined;
 
-  const currentAssignment = computed(() => {
-    if (
-      !currentAffiliation.value ||
-      !assignments.value ||
-      !currentAssignmentId.value
-    )
-      return undefined;
+      const affiliation = affiliations.value.find(
+        (affiliation) => affiliation.municipality.id === municipalityId
+      );
 
-    const assignment = assignments.value.find(
-      (a) => a.id === currentAssignmentId.value
-    );
+      return affiliation;
+    };
 
-    if (!assignment) return undefined;
+    const setAssignments = (value: AssignedUser[]) => {
+      assignments.value = value ?? [];
+    };
+
+    const setCurrentAssignment = (value: AssignedUser | null) => {
+      currentAssignmentId.value = !value ? null : value.id;
+    };
+
+    const ensureUserIsAssignedTo = (departmentId: string) => {
+      if (!assignments.value || !currentAffiliation.value) return undefined;
+
+      const assignment = assignments.value.find(
+        (assignment) => assignment.department.id === departmentId
+      );
+
+      return assignment;
+    };
 
     return {
-      ...assignment,
-      effectivePermission:
-        assignment.permissionMode !== "CUSTOM" && assignment.permissionPreset
-          ? assignment.permissionPreset.permission
-          : assignment.customPermission,
+      user,
+      setUser,
+      affiliations,
+      currentAffiliation,
+      setAffiliations,
+      setCurrentAffiliation,
+      ensureUserIsAffiliatedTo,
+      assignments,
+      currentAssignment,
+      setAssignments,
+      setCurrentAssignment,
+      ensureUserIsAssignedTo,
     };
-  });
-
-  const setAssignments = (value: AssignedUser[]) => {
-    assignments.value = value ?? [];
-  };
-
-  const setCurrentAssignment = (value: AssignedUser | null) => {
-    currentAssignmentId.value = !value ? null : value.id;
-  };
-
-  const ensureUserIsAssignedTo = (departmentId: string) => {
-    if (!assignments.value || !currentAffiliation.value) return undefined;
-
-    const assignment = assignments.value.find(
-      (assignment) => assignment.department.id === departmentId
-    );
-
-    return assignment;
-  };
-
-  return {
-    user,
-    setUser,
-    affiliations,
-    currentAffiliation,
-    setAffiliations,
-    setCurrentAffiliation,
-    ensureUserIsAffiliatedTo,
-    assignments,
-    currentAssignment,
-    setAssignments,
-    setCurrentAssignment,
-    ensureUserIsAssignedTo,
-  };
-});
+  },
+  {
+    persist: true,
+  }
+);

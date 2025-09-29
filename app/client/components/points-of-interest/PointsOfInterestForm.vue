@@ -50,8 +50,12 @@ const { map, center } = useMap();
 const { coords, isLocationPrecise } = useMapGeolocation();
 
 const marker = reactive({
-  latitude: state?.latitude ?? center.latitude,
-  longitude: state?.longitude ?? center.longitude,
+  latitude:
+    state?.latitude ??
+    (isLocationPrecise.value ? coords.value.latitude : center.latitude),
+  longitude:
+    state?.longitude ??
+    (isLocationPrecise.value ? coords.value.longitude : center.longitude),
 });
 
 const stopWatch = watch(

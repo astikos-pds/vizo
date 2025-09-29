@@ -10,13 +10,13 @@ const { user, collapsed } = defineProps<{
 }>();
 
 const items = ref<DropdownMenuItem[][]>([
-  // [
-  //   {
-  //     label: t("components.navigation.profile"),
-  //     icon: "i-lucide-user",
-  //     to: `/users/${user.id}`,
-  //   },
-  // ],
+  [
+    {
+      label: t("components.navigation.profile"),
+      icon: "i-lucide-user",
+      to: `/users/${user.id}`,
+    },
+  ],
   [
     {
       label: t("components.navigation.exit"),

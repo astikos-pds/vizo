@@ -9,7 +9,7 @@ import { useReports } from "~/composables/use-reports";
 import { useMapGeolocation } from "~/composables/use-map-geolocation";
 import ModalReportImprecision from "~/components/modal/ModalReportImprecision.vue";
 import ModalRecentReport from "~/components/modal/ModalRecentReport.vue";
-import { reportSchema, type ReportSchema } from "~/lib/report-schema";
+import { makeReportSchema, type ReportSchema } from "~/lib/report-schema";
 
 const { t } = useI18n();
 
@@ -27,9 +27,10 @@ const {
   coords,
   error: geolocationError,
   isLocationPrecise,
-
   isWithinRadius,
 } = useMapGeolocation();
+
+const reportSchema = makeReportSchema(t);
 
 const form = reactive<ReportSchema>({
   description: "",
@@ -91,6 +92,13 @@ const toast = useToast();
 
 const overlay = useOverlay();
 
+function createObjectURL(file: File): string {
+  if (import.meta.client) {
+    return URL.createObjectURL(file);
+  }
+  return "";
+}
+
 const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
   if (!(await shouldSubmitImpreciseLocation(event.data))) return;
   if (!(await shouldSubmitOutOfBounds(event.data))) return;
@@ -102,7 +110,7 @@ const onSubmit = async (event: FormSubmitEvent<ReportSchema>) => {
       latitude,
       longitude,
       description: event.data.description,
-      imagesUrls: event.data.images.map((f) => URL.createObjectURL(f)),
+      imagesUrls: event.data.images.map((f) => createObjectURL(f)),
     }))
   )
     return;

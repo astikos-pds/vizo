@@ -77,8 +77,8 @@ const onSubmit = async (event: FormSubmitEvent<ChangePasswordSchema>) => {
   });
 
   toast.add({
-    title: t("toast.success.title"),
-    description: t("toast.success.description.signedUp"),
+    title: "Sucess",
+    description: "Password redefined successfully.",
     color: "success",
   });
 

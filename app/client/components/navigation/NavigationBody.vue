@@ -3,6 +3,7 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 import MunicipalitiesSelection from "../municipalities/MunicipalitiesSelection.vue";
 import type { PermissionPreset } from "~/types/domain/permission";
 import DepartmentsSelection from "../departments/DepartmentsSelection.vue";
+import UserProfile from "./UserProfile.vue";
 
 const open = defineModel<boolean>("open");
 
@@ -20,12 +21,12 @@ const commomItems = computed<NavigationMenuItem[]>(() => {
       to: "/",
       onSelect: () => (open.value = false),
     },
-    // {
-    //   label: t("components.navigation.notifications"),
-    //   icon: "i-lucide-bell",
-    //   to: "/notifications",
-    //   onSelect: () => (open.value = false),
-    // },
+    {
+      label: t("components.navigation.notifications"),
+      icon: "i-lucide-bell",
+      to: "/notifications",
+      onSelect: () => (open.value = false),
+    },
     {
       label: t("components.navigation.reports"),
       icon: "i-lucide-message-square-warning",
