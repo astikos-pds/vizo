@@ -30,7 +30,7 @@ async function updateAffiliationStatus(status: AffiliationStatus) {
 
   await changeAffiliationStatus(municipalityId, affiliationId, { status });
 
-  await refreshNuxtData(`municipality-${municipalityId}-affiliations`);
+  await refreshNuxtData(`municipality-${municipalityId}-affiliations-${status}`);
 }
 
 async function approve() {
