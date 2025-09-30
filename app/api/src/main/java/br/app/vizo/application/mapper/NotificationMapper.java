@@ -48,7 +48,7 @@ public class NotificationMapper
     }
 
     @Override
-    public Notification<? extends DomainEvent> toModel(NotificationEntity entity) {
+    public Notification<DomainEvent> toModel(NotificationEntity entity) {
         DomainEvent payload = switch (entity.getType()) {
             case NotificationType.NEW_PROBLEM -> this.objectMapper
                     .convertValue(entity.getPayload(), NewProblemEvent.class);

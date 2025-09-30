@@ -41,7 +41,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     @Override
-    public PageDTO<Notification<? extends DomainEvent>> findAllByRecipientId(UUID id, PaginationDTO pagination) {
+    public PageDTO<Notification<DomainEvent>> findAllByRecipientId(UUID id, PaginationDTO pagination) {
         var page = this.jpaRepository.findAllByRecipientId(id, PaginationDTO.resolve(pagination))
                 .map(this.mapper::toModel);
 
@@ -49,7 +49,7 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     }
 
     @Override
-    public PageDTO<Notification<? extends DomainEvent>> findAllByRecipientIdAndRead(UUID id, boolean read, PaginationDTO pagination) {
+    public PageDTO<Notification<DomainEvent>> findAllByRecipientIdAndRead(UUID id, boolean read, PaginationDTO pagination) {
         var page = this.jpaRepository.findAllByRecipientIdAndRead(id, read, PaginationDTO.resolve(pagination))
                 .map(this.mapper::toModel);
 

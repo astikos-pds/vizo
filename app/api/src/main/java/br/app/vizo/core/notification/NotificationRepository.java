@@ -13,7 +13,7 @@ public interface NotificationRepository {
 
     void saveAll(List<Notification<? extends DomainEvent>> notifications);
 
-    PageDTO<Notification<? extends DomainEvent>> findAllByRecipientId(UUID id, PaginationDTO pagination);
+    PageDTO<Notification<DomainEvent>> findAllByRecipientId(UUID id, PaginationDTO pagination);
 
-    PageDTO<Notification<? extends DomainEvent>> findAllByRecipientIdAndRead(UUID id, boolean read, PaginationDTO pagination);
+    PageDTO<Notification<DomainEvent>> findAllByRecipientIdAndRead(UUID id, boolean read, PaginationDTO pagination);
 }
