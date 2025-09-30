@@ -17,7 +17,6 @@ public class UserMapper implements RepresentationMapper<User, UserEntity, UserDT
     public UserDTO toDto(User user) {
         return new UserDTO(
                 user.getId(),
-                user.getDocument(),
                 user.getEmail(),
                 user.getName(),
                 user.getAvatarUrl(),

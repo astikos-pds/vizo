@@ -5,7 +5,6 @@ import java.util.UUID;
 
 public record UserDTO(
         UUID id,
-        String document,
         String email,
         String name,
         String avatarUrl,

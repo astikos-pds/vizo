@@ -49,6 +49,8 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         String token = this.retrieveToken(request);
 
+        System.out.println(token);
+
         if (token == null || !this.jwtService.isAccessTokenValid(token)) {
             this.sendError(response);
             return;
@@ -78,12 +80,12 @@ public class SecurityFilter extends OncePerRequestFilter {
     private String retrieveToken(HttpServletRequest request) {
         String header = request.getHeader("Authorization");
 
-        if (header != null) {
-            String token = header.replace("Bearer", "").strip();
-            return token.isBlank() ? null : token;
+        if (header == null) {
+            return null;
         }
 
-        return null;
+        String token = header.replace("Bearer", "").strip();
+        return token.isBlank() ? null : token;
     }
 
     private boolean shouldFilter(HttpServletRequest request) {
