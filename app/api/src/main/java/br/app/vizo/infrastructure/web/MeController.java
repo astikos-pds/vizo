@@ -9,6 +9,7 @@ import br.app.vizo.application.usecase.me.filter.GetMyNotificationsParams;
 import br.app.vizo.application.usecase.me.filter.ReportFilter;
 import br.app.vizo.config.security.UserDetailsImpl;
 import br.app.vizo.core.affiliation.AffiliationStatus;
+import br.app.vizo.core.notification.event.DomainEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -38,12 +39,14 @@ public class MeController {
         return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<List<NotificationDTO<?>>> getMyNotification(
+    @GetMapping("/notifications")
+    public ResponseEntity<PageDTO<NotificationDTO<? extends DomainEvent>>> getMyNotification(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestParam(required = false) Boolean read
+            @RequestParam(required = false) Boolean read,
+            PaginationDTO pagination
     ) {
-        List<NotificationDTO<?>> response = this.getMyNotificationsUseCase
-                .execute(userDetails.getUser(), new GetMyNotificationsParams(read));
+        var response = this.getMyNotificationsUseCase
+                .execute(userDetails.getUser(), pagination, new GetMyNotificationsParams(read));
 
         return ResponseEntity.ok(response);
     }

@@ -1,13 +1,19 @@
 package br.app.vizo.core.notification;
 
+import br.app.vizo.application.dto.page.PageDTO;
+import br.app.vizo.application.dto.page.PaginationDTO;
+import br.app.vizo.core.notification.event.DomainEvent;
+
 import java.util.List;
 import java.util.UUID;
 
 public interface NotificationRepository {
 
-    Notification<?> save(Notification<?> notification);
+    Notification<? extends DomainEvent> save(Notification<? extends DomainEvent> notification);
 
-    List<Notification<?>> findAllByRecipientId(UUID id);
+    void saveAll(List<Notification<? extends DomainEvent>> notifications);
 
-    List<Notification<?>> findAllByRecipientIdAndRead(UUID id, boolean read);
+    PageDTO<Notification<? extends DomainEvent>> findAllByRecipientId(UUID id, PaginationDTO pagination);
+
+    PageDTO<Notification<? extends DomainEvent>> findAllByRecipientIdAndRead(UUID id, boolean read, PaginationDTO pagination);
 }

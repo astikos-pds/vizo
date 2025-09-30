@@ -10,7 +10,6 @@ public record NewProblemEvent (
         ProblemType problemType,
         Double problemLatitude,
         Double problemLongitude,
-        UUID firstReportId,
         String firstReportDescription,
         Instant occurredAt
 ) implements DomainEvent {

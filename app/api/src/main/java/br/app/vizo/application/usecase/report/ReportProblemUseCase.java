@@ -44,7 +44,8 @@ public class ReportProblemUseCase {
         Problem problem = this.findRelatedOrCreateProblem(
                 response.predicted_type(),
                 request.latitude(),
-                request.longitude()
+                request.longitude(),
+                request.description()
         );
 
         boolean userAlreadyReportedProblem = this.reportRepository.existsByUserIdAndProblemId(
@@ -79,9 +80,27 @@ public class ReportProblemUseCase {
         return this.reportMapper.toDto(saved);
     }
 
-    private Problem findRelatedOrCreateProblem(ProblemType problemType, Double latitude, Double longitude) {
+    private Problem findRelatedOrCreateProblem(
+            ProblemType problemType,
+            Double latitude,
+            Double longitude,
+            String description
+    ) {
         return this.problemRepository
                 .findClosestUnresolvedByTypeWithinRadiusInMeters(problemType, latitude, longitude, 5.0)
-                .orElseGet(() -> this.problemFactory.create(Coordinates.of(latitude, longitude), problemType));
+                .orElseGet(() -> {
+                    Problem problem = this.problemFactory.create(Coordinates.of(latitude, longitude), problemType);
+
+                    this.eventPublisher.publishEvent(new NewProblemEvent(
+                            problem.getId(),
+                            problem.getType(),
+                            problem.getLatitude(),
+                            problem.getLongitude(),
+                            description,
+                            Instant.now()
+                    ));
+
+                    return problem;
+                });
     }
 }
