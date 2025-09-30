@@ -2,7 +2,6 @@
 import { useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { computed } from "vue";
-import { useDepartmentStore } from "~/stores/department";
 import type { BadgeProps } from "@nuxt/ui";
 import { useProblems } from "~/composables/use-problems";
 import type { ProblemStatus } from "~/types/domain/problem";
@@ -51,6 +50,8 @@ const reports = computed(() => {
   if (page.value) {
     return page.value.content;
   }
+
+  return [];
 });
 
 const colorByStatus: Record<ProblemStatus, BadgeProps["color"]> = {
