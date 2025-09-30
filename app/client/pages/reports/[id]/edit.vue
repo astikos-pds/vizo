@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "@nuxt/ui";
 import {
-  updateReportSchema,
+  makeUpdateReportSchema,
   type UpdateReportSchema,
 } from "~/lib/report-schema";
 import type { LatLng } from "~/types/geolocation";
@@ -48,6 +48,8 @@ async function createFileFromUrl(url: URL) {
     return undefined;
   }
 }
+
+const updateReportSchema = makeUpdateReportSchema(t);
 
 const form = reactive<UpdateReportSchema>({
   description: report.value ? report.value.description : "",
