@@ -1,4 +1,15 @@
 {
+  "error": {
+    "404": {
+      "title": "Página não encontrada",
+      "message": "A página que você está procurando não existe."
+    },
+    "default": {
+      "title": "Erro",
+      "message": "Occorreu um erro inesperado",
+      "button": "Voltar para o início"
+    }
+  },
   "navBar": {
     "index": "Início",
     "report": "Reportar",

@@ -24,6 +24,19 @@
       "departments/assignees/add": "Permission preset"
     }
   },
+
+  "error": {
+    "404": {
+      "title": "Page not found",
+      "message": "The page you are looking for does not exist."
+    },
+    "default": {
+      "title": "Error",
+      "message": "An error has occurred",
+      "button": "Back to home"
+    }
+  },
+
   "navBar": {
     "index": "Home",
     "report": "Report",
