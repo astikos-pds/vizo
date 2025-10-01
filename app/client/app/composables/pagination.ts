@@ -2,7 +2,7 @@ import type { PageDTO, Pagination } from "~/types/domain/pagination";
 
 export const usePagination = <T>(
   pagination: Pagination,
-  paginated: Ref<PageDTO<T> | null>
+  paginated: Ref<PageDTO<T> | undefined>
 ) => {
   const items = computed<T[]>(() => {
     if (!paginated.value) return [];

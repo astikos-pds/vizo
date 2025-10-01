@@ -167,7 +167,7 @@ const stepper = useSteps();
       </div>
 
       <UFormField label="E-mail" name="email" class="w-full" required>
-        <UButtonGroup class="w-full">
+        <UFieldGroup class="w-full">
           <UInput
             icon="i-lucide-at-sign"
             v-model="form.email"
@@ -183,7 +183,7 @@ const stepper = useSteps();
             icon="i-lucide-pencil"
             @click="stepper.goToStart"
           />
-        </UButtonGroup>
+        </UFieldGroup>
       </UFormField>
 
       <div class="flex flex-col md:flex-row gap-2 2xl:gap-3 w-full">

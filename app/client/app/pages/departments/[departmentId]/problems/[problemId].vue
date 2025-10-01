@@ -115,7 +115,7 @@ function openModal() {
             <span class="font-semibold"
               >{{ t("components.problem.status") }}:</span
             >
-            <UButtonGroup size="lg">
+            <UFieldGroup size="lg">
               <UBadge :color="statusColor" variant="subtle">
                 {{ problem.status }}
               </UBadge>
@@ -126,7 +126,7 @@ function openModal() {
                 icon="i-lucide-pencil"
                 @click="openModal"
               />
-            </UButtonGroup>
+            </UFieldGroup>
           </div>
           <div class="flex gap-1.5">
             <span class="font-semibold">{{

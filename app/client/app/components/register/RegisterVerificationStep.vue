@@ -56,13 +56,13 @@ const onResend = async () => {
   <RegisterStep title="Verify with code">
     <template #description>
       Enter the verification code sent to
-      <UButtonGroup orientation="horizontal">
+      <UFieldGroup orientation="horizontal">
         <UBadge color="primary" variant="subtle">{{ store.email }}</UBadge>
         <UButton
           color="neutral"
           variant="outline"
           icon="i-lucide-pencil"
-          @click="stepper.goToStart" /></UButtonGroup
+          @click="stepper.goToStart" /></UFieldGroup
       >.
     </template>
 

@@ -86,7 +86,7 @@ const onResend = async () => {
   <AffiliationsRequestStep :title="t('components.affiliations.verifyWithCode')">
     <template #description>
       {{ t("components.affiliations.enterCodeSentTo") }}
-      <UButtonGroup orientation="horizontal">
+      <UFieldGroup orientation="horizontal">
         <UBadge color="primary" variant="subtle">{{
           store.institutionalEmail
         }}</UBadge>
@@ -96,7 +96,7 @@ const onResend = async () => {
           icon="i-lucide-pencil"
           @click="stepper.goToStart"
         />
-      </UButtonGroup>
+      </UFieldGroup>
     </template>
 
     <div v-if="!emailVerification" class="text-sm size-full text-center">
