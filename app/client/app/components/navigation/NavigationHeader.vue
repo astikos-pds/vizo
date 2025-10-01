@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 const { collapsed } = defineProps<{
-  collapsed: boolean;
+  collapsed?: boolean;
 }>();
 
 const vizo = {

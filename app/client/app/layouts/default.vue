@@ -2,6 +2,7 @@
 import { useBreakpoints } from "@vueuse/core";
 import NavigationBody from "~/components/navigation/NavigationBody.vue";
 import NavigationHeader from "~/components/navigation/NavigationHeader.vue";
+import NavigationOptions from "~/components/navigation/NavigationOptions.vue";
 import UserProfile from "~/components/navigation/UserProfile.vue";
 import { useLoggedInUserStore } from "~/stores/user";
 
@@ -24,11 +25,6 @@ const shouldCollapse = breakpoints.smallerOrEqual("lg");
 watch(shouldCollapse, (should) => (collapsed.value = should));
 
 const { user } = useLoggedInUserStore();
-
-const { error } = useMapGeolocation();
-const isPermissionForGeolocationDenied = computed(
-  () => error.value?.code === 1
-);
 </script>
 
 <template>
@@ -115,41 +111,7 @@ const isPermissionForGeolocationDenied = computed(
           </h1>
         </div>
 
-        <div class="flex items-center gap-1">
-          <UButton
-            size="xl"
-            :color="isPermissionForGeolocationDenied ? 'neutral' : 'primary'"
-            variant="ghost"
-            :icon="
-              isPermissionForGeolocationDenied
-                ? 'i-lucide-navigation-off'
-                : 'i-lucide-navigation'
-            "
-            class="rounded-full size-10 flex items-center justify-center text-xl pointer-auto"
-          />
-
-          <!-- <UButton
-            size="xl"
-            color="neutral"
-            variant="outline"
-            icon="i-lucide-bell"
-            to="/notifications"
-            class="rounded-full size-10 flex items-center justify-center text-xl"
-          /> -->
-
-          <!-- <UButton
-            v-if="user"
-            size="xl"
-            color="neutral"
-            variant="link"
-            :avatar="{
-              src: user.avatarUrl?.toString(),
-              alt: user.name,
-              size: 'lg',
-            }"
-            :to="`/users/${user.id}`"
-          /> -->
-        </div>
+        <NavigationOptions />
       </header>
       <main class="flex-1 w-full overflow-hidden flex flex-col items-center">
         <slot />

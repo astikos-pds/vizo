@@ -6,7 +6,7 @@ const { t } = useI18n();
 
 const { user, collapsed } = defineProps<{
   user: User;
-  collapsed: boolean;
+  collapsed?: boolean;
 }>();
 
 const items = ref<DropdownMenuItem[][]>([

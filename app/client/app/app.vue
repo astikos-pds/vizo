@@ -23,9 +23,9 @@ watchEffect(() => {
     <NuxtPwaManifest />
   </ClientOnly>
 
-  <NuxtLoadingIndicator color="primary" :height="5" :throttle="0" />
-
   <UApp :locale="localesMapping[locale]">
+    <NuxtLoadingIndicator color="primary" :height="5" :throttle="0" />
+
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

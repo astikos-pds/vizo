@@ -3,12 +3,11 @@ import type { NavigationMenuItem } from "@nuxt/ui";
 import MunicipalitiesSelection from "../municipalities/MunicipalitiesSelection.vue";
 import type { PermissionPreset } from "~/types/domain/permission";
 import DepartmentsSelection from "../departments/DepartmentsSelection.vue";
-import UserProfile from "./UserProfile.vue";
 
 const open = defineModel<boolean>("open");
 
 const { collapsed } = defineProps<{
-  collapsed: boolean;
+  collapsed?: boolean;
 }>();
 
 const { t } = useI18n();
