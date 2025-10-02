@@ -63,7 +63,7 @@ const zoomToMarker = (marker: LatLng & { radius: number }) => {
         v-else-if="pointsOfInterest.length === 0"
         class="size-full flex justify-center items-center p-5"
       >
-        <span class="text-sm">
+        <span class="text-sm text-center px-3">
           {{ t("pages.pointsOfInterest.noPoints") }}
           <NuxtLink to="/points-of-interest/new" class="text-primary">
             {{ t("pages.pointsOfInterest.createFirst") }}

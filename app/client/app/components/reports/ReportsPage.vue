@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+defineProps<{
+  withPadding?: boolean;
+}>();
+
 const { t } = useI18n();
 
 const items = ref<NavigationMenuItem[]>([
@@ -29,6 +33,43 @@ const open = computed(() => isMobile.value);
 </script>
 
 <template>
+  <CommonPage
+    title="Reports"
+    :toolbar-items="items"
+    :with-padding="withPadding"
+  >
+    <main class="flex-1 flex justify-center">
+      <UDrawer
+        v-if="$slots.aside && isMobile"
+        v-model:open="open"
+        direction="bottom"
+        :overlay="false"
+        :dismissible="false"
+        :modal="false"
+        handle-only
+        :snap-points="snapPoints"
+        :active-snap-point="activeSnapPoint"
+        class="min-h-screen"
+      >
+        <template #body>
+          <slot name="aside" />
+        </template>
+      </UDrawer>
+      <aside
+        v-else-if="$slots.aside"
+        class="w-[40%] 2xl:w-[30%] border-r border-default"
+      >
+        <slot name="aside" />
+      </aside>
+
+      <div class="flex-1 flex justify-center items-center">
+        <slot />
+      </div>
+    </main>
+  </CommonPage>
+</template>
+
+<!-- <template>
   <section class="size-full flex flex-col">
     <header class="w-full border-b border-default px-2">
       <UNavigationMenu :items="items" highlight />
@@ -62,4 +103,4 @@ const open = computed(() => isMobile.value);
       </div>
     </main>
   </section>
-</template>
+</template> -->

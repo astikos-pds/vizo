@@ -14,13 +14,15 @@ const vizo = {
 </script>
 
 <template>
-  <section class="w-full flex flex-col gap-2" :class="{ 'px-2': !collapsed }">
+  <section class="w-full flex justify-center items-center flex-col gap-2">
     <UButton
       color="neutral"
       variant="ghost"
       :avatar="vizo.avatar"
       size="xl"
-      class="w-full"
+      block
+      :square="collapsed"
+      class="justify-start p-1"
     >
       {{ !collapsed ? vizo.name : "" }}
     </UButton>

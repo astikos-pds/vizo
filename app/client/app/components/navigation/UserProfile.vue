@@ -38,7 +38,6 @@ const items = ref<DropdownMenuItem[][]>([
       content: 'w-48',
       itemLeadingIcon: 'text-lg',
     }"
-    class="w-full"
   >
     <UButton
       color="neutral"
@@ -46,10 +45,12 @@ const items = ref<DropdownMenuItem[][]>([
       :avatar="{
         src: user.avatarUrl?.toString(),
         alt: user.name,
-        size: 'md',
+        size: 'sm',
       }"
-      size="lg"
+      block
+      :square="collapsed"
       :label="collapsed ? undefined : user.name"
+      class="justify-start p-1"
     />
   </UDropdownMenu>
 </template>

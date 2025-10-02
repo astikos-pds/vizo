@@ -71,7 +71,7 @@ const { user } = useLoggedInUserStore();
       <div
         class="flex-1 flex flex-col justify-between items-center overflow-hidden"
       >
-        <NavigationBody :collapsed="collapsed" class="p-2" />
+        <NavigationBody :collapsed="collapsed" class="p-2 px-4" />
         <UserProfile
           v-if="user"
           :user="user"
@@ -107,7 +107,7 @@ const { user } = useLoggedInUserStore();
             @click="collapsed = !collapsed"
           />
           <h1 class="font-semibold text-base">
-            {{ name ?? t(`navBar.${route.name?.toString()}`) }}
+            {{ route.name }}
           </h1>
         </div>
 

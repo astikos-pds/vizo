@@ -20,6 +20,7 @@ useHead({
 
 definePageMeta({
   name: "Home",
+  layout: "default1",
   middleware: ["auth"],
 });
 
@@ -64,6 +65,34 @@ const { data: problems, pending } = await getProblems();
 </script>
 
 <template>
+  <CommonPage title="Home" with-padding>
+    <div v-if="pending">{{ t("common.loading") }}</div>
+    <Map
+      v-else
+      ref="map"
+      class="lg:rounded-xl lg:border border-default"
+      :zoom="zoom"
+      :center="center"
+    >
+      <Marker
+        v-for="problem in problems"
+        @click="onMarkerClick(problem)"
+        :key="problem.id"
+        :lat-lng="{
+          latitude: problem.latitude,
+          longitude: problem.longitude,
+        }"
+      />
+
+      <CurrentPositionMarker
+        v-if="isLocationPrecise && !geolocationError"
+        v-model="coordinates"
+      />
+    </Map>
+  </CommonPage>
+</template>
+
+<!-- <template>
   <section class="relative size-full flex flex-row">
     <div class="size-full flex justify-center items-center lg:p-5">
       <div v-if="pending">{{ t("common.loading") }}</div>
@@ -91,4 +120,4 @@ const { data: problems, pending } = await getProblems();
       </Map>
     </div>
   </section>
-</template>
+</template> -->

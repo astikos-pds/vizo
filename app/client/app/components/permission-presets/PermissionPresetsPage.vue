@@ -14,7 +14,7 @@ const { data: permissionPresets } = await getPermissionPresetsInMunicipality(
 );
 
 const items = computed<NavigationMenuItem[]>(() => {
-  if (!currentAffiliation || permissionPresets.value === null) return [];
+  if (!currentAffiliation || !permissionPresets.value) return [];
 
   const base = permissionPresets.value.map((p) => {
     return {

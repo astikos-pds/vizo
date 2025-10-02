@@ -20,6 +20,7 @@ useHead({
 
 definePageMeta({
   name: "Report a problem",
+  layout: "default1",
   middleware: ["auth"],
 });
 
@@ -177,6 +178,9 @@ async function shouldSubmitIfRecentlyReported(report: {
     return true;
 
   const lastReport = nearbyReports.value.content[0];
+
+  if (!lastReport) return false;
+
   const diff = Math.abs(
     new Date().getTime() - new Date(lastReport.createdAt).getTime()
   );
@@ -205,9 +209,9 @@ function resolveCoordinates(data: ReportSchema) {
 </script>
 
 <template>
-  <ReportsPage>
+  <ReportsPage with-padding>
     <div
-      class="w-[90%] md:w-[75%] xl:w-[65%] 2xl:w-[55%] h-full flex flex-col gap-5 py-10 p-5 xl:p-10"
+      class="w-[90%] md:w-[75%] xl:w-[65%] 2xl:w-[55%] h-full flex flex-col gap-5 mt-10"
     >
       <h1 class="text-3xl text-center font-semibold px-2">
         {{ t("reportProblem.title") }}

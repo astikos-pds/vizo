@@ -75,14 +75,17 @@ const hasUnsavedChanges = computed(() => {
       @submit="onSubmit"
       class="w-[90%] xl:w-[70%] 2xl:w-[60%] flex flex-col justify-center items-center gap-4"
     >
-      <header class="w-full flex justify-between items-center gap-4">
-        <div class="flex flex-col">
-          <h1 class="font-semibold text-lg">{{ title }}</h1>
-          <span class="text-xs sm:text-sm">{{
-            t("components.permissionPresets.permissionPresetDescription")
-          }}</span>
-        </div>
-        <div class="flex-1 flex gap-2 items-center justify-end text-nowrap">
+      <UPageCard
+        :title="title"
+        :description="
+          t('components.permissionPresets.permissionPresetDescription')
+        "
+        variant="naked"
+        orientation="horizontal"
+      >
+        <div
+          class="size-full flex items-center justify-start lg:justify-end gap-2"
+        >
           <UButton
             v-if="editing"
             color="error"
@@ -91,6 +94,7 @@ const hasUnsavedChanges = computed(() => {
             @click="onDelete"
             >{{ t("components.permissionPresets.delete") }}</UButton
           >
+
           <UChip v-if="hasUnsavedChanges" color="info">
             <UButton
               :color="editing ? 'neutral' : 'primary'"
@@ -115,31 +119,27 @@ const hasUnsavedChanges = computed(() => {
             }}</UButton
           >
         </div>
-      </header>
+      </UPageCard>
 
-      <UCard color="neutral" variant="subtle" class="size-full">
-        <div
-          class="size-full flex flex-col justify-center items-center gap-5 p-3"
+      <UPageCard variant="subtle" class="w-full">
+        <UFormField
+          :label="t('components.permissionPresets.name')"
+          name="name"
+          :description="t('components.permissionPresets.nameDescription')"
+          required
+          class="w-full flex flex-col justify-between gap-1 md:flex-row md:items-center"
         >
-          <UFormField
-            :label="t('components.permissionPresets.name')"
-            name="name"
-            :description="t('components.permissionPresets.nameDescription')"
-            required
-            class="w-full flex flex-col justify-between gap-1 md:flex-row md:items-center"
-          >
-            <UInput
-              v-model="form.name"
-              :placeholder="t('components.permissionPresets.veryMemorableName')"
-              class="w-full"
-            />
-          </UFormField>
+          <UInput
+            v-model="form.name"
+            :placeholder="t('components.permissionPresets.veryMemorableName')"
+            class="w-full"
+          />
+        </UFormField>
 
-          <USeparator />
+        <USeparator />
 
-          <PermissionsInputs v-model="form" class="w-full" />
-        </div>
-      </UCard>
+        <PermissionsInputs v-model="form" class="w-full" />
+      </UPageCard>
     </UForm>
   </PermissionPresetsPage>
 </template>

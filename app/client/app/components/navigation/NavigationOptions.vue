@@ -3,10 +3,12 @@ const { error } = useMapGeolocation();
 const isPermissionForGeolocationDenied = computed(
   () => error.value?.code === 1
 );
+
+const { user } = useLoggedInUserStore();
 </script>
 
 <template>
-  <div class="flex items-center gap-1">
+  <div class="flex items-center gap-2">
     <UButton
       size="xl"
       :color="isPermissionForGeolocationDenied ? 'neutral' : 'primary'"
@@ -16,29 +18,31 @@ const isPermissionForGeolocationDenied = computed(
           ? 'i-lucide-navigation-off'
           : 'i-lucide-navigation'
       "
-      class="rounded-full size-10 flex items-center justify-center text-xl pointer-auto"
+      class="rounded-full flex items-center justify-center text-xl pointer-auto"
     />
 
-    <!-- <UButton
-            size="xl"
-            color="neutral"
-            variant="outline"
-            icon="i-lucide-bell"
-            to="/notifications"
-            class="rounded-full size-10 flex items-center justify-center text-xl"
-          /> -->
+    <UButton
+      size="xl"
+      color="neutral"
+      variant="outline"
+      icon="i-lucide-bell"
+      to="/notifications"
+      class="rounded-full flex items-center justify-center text-xl"
+    />
 
-    <!-- <UButton
-            v-if="user"
-            size="xl"
-            color="neutral"
-            variant="link"
-            :avatar="{
-              src: user.avatarUrl?.toString(),
-              alt: user.name,
-              size: 'lg',
-            }"
-            :to="`/users/${user.id}`"
-          /> -->
+    <UButton
+      v-if="user"
+      size="xl"
+      color="neutral"
+      variant="link"
+      square
+      :avatar="{
+        src: user.avatarUrl?.toString(),
+        alt: user.name,
+        size: 'lg',
+      }"
+      :to="`/users/${user.id}`"
+      class="p-0"
+    />
   </div>
 </template>
