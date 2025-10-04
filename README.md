@@ -33,9 +33,9 @@ Vizo é desenvolvido com uma arquitetura modular que combina diferentes tecnolog
     ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
     ![Gradle](https://img.shields.io/badge/Gradle-02303A.svg?style=for-the-badge&logo=Gradle&logoColor=white)
 
-  - **API de análise de relatos**: Flask é um microframework Python, que será usado para processamento de dados, análise textual, classificação de relatos e geoprocessamento.
+  - **API de análise de relatos**: FastAPI é um microframework Python, que será usado para processamento de dados, análise textual, classificação de relatos e geoprocessamento.
 
-    ![Flask](https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white)
+    ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
     ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffffff)
     ![Poetry](https://img.shields.io/badge/Poetry-%233B82F6.svg?style=for-the-badge&logo=poetry&logoColor=0B3D8D)
 
@@ -55,11 +55,21 @@ Abaixo estão listadas as entregas que compõem a documentação técnica e conc
 
 - **Proposta Inicial**: parte conceitual do documento que define o problema, os objetivos e a justificativa do projeto.
 
-  - Documento:
-
+  - Documentação:
     - [Original](docs/1%20-%20Proposta%20Inicial/original/documento.pdf)
     - [Corrigido](docs/1%20-%20Proposta%20Inicial/corrigido/documento.pdf)
-
   - Apresentação:
     - [Original](docs/1%20-%20Proposta%20Inicial/original/slides.pdf)
     - [Corrigido](docs/1%20-%20Proposta%20Inicial/corrigido/slides.pdf)
+
+- **Proof of Concept (PoC)**: em português, "Prova de Conceito", é demonstração da funcionalidade principal do projeto: o reporte de problemas.
+
+  - [Apresentação](<docs/2%20-%20Proof%20of%20Concept%20(PoC)/slides.pdf>)
+
+- **Minimum Viable Product**: em português, "Produto Mínimo Viável", é a implementação das funcionalidades principais, integradas num sistema coeso.
+
+  - [Apresentação](<docs/3%20-%20Minimum%20Viable%20Product%20(MVP)/slides.pdf>)
+
+- **Apresentação final**: projeto finalizado, com ambos documento e aplicação completos.
+  - [Documentação](docs/4%20-%20Apresentação%20Final/documento.pdf)
+  - [Apresenção](docs/4%20-%20Apresentação%20Final/slides.pdf)
