@@ -16,7 +16,11 @@ Além disso, o Vizo conta com um sistema de credibilidade que valoriza a partici
 
 ## Tecnologias
 
-Vizo é desenvolvido com uma arquitetura modular que combina diferentes tecnologias de acordo com a finalidade de cada serviço:
+Vizo é desenvolvido com uma arquitetura modular que combina diferentes tecnologias de acordo com a finalidade de cada serviço. Abaixo, o diagrama de arquitetura do sistema:
+
+![Arquitetura](.github/arquitetura.png)
+
+A seguir, são apresentados os principais módulos que compõem a solução, detalhando suas atribuições e características técnicas.
 
 - **Front-end**: Nuxt é um framework baseado em Vue com o superconjunto TypeScript para construção de aplicações web performáticas e escaláveis, com suporte a _File-based Routing_, _Server Side Rendering_ (SSR) e _Search Engine Optimization_ (SEO) e ao desenvolvimento de uma _Progressive Web Application_ (PWA).
 
@@ -55,7 +59,7 @@ Abaixo estão listadas as entregas que compõem a documentação técnica e conc
 
 - **Proposta Inicial**: parte conceitual do documento que define o problema, os objetivos e a justificativa do projeto.
 
-  - Documentação:
+  - Documento:
     - [Original](docs/1%20-%20Proposta%20Inicial/original/documento.pdf)
     - [Corrigido](docs/1%20-%20Proposta%20Inicial/corrigido/documento.pdf)
   - Apresentação:
@@ -71,5 +75,5 @@ Abaixo estão listadas as entregas que compõem a documentação técnica e conc
   - [Apresentação](<docs/3%20-%20Minimum%20Viable%20Product%20(MVP)/slides.pdf>)
 
 - **Apresentação Final**: projeto finalizado, com ambos documento e aplicação completos.
-  - [Documentação](docs/4%20-%20Apresentação%20Final/documento.pdf)
+  - [Documento](docs/4%20-%20Apresentação%20Final/documento.pdf)
   - [Apresenção](docs/4%20-%20Apresentação%20Final/slides.pdf)
