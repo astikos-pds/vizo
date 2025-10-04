@@ -2,7 +2,7 @@ package br.app.vizo.application.usecase.report;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.ReportDTO;
-import br.app.vizo.application.exception.MustBeOwnerException;
+import br.app.vizo.application.exception.NotAllowedException;
 import br.app.vizo.application.exception.ReportNotFoundException;
 import br.app.vizo.application.mapper.ReportMapper;
 import br.app.vizo.core.report.Report;
@@ -23,7 +23,7 @@ public class GetReportUseCase {
         Report report = this.reportRepository.findById(id).orElseThrow(ReportNotFoundException::new);
 
         if (!loggedInUser.made(report)) {
-            throw new MustBeOwnerException();
+            throw new NotAllowedException();
         }
 
         return this.reportMapper.toDto(report);

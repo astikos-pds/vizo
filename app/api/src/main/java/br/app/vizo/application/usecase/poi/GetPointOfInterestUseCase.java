@@ -2,7 +2,7 @@ package br.app.vizo.application.usecase.poi;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.dto.PointOfInterestDTO;
-import br.app.vizo.application.exception.MustBeOwnerException;
+import br.app.vizo.application.exception.NotAllowedException;
 import br.app.vizo.application.exception.PointOfInterestNotFoundException;
 import br.app.vizo.application.mapper.PointOfInterestMapper;
 import br.app.vizo.core.poi.PointOfInterest;
@@ -24,7 +24,7 @@ public class GetPointOfInterestUseCase {
                 .orElseThrow(PointOfInterestNotFoundException::new);
 
         if (!user.owns(poi)) {
-            throw new MustBeOwnerException();
+            throw new NotAllowedException();
         }
 
         return this.pointOfInterestMapper.toDto(poi);

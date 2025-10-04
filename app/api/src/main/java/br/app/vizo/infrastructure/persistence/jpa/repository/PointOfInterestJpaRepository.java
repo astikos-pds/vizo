@@ -17,7 +17,7 @@ public interface PointOfInterestJpaRepository extends JpaRepository<PointOfInter
     Page<PointOfInterestEntity> findAllByUserId(UUID userId, Pageable pageable);
 
     @Query(value = """
-            SELECT * FROM poi
+            SELECT * FROM points_of_interest
             WHERE ST_DWithin(
                 coordinates,
                 ST_SetSRID(ST_MakePoint(:lon, :lat), 4326)::geography,

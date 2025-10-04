@@ -37,6 +37,10 @@ public class Notification<T extends DomainEvent> {
         this.read = true;
     }
 
+    public boolean targeted(User user) {
+        return this.recipient.isSameAs(user);
+    }
+
     public UUID getId() {
         return id;
     }

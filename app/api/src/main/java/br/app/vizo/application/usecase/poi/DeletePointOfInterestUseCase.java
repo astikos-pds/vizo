@@ -1,7 +1,7 @@
 package br.app.vizo.application.usecase.poi;
 
 import br.app.vizo.application.UseCase;
-import br.app.vizo.application.exception.MustBeOwnerException;
+import br.app.vizo.application.exception.NotAllowedException;
 import br.app.vizo.application.exception.PointOfInterestNotFoundException;
 import br.app.vizo.core.poi.PointOfInterest;
 import br.app.vizo.core.poi.PointOfInterestRepository;
@@ -24,7 +24,7 @@ public class DeletePointOfInterestUseCase {
                 .orElseThrow(PointOfInterestNotFoundException::new);
 
         if (!user.owns(poi)) {
-            throw new MustBeOwnerException();
+            throw new NotAllowedException();
         }
 
         this.pointOfInterestRepository.deleteById(id);

@@ -3,6 +3,8 @@ package br.app.vizo.core.user;
 import br.app.vizo.core.IllegalException;
 import br.app.vizo.core.affiliation.AffiliationIntent;
 import br.app.vizo.core.municipality.Municipality;
+import br.app.vizo.core.notification.Notification;
+import br.app.vizo.core.notification.event.DomainEvent;
 import br.app.vizo.core.poi.PointOfInterest;
 import br.app.vizo.core.poi.Radius;
 import br.app.vizo.core.problem.Problem;
@@ -83,18 +85,13 @@ public class User {
         return poi;
     }
 
+    public Notification<DomainEvent> markAsRead(Notification<DomainEvent> notification) {
+        notification.markAsRead();
+        return notification;
+    }
+
     public void changePassword(HashedPassword password) {
         this.password = password;
-        this.timestamps.update();
-    }
-
-    public void changeEmail(String newEmail) {
-        this.email = new Email(newEmail);
-        this.timestamps.update();
-    }
-
-    public void changeAvatar(Image avatar) {
-        this.avatar = avatar;
         this.timestamps.update();
     }
 
@@ -112,6 +109,10 @@ public class User {
 
     public boolean made(Report report) {
         return report.wasMadeBy(this);
+    }
+
+    public boolean wasRecipientOf(Notification<DomainEvent> notification) {
+        return notification.targeted(this);
     }
 
     public UUID getId() {

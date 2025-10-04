@@ -2,7 +2,7 @@ package br.app.vizo.application.usecase.report;
 
 import br.app.vizo.application.UseCase;
 import br.app.vizo.application.exception.CannotModifyReportException;
-import br.app.vizo.application.exception.MustBeOwnerException;
+import br.app.vizo.application.exception.NotAllowedException;
 import br.app.vizo.application.exception.ReportNotFoundException;
 import br.app.vizo.core.problem.Problem;
 import br.app.vizo.core.problem.ProblemRepository;
@@ -26,7 +26,7 @@ public class DeleteReportUseCase {
         Report report = this.reportRepository.findById(reportId).orElseThrow(ReportNotFoundException::new);
 
         if (!loggedInUser.made(report)) {
-            throw new MustBeOwnerException();
+            throw new NotAllowedException();
         }
 
         if (report.getProblem().getStatus() != ProblemStatus.ANALYSIS) {

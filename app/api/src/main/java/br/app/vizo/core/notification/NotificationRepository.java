@@ -5,6 +5,7 @@ import br.app.vizo.application.dto.page.PaginationDTO;
 import br.app.vizo.core.notification.event.DomainEvent;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface NotificationRepository {
@@ -12,6 +13,8 @@ public interface NotificationRepository {
     Notification<? extends DomainEvent> save(Notification<? extends DomainEvent> notification);
 
     void saveAll(List<Notification<? extends DomainEvent>> notifications);
+
+    Optional<Notification<DomainEvent>> findById(UUID id);
 
     PageDTO<Notification<DomainEvent>> findAllByRecipientId(UUID id, PaginationDTO pagination);
 

@@ -11,6 +11,7 @@ import br.app.vizo.infrastructure.persistence.jpa.repository.NotificationJpaRepo
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -37,6 +38,11 @@ public class NotificationRepositoryImpl implements NotificationRepository {
                 .toList();
 
         this.jpaRepository.saveAll(notificationEntities);
+    }
+
+    @Override
+    public Optional<Notification<DomainEvent>> findById(UUID id) {
+        return this.jpaRepository.findById(id).map(this.mapper::toModel);
     }
 
     @Override
