@@ -74,50 +74,54 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
 </script>
 
 <template>
-  <section
-    class="size-full flex items-center flex-col gap-5 py-20 overflow-y-auto"
-  >
-    <h1 class="text-3xl font-semibold">
-      {{ t("pages.settings.title") }}
-    </h1>
-
-    <UForm
-      :state="form"
-      :schema="settingsSchema"
-      @submit="onSubmit"
-      class="w-[65%] md:w-110 lg:w-130 flex flex-col items-center gap-4"
-    >
-      <UFormField
-        :label="t('pages.settings.languageLabel')"
-        name="language"
-        class="w-full"
-        ><USelectMenu
-          v-model="form.language"
-          value-key="id"
-          :items="languageItems"
-          :icon="languageIcon"
-          :search-input="{
-            placeholder: t('pages.settings.searchPlaceholder'),
-            icon: 'i-lucide-search',
-          }"
-          class="w-full"
-      /></UFormField>
-
-      <UFormField
-        :label="t('pages.settings.themeLabel')"
-        name="theme"
-        class="w-full"
+  <CommonPage title="Settings" with-padding>
+    <section class="size-full flex items-center flex-col mt-10">
+      <div
+        class="w-[80%] md:w-[75%] xl:w-[65%] 2xl:w-[55%] flex flex-col items-center gap-5"
       >
-        <USelect
-          v-model="form.theme"
-          value-key="value"
-          :items="themeItems"
-          :icon="themeIcon"
-          class="w-full"
-        />
-      </UFormField>
+        <h1 class="text-3xl font-semibold">
+          {{ t("pages.settings.title") }}
+        </h1>
 
-      <UButton type="submit">{{ t("pages.settings.saveButton") }}</UButton>
-    </UForm>
-  </section>
+        <UForm
+          :state="form"
+          :schema="settingsSchema"
+          @submit="onSubmit"
+          class="w-full flex flex-col items-center gap-4"
+        >
+          <UFormField
+            :label="t('pages.settings.languageLabel')"
+            name="language"
+            class="w-full"
+            ><USelectMenu
+              v-model="form.language"
+              value-key="id"
+              :items="languageItems"
+              :icon="languageIcon"
+              :search-input="{
+                placeholder: t('pages.settings.searchPlaceholder'),
+                icon: 'i-lucide-search',
+              }"
+              class="w-full"
+          /></UFormField>
+
+          <UFormField
+            :label="t('pages.settings.themeLabel')"
+            name="theme"
+            class="w-full"
+          >
+            <USelect
+              v-model="form.theme"
+              value-key="value"
+              :items="themeItems"
+              :icon="themeIcon"
+              class="w-full"
+            />
+          </UFormField>
+
+          <UButton type="submit">{{ t("pages.settings.saveButton") }}</UButton>
+        </UForm>
+      </div>
+    </section>
+  </CommonPage>
 </template>

@@ -82,9 +82,9 @@ const onSubmit = async (event: FormSubmitEvent<AssignSchema>) => {
 </script>
 
 <template>
-  <AssignedUsersPage v-if="currentAssignment">
+  <AssignedUsersPage v-if="currentAssignment" with-padding>
     <div class="size-full flex justify-center">
-      <div class="w-[70%] mt-15 flex flex-col gap-5">
+      <div class="w-[70%] mt-6 flex flex-col gap-5">
         <header class="w-full flex flex-col items-center gap-1">
           <h1 class="text-2xl font-semibold">
             {{

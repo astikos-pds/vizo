@@ -120,39 +120,39 @@ const columns: TableColumn<Notification>[] = [
 </script>
 
 <template>
-  <div
-    class="grid grid-cols-1 gap-6 p-4 sm:p-6 md:p-8 md:grid-cols-1 xl:grid-cols-1"
-  >
-    <div
-      class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
-    >
-      <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
-        {{ t("notifications.title") }}
-      </h3>
+  <CommonPage title="Notifications" with-padding>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-1 xl:grid-cols-1">
+      <div
+        class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6"
+      >
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
+          {{ t("notifications.title") }}
+        </h3>
 
-      <div class="my-4 px-4">
-        <UInput
-          v-model="search"
-          :placeholder="t('notifications.searchPlaceholder')"
-          clearable
-          icon="i-lucide-search"
-        />
-      </div>
+        <div class="my-4 px-4">
+          <UInput
+            v-model="search"
+            :placeholder="t('notifications.searchPlaceholder')"
+            clearable
+            icon="i-lucide-search"
+          />
+        </div>
 
-      <UTable
-        ref="table"
-        :data="filteredData"
-        :columns="columns"
-        sticky
-        class="h-[600px]"
-      />
-      <div class="mt-4 flex justify-center">
-        <UPagination
-          v-model:page="currentPage"
-          :items-per-page="pagination.size"
-          :total="totalItems"
+        <UTable
+          ref="table"
+          :data="filteredData"
+          :columns="columns"
+          sticky
+          class="h-[600px]"
         />
+        <div class="mt-4 flex justify-center">
+          <UPagination
+            v-model:page="currentPage"
+            :items-per-page="pagination.size"
+            :total="totalItems"
+          />
+        </div>
       </div>
     </div>
-  </div>
+  </CommonPage>
 </template>

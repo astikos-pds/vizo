@@ -35,12 +35,12 @@ const { data: problems } = await getProblemsInScope(
 </script>
 
 <template>
-  <section class="size-full p-3 lg:p-5">
+  <CommonPage title="Problemas" with-padding>
     <ProblemsTable
       v-if="problems"
       v-model:problems="problems"
       v-model:pagination="pagination"
       class="w-full"
     />
-  </section>
+  </CommonPage>
 </template>

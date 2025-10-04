@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+defineProps<{
+  title: string;
+}>();
+
 const { t } = useI18n();
 
 const route = useRoute();
@@ -35,19 +39,19 @@ const items = computed<NavigationMenuItem[]>(() => {
 </script>
 
 <template>
-  <section
+  <CommonPage
     v-if="currentAffiliation && currentAffiliation.isAdmin"
-    class="size-full flex flex-col items-center overflow-auto"
+    :title="title"
+    :toolbar-items="items"
   >
-    <header class="w-full border-b border-default px-2">
-      <UNavigationMenu :items="items" highlight />
-    </header>
-    <main
-      class="flex-1 w-[90%] lg:w-[80%] 2xl:w-[75%] p-3 my-8 gap-3 flex flex-col items-center"
-    >
-      <div class="w-full flex flex-col items-center">
-        <slot />
+    <main class="size-full flex flex-col items-center">
+      <div
+        class="flex-1 w-[90%] lg:w-[80%] 2xl:w-[75%] p-3 my-8 gap-3 flex flex-col items-center"
+      >
+        <div class="w-full flex flex-col items-center">
+          <slot />
+        </div>
       </div>
     </main>
-  </section>
+  </CommonPage>
 </template>

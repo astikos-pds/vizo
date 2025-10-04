@@ -83,28 +83,27 @@ function openModal() {
 </script>
 
 <template>
-  <div
-    v-if="problem"
-    class="size-full flex justify-center gap-6 p-4 sm:p-6 md:p-8 overflow-auto"
-  >
-    <div class="rounded-2xl flex flex-col items-center gap-5 xl:w-[60%]">
-      <div class="w-full">
-        <Map
-          class="w-full min-h-80 rounded-md border border-default"
-          :zoom="16"
-          :center="problem"
-        >
-          <Marker
-            :lat-lng="{
-              latitude: problem.latitude,
-              longitude: problem.longitude,
-            }"
-          />
-        </Map>
-      </div>
+  <CommonPage title="Problem" with-padding>
+    <div v-if="problem" class="size-full flex justify-center gap-6">
+      <div
+        class="rounded-2xl flex flex-col items-center gap-5 h-full xl:w-[60%]"
+      >
+        <div class="size-full">
+          <Map
+            class="w-full min-h-80 rounded-md border border-default"
+            :zoom="16"
+            :center="problem"
+          >
+            <Marker
+              :lat-lng="{
+                latitude: problem.latitude,
+                longitude: problem.longitude,
+              }"
+            />
+          </Map>
+        </div>
 
-      <div class="w-full">
-        <div class="flex flex-col gap-2">
+        <div class="w-full flex flex-col gap-2">
           <div class="flex gap-1.5">
             <span class="font-semibold">{{ t("pages.problem.type") }}</span>
             <UBadge color="neutral" variant="subtle" size="lg">{{
@@ -157,24 +156,26 @@ function openModal() {
             <span>{{ problem.accumulatedCredibility.toFixed(0) }}</span>
           </div>
         </div>
-      </div>
 
-      <div
-        v-if="reports && currentAssignment?.effectivePermission.canViewReports"
-        class="w-full rounded-md border border-default p-4"
-      >
-        <h3 class="text-xl font-semibold mb-6">
-          {{ t("components.problem.userReports") }}
-        </h3>
+        <div
+          v-if="
+            reports && currentAssignment?.effectivePermission.canViewReports
+          "
+          class="w-full rounded-md border border-default p-4"
+        >
+          <h3 class="text-xl font-semibold mb-6">
+            {{ t("components.problem.userReports") }}
+          </h3>
 
-        <div class="flex flex-col gap-5">
-          <ReportForProblem
-            v-for="report in reports"
-            :key="report.id"
-            :report="report"
-          />
+          <div class="flex flex-col gap-5">
+            <ReportForProblem
+              v-for="report in reports"
+              :key="report.id"
+              :report="report"
+            />
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </CommonPage>
 </template>

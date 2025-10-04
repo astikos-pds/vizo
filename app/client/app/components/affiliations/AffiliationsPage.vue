@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+defineProps<{
+  withPadding?: boolean;
+}>();
+
 const { t } = useI18n();
 
 const items = ref<NavigationMenuItem[]>([
@@ -18,12 +22,13 @@ const items = ref<NavigationMenuItem[]>([
 </script>
 
 <template>
-  <section class="size-full flex flex-col overflow-hidden">
-    <header class="w-full border-b border-default px-2">
-      <UNavigationMenu :items="items" highlight />
-    </header>
-    <main class="flex-1 flex flex-col items-center overflow-y-auto">
+  <CommonPage
+    title="Affiliations"
+    :toolbar-items="items"
+    :with-padding="withPadding"
+  >
+    <main class="flex-1 flex flex-col items-center">
       <slot />
     </main>
-  </section>
+  </CommonPage>
 </template>

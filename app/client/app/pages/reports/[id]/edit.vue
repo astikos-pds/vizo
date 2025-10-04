@@ -93,7 +93,12 @@ const hasUnsavedChanges = computed(() => {
   let hasImagesChanged = false;
 
   for (let i = 0; i < images.value.length; i++) {
-    if (images.value[i].name !== form.images[i].name) {
+    const image = images.value[i];
+    const formImage = form.images[i];
+
+    if (!image || !formImage) continue;
+
+    if (image.name !== formImage.name) {
       hasImagesChanged = true;
     }
   }

@@ -187,7 +187,6 @@ const assignedItems = computed<NavigationMenuItem[]>(() => {
       to: `/departments/${departmentId}/problems`,
       onSelect: () => (open.value = false),
     },
-
     {
       label: t("components.navigation.assignees"),
       icon: "i-lucide-contact",
@@ -213,6 +212,20 @@ const assignedItems = computed<NavigationMenuItem[]>(() => {
   ];
 
   return items;
+});
+
+const groups = computed(() => {
+  return [
+    {
+      id: "links",
+      label: "Go to",
+      items: [
+        ...commomItems.value,
+        ...affiliatedItems.value,
+        ...assignedItems.value,
+      ],
+    },
+  ];
 });
 </script>
 
@@ -262,5 +275,7 @@ const assignedItems = computed<NavigationMenuItem[]>(() => {
         tooltip
       />
     </div>
+
+    <UDashboardSearch :groups="groups" />
   </div>
 </template>

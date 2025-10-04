@@ -67,7 +67,7 @@ const hasUnsavedChanges = computed(() => {
 </script>
 
 <template>
-  <PermissionPresetsPage>
+  <PermissionPresetsPage :title="state ? state.name : 'New permission preset'">
     <UForm
       :schema="permissionPresetSchema"
       :state="form"

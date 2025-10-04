@@ -45,6 +45,7 @@ const onSubmit = async (data: Permission & { name: string }) => {
     municipalityId,
     { name: data.name }
   );
+
   if (existingPreset && existingPreset.id !== permissionPreset.value.id) {
     toast.clear();
 
@@ -69,6 +70,8 @@ const onSubmit = async (data: Permission & { name: string }) => {
 
   if (!updated) return;
 
+  toast.clear();
+
   toast.add({
     title: t("pages.permissionPresets.success.updated.title"),
     description: t("pages.permissionPresets.success.updated.description"),
@@ -82,7 +85,10 @@ const onSubmit = async (data: Permission & { name: string }) => {
 </script>
 
 <template>
-  <PermissionPresetsPage v-if="pending || !permissionPreset">
+  <PermissionPresetsPage
+    title="Permission preset"
+    v-if="pending || !permissionPreset"
+  >
     <EmptyMessage v-if="pending">{{ t("common.loading") }}</EmptyMessage>
     <EmptyMessage v-else-if="!permissionPreset">
       {{ t("pages.permissionPresets.notFound") }}

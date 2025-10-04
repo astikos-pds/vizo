@@ -76,7 +76,7 @@ const open = computed(() => isMobile.value);
           <EmptyMessage v-else-if="pendingForPresets">{{
             t("pages.assignedUsers.loading")
           }}</EmptyMessage>
-          <EmptyMessage v-else-if="permissionPresets === null">
+          <EmptyMessage v-else-if="permissionPresets === undefined">
             {{ t("pages.assignedUsers.failedToFetch") }}
           </EmptyMessage>
           <AssignedUsersDetailsCard

@@ -20,7 +20,6 @@ useHead({
 
 definePageMeta({
   name: "Report a problem",
-  layout: "default1",
   middleware: ["auth"],
 });
 

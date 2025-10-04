@@ -67,9 +67,9 @@ const openSections = ref(["0", "1"]);
 </script>
 
 <template>
-  <AffiliationsPage>
-    <div class="h-full w-[85%] 2xl:w-[70%]">
-      <header class="w-full py-6 mt-10 text-center flex flex-col gap-2">
+  <AffiliationsPage with-padding>
+    <div class="h-full w-[85%] 2xl:w-[70%] mt-5">
+      <header class="w-full text-center flex flex-col gap-2">
         <h1 class="text-3xl font-semibold">
           {{ t("pages.affiliations.title") }}
         </h1>

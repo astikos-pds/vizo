@@ -49,7 +49,7 @@ const xaxisLimits = computed(() => {
   if (!statistics.value) return { min: 0, max: 0 };
 
   const allX = statistics.value.map((d) =>
-    new Date(d.date.toISOString().split("T")[0]).getTime()
+    new Date(d.date.toISOString().split("T")[0] ?? Date.now()).getTime()
   );
 
   const min = Math.min(...allX);
@@ -95,10 +95,10 @@ const chartOptions = ref({
 watch(
   statistics,
   (newStatistics) => {
-    if (!newStatistics) return;
+    if (!newStatistics || !series.value[0]) return;
 
     series.value[0].data = newStatistics.map((d) => ({
-      x: new Date(d.date.toISOString().split("T")[0]).getTime(),
+      x: new Date(d.date.toISOString().split("T")[0] ?? Date.now()).getTime(),
       y: d.count,
     }));
 
@@ -109,34 +109,39 @@ watch(
 </script>
 
 <template>
-  <section class="flex flex-col">
-    <header class="p-5 pb-1 flex flex-col gap-3">
-      <h1 class="font-semibold text-lg">
-        {{ t("components.dashboard.problemsStatistics") }}
-      </h1>
+  <UCard :ui="{ root: 'overflow-visible', body: '!px-0 !pt-0 !pb-3' }">
+    <template #header>
+      <div class="py-2 px-4 flex flex-col gap-2">
+        <p class="text-sm text-muted uppercase">
+          {{ t("components.dashboard.problemsStatistics") }}
+        </p>
+        <p class="text-3xl text-highlighted font-semibold">
+          {{ series.length }}
+        </p>
 
-      <div class="flex gap-2">
-        <RangePicker v-model="filters" />
+        <div class="flex items-center gap-3">
+          <RangePicker v-model="filters" />
 
-        <USelect
-          v-model="filters.statuses"
-          multiple
-          :items="statuses"
-          :placeholder="t('components.dashboard.filterByStatus')"
-          icon="i-lucide-funnel"
-          class="min-w-48"
-        />
+          <USelect
+            v-model="filters.statuses"
+            multiple
+            :items="statuses"
+            :placeholder="t('components.dashboard.filterByStatus')"
+            icon="i-lucide-funnel"
+            class="min-w-48"
+          />
 
-        <USelect
-          v-model="filters.types"
-          multiple
-          :items="types"
-          :placeholder="t('components.dashboard.filterByProblemType')"
-          icon="i-lucide-list-filter"
-          class="min-w-48"
-        />
+          <USelect
+            v-model="filters.types"
+            multiple
+            :items="types"
+            :placeholder="t('components.dashboard.filterByProblemType')"
+            icon="i-lucide-list-filter"
+            class="min-w-48"
+          />
+        </div>
       </div>
-    </header>
+    </template>
 
     <VueApexCharts
       :options="chartOptions"
@@ -144,5 +149,5 @@ watch(
       type="line"
       height="250"
     />
-  </section>
+  </UCard>
 </template>

@@ -52,26 +52,24 @@ const mapStatusToColor: Record<ProblemStatus, Badge["color"]> = {
 </script>
 
 <template>
-  <div
-    class="w-full gap-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 p-4 md:p-6 overflow-auto"
-  >
-    <DashboardCountCard
-      v-for="countByStatus in countsByStatus"
-      :color="mapStatusToColor[countByStatus.status]"
-      :label="countByStatus.status"
-      :count="countByStatus.count"
-      class="col-span-1"
-    />
+  <CommonPage title="Dashboard" with-padding>
+    <div class="w-full gap-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+      <DashboardCountCard
+        v-for="countByStatus in countsByStatus"
+        :color="mapStatusToColor[countByStatus.status]"
+        :label="countByStatus.status"
+        :count="countByStatus.count"
+        class="col-span-1"
+      />
 
-    <DashboardProblemsRate
-      class="border border-default rounded-md col-span-4"
-    />
+      <DashboardProblemsRate class="col-span-4" />
 
-    <ProblemsTable
-      v-if="problems"
-      v-model:problems="problems"
-      v-model:pagination="pagination"
-      class="col-span-4"
-    />
-  </div>
+      <ProblemsTable
+        v-if="problems"
+        v-model:problems="problems"
+        v-model:pagination="pagination"
+        class="col-span-4"
+      />
+    </div>
+  </CommonPage>
 </template>

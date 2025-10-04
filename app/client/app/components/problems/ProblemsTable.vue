@@ -36,7 +36,7 @@ const columns: TableColumn<Problem>[] = [
   {
     accessorKey: "id",
     header: "#",
-    cell: ({ row }) => row.getValue("id"),
+    cell: ({ row }) => Number(row.id) + 1,
   },
   {
     accessorKey: "reportedAt",
@@ -164,8 +164,6 @@ const filteredData = computed(() => {
       <h3 class="text-lg font-semibold">
         {{ t("components.navigation.problems") }} ({{
           problems?.totalElements
-        }}) {{ t("components.navigation.problems") }} ({{
-          problems?.totalElements
         }})
       </h3>
       <UInput
@@ -182,7 +180,7 @@ const filteredData = computed(() => {
       :data="filteredData"
       :columns="columns"
       sticky
-      class="flex1"
+      class="flex-1"
     />
 
     <div

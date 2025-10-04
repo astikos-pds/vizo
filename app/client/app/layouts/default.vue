@@ -1,121 +1,134 @@
 <script lang="ts" setup>
-import { useBreakpoints } from "@vueuse/core";
-import NavigationBody from "~/components/navigation/NavigationBody.vue";
-import NavigationHeader from "~/components/navigation/NavigationHeader.vue";
-import NavigationOptions from "~/components/navigation/NavigationOptions.vue";
-import UserProfile from "~/components/navigation/UserProfile.vue";
-import { useLoggedInUserStore } from "~/stores/user";
+import type { NavigationMenuItem } from "@nuxt/ui";
 
 const { t } = useI18n();
 
-const collapsed = ref<boolean>(false);
 const open = ref<boolean>(false);
 
-const route = useRoute();
-const name = computed(() => route.meta.name);
-
-const breakpoints = useBreakpoints({
-  md: 768,
-  lg: 1024,
-});
-
-const isMobile = breakpoints.smallerOrEqual("md");
-const shouldCollapse = breakpoints.smallerOrEqual("lg");
-
-watch(shouldCollapse, (should) => (collapsed.value = should));
-
 const { user } = useLoggedInUserStore();
+
+const commomItems = computed<NavigationMenuItem[]>(() => {
+  return [
+    {
+      label: t("components.navigation.home"),
+      icon: "i-lucide-house",
+      to: "/",
+      onSelect: () => (open.value = false),
+    },
+    {
+      label: t("components.navigation.notifications"),
+      icon: "i-lucide-bell",
+      to: "/notifications",
+      onSelect: () => (open.value = false),
+    },
+    {
+      label: t("components.navigation.reports"),
+      icon: "i-lucide-message-square-warning",
+      to: "/reports/new",
+      onSelect: () => (open.value = false),
+      children: [
+        {
+          label: t("components.navigation.newProblem"),
+          icon: "i-lucide-plus",
+          to: "/reports/new",
+          onSelect: () => (open.value = false),
+        },
+        {
+          label: t("components.navigation.history"),
+          icon: "i-lucide-history",
+          to: "/reports",
+          onSelect: () => (open.value = false),
+        },
+      ],
+    },
+    {
+      label: t("components.navigation.pointsOfInterest"),
+      icon: "i-lucide-map-pin",
+      to: "/points-of-interest",
+      onSelect: () => (open.value = false),
+      children: [
+        {
+          label: t("components.navigation.viewAll"),
+          icon: "i-lucide-map",
+          to: "/points-of-interest",
+          onSelect: () => (open.value = false),
+        },
+        {
+          label: t("components.navigation.createNew"),
+          icon: "i-lucide-map-pin-plus",
+          to: "/points-of-interest/new",
+          onSelect: () => (open.value = false),
+        },
+      ],
+    },
+    {
+      label: t("components.navigation.affiliations"),
+      icon: "i-lucide-archive",
+      to: "/affiliations",
+      onSelect: () => (open.value = false),
+      children: [
+        {
+          label: t("components.navigation.viewAll"),
+          icon: "i-lucide-building",
+          to: "/affiliations",
+          onSelect: () => (open.value = false),
+        },
+        {
+          label: t("components.navigation.requestNew"),
+          icon: "i-lucide-git-pull-request",
+          to: "/affiliations/request",
+          onSelect: () => (open.value = false),
+        },
+      ],
+    },
+    {
+      label: t("components.navigation.settings"),
+      icon: "i-lucide-settings",
+      to: "/settings",
+      onSelect: () => (open.value = false),
+    },
+  ];
+});
 </script>
 
 <template>
-  <div class="h-screen flex flex-row">
-    <USlideover
-      v-if="isMobile"
-      side="left"
+  <UDashboardGroup unit="rem">
+    <UDashboardSidebar
+      id="default"
       v-model:open="open"
-      :ui="{
-        header: 'flex flex-row justify-between px-3 sm:px-3 sm:py-0',
-        body: 'p-3 sm:p-3',
-        footer: 'px-3 sm:px-3 sm:py-0',
+      collapsible
+      resizable
+      toggle-side="right"
+      :toggle="{
+        size: 'xl',
+        class: 'text-xl',
       }"
+      class="bg-elevated/25"
+      :ui="{ footer: 'lg:border-t lg:border-default' }"
     >
-      <template #header>
+      <template #header="{ collapsed }">
         <NavigationHeader :collapsed="collapsed" />
-        <UButton
-          icon="i-lucide-x"
-          color="neutral"
-          variant="ghost"
-          class="text-xl"
-          @click="open = !open"
-        />
       </template>
-      <template #body>
+
+      <template #default="{ collapsed }">
+        <UDashboardSearchButton
+          :collapsed="collapsed"
+          size="lg"
+          class="bg-transparent ring-default"
+        />
+
         <NavigationBody :collapsed="collapsed" v-model:open="open" />
       </template>
-      <template #footer>
-        <UserProfile v-if="user" :user="user" :collapsed="collapsed" />
-      </template>
-    </USlideover>
-    <section
-      v-else
-      class="h-full border-x border-default flex flex-col"
-      :class="{
-        'w-60': !collapsed,
-        'bg-elevated/25': !isMobile,
-      }"
-    >
-      <NavigationHeader
-        :collapsed="collapsed"
-        class="mt-3 flex items-center justify-center"
-      />
-      <div
-        class="flex-1 flex flex-col justify-between items-center overflow-hidden"
-      >
-        <NavigationBody :collapsed="collapsed" class="p-2 px-4" />
-        <UserProfile
+
+      <template #footer="{ collapsed }">
+        <NavigationUserProfile
           v-if="user"
           :user="user"
           :collapsed="collapsed"
-          class="border-t border-default w-full"
         />
-      </div>
-    </section>
-    <div class="h-screen w-full flex flex-col flex-1 border-r border-default">
-      <header
-        class="h-18 p-3 lg:p-5 border-b border-default flex flex-row items-center justify-between gap-1.5"
-      >
-        <div class="flex items-center">
-          <UButton
-            v-if="isMobile"
-            icon="i-lucide-menu"
-            color="neutral"
-            variant="ghost"
-            class="text-xl"
-            @click="open = !open"
-          />
+      </template>
+    </UDashboardSidebar>
 
-          <UButton
-            v-else
-            :icon="
-              collapsed
-                ? 'i-lucide-square-chevron-right'
-                : 'i-lucide-square-chevron-left'
-            "
-            color="neutral"
-            variant="ghost"
-            class="text-xl"
-            @click="collapsed = !collapsed"
-          />
-          <h1 class="font-semibold text-base">
-            {{ route.name }}
-          </h1>
-        </div>
-
-        <NavigationOptions />
-      </header>
-      <main class="flex-1 w-full overflow-hidden flex flex-col items-center">
-        <slot />
-      </main>
-    </div>
-  </div>
+    <slot />
+  </UDashboardGroup>
 </template>

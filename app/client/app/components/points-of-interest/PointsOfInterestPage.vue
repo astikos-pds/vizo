@@ -29,10 +29,7 @@ const open = computed(() => isMobile.value);
 </script>
 
 <template>
-  <section class="size-full flex flex-col">
-    <header class="w-full border-b border-default px-2">
-      <UNavigationMenu :items="items" highlight />
-    </header>
+  <CommonPage title="Points of interest" :toolbar-items="items">
     <main class="flex-1 flex overflow-hidden">
       <UDrawer
         v-if="isMobile"
@@ -61,5 +58,5 @@ const open = computed(() => isMobile.value);
         <slot name="main" />
       </div>
     </main>
-  </section>
+  </CommonPage>
 </template>

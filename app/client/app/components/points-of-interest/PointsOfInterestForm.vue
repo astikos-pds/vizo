@@ -17,6 +17,8 @@ const emit = defineEmits<{
   ];
 }>();
 
+const colorMode = useColorMode();
+
 const pointOfInterestSchema = z.object({
   name: z.string().min(1, t("components.pointsOfInterest.nameRequired")),
   radius: z
@@ -41,7 +43,9 @@ type PointOfInterestSchema = z.infer<typeof pointOfInterestSchema>;
 const form = reactive<PointOfInterestSchema>({
   name: state?.name ?? "",
   radius: state?.radius ?? 1000,
-  colorHex: state?.colorHex ?? "#000000",
+  colorHex:
+    state?.colorHex ??
+    (colorMode.preference === "dark" ? "#FFFFFF" : "#000000"),
   active: state?.active ?? true,
 });
 
@@ -86,6 +90,15 @@ const hasUnsavedChanges = computed(() => {
     state.colorHex !== form.colorHex ||
     state.active !== form.active
   );
+});
+
+onMounted(() => {
+  marker.latitude = isLocationPrecise.value
+    ? coords.value.latitude
+    : center.latitude;
+  marker.longitude = isLocationPrecise.value
+    ? coords.value.longitude
+    : center.longitude;
 });
 </script>
 
@@ -180,7 +193,7 @@ const hasUnsavedChanges = computed(() => {
     </template>
     <template #main>
       <div class="size-full flex justify-center items-center">
-        <Map ref="map" :zoom="15" :center="marker">
+        <Map ref="map" :zoom="isLocationPrecise ? 15 : 12" :center="marker">
           <PointsOfInterestMarker
             v-model="marker"
             :radius="form.radius"

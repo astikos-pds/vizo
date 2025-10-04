@@ -20,7 +20,6 @@ useHead({
 
 definePageMeta({
   name: "Home",
-  layout: "default1",
   middleware: ["auth"],
 });
 

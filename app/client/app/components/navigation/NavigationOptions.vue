@@ -9,17 +9,19 @@ const { user } = useLoggedInUserStore();
 
 <template>
   <div class="flex items-center gap-2">
-    <UButton
-      size="xl"
-      :color="isPermissionForGeolocationDenied ? 'neutral' : 'primary'"
-      variant="ghost"
-      :icon="
-        isPermissionForGeolocationDenied
-          ? 'i-lucide-navigation-off'
-          : 'i-lucide-navigation'
-      "
-      class="rounded-full flex items-center justify-center text-xl pointer-auto"
-    />
+    <UTooltip text="Geolocation tracking state">
+      <UButton
+        size="xl"
+        :color="isPermissionForGeolocationDenied ? 'neutral' : 'primary'"
+        variant="ghost"
+        :icon="
+          isPermissionForGeolocationDenied
+            ? 'i-lucide-navigation-off'
+            : 'i-lucide-navigation'
+        "
+        class="rounded-full flex items-center justify-center text-xl pointer-auto"
+      />
+    </UTooltip>
 
     <UButton
       size="xl"

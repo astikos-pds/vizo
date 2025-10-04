@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import type { NavigationMenuItem } from "@nuxt/ui";
 
+defineProps<{
+  withPadding?: boolean;
+}>();
+
 const route = useRoute();
 const departmentId = route.params.departmentId as string;
 
@@ -21,16 +25,15 @@ const items = ref<NavigationMenuItem[]>([
 </script>
 
 <template>
-  <section v-if="currentAffiliation" class="size-full flex flex-col">
-    <header class="w-full border-b border-default px-2">
-      <UNavigationMenu
-        v-if="currentAffiliation.isAdmin"
-        :items="items"
-        highlight
-      />
-    </header>
-    <main class="flex-1 flex overflow-hidden">
-      <slot />
-    </main>
-  </section>
+  <CommonPage
+    title="Assigned users"
+    :toolbar-items="items"
+    :with-padding="withPadding"
+  >
+    <section v-if="currentAffiliation" class="size-full flex flex-col">
+      <main class="flex-1 flex overflow-hidden">
+        <slot />
+      </main>
+    </section>
+  </CommonPage>
 </template>

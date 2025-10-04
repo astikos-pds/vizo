@@ -1,13 +1,11 @@
 <script lang="ts" setup>
-import type { DropdownMenuItem } from "@nuxt/ui";
+import type { BadgeProps, DropdownMenuItem } from "@nuxt/ui";
 import type { AffiliatedUser } from "~/types/domain/affiliated-user";
 import type { Pagination } from "~/types/domain/pagination";
 
 const { t, locale } = useI18n();
 
 const affiliatedUser = defineProps<AffiliatedUser>();
-
-const profileLink = "";
 
 const route = useRoute();
 const municipalityId = route.params.municipalityId as string;
@@ -32,70 +30,90 @@ function assign(departmentId: string) {
   console.log(departmentId);
 }
 
-const items = ref<DropdownMenuItem[]>([
-  {
-    label: t("components.affiliatedUsers.assignToDepartment"),
-    icon: "i-lucide-forward",
-    children: departments.value?.map((d) => {
-      return {
-        label: d.name,
-        avatar: {
-          src: d.iconUrl?.toString(),
-          alt: d.name,
-        },
-        onSelect: (_) => assign(d.id),
-      };
-    }),
-  },
-]);
+const items = computed<DropdownMenuItem[]>(() => {
+  const items = [
+    {
+      label: t("components.affiliatedUsers.assignToDepartment"),
+      icon: "i-lucide-forward",
+      children: departments.value?.map((d) => {
+        return {
+          label: d.name,
+          avatar: {
+            src: d.iconUrl?.toString(),
+            alt: d.name,
+          },
+          onSelect: () => assign(d.id),
+        };
+      }),
+    },
+  ];
+
+  return items;
+});
+
+const adminBadge: BadgeProps = {
+  color: "primary",
+  variant: "solid",
+  label: "ADMIN",
+  icon: "i-lucide-shield",
+};
+
+const commonBadge: BadgeProps = {
+  color: "neutral",
+  variant: "subtle",
+  label: "COMMON",
+  icon: "i-lucide-user",
+};
+
+const badge = computed<BadgeProps>(() => {
+  return { ...(affiliatedUser.isAdmin ? adminBadge : commonBadge), size: "md" };
+});
 </script>
 
 <template>
-  <UButton
-    :to="profileLink"
-    color="neutral"
-    variant="ghost"
-    :avatar="{
-      src: affiliatedUser.user.avatarUrl?.toString(),
-      alt: affiliatedUser.user.name,
-      size: 'xl',
-    }"
-    size="xl"
-  >
-    <div class="ml-2 w-full flex justify-between item-center">
-      <div class="flex flex-col items-start">
-        <span class="text-sm 2xl:text-base">{{
-          affiliatedUser.user.name
-        }}</span>
-        <span class="text-xs 2xl:text-sm text-muted font-normal">{{
-          affiliatedUser.institutionalEmail
-        }}</span>
-      </div>
+  <li class="flex items-center justify-between gap-3 py-3 px-4 sm:px-6">
+    <div class="flex items-center gap-3 min-w-0">
+      <UAvatar
+        v-bind="{
+          src: affiliatedUser.user.avatarUrl?.toString(),
+          alt: affiliatedUser.user.name,
+        }"
+        size="lg"
+      />
 
-      <div class="my-auto">
-        <UBadge
-          :color="affiliatedUser.isAdmin ? 'info' : 'neutral'"
-          variant="subtle"
-          size="sm"
-        >
-          {{ affiliatedUser.isAdmin ? "ADMIN" : "COMMOM" }}
-        </UBadge>
-      </div>
-
-      <div class="my-auto text-xs 2xl:text-sm font-normal">
-        {{ t("components.affiliatedUsers.since") }}
-        {{ affiliatedUser.affiliatedAt.toLocaleDateString(locale) }}
-      </div>
-
-      <div v-if="affiliatedUser.isAdmin" class="my-auto">
-        <UDropdownMenu :items="items">
-          <UButton
-            icon="i-lucide-ellipsis-vertical"
-            color="neutral"
-            variant="ghost"
-          />
-        </UDropdownMenu>
+      <div class="text-xs lg:text-sm min-w-0">
+        <p class="text-highlighted font-medium truncate">
+          {{ affiliatedUser.user.name }}
+        </p>
+        <p class="text-muted truncate">
+          {{ affiliatedUser.institutionalEmail }}
+        </p>
       </div>
     </div>
-  </UButton>
+
+    <div class="flex items-center gap-3">
+      <p v-if="affiliatedUser.approvedAt" class="text-xs xl:text-sm text-muted">
+        Since
+        {{
+          affiliatedUser.approvedAt.toLocaleDateString(locale, {
+            dateStyle: "long",
+          })
+        }}
+      </p>
+
+      <UBadge v-bind="badge" />
+
+      <UDropdownMenu
+        v-if="!affiliatedUser.isAdmin"
+        :items="items"
+        :content="{ align: 'end' }"
+      >
+        <UButton
+          icon="i-lucide-ellipsis-vertical"
+          color="neutral"
+          variant="ghost"
+        />
+      </UDropdownMenu>
+    </div>
+  </li>
 </template>

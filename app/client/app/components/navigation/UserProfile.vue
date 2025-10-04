@@ -35,22 +35,27 @@ const items = ref<DropdownMenuItem[][]>([
       side: 'top',
     }"
     :ui="{
-      content: 'w-48',
+      content: 'min-w-48',
       itemLeadingIcon: 'text-lg',
     }"
   >
     <UButton
       color="neutral"
       variant="ghost"
-      :avatar="{
-        src: user.avatarUrl?.toString(),
-        alt: user.name,
-        size: 'sm',
-      }"
       block
       :square="collapsed"
-      :label="collapsed ? undefined : user.name"
       class="justify-start p-1"
-    />
+    >
+      <UUser
+        :name="collapsed ? undefined : user.name"
+        :description="collapsed ? undefined : user.email.split('@')[0]"
+        :avatar="{
+          src: user.avatarUrl?.toString(),
+          alt: user.name,
+          size: 'sm',
+        }"
+        class="text-start"
+      />
+    </UButton>
   </UDropdownMenu>
 </template>

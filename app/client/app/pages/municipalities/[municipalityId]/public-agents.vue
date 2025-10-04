@@ -40,34 +40,18 @@ const { data: page, pending } = await getUsersAffiliatedToMunicipality(
 
 const { items: filiates } = usePagination(pagination, page);
 
-const commomFiliates = computed(() =>
+const search = ref("");
+
+const filteredFiliates = computed(() =>
   filiates.value
-    .filter((f) => !f.isAdmin)
-    .slice()
+    .filter((filiates) => {
+      return (
+        filiates.user.name.search(new RegExp(search.value, "i")) !== -1 ||
+        filiates.institutionalEmail.search(new RegExp(search.value, "i")) !== -1
+      );
+    })
     .sort((a, b) => a.user.name.localeCompare(b.user.name))
 );
-
-const adminFiliates = computed(() =>
-  filiates.value
-    .filter((f) => f.isAdmin)
-    .slice()
-    .sort((a, b) => a.user.name.localeCompare(b.user.name))
-);
-
-const items = ref<AccordionItem[]>([
-  {
-    label: t("pages.publicAgents.sections.agents"),
-    icon: "i-lucide-sticky-note",
-    slot: "agents" as const,
-  },
-  {
-    label: t("pages.publicAgents.sections.admins"),
-    icon: "i-lucide-shield",
-    slot: "admins" as const,
-  },
-]);
-
-const active = ref(["0", "1"]);
 </script>
 
 <template>
@@ -79,13 +63,35 @@ const active = ref(["0", "1"]);
         municipalityName: currentAffiliation.municipality.name,
       })
     "
-    class="max-w-150 2xl:max-w-170"
   >
     <div v-if="pending">
       <USkeleton class="h-20 w-full mb-4" v-for="i in 2" :key="i" />
     </div>
 
-    <UAccordion v-else type="multiple" v-model="active" :items="items">
+    <UPageCard
+      v-else
+      variant="subtle"
+      :ui="{
+        container: 'p-0 sm:p-0 gap-y-0',
+        wrapper: 'items-stretch',
+        header: 'p-4 mb-0 border-b border-default',
+      }"
+      class="w-full mt-3"
+    >
+      <template #header>
+        <UInput
+          v-model="search"
+          icon="i-lucide-search"
+          placeholder="Search members"
+          autofocus
+          class="w-full"
+        />
+      </template>
+
+      <AffiliatedUsersList :items="filteredFiliates" class="w-full" />
+    </UPageCard>
+
+    <!-- <UAccordion v-else type="multiple" v-model="active" :items="items">
       <template #agents>
         <AffiliatedUsersList :items="commomFiliates" />
       </template>
@@ -93,6 +99,6 @@ const active = ref(["0", "1"]);
       <template #admins>
         <AffiliatedUsersList :items="adminFiliates" />
       </template>
-    </UAccordion>
+    </UAccordion> -->
   </AffiliatedUsersPage>
 </template>

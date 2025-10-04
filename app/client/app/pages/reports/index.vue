@@ -12,7 +12,6 @@ useHead({
 
 definePageMeta({
   name: "History of reports",
-  layout: "default1",
   middleware: ["auth"],
 });
 
