@@ -5,7 +5,7 @@ Vizo é uma Progressive Web App (PWA) que conecta cidadãos e gestores públicos
 ## Sumário
 
 - [Visão Geral](#visão-geral)
-- [Tecnologias](#tecnologias)
+- [Arquitetura e Tecnologias](#arquitetura-e-tecnologias)
 - [Documentação](#documentação)
 
 ## Visão Geral
@@ -14,7 +14,7 @@ Vizo permite que qualquer pessoa possa relatar problemas urbanos — como buraco
 
 Além disso, o Vizo conta com um sistema de credibilidade que valoriza a participação cidadã e ajuda a destacar os relatos mais confiáveis.
 
-## Tecnologias
+## Arquitetura e Tecnologias
 
 Vizo é desenvolvido com uma arquitetura modular que combina diferentes tecnologias de acordo com a finalidade de cada serviço. Abaixo, o diagrama de arquitetura do sistema:
 
