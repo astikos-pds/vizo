@@ -70,6 +70,6 @@ Abaixo estão listadas as entregas que compõem a documentação técnica e conc
 
   - [Apresentação](<docs/3%20-%20Minimum%20Viable%20Product%20(MVP)/slides.pdf>)
 
-- **Apresentação final**: projeto finalizado, com ambos documento e aplicação completos.
+- **Apresentação Final**: projeto finalizado, com ambos documento e aplicação completos.
   - [Documentação](docs/4%20-%20Apresentação%20Final/documento.pdf)
   - [Apresenção](docs/4%20-%20Apresentação%20Final/slides.pdf)
