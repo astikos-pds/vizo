@@ -11,6 +11,15 @@ export default defineNuxtConfig({
         process.env.NUXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080",
       cloudinaryName: process.env.NUXT_PUBLIC_CLOUDINARY_NAME ?? "",
       nodeEnv: process.env.NUXT_PUBLIC_NODE_ENV ?? "development",
+      firebaseApiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY ?? "",
+      firebaseAuthDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? "",
+      firebaseProjectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID ?? "",
+      firebaseStorageBucket:
+        process.env.NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? "",
+      firebaseMessagingSenderId:
+        process.env.NUXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? "",
+      firebaseAppId: process.env.NUXT_PUBLIC_FIREBASE_APP_ID ?? "",
+      firebaseVapidKey: process.env.NUXT_PUBLIC_FIREBASE_VAPID_KEY ?? "",
     },
   },
   css: ["~/assets/css/main.css"],
@@ -22,6 +31,7 @@ export default defineNuxtConfig({
     "~/plugins/02.services.ts",
     "~/plugins/leaflet.client.ts",
     "~/plugins/apexcharts.client.ts",
+    "~/plugins/firebase.client.ts",
   ],
   modules: [
     "@nuxtjs/leaflet",
