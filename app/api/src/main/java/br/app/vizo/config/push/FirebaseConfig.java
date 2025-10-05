@@ -9,7 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.io.InputStream;
+import java.util.Base64;
 
 @Configuration
 public class FirebaseConfig {
@@ -19,14 +20,14 @@ public class FirebaseConfig {
 
     @PostConstruct
     public void init() throws IOException {
-        String firebaseConfig = this.firebaseServiceAccount;
+        byte[] decodedBytes = Base64.getDecoder().decode(this.firebaseServiceAccount);
 
-        if (firebaseConfig == null || firebaseConfig.isBlank()) return;
+        if (decodedBytes == null) return;
+
+        InputStream firebaseServiceAccount = new ByteArrayInputStream(decodedBytes);
 
         FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(
-                        new ByteArrayInputStream(firebaseConfig.getBytes(StandardCharsets.UTF_8))
-                ))
+                .setCredentials(GoogleCredentials.fromStream(firebaseServiceAccount))
                 .build();
 
         if (FirebaseApp.getApps().isEmpty()) {
