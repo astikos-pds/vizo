@@ -1,5 +1,6 @@
 package br.app.vizo.application.listener;
 
+import br.app.vizo.application.dto.PushNotificationDTO;
 import br.app.vizo.application.service.PushNotificationService;
 import br.app.vizo.core.notification.Notification;
 import br.app.vizo.core.notification.NotificationFactory;
@@ -41,7 +42,7 @@ public class NewProblemEventListener {
                 .collect(Collectors.toMap(PushToken::getUserId, token -> token));
 
         List<Notification<? extends DomainEvent>> notifications = new LinkedList<>();
-
+        List<PushNotificationDTO> pushNotifications = new LinkedList<>();
 
         for (PointOfInterest poi : pointOfInterests) {
             User user = poi.getUser();
@@ -50,14 +51,15 @@ public class NewProblemEventListener {
             notifications.add(notification);
 
             PushToken pushToken = pushTokensByUserId.get(notification.getRecipient().getId());
-
             String title = "New problem around %s".formatted(poi.getName());
             String description = "A user reported %s near %s: '%s'"
                     .formatted(event.problemType(), poi.getName(), event.firstReportDescription());
 
-            this.pushNotificationService.sendNotification(pushToken.getToken(), title, description);
+            PushNotificationDTO pushNotification = new PushNotificationDTO(pushToken.getToken(), title, description);
+            pushNotifications.add(pushNotification);
         }
 
         this.notificationRepository.saveAll(notifications);
+        this.pushNotificationService.sendAll(pushNotifications);
     }
 }
