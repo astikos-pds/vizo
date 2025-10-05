@@ -30,7 +30,7 @@ public class MarkNotificationAsReadUseCase {
 
         Notification<DomainEvent> updated = loggedInUser.markAsRead(notification);
 
-        Notification<? extends DomainEvent> saved = this.notificationRepository.save(updated);;
+        Notification<? extends DomainEvent> saved = this.notificationRepository.save(updated);
 
         return this.notificationMapper.toDto(saved);
     }

@@ -47,6 +47,8 @@ dependencies {
 
     implementation("io.hypersistence:hypersistence-utils-hibernate-60:3.9.0")
 
+    implementation("com.google.firebase:firebase-admin:9.7.0")
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

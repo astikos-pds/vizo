@@ -39,3 +39,7 @@ client:
 
 analyser:
   url: ${ANALYSER_URL}
+
+firebase:
+  service:
+    account: ${FIREBASE_SERVICE_ACCOUNT}
