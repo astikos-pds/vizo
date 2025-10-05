@@ -1,6 +1,5 @@
 package br.app.vizo.application.listener;
 
-import br.app.vizo.application.exception.base.InternalServerErrorException;
 import br.app.vizo.application.service.PushNotificationService;
 import br.app.vizo.core.notification.Notification;
 import br.app.vizo.core.notification.NotificationFactory;
@@ -13,7 +12,6 @@ import br.app.vizo.core.shared.coordinates.Coordinates;
 import br.app.vizo.core.user.User;
 import br.app.vizo.core.user.push.PushToken;
 import br.app.vizo.core.user.push.PushTokenRepository;
-import com.google.firebase.messaging.FirebaseMessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -36,8 +34,7 @@ public class NewProblemEventListener {
         List<PointOfInterest> pointOfInterests = this.pointOfInterestRepository
                 .findAllContaining(Coordinates.of(event.problemLatitude(), event.problemLongitude()));
 
-        Set<UUID> usersIds = pointOfInterests.stream()
-                .map(PointOfInterest::getUserId)
+        Set<UUID> usersIds = pointOfInterests.stream().map(PointOfInterest::getUserId)
                 .collect(Collectors.toSet());
 
         Map<UUID, PushToken> pushTokensByUserId = this.pushTokenRepository.findAllByUserIdIn(usersIds).stream()
@@ -58,11 +55,7 @@ public class NewProblemEventListener {
             String description = "A user reported %s near %s: '%s'"
                     .formatted(event.problemType(), poi.getName(), event.firstReportDescription());
 
-            try {
-                this.pushNotificationService.sendNotification(pushToken.getToken(), title, description);
-            } catch (FirebaseMessagingException e) {
-                throw new InternalServerErrorException(e.getMessage());
-            }
+            this.pushNotificationService.sendNotification(pushToken.getToken(), title, description);
         }
 
         this.notificationRepository.saveAll(notifications);

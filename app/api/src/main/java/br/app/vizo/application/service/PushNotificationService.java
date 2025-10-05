@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class PushNotificationService {
 
-    public void sendNotification(String token, String title, String body) throws FirebaseMessagingException {
+    public void sendNotification(String token, String title, String body) {
         Notification notification = Notification.builder()
                 .setTitle(title)
                 .setBody(body)
@@ -20,8 +20,15 @@ public class PushNotificationService {
                 .setNotification(notification)
                 .build();
 
-        String response = FirebaseMessaging.getInstance().send(message);
+        String response;
 
-        System.out.println("Notification sent: " + response);
+        try {
+            response = FirebaseMessaging.getInstance().send(message);
+        } catch (FirebaseMessagingException e) {
+            System.out.println("Push notification error: " + e.getMessage());
+            return;
+        }
+
+        System.out.println("Push notification sent: " + response);
     }
 }
