@@ -59,6 +59,10 @@ public class PointOfInterest {
         this.timestamps.update();
     }
 
+    public UUID getUserId() {
+        return this.user.getId();
+    }
+
     public UUID getId() {
         return id;
     }

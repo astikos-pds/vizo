@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Repository
@@ -13,5 +14,5 @@ public interface PushTokenJpaRepository extends JpaRepository<PushTokenEntity, L
 
     Optional<PushTokenEntity> findByToken(String token);
 
-    List<PushTokenEntity> findAllByUserId(UUID userId);
+    List<PushTokenEntity> findAllByUserIdIn(Set<UUID> usersIds);
 }

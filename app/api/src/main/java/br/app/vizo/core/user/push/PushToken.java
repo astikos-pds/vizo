@@ -27,8 +27,9 @@ public class PushToken {
         this(0L, userId, token, platform, Instant.now(), Instant.now());
     }
 
-    public void use() {
+    public PushToken use() {
         this.lastUsedAt = Instant.now();
+        return this;
     }
 
     public Long getId() {

@@ -7,6 +7,8 @@ import br.app.vizo.application.usecase.me.*;
 import br.app.vizo.application.usecase.me.filter.GetMyAffiliationsParams;
 import br.app.vizo.application.usecase.me.filter.GetMyNotificationsParams;
 import br.app.vizo.application.usecase.me.filter.ReportFilter;
+import br.app.vizo.application.usecase.push.RegisterPushTokenUseCase;
+import br.app.vizo.application.usecase.push.request.RegisterPushTokenRequestDTO;
 import br.app.vizo.config.security.UserDetailsImpl;
 import br.app.vizo.core.affiliation.AffiliationStatus;
 import br.app.vizo.core.notification.event.DomainEvent;
@@ -28,6 +30,7 @@ public class MeController {
     private final GetMyAffiliationsUseCase getMyAffiliationsUseCase;
     private final GetMyAssignmentsInMunicipalityUseCase getMyAssignmentsInMunicipalityUseCase;
     private final GetMyReportsUseCase getMyReportsUseCase;
+    private final RegisterPushTokenUseCase registerPushTokenUseCase;
     private final DisaffiliateFromMunicipalityUseCase disaffiliateFromMunicipalityUseCase;
     private final LeaveDepartmentUseCase leaveDepartmentUseCase;
 
@@ -88,6 +91,16 @@ public class MeController {
             PaginationDTO pagination
     ) {
         return ResponseEntity.ok(this.getMyReportsUseCase.execute(userDetails.getUser(), reportFilter, pagination));
+    }
+
+    @PutMapping("/push-tokens")
+    public ResponseEntity<PushTokenDTO> registerPushToken(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody RegisterPushTokenRequestDTO request
+    ) {
+        PushTokenDTO response = this.registerPushTokenUseCase.execute(userDetails.getUser(), request);
+
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/municipalities/{municipalityId}/affiliations")
