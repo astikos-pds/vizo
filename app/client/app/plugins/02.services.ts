@@ -4,6 +4,7 @@ import { AuthService } from "~/services/auth";
 import { DepartmentService } from "~/services/department";
 import { MeService } from "~/services/me";
 import { MunicipalityService } from "~/services/municipality";
+import { NotificationService } from "~/services/notification";
 import { PermissionPresetService } from "~/services/permission-preset";
 import { PointOfInterestService } from "~/services/point-of-interest";
 import { ProblemService } from "~/services/problem";
@@ -13,6 +14,8 @@ import { AffiliatedUserMapper } from "~/types/domain/affiliated-user";
 import { AssignedUserMapper } from "~/types/domain/assigned-user";
 import { DepartmentMapper } from "~/types/domain/department";
 import { MunicipalityMapper } from "~/types/domain/municipality";
+import { EventMapper } from "~/types/domain/notification/event";
+import { NotificationMapper } from "~/types/domain/notification/notification";
 import { PageMapper } from "~/types/domain/pagination";
 import { PermissionPresetMapper } from "~/types/domain/permission";
 import { PointOfInterestMapper } from "~/types/domain/point-of-interest";
@@ -31,6 +34,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   const pageMapper = new PageMapper();
 
   const userMapper = new UserMapper();
+  const eventMapper = new EventMapper();
+  const notificationMapper = new NotificationMapper(userMapper, eventMapper);
   const emailVerificationMapper = new EmailVerificationMapper();
   const authenticationMapper = new AuthenticationMapper(userMapper);
   const pointOfInterestMapper = new PointOfInterestMapper(userMapper);
@@ -53,6 +58,10 @@ export default defineNuxtPlugin((nuxtApp) => {
   );
 
   const userService: UserService = new UserService(httpClient);
+  const notificationService: NotificationService = new NotificationService(
+    httpClient,
+    notificationMapper
+  );
   const authService: AuthService = new AuthService(
     httpClient,
     userMapper,
@@ -63,6 +72,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     httpClient,
     pageMapper,
     userMapper,
+    notificationMapper,
     pointOfInterestMapper,
     reportMapper,
     affiliatedUserMapper,
@@ -103,6 +113,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   return {
     provide: {
       userService,
+      notificationService,
       authService,
       meService,
       reportService,

@@ -6,7 +6,7 @@ export interface HttpClient {
   ): Promise<T>;
   post<T>(uri: string, body: any): Promise<T>;
   put<T>(uri: string, body: any): Promise<T>;
-  patch<T>(uri: string, body: any): Promise<T>;
+  patch<T>(uri: string, body?: any): Promise<T>;
   delete(uri: string): void;
 }
 

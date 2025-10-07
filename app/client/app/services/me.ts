@@ -19,6 +19,10 @@ import type { ReportDTO, ReportMapper } from "~/types/domain/report";
 import type { UserDTO, UserMapper } from "~/types/domain/user";
 import type { HttpClient } from "~/utils/http";
 import type { AffiliationFilter } from "./affiliated-user";
+import type {
+  NotificationDTO,
+  NotificationMapper,
+} from "~/types/domain/notification/notification";
 
 export type ReportFilter = {
   latitude?: number;
@@ -26,11 +30,17 @@ export type ReportFilter = {
   radius?: number;
 };
 
+export type NotificationParams = {
+  read?: boolean;
+  pagination?: Pagination;
+};
+
 export class MeService {
   constructor(
     private readonly httpClient: HttpClient,
     private readonly pageMapper: PageMapper,
     private readonly userMapper: UserMapper,
+    private readonly notificationMapper: NotificationMapper,
     private readonly pointOfInterestMapper: PointOfInterestMapper,
     private readonly reportMapper: ReportMapper,
     private readonly affiliatedUserMapper: AffiliatedUserMapper,
@@ -41,6 +51,17 @@ export class MeService {
     const response = await this.httpClient.get<UserDTO>("/me");
 
     return this.userMapper.toModel(response);
+  }
+
+  public async getMyNotifications(params: NotificationParams) {
+    const response = await this.httpClient.get<PageDTO<NotificationDTO>>(
+      "/me/notifications",
+      params
+    );
+
+    const page = this.pageMapper.toModel(response);
+
+    return page.map((t) => this.notificationMapper.toModel(t));
   }
 
   public async getMyPointsOfInterest(pagination?: Pagination) {
