@@ -81,6 +81,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
         <UFormField
           :label="t('pages.login.cpf')"
           name="document"
+          required
           class="w-full"
         >
           <UInput
@@ -99,6 +100,7 @@ const onSubmit = async (event: FormSubmitEvent<LoginSchema>) => {
           :label="t('pages.login.password')"
           name="password"
           :placeholder="t('pages.login.passwordPlaceholder')"
+          required
           @click="showPassword = !showPassword"
         />
 
