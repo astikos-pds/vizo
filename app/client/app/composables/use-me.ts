@@ -1,5 +1,5 @@
 import type { AffiliationFilter } from "~/services/affiliated-user";
-import type { ReportFilter } from "~/services/me";
+import type { RegisterPushTokenRequest, ReportFilter } from "~/services/me";
 import type { Department } from "~/types/domain/department";
 import type { Municipality } from "~/types/domain/municipality";
 import type { Pagination } from "~/types/domain/pagination";
@@ -44,6 +44,10 @@ export const useMe = () => {
     );
   }
 
+  function registerPushToken(request: RegisterPushTokenRequest) {
+    return handle(() => $meService.registerPushToken(request));
+  }
+
   function disaffiliateFromMunicipality(municipalityId: Municipality["id"]) {
     return handle(() =>
       $meService.disaffiliateFromMunicipality(municipalityId)
@@ -66,6 +70,7 @@ export const useMe = () => {
     getMyPointsOfInterest,
     getMyAffiliations,
     getMyAssignmentsInMunicipality,
+    registerPushToken,
     disaffiliateFromMunicipality,
     leaveDepartment,
   };

@@ -8,6 +8,9 @@ const isPermissionForGeolocationDenied = computed(
 
 const isNotificationGranted = ref(false);
 
+const { registerPushToken } = useMe();
+const toast = useToast();
+
 async function setToken() {
   const { $messaging, $config } = useNuxtApp();
 
@@ -20,6 +23,15 @@ async function setToken() {
   const token = await getToken($messaging, {
     vapidKey,
   });
+
+  const response = await registerPushToken({ token, platform: "WEB" });
+
+  if (response) return;
+
+  toast.add({
+    title: "Failure",
+    description: "Failure to save your push token. Try again later.",
+  });
 }
 
 async function onNotificationClick() {
@@ -28,9 +40,13 @@ async function onNotificationClick() {
     return;
   }
 
-  const permission = await Notification.requestPermission();
+  if (!isNotificationGranted.value) {
+    const permission = await Notification.requestPermission();
 
-  if (permission !== "granted") return;
+    if (permission !== "granted") return;
+
+    isNotificationGranted.value = true;
+  }
 
   await setToken();
 }

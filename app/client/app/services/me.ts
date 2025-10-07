@@ -23,17 +23,24 @@ import type {
   NotificationDTO,
   NotificationMapper,
 } from "~/types/domain/notification/notification";
+import type {
+  Platform,
+  PushTokenDTO,
+  PushTokenMapper,
+} from "~/types/domain/push";
 
-export type ReportFilter = {
+export interface ReportFilter {
   latitude?: number;
   longitude?: number;
   radius?: number;
-};
+}
 
-export type NotificationParams = {
-  read?: boolean;
-  pagination?: Pagination;
-};
+export type NotificationParams = { read?: boolean } | Pagination;
+
+export interface RegisterPushTokenRequest {
+  token: string;
+  platform: Platform;
+}
 
 export class MeService {
   constructor(
@@ -44,7 +51,8 @@ export class MeService {
     private readonly pointOfInterestMapper: PointOfInterestMapper,
     private readonly reportMapper: ReportMapper,
     private readonly affiliatedUserMapper: AffiliatedUserMapper,
-    private readonly assignedUserMapper: AssignedUserMapper
+    private readonly assignedUserMapper: AssignedUserMapper,
+    private readonly pushTokenMapper: PushTokenMapper
   ) {}
 
   public async getMe() {
@@ -113,6 +121,15 @@ export class MeService {
     const page = this.pageMapper.toModel(response);
 
     return page.map((t) => this.assignedUserMapper.toModel(t));
+  }
+
+  public async registerPushToken(request: RegisterPushTokenRequest) {
+    const response = await this.httpClient.put<PushTokenDTO>(
+      "/push-tokens",
+      request
+    );
+
+    return this.pushTokenMapper.toModel(response);
   }
 
   public async disaffiliateFromMunicipality(municipalityId: string) {
