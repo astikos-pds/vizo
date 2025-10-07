@@ -61,10 +61,16 @@ const coordinates = computed<LatLng>(() => {
 const { getProblems } = useProblems();
 
 const { data: problems, pending } = await getProblems();
+
+const breakpoints = useBreakpoints({
+  lg: 1024,
+});
+
+const isMobile = breakpoints.smaller("lg");
 </script>
 
 <template>
-  <CommonPage title="Home" with-padding>
+  <CommonPage title="Home" :with-padding="!isMobile">
     <div v-if="pending">{{ t("common.loading") }}</div>
     <Map
       v-else

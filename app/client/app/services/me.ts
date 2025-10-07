@@ -125,7 +125,7 @@ export class MeService {
 
   public async registerPushToken(request: RegisterPushTokenRequest) {
     const response = await this.httpClient.put<PushTokenDTO>(
-      "/push-tokens",
+      "/me/push-tokens",
       request
     );
 

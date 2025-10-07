@@ -31,6 +31,7 @@ async function setToken() {
   toast.add({
     title: "Failure",
     description: "Failure to save your push token. Try again later.",
+    color: "error",
   });
 }
 
@@ -40,13 +41,13 @@ async function onNotificationClick() {
     return;
   }
 
-  if (!isNotificationGranted.value) {
-    const permission = await Notification.requestPermission();
+  if (isNotificationGranted.value) return;
 
-    if (permission !== "granted") return;
+  const permission = await Notification.requestPermission();
 
-    isNotificationGranted.value = true;
-  }
+  if (permission !== "granted") return;
+
+  isNotificationGranted.value = true;
 
   await setToken();
 }
