@@ -164,21 +164,6 @@ export default defineNuxtConfig({
     workbox: {
       cleanupOutdatedCaches: true,
       globPatterns: ["**/*.{js,css,html,png,svg,ico}"],
-      runtimeCaching: [
-        {
-          urlPattern: new RegExp(
-            process.env.NUXT_API_BASE_URL || "http://localhost:8080"
-          ),
-          handler: "NetworkFirst",
-          options: {
-            cacheName: "api-cache",
-            expiration: {
-              maxEntries: 50,
-              maxAgeSeconds: 300,
-            },
-          },
-        },
-      ],
     },
   },
 });
