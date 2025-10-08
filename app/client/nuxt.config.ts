@@ -104,7 +104,7 @@ export default defineNuxtConfig({
       enabled: false,
     },
     strategies: "generateSW",
-    registerType: "autoUpdate",
+    registerType: "prompt",
     manifest: {
       name: "Vizo",
       short_name: "Vizo",
