@@ -1,5 +1,10 @@
-__pycache__
+__pycache__/
 *.pyc
-.venv
-.git
-*.log
+*.pyo
+*.pyd
+.env
+.venv/
+.git/
+.cache/
+tests/
+docs/
