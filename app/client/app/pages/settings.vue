@@ -43,6 +43,7 @@ const settingsSchema = z.object({
   language: z.custom<typeof locale.value>(),
   theme: z.custom<typeof colorMode.preference>(),
   areNotificationsEnabled: z.boolean(),
+  isGeolocationEnabled: z.boolean(),
 });
 
 type SettingsSchema = z.output<typeof settingsSchema>;
@@ -51,6 +52,7 @@ const form = reactive<SettingsSchema>({
   language: locale.value,
   theme: colorMode.preference,
   areNotificationsEnabled: false,
+  isGeolocationEnabled: false,
 });
 
 const languageIcon = computed(
@@ -61,7 +63,15 @@ const themeIcon = computed(
   () => themeItems.value.find((item) => item.value === form.theme)?.icon
 );
 
-const { isPermissionGranted, requestPermissionForNotifications } = usePush();
+const {
+  isPermissionGranted: isPermissionForNotificationGranted,
+  requestPermissionForNotifications,
+} = usePush();
+
+const {
+  isPermissionGranted: isPermissionForGeolocationGranted,
+  requestGeolocationPermission,
+} = useMapGeolocation();
 
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
@@ -69,7 +79,12 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
 
   colorMode.preference = event.data.theme;
 
+  const isGeolocationEnabled = event.data.isGeolocationEnabled;
   const areNotificationsEnabled = event.data.areNotificationsEnabled;
+
+  if (isGeolocationEnabled) {
+    requestGeolocationPermission();
+  }
 
   if (areNotificationsEnabled) {
     await requestPermissionForNotifications();
@@ -82,7 +97,9 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
   });
 };
 
-onMounted(() => {
+onMounted(async () => {
+  form.isGeolocationEnabled = isPermissionForGeolocationGranted.value;
+
   form.areNotificationsEnabled =
     "Notification" in window && Notification.permission === "granted";
 });
@@ -135,6 +152,18 @@ onMounted(() => {
           </UFormField>
 
           <UFormField
+            label="Geolocation"
+            name="geolocation"
+            description="Geolocation tracking permits to make reports base in your current position."
+            class="w-full flex justify-between items-center gap-4"
+          >
+            <USwitch
+              v-model="form.isGeolocationEnabled"
+              :disabled="isPermissionForGeolocationGranted"
+            />
+          </UFormField>
+
+          <UFormField
             label="Notifications"
             name="notifications"
             description="Push notifications permit to notify in background, even if you are not using the app."
@@ -142,7 +171,7 @@ onMounted(() => {
           >
             <USwitch
               v-model="form.areNotificationsEnabled"
-              :disabled="isPermissionGranted"
+              :disabled="isPermissionForNotificationGranted"
             />
           </UFormField>
 

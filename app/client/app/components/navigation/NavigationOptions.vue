@@ -1,12 +1,13 @@
 <script lang="ts" setup>
-const { error } = useMapGeolocation();
-const isPermissionForGeolocationDenied = computed(
-  () => error.value?.code === 1
-);
+const { isPermissionGranted: isPermissionForGeolocationGranted } =
+  useMapGeolocation();
 
 const { user } = useLoggedInUserStore();
 
-const { isPermissionGranted, isRequestingPermission } = usePush();
+const {
+  isPermissionGranted: isPermissionForNotificationsGranted,
+  isRequestingPermission,
+} = usePush();
 </script>
 
 <template>
@@ -15,20 +16,21 @@ const { isPermissionGranted, isRequestingPermission } = usePush();
       <UTooltip text="Geolocation tracking state">
         <UButton
           size="xl"
-          :color="isPermissionForGeolocationDenied ? 'neutral' : 'primary'"
+          color="neutral"
           variant="ghost"
           :icon="
-            isPermissionForGeolocationDenied
-              ? 'i-lucide-navigation-off'
-              : 'i-lucide-navigation'
+            isPermissionForGeolocationGranted
+              ? 'i-lucide-navigation'
+              : 'i-lucide-navigation-off'
           "
+          :to="isPermissionForGeolocationGranted ? undefined : '/settings'"
           class="flex items-center justify-center text-xl pointer-auto"
         />
       </UTooltip>
 
       <UTooltip
         :text="
-          isPermissionGranted
+          isPermissionForNotificationsGranted
             ? 'Go to notifcations'
             : 'Enable push notifications'
         "
@@ -37,8 +39,14 @@ const { isPermissionGranted, isRequestingPermission } = usePush();
           size="xl"
           color="neutral"
           variant="ghost"
-          :icon="isPermissionGranted ? 'i-lucide-bell' : 'i-lucide-bell-off'"
-          :to="isPermissionGranted ? '/notifications' : '/settings'"
+          :icon="
+            isPermissionForNotificationsGranted
+              ? 'i-lucide-bell'
+              : 'i-lucide-bell-off'
+          "
+          :to="
+            isPermissionForNotificationsGranted ? '/notifications' : '/settings'
+          "
           :loading="isRequestingPermission"
           class="flex items-center justify-center text-xl"
         />

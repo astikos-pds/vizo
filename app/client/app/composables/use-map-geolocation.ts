@@ -5,8 +5,14 @@ import {
 } from "~/utils/constants";
 
 export const useMapGeolocation = () => {
-  const { coords, error } = useGeolocation();
+  const isPermissionGranted = ref(false);
+
+  const { coords, error, isSupported, resume } = useGeolocation({
+    immediate: false,
+  });
   const { $leafet } = useNuxtApp();
+
+  const isPositionInacessible = computed(() => coords.value.accuracy === 0);
 
   const isLocationPrecise = computed(
     () =>
@@ -45,13 +51,33 @@ export const useMapGeolocation = () => {
     markerPosition.longitude = newLatLng.longitude;
   }
 
+  function requestGeolocationPermission() {
+    if (!isSupported.value) return;
+
+    resume();
+    isPermissionGranted.value = true;
+  }
+
+  onMounted(async () => {
+    let geolocationPermission = false;
+    if (isSupported && navigator.permissions) {
+      const status = await navigator.permissions.query({ name: "geolocation" });
+      geolocationPermission = status.state === "granted";
+    }
+    isPermissionGranted.value = geolocationPermission;
+  });
+
   return {
     coords,
     error,
+    isPositionInacessible,
     isLocationPrecise,
     mapCenter,
     markerPosition,
     isWithinRadius,
     updateMarker,
+    isSupported,
+    isPermissionGranted,
+    requestGeolocationPermission,
   };
 };

@@ -26,6 +26,7 @@ definePageMeta({
 const {
   coords,
   error: geolocationError,
+  isPositionInacessible,
   isLocationPrecise,
   isWithinRadius,
 } = useMapGeolocation();
@@ -43,6 +44,18 @@ watch(geolocationError, (newError) => {
 
   form.location = "POINT";
 });
+
+watch(
+  isPositionInacessible,
+  (still) => {
+    if (!still) return;
+
+    console.log(isLocationPrecise.value);
+
+    form.location = "POINT";
+  },
+  { immediate: true }
+);
 
 const locationItems = ref<RadioGroupItem[]>([
   {
@@ -77,6 +90,10 @@ const locationMessage = computed(() => {
 
   if (geolocationError.value?.code === 1) {
     return "Permission to track current geolocation denied, please point the problem on the map or enable location tracking.";
+  }
+
+  if (isPositionInacessible) {
+    return "Current position is inacessible. Try again later or point the problem on the map.";
   }
 
   if (!isLocationPrecise.value) {
@@ -220,7 +237,7 @@ function resolveCoordinates(data: ReportSchema) {
         :schema="reportSchema"
         :state="form"
         @submit="onSubmit"
-        class="mt-3 flex flex-col items-center gap-5 pb-15"
+        class="mt-3 flex flex-col items-center gap-5"
       >
         <UFormField
           :label="t('reportProblem.description')"
@@ -261,7 +278,7 @@ function resolveCoordinates(data: ReportSchema) {
             variant="table"
             v-model="form.location"
             :items="locationItems"
-            :disabled="geolocationError !== null"
+            :disabled="geolocationError !== null || isPositionInacessible"
           />
 
           <Map
