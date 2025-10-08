@@ -24,7 +24,7 @@ public class PushToken {
     }
 
     public PushToken(UserId userId, String token, Platform platform) {
-        this(0L, userId, token, platform, Instant.now(), Instant.now());
+        this(null, userId, token, platform, Instant.now(), Instant.now());
     }
 
     public PushToken use() {

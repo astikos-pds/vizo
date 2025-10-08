@@ -31,7 +31,9 @@ public class PushTokenEntity {
     @Enumerated(EnumType.STRING)
     private Platform platform;
 
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt;
 
+    @Column(name = "last_used_at", nullable = false)
     private Instant lastUsedAt;
 }
