@@ -20,6 +20,7 @@ import { PageMapper } from "~/types/domain/pagination";
 import { PermissionPresetMapper } from "~/types/domain/permission";
 import { PointOfInterestMapper } from "~/types/domain/point-of-interest";
 import { ProblemMapper } from "~/types/domain/problem";
+import { PushTokenMapper } from "~/types/domain/push";
 import { ReportMapper } from "~/types/domain/report";
 import {
   AuthenticationMapper,
@@ -34,6 +35,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   const pageMapper = new PageMapper();
 
   const userMapper = new UserMapper();
+  const pushTokenMapper = new PushTokenMapper();
   const eventMapper = new EventMapper();
   const notificationMapper = new NotificationMapper(userMapper, eventMapper);
   const emailVerificationMapper = new EmailVerificationMapper();
@@ -76,7 +78,8 @@ export default defineNuxtPlugin((nuxtApp) => {
     pointOfInterestMapper,
     reportMapper,
     affiliatedUserMapper,
-    assignedUserMapper
+    assignedUserMapper,
+    pushTokenMapper
   );
   const reportService: ReportService = new ReportService(
     httpClient,

@@ -13,6 +13,9 @@ const { registerPushToken } = useMe();
 async function setToken() {
   const { $messaging, $config } = useNuxtApp();
 
+  const alreadyRegistered = sessionStorage.getItem("pushRegistered");
+  if (alreadyRegistered) return;
+
   const vapidKey = $config.public.firebaseVapidKey;
 
   if (!vapidKey) return;
@@ -24,7 +27,18 @@ async function setToken() {
     serviceWorkerRegistration: registration,
   });
 
-  await registerPushToken({ token, platform: "WEB" });
+  const savedToken = localStorage.getItem("pushToken");
+  if (savedToken === token) {
+    sessionStorage.setItem("pushRegistered", "true");
+    return;
+  }
+
+  const response = await registerPushToken({ token, platform: "WEB" });
+
+  if (!response) return;
+
+  localStorage.setItem("pushToken", token);
+  sessionStorage.setItem("pushRegistered", "true");
 }
 
 const { user } = useLoggedInUserStore();
@@ -32,14 +46,18 @@ const { user } = useLoggedInUserStore();
 onMounted(async () => {
   if (!("Notification" in window)) return;
 
-  const permission = window.Notification.permission;
+  if (!user) return;
+
+  let permission = window.Notification.permission;
   isNotificationGranted.value = permission === "granted";
 
   if (permission !== "granted") {
-    const permission = await Notification.requestPermission();
+    permission = await Notification.requestPermission();
 
     if (permission !== "granted") return;
   }
+
+  isNotificationGranted.value = permission === "granted";
 
   await setToken();
 });
