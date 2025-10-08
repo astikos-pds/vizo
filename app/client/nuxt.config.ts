@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   ssr: process.env.NUXT_PUBLIC_NODE_ENV === "production",
   nitro: {
     prerender: {
-      routes: ["/", "/login", "register", "/change-password"],
+      routes: ["/", "/login", "/register", "/change-password"],
     },
   },
   runtimeConfig: {
