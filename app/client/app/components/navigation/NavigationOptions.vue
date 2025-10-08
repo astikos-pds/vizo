@@ -9,55 +9,39 @@ const isPermissionForGeolocationDenied = computed(
 const isNotificationGranted = ref(false);
 
 const { registerPushToken } = useMe();
-const toast = useToast();
 
 async function setToken() {
   const { $messaging, $config } = useNuxtApp();
 
   const vapidKey = $config.public.firebaseVapidKey;
 
-  if (!vapidKey) {
-    console.warn("VAPID not set.");
-  }
+  if (!vapidKey) return;
+
+  const registration = await navigator.serviceWorker.ready;
 
   const token = await getToken($messaging, {
     vapidKey,
+    serviceWorkerRegistration: registration,
   });
 
-  const response = await registerPushToken({ token, platform: "WEB" });
-
-  if (response) return;
-
-  toast.add({
-    title: "Failure",
-    description: "Failure to save your push token. Try again later.",
-    color: "error",
-  });
-}
-
-async function onNotificationClick() {
-  if (!("Notification" in window)) {
-    alert("Seu navegador não suporta notificações.");
-    return;
-  }
-
-  if (isNotificationGranted.value) return;
-
-  const permission = await Notification.requestPermission();
-
-  if (permission !== "granted") return;
-
-  isNotificationGranted.value = true;
-
-  await setToken();
+  await registerPushToken({ token, platform: "WEB" });
 }
 
 const { user } = useLoggedInUserStore();
 
-onMounted(() => {
-  if ("Notification" in window) {
-    isNotificationGranted.value = window.Notification.permission === "granted";
+onMounted(async () => {
+  if (!("Notification" in window)) return;
+
+  const permission = window.Notification.permission;
+  isNotificationGranted.value = permission === "granted";
+
+  if (permission !== "granted") {
+    const permission = await Notification.requestPermission();
+
+    if (permission !== "granted") return;
   }
+
+  await setToken();
 });
 </script>
 
@@ -74,7 +58,7 @@ onMounted(() => {
               ? 'i-lucide-navigation-off'
               : 'i-lucide-navigation'
           "
-          class="rounded-full flex items-center justify-center text-xl pointer-auto"
+          class="flex items-center justify-center text-xl pointer-auto"
         />
       </UTooltip>
 
@@ -84,8 +68,7 @@ onMounted(() => {
         variant="ghost"
         :icon="isNotificationGranted ? 'i-lucide-bell' : 'i-lucide-bell-off'"
         :to="isNotificationGranted ? '/notifications' : undefined"
-        class="rounded-full flex items-center justify-center text-xl"
-        @click="onNotificationClick"
+        class="flex items-center justify-center text-xl"
       />
 
       <UButton

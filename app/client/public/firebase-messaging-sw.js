@@ -5,24 +5,14 @@ importScripts(
   "https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"
 );
 
-const config = {
-  firebaseApiKey: process.env.NUXT_PUBLIC_FIREBASE_API_KEY ?? "",
-  firebaseAuthDomain: process.env.NUXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? "",
-  firebaseProjectId: process.env.NUXT_PUBLIC_FIREBASE_PROJECT_ID ?? "",
-  firebaseStorageBucket: process.env.NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? "",
-  firebaseMessagingSenderId:
-    process.env.NUXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? "",
-  firebaseAppId: process.env.NUXT_PUBLIC_FIREBASE_APP_ID ?? "",
-  firebaseVapidKey: process.env.NUXT_PUBLIC_FIREBASE_VAPID_KEY ?? "",
-};
-
 const app = firebase.initializeApp({
-  apiKey: config.firebaseApiKey,
-  authDomain: config.firebaseAuthDomain,
-  projectId: config.firebaseProjectId,
-  storageBucket: config.firebaseStorageBucket,
-  messagingSenderId: config.firebaseMessagingSenderId,
-  appId: config.firebaseAppId,
+  apiKey: "AIzaSyDN9bOnrT0eSvCaNRY9jY85ivN2jYYaiDQ",
+  authDomain: "astikos-vizo.firebaseapp.com",
+  projectId: "astikos-vizo",
+  storageBucket: "astikos-vizo.firebasestorage.app",
+  messagingSenderId: "611810149761",
+  appId: "1:611810149761:web:c52725f3faad6a72b51480",
+  measurementId: "G-5VNZE0C6RB",
 });
 
 const messaging = firebase.messaging();

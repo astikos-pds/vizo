@@ -7,7 +7,7 @@ declare module "#app" {
   }
 }
 
-export default defineNuxtPlugin((nuxtApp) => {
+export default defineNuxtPlugin(async (nuxtApp) => {
   const config = nuxtApp.$config.public;
 
   const firebaseConfig = {
@@ -23,6 +23,23 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   const messaging = getMessaging(app);
 
+  try {
+    const registration = await navigator.serviceWorker.register(
+      "/firebase-messaging-sw.js"
+    );
+
+    await navigator.serviceWorker.ready;
+
+    console.info("[Firebase] Service Worker registered:", registration.scope);
+  } catch (err) {
+    if (config.nodeEnv === "development") {
+      console.error(
+        "[Firebase] Error during Service Worker registration:",
+        err
+      );
+    }
+  }
+
   const toast = useToast();
 
   onMessage(messaging, (payload) => {
@@ -32,6 +49,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       title: payload.notification.title,
       description: payload.notification.body,
       color: "primary",
+      icon: "i-lucide-megaphone",
     });
   });
 
