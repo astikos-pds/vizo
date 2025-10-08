@@ -42,6 +42,7 @@ const colorMode = useColorMode();
 const settingsSchema = z.object({
   language: z.custom<typeof locale.value>(),
   theme: z.custom<typeof colorMode.preference>(),
+  areNotificationsEnabled: z.boolean(),
 });
 
 type SettingsSchema = z.output<typeof settingsSchema>;
@@ -49,6 +50,7 @@ type SettingsSchema = z.output<typeof settingsSchema>;
 const form = reactive<SettingsSchema>({
   language: locale.value,
   theme: colorMode.preference,
+  areNotificationsEnabled: false,
 });
 
 const languageIcon = computed(
@@ -59,11 +61,19 @@ const themeIcon = computed(
   () => themeItems.value.find((item) => item.value === form.theme)?.icon
 );
 
+const { isPermissionGranted, requestPermissionForNotifications } = usePush();
+
 const toast = useToast();
 const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
   await setLocale(event.data.language);
 
   colorMode.preference = event.data.theme;
+
+  const areNotificationsEnabled = event.data.areNotificationsEnabled;
+
+  if (areNotificationsEnabled) {
+    await requestPermissionForNotifications();
+  }
 
   toast.add({
     title: t("toast.success.title"),
@@ -71,6 +81,11 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
     color: "success",
   });
 };
+
+onMounted(() => {
+  form.areNotificationsEnabled =
+    "Notification" in window && Notification.permission === "granted";
+});
 </script>
 
 <template>
@@ -116,6 +131,18 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
               :items="themeItems"
               :icon="themeIcon"
               class="w-full"
+            />
+          </UFormField>
+
+          <UFormField
+            label="Notifications"
+            name="notifications"
+            description="Push notifications permit to notify in background, even if you are not using the app."
+            class="w-full flex justify-between items-center gap-4"
+          >
+            <USwitch
+              v-model="form.areNotificationsEnabled"
+              :disabled="isPermissionGranted"
             />
           </UFormField>
 
