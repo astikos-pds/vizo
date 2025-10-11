@@ -6,6 +6,7 @@ import {
 
 export const useMapGeolocation = () => {
   const isPermissionGranted = ref(false);
+  const isRequestingPermission = ref(false);
 
   const { coords, error, isSupported, resume } = useGeolocation({
     immediate: false,
@@ -52,19 +53,24 @@ export const useMapGeolocation = () => {
   }
 
   function requestGeolocationPermission() {
-    if (!isSupported.value) return;
-
     resume();
-    isPermissionGranted.value = true;
+  }
+
+  function getGeolocationPermission() {
+    return navigator.permissions.query({ name: "geolocation" });
   }
 
   onMounted(async () => {
-    let geolocationPermission = false;
-    if (isSupported && navigator.permissions) {
-      const status = await navigator.permissions.query({ name: "geolocation" });
-      geolocationPermission = status.state === "granted";
-    }
-    isPermissionGranted.value = geolocationPermission;
+    if (!isSupported.value) return;
+
+    const status = await getGeolocationPermission();
+
+    isPermissionGranted.value = status.state === "granted";
+
+    status.onchange = () => {
+      isPermissionGranted.value = status.state === "granted";
+      isRequestingPermission.value = status.state === "prompt";
+    };
   });
 
   return {
@@ -76,8 +82,9 @@ export const useMapGeolocation = () => {
     markerPosition,
     isWithinRadius,
     updateMarker,
-    isSupported,
     isPermissionGranted,
+    isRequestingPermission,
     requestGeolocationPermission,
+    getGeolocationPermission,
   };
 };

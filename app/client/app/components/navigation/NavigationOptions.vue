@@ -1,36 +1,51 @@
 <script lang="ts" setup>
-const { isPermissionGranted: isPermissionForGeolocationGranted } =
-  useMapGeolocation();
+const {
+  isPermissionGranted: isGeolocationEnabled,
+  isRequestingPermission: isRequestingGeolocationPermission,
+  coords,
+  isLocationPrecise,
+} = useMapGeolocation();
 
 const { user } = useLoggedInUserStore();
 
 const {
-  isPermissionGranted: isPermissionForNotificationsGranted,
-  isRequestingPermission,
+  isPermissionGranted: areNotificationsEnabled,
+  isRequestingPermission: isRequestingNotificationPermission,
 } = usePush();
 </script>
 
 <template>
   <ClientOnly>
     <div class="flex items-center gap-1">
-      <UTooltip text="Geolocation tracking state">
+      <UTooltip
+        :text="
+          isGeolocationEnabled
+            ? isLocationPrecise
+              ? `Coordinates: ${coords.latitude.toFixed(
+                  2
+                )}, ${coords.longitude.toFixed(2)}`
+              : 'Geolocation enabled'
+            : 'Enable geolocation tracking'
+        "
+      >
         <UButton
           size="xl"
           color="neutral"
           variant="ghost"
           :icon="
-            isPermissionForGeolocationGranted
+            isGeolocationEnabled
               ? 'i-lucide-navigation'
               : 'i-lucide-navigation-off'
           "
-          :to="isPermissionForGeolocationGranted ? undefined : '/settings'"
+          :to="isGeolocationEnabled ? undefined : '/settings'"
+          :loading="isRequestingGeolocationPermission"
           class="flex items-center justify-center text-xl pointer-auto"
         />
       </UTooltip>
 
       <UTooltip
         :text="
-          isPermissionForNotificationsGranted
+          areNotificationsEnabled
             ? 'Go to notifcations'
             : 'Enable push notifications'
         "
@@ -40,14 +55,10 @@ const {
           color="neutral"
           variant="ghost"
           :icon="
-            isPermissionForNotificationsGranted
-              ? 'i-lucide-bell'
-              : 'i-lucide-bell-off'
+            areNotificationsEnabled ? 'i-lucide-bell' : 'i-lucide-bell-off'
           "
-          :to="
-            isPermissionForNotificationsGranted ? '/notifications' : '/settings'
-          "
-          :loading="isRequestingPermission"
+          :to="areNotificationsEnabled ? '/notifications' : '/settings'"
+          :loading="isRequestingNotificationPermission"
           class="flex items-center justify-center text-xl"
         />
       </UTooltip>

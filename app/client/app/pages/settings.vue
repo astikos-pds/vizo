@@ -69,11 +69,13 @@ const {
 } = usePush();
 
 const {
-  isPermissionGranted: isPermissionForGeolocationGranted,
+  isPermissionGranted: isGeolocationEnabled,
   requestGeolocationPermission,
+  getGeolocationPermission,
 } = useMapGeolocation();
 
 const toast = useToast();
+
 const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
   await setLocale(event.data.language);
 
@@ -98,10 +100,11 @@ const onSubmit = async (event: FormSubmitEvent<SettingsSchema>) => {
 };
 
 onMounted(async () => {
-  form.isGeolocationEnabled = isPermissionForGeolocationGranted.value;
-
   form.areNotificationsEnabled =
     "Notification" in window && Notification.permission === "granted";
+
+  const geolocationStatus = await getGeolocationPermission();
+  form.isGeolocationEnabled = geolocationStatus.state === "granted";
 });
 </script>
 
@@ -159,7 +162,7 @@ onMounted(async () => {
           >
             <USwitch
               v-model="form.isGeolocationEnabled"
-              :disabled="isPermissionForGeolocationGranted"
+              :disabled="isGeolocationEnabled"
             />
           </UFormField>
 
