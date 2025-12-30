@@ -70,7 +70,7 @@ Abaixo estão listadas as entregas que compõem a documentação técnica e conc
 
   - [Apresentação](<docs/2%20-%20Proof%20of%20Concept%20(PoC)/slides.pdf>)
 
-- **Minimum Viable Product**: em português, "Produto Mínimo Viável", é a implementação das funcionalidades principais, integradas num sistema coeso.
+- **Minimum Viable Product (MVP)**: em português, "Produto Mínimo Viável", é a implementação das funcionalidades principais, integradas num sistema coeso.
 
   - [Apresentação](<docs/3%20-%20Minimum%20Viable%20Product%20(MVP)/slides.pdf>)
 
